@@ -5,7 +5,7 @@ import { Star, User, Menu } from 'lucide-react';
 
 const Header = () => {
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
