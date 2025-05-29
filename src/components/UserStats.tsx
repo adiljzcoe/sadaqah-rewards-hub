@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Gift, Users, Heart, Award, Zap, Crown } from 'lucide-react';
+import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 
 const UserStats = () => {
@@ -39,6 +39,14 @@ const UserStats = () => {
           )}
         </h3>
         <p className="text-gray-600">Level {userLevel} {isMember ? 'VIP ' : ''}Donor</p>
+        
+        {/* Upgrade link for non-members */}
+        {!isMember && (
+          <button className="mt-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse">
+            <ArrowUp className="h-4 w-4 mr-1 inline" />
+            Upgrade to VIP for 2x Points!
+          </button>
+        )}
       </div>
 
       <div className="space-y-4">
