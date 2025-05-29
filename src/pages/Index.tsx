@@ -46,6 +46,12 @@ const Index = () => {
             <div className="hover-lift">
               <LiveVideo />
             </div>
+            
+            {/* Charity Feed Section - Right below video */}
+            <div className="hover-lift">
+              <CharityFeedSection />
+            </div>
+            
             <div className="hover-lift">
               <LiveFeed />
             </div>
@@ -68,9 +74,6 @@ const Index = () => {
 
       {/* Business Partners Section */}
       <BusinessSection />
-
-      {/* Charity Feed Section - NEW */}
-      <CharityFeedSection />
 
       {/* Charity Partners Section */}
       <section className="bg-gradient-to-r from-white to-blue-50/50 py-16">
