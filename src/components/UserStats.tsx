@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -41,10 +42,10 @@ const UserStats = () => {
         </h3>
         <p className="text-gray-600 mb-3">Level {userLevel} {isMember ? 'VIP ' : ''}Donor</p>
         
-        {/* Upgrade link for non-members - subtle electric glow */}
+        {/* Upgrade link for non-members - electric glow */}
         {!isMember && (
           <div className="mt-3 mb-2">
-            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 border-2 border-white animate-glow">
+            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 border-2 border-white electric-glow">
               <ArrowUp className="h-4 w-4 mr-2 inline" />
               Upgrade to VIP for 2x Points!
             </button>
