@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Mesh } from 'three';
+import { Mesh, MeshPhysicalMaterial } from 'three';
 
 interface GoldCoin3DProps {
   size?: number;
@@ -12,7 +12,7 @@ interface GoldCoin3DProps {
 const CoinMesh = () => {
   const meshRef = useRef<Mesh>(null);
   const edgeRef = useRef<Mesh>(null);
-  const shineRef = useRef<Mesh>(null);
+  const shineRef = useRef<Mesh<any, MeshPhysicalMaterial>>(null);
 
   useFrame((state, delta) => {
     if (meshRef.current) {
@@ -28,10 +28,10 @@ const CoinMesh = () => {
       edgeRef.current.rotation.y += delta * 0.8;
     }
     
-    if (shineRef.current) {
+    if (shineRef.current && shineRef.current.material) {
       // Shine pulses independently for premium effect
       const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.3 + 0.7;
-      shineRef.current.material.opacity = pulse;
+      (shineRef.current.material as MeshPhysicalMaterial).opacity = pulse;
       shineRef.current.rotation.y += delta * 0.8;
     }
   });
