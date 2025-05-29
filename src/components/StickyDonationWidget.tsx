@@ -70,6 +70,7 @@ const StickyDonationWidget = () => {
   const currentCause = emergencyCauses.find(c => c.id === selectedCause);
   const donationAmount = Number(customAmount) || selectedAmount;
   const sadaqahCoins = donationAmount * 10; // 10 coins per currency unit
+  const jannahPoints = donationAmount * 10; // 10 points per currency unit
 
   return (
     <div className={`${isSticky ? 'fixed' : 'relative'} top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg transition-all duration-300`}>
@@ -160,10 +161,10 @@ const StickyDonationWidget = () => {
 
             {/* Impact message & Payment icons */}
             <div className="flex items-center justify-between mt-2">
-              {/* Sadaqah coins message */}
+              {/* Total impact message */}
               <div className={`flex-1 px-2 py-1 rounded text-xs border ${currentCause?.bgColor}`}>
                 <span className={`font-medium ${currentCause?.color}`}>
-                  You get {sadaqahCoins} Sadaqah coins - businesses buy these to support your Jannah
+                  Total impact: {currentCurrency?.symbol}{donationAmount} plus {sadaqahCoins} Sadaqah coins donated by YourJannah & get {jannahPoints} Jannah points
                 </span>
               </div>
 
