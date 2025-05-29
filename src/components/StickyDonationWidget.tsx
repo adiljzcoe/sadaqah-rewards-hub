@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,13 +9,24 @@ const quickAmounts = [10, 25, 50, 100];
 
 const StickyDonationWidget = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isSticky, setIsSticky] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState(25);
   const [customAmount, setCustomAmount] = useState('');
   const [activeTab, setActiveTab] = useState('sadaqah');
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsSticky(scrollY > 100); // Becomes sticky after scrolling 100px
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   if (!isOpen) {
     return (
-      <div className="fixed top-0 left-0 right-0 z-50 bg-emerald-600 text-white py-1 px-4">
+      <div className={`${isSticky ? 'fixed' : 'relative'} top-0 left-0 right-0 z-50 bg-emerald-600 text-white py-1 px-4 transition-all duration-300`}>
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-sm font-medium">💝 Quick Donation</div>
           <button 
@@ -30,7 +41,7 @@ const StickyDonationWidget = () => {
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg">
+    <div className={`${isSticky ? 'fixed' : 'relative'} top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg transition-all duration-300`}>
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
