@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,19 +36,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -97,5 +91,112 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .candy-button {
+    @apply relative overflow-hidden rounded-2xl px-6 py-3 font-bold text-white transition-all duration-300 transform hover:scale-105 active:scale-95;
+    background: linear-gradient(135deg, #ff0080, #ff8c00, #40e0d0);
+    background-size: 200% 200%;
+    animation: rainbow 3s ease infinite;
+    box-shadow: 0 4px 15px rgba(255, 0, 128, 0.4), 0 0 20px rgba(255, 140, 0, 0.3);
+  }
+
+  .candy-button:hover {
+    box-shadow: 0 6px 25px rgba(255, 0, 128, 0.6), 0 0 30px rgba(255, 140, 0, 0.5);
+  }
+
+  .candy-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+  }
+
+  .candy-button:hover::before {
+    left: 100%;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #ff0080, #ff8c00, #40e0d0, #a855f7);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 4s ease infinite;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+
+  .sparkle-bg::before {
+    content: '✨';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  .sparkle-bg::after {
+    content: '⭐';
+    position: absolute;
+    top: 20%;
+    right: 15%;
+    animation: sparkle 2s ease-in-out infinite 0.5s;
+  }
+
+  .floating-hearts {
+    position: relative;
+  }
+
+  .floating-hearts::before {
+    content: '💖';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: float 2s ease-in-out infinite;
+  }
+
+  .donation-explosion {
+    position: relative;
+  }
+
+  .donation-explosion::after {
+    content: '🎉';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: explosion 0.8s ease-out;
+  }
+}
+
+@layer utilities {
+  .candy-shadow {
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3), 0 0 20px rgba(64, 224, 208, 0.2);
+  }
+
+  .vibrant-border {
+    border: 2px solid;
+    border-image: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #a855f7) 1;
+  }
+
+  .pulse-rainbow {
+    animation: glow 2s ease-in-out infinite alternate;
+    color: #ff0080;
   }
 }

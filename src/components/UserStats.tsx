@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Gift, Users, Heart, Award } from 'lucide-react';
+import { Star, Gift, Users, Heart, Award, Zap } from 'lucide-react';
 
 const UserStats = () => {
   const userLevel = 12;
@@ -14,74 +14,104 @@ const UserStats = () => {
   const totalDonations = 28;
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-islamic-green-50 to-sadaqah-gold-50 border-islamic-green-200">
-      <div className="text-center mb-6">
+    <Card className="p-6 bg-gradient-to-br from-candy-pink-100 via-white to-purple-magic-100 border-4 border-candy-pink-300 shadow-2xl transform hover:scale-105 transition-all duration-300 candy-shadow relative overflow-hidden">
+      {/* Sparkle effects */}
+      <div className="absolute top-2 right-2 text-yellow-400 animate-sparkle">✨</div>
+      <div className="absolute bottom-4 left-4 text-candy-pink-400 animate-float">💎</div>
+      
+      <div className="text-center mb-6 relative">
         <div className="relative inline-block mb-4">
-          <div className="w-20 h-20 bg-islamic-green-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+          <div className="w-24 h-24 bg-gradient-to-br from-candy-pink-500 to-purple-magic-500 rounded-full flex items-center justify-center text-white text-3xl font-black shadow-xl animate-glow transform hover:scale-110 transition-transform duration-300">
             {userLevel}
           </div>
-          <Badge className="absolute -top-2 -right-2 bg-sadaqah-gold-500 hover:bg-sadaqah-gold-600">
+          <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-vibrant-orange-500 to-lime-green-500 hover:from-vibrant-orange-600 hover:to-lime-green-600 text-white font-bold animate-bounce shadow-lg">
             <Award className="h-3 w-3 mr-1" />
-            Rising Star
+            Rising Star ⭐
           </Badge>
+          <div className="absolute -bottom-2 -left-2 bg-gradient-to-r from-electric-blue-500 to-purple-magic-500 text-white px-2 py-1 rounded-full text-xs font-bold animate-wiggle">
+            🔥 ON FIRE!
+          </div>
         </div>
-        <h3 className="font-semibold text-lg text-islamic-green-800">Ahmad M.</h3>
-        <p className="text-sm text-gray-600">Level {userLevel} Donor</p>
+        <h3 className="font-black text-2xl gradient-text animate-glow">Ahmad M. 👑</h3>
+        <p className="text-lg text-gray-600 font-bold">Level {userLevel} Donor 🚀</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Jannah Points */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Star className="h-4 w-4 text-sadaqah-gold-500" />
-            <span className="text-sm font-medium">Jannah Points</span>
+        <div className="bg-gradient-to-r from-vibrant-orange-100 to-lime-green-100 rounded-2xl p-4 border-2 border-vibrant-orange-300 transform hover:scale-105 transition-all duration-300">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Star className="h-6 w-6 text-vibrant-orange-500 animate-sparkle" />
+              <span className="text-lg font-black text-vibrant-orange-800">Jannah Points ⭐</span>
+            </div>
+            <span className="text-2xl font-black text-vibrant-orange-600 animate-number-pop">{currentPoints.toLocaleString()}</span>
           </div>
-          <span className="font-bold text-sadaqah-gold-600">{currentPoints.toLocaleString()}</span>
         </div>
 
         {/* Level Progress */}
-        <div>
-          <div className="flex justify-between text-xs text-gray-600 mb-1">
-            <span>Level {userLevel}</span>
-            <span>Level {userLevel + 1}</span>
+        <div className="bg-gradient-to-r from-electric-blue-100 to-purple-magic-100 rounded-2xl p-4 border-2 border-electric-blue-300">
+          <div className="flex justify-between text-sm font-bold text-electric-blue-700 mb-2">
+            <span>Level {userLevel} 🎯</span>
+            <span>Level {userLevel + 1} 🚀</span>
           </div>
-          <Progress value={progress} className="h-2" />
-          <p className="text-xs text-center text-gray-500 mt-1">
-            {nextLevelPoints - currentPoints} points to next level
+          <div className="relative">
+            <Progress 
+              value={progress} 
+              className="h-4 bg-white/50 rounded-full overflow-hidden" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-electric-blue-500 to-purple-magic-500 rounded-full opacity-80" style={{width: `${progress}%`}}></div>
+          </div>
+          <p className="text-sm text-center text-electric-blue-600 font-bold mt-2 animate-pulse">
+            {nextLevelPoints - currentPoints} points to next level! 💪
           </p>
         </div>
 
         {/* Sadaqah Coins */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Gift className="h-4 w-4 text-islamic-green-500" />
-            <span className="text-sm font-medium">Sadaqah Coins</span>
+        <div className="bg-gradient-to-r from-lime-green-100 to-candy-pink-100 rounded-2xl p-4 border-2 border-lime-green-300 transform hover:scale-105 transition-all duration-300">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Gift className="h-6 w-6 text-lime-green-500 animate-bounce" />
+              <span className="text-lg font-black text-lime-green-800">Sadaqah Coins 🪙</span>
+            </div>
+            <span className="text-2xl font-black text-lime-green-600 animate-number-pop">{sadaqahCoins}</span>
           </div>
-          <span className="font-bold text-islamic-green-600">{sadaqahCoins}</span>
         </div>
 
         {/* Total Donations */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Heart className="h-4 w-4 text-red-500" />
-            <span className="text-sm font-medium">Total Donations</span>
+        <div className="bg-gradient-to-r from-candy-pink-100 to-electric-blue-100 rounded-2xl p-4 border-2 border-candy-pink-300 transform hover:scale-105 transition-all duration-300">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Heart className="h-6 w-6 text-candy-pink-500 animate-pulse" />
+              <span className="text-lg font-black text-candy-pink-800">Total Donations 💝</span>
+            </div>
+            <span className="text-2xl font-black text-candy-pink-600 animate-number-pop">{totalDonations}</span>
           </div>
-          <span className="font-bold text-gray-700">{totalDonations}</span>
         </div>
 
         {/* Weekly Goal */}
-        <div className="bg-white rounded-lg p-3 border">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Weekly Goal</span>
-            <span className="text-xs text-gray-500">3/5 donations</span>
+        <div className="bg-white rounded-2xl p-4 border-4 border-purple-magic-300 shadow-lg">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-lg font-black text-purple-magic-800">Weekly Goal 🎯</span>
+            <span className="text-sm font-bold text-purple-magic-600 bg-purple-magic-100 px-3 py-1 rounded-full">3/5 donations ⚡</span>
           </div>
-          <Progress value={60} className="h-1" />
+          <div className="relative">
+            <Progress value={60} className="h-3 bg-purple-magic-100 rounded-full" />
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-magic-500 to-candy-pink-500 rounded-full" style={{width: '60%'}}></div>
+          </div>
         </div>
 
         {/* Special Multiplier */}
-        <div className="bg-sadaqah-gold-100 rounded-lg p-3 text-center">
-          <p className="text-sm font-medium text-sadaqah-gold-800 mb-1">🌙 Special Time!</p>
-          <p className="text-xs text-sadaqah-gold-600">Double points until Maghrib</p>
+        <div className="bg-gradient-to-r from-yellow-400 via-vibrant-orange-400 to-candy-pink-400 rounded-2xl p-4 text-center relative overflow-hidden animate-glow">
+          <div className="absolute inset-0 bg-white/20 backdrop-blur-sm"></div>
+          <div className="relative z-10">
+            <p className="text-xl font-black text-white mb-2 animate-bounce">🌙 Special Time! 🌙</p>
+            <p className="text-lg font-bold text-white animate-pulse">
+              <Zap className="inline h-5 w-5 mr-1 animate-sparkle" />
+              Double points until Maghrib! ⚡
+            </p>
+          </div>
+          <div className="absolute top-1 right-1 text-2xl animate-sparkle">🎆</div>
+          <div className="absolute bottom-1 left-1 text-2xl animate-float">⭐</div>
         </div>
       </div>
     </Card>
