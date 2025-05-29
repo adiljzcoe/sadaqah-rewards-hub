@@ -14,54 +14,8 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3 hover-scale cursor-pointer">
-            <div className="relative">
-              {/* Cloud background */}
-              <div className="w-24 h-16 bg-gradient-to-br from-blue-100 via-white to-blue-50 rounded-full shadow-lg border-2 border-blue-200 relative overflow-hidden">
-                {/* Cloud decorative elements */}
-                <div className="absolute -top-2 -left-2 w-8 h-8 bg-white/80 rounded-full"></div>
-                <div className="absolute -top-1 right-2 w-6 h-6 bg-white/60 rounded-full"></div>
-                <div className="absolute -bottom-1 left-4 w-5 h-5 bg-white/70 rounded-full"></div>
-                
-                {/* "Jannah" text inside cloud */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-emerald-700 flex items-center">
-                    {/* J as crescent and star */}
-                    <div className="relative mr-1">
-                      <div className="text-yellow-500 text-lg leading-none">☪</div>
-                    </div>
-                    
-                    {/* a */}
-                    <span className="text-emerald-700">a</span>
-                    
-                    {/* n */}
-                    <span className="text-emerald-700">n</span>
-                    
-                    {/* n */}
-                    <span className="text-emerald-700">n</span>
-                    
-                    {/* a as triangle with minaret */}
-                    <div className="relative ml-1">
-                      <div className="text-emerald-700 text-xs">▲</div>
-                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 h-2 bg-emerald-600"></div>
-                    </div>
-                    
-                    {/* h */}
-                    <span className="text-emerald-700 ml-1">h</span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* "Your" text outside cloud */}
-              <div className="absolute -left-8 top-1/2 transform -translate-y-1/2 text-sm font-bold text-gray-700">
-                Your
-              </div>
-            </div>
-            
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Your Jannah
-              </h1>
-              <p className="text-sm font-medium bg-gradient-to-r from-gray-600 to-emerald-600 bg-clip-text text-transparent">Making giving rewarding</p>
+            <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-full px-6 py-3 shadow-lg">
+              <span className="text-white font-bold text-xl">Your Jannah</span>
             </div>
           </div>
 
