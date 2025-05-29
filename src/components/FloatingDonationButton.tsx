@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
+import GoldCoin3D from './GoldCoin3D';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -55,8 +56,10 @@ const FloatingDonationButton = () => {
         size="lg"
       >
         <Heart className="h-7 w-7 animate-subtle-pulse" />
-        <div className="absolute -top-1 -right-1 w-6 h-6 gold-coin rounded-full flex items-center justify-center text-xs font-bold text-amber-900 shadow-lg">
-          🔥
+        <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full shadow-lg">
+          <GoldCoin3D size={24}>
+            🔥
+          </GoldCoin3D>
         </div>
       </Button>
     </div>

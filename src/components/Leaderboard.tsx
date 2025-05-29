@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Trophy, Medal, Award, MapPin, Users } from 'lucide-react';
+import GoldCoin3D from './GoldCoin3D';
 
 const leaderboardData = [
   { rank: 1, name: 'Birmingham', type: 'city', points: 45680, donors: 1240, icon: '🏆' },
@@ -31,9 +31,9 @@ const Leaderboard = () => {
     <Card className="p-6 game-card">
       <div className="mb-6">
         <h3 className="text-lg font-bold mb-4 flex items-center">
-          <div className="gold-coin w-8 h-8 flex items-center justify-center mr-3">
+          <GoldCoin3D size={32} className="mr-3">
             <Trophy className="h-4 w-4 text-amber-900" />
-          </div>
+          </GoldCoin3D>
           <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
             Leaderboards
           </span>

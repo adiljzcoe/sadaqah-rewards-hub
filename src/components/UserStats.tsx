@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Star, Gift, Users, Heart, Award, Zap } from 'lucide-react';
+import GoldCoin3D from './GoldCoin3D';
 
 const UserStats = () => {
   const userLevel = 12;
@@ -65,9 +65,9 @@ const UserStats = () => {
         <div className="game-card p-4 relative overflow-hidden">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="gold-coin w-12 h-12 flex items-center justify-center text-sm font-black">
+              <GoldCoin3D size={48} className="animate-subtle-pulse">
                 {sadaqahCoins}
-              </div>
+              </GoldCoin3D>
               <div>
                 <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
                 <div className="text-sm text-amber-600">💰 Shop Currency</div>
@@ -79,7 +79,9 @@ const UserStats = () => {
               </div>
             </div>
           </div>
-          <div className="absolute -right-4 -top-4 w-16 h-16 gold-coin opacity-20"></div>
+          <div className="absolute -right-4 -top-4 w-16 h-16 opacity-20">
+            <GoldCoin3D size={64} />
+          </div>
         </div>
 
         {/* Total Donations */}
