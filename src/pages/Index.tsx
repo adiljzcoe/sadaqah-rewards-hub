@@ -9,6 +9,7 @@ import CharityPartners from '@/components/CharityPartners';
 import LiveFeed from '@/components/LiveFeed';
 import UserStats from '@/components/UserStats';
 import FloatingDonationWidget from '@/components/FloatingDonationWidget';
+import BusinessSection from '@/components/BusinessSection';
 
 const Index = () => {
   return (
@@ -61,6 +62,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Business Partners Section */}
+      <BusinessSection />
 
       {/* Charity Partners Section */}
       <section className="bg-white py-16">
