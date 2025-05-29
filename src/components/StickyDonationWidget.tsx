@@ -191,7 +191,7 @@ const StickyDonationWidget = () => {
                     <Sparkles className="h-3 w-3 text-emerald-600 animate-bounce" />
                     {isMember && <Crown className="h-3 w-3 text-purple-600 animate-pulse" />}
                     <span className="text-xs font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins from your jannah (bought by businesses = DOUBLE DONATION!) + {jannahPoints} jannah points for you{isMember ? ' (MEMBER 2x BONUS!)' : ''} {getImpactMessage(donationAmount)}
+                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins from your jannah + {jannahPoints} jannah points for you{isMember ? ' (MEMBER 2x BONUS!)' : ''} {getImpactMessage(donationAmount)}
                     </span>
                     <Zap className="h-3 w-3 text-blue-600 animate-pulse" />
                   </div>
