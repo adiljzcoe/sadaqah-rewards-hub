@@ -85,7 +85,7 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             {/* Points Display */}
             <div className="hidden sm:flex items-center space-x-2 jannah-counter px-4 py-2">
-              <Star className="h-5 w-5 text-yellow-300 animate-subtle-pulse" />
+              <Star className="h-5 w-5 text-yellow-300" />
               <span className="text-lg font-bold">5,632 pts</span>
             </div>
 
