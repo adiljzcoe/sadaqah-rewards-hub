@@ -6,7 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/Header';
-import { MapPin, Users, Heart, Shield, Star, TrendingUp, Calendar, Globe, Phone, Mail } from 'lucide-react';
+import CampaignsCarousel from '@/components/CampaignsCarousel';
+import FundraisersCarousel from '@/components/FundraisersCarousel';
+import AddCampaignForm from '@/components/AddCampaignForm';
+import { MapPin, Users, Heart, Shield, Star, TrendingUp, Calendar, Globe, Phone, Mail, Plus } from 'lucide-react';
 
 const CharityProfile = () => {
   const { id } = useParams();
@@ -32,6 +35,50 @@ const CharityProfile = () => {
       { name: 'Yemen Water Wells', raised: '£180,000', target: '£200,000', beneficiaries: 3000 }
     ]
   };
+
+  // Mock campaigns for this charity
+  const charityCampaigns = [
+    {
+      id: '1',
+      title: 'Orphans of Gaza Emergency Support',
+      charity: 'Islamic Relief',
+      description: 'Providing immediate support to orphaned children in Gaza',
+      raised: 45000,
+      target: 60000,
+      donors: 234,
+      daysLeft: 12,
+      image: 'Emergency orphan care',
+      category: 'Emergency Aid'
+    },
+    {
+      id: '2',
+      title: 'Winter Clothing for Syrian Refugees',
+      charity: 'Islamic Relief',
+      description: 'Warm clothing for families facing winter hardships',
+      raised: 28000,
+      target: 40000,
+      donors: 156,
+      daysLeft: 8,
+      image: 'Winter clothing drive',
+      category: 'Emergency Aid'
+    }
+  ];
+
+  // Mock fundraisers for this charity
+  const charityFundraisers = [
+    {
+      id: '1',
+      title: 'Build Educational Center in Palestine',
+      charity: 'Islamic Relief',
+      description: 'Creating educational opportunities for children',
+      raised: 75000,
+      target: 120000,
+      supporters: 340,
+      deadline: 'Dec 2024',
+      image: 'Educational center',
+      category: 'Education'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -100,13 +147,26 @@ const CharityProfile = () => {
         </div>
 
         {/* Content Tabs */}
-        <Tabs defaultValue="projects" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="projects">Current Projects</TabsTrigger>
-            <TabsTrigger value="impact">Impact Report</TabsTrigger>
-            <TabsTrigger value="about">About Us</TabsTrigger>
-            <TabsTrigger value="contact">Contact</TabsTrigger>
+        <Tabs defaultValue="campaigns" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
+            <TabsTrigger value="fundraisers">Fundraisers</TabsTrigger>
+            <TabsTrigger value="projects">Projects</TabsTrigger>
+            <TabsTrigger value="impact">Impact</TabsTrigger>
+            <TabsTrigger value="about">About</TabsTrigger>
+            <TabsTrigger value="manage">
+              <Plus className="h-4 w-4 mr-1" />
+              Manage
+            </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="campaigns" className="space-y-6">
+            <CampaignsCarousel campaigns={charityCampaigns} title="Current Campaigns" />
+          </TabsContent>
+
+          <TabsContent value="fundraisers" className="space-y-6">
+            <FundraisersCarousel fundraisers={charityFundraisers} title="Active Fundraisers" />
+          </TabsContent>
 
           <TabsContent value="projects" className="space-y-6">
             <div className="grid gap-6">
@@ -180,30 +240,31 @@ const CharityProfile = () => {
                       ))}
                     </div>
                   </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold mb-3">Contact Information</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center">
+                        <Globe className="h-5 w-5 mr-3 text-gray-500" />
+                        <span>{charity.website}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Phone className="h-5 w-5 mr-3 text-gray-500" />
+                        <span>{charity.phone}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Mail className="h-5 w-5 mr-3 text-gray-500" />
+                        <span>{charity.email}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="contact">
-            <Card>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Globe className="h-5 w-5 mr-3 text-gray-500" />
-                    <span>{charity.website}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Phone className="h-5 w-5 mr-3 text-gray-500" />
-                    <span>{charity.phone}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Mail className="h-5 w-5 mr-3 text-gray-500" />
-                    <span>{charity.email}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="manage">
+            <AddCampaignForm />
           </TabsContent>
         </Tabs>
       </div>

@@ -5,39 +5,79 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import CharityPartners from '@/components/CharityPartners';
+import CampaignsCarousel from '@/components/CampaignsCarousel';
+import FundraisersCarousel from '@/components/FundraisersCarousel';
 import { Heart, TrendingUp, Users, Globe, Shield } from 'lucide-react';
 
-const featuredCampaigns = [
-  {
-    title: 'Gaza Emergency Relief Fund',
-    charity: 'Islamic Relief',
-    raised: '£450,000',
-    target: '£500,000',
-    donors: 2340,
-    daysLeft: 5,
-    image: 'Emergency aid supplies'
-  },
-  {
-    title: 'Syria Education Initiative',
-    charity: 'Human Appeal',
-    raised: '£320,000',
-    target: '£400,000',
-    donors: 1560,
-    daysLeft: 12,
-    image: 'Children in classroom'
-  },
-  {
-    title: 'Yemen Water Crisis Response',
-    charity: 'Muslim Aid',
-    raised: '£180,000',
-    target: '£250,000',
-    donors: 890,
-    daysLeft: 8,
-    image: 'Water well construction'
-  }
-];
-
 const CharityPartnersPublic = () => {
+  // Mock data for featured campaigns across all charities
+  const featuredCampaigns = [
+    {
+      id: '1',
+      title: 'Gaza Emergency Relief Fund',
+      charity: 'Islamic Relief',
+      description: 'Immediate aid for families in crisis',
+      raised: 450000,
+      target: 500000,
+      donors: 2340,
+      daysLeft: 5,
+      image: 'Emergency aid supplies',
+      category: 'Emergency Aid'
+    },
+    {
+      id: '2',
+      title: 'Syria Education Initiative',
+      charity: 'Human Appeal',
+      description: 'Education for displaced children',
+      raised: 320000,
+      target: 400000,
+      donors: 1560,
+      daysLeft: 12,
+      image: 'Children in classroom',
+      category: 'Education'
+    },
+    {
+      id: '3',
+      title: 'Yemen Water Crisis Response',
+      charity: 'Muslim Aid',
+      description: 'Clean water for communities in need',
+      raised: 180000,
+      target: 250000,
+      donors: 890,
+      daysLeft: 8,
+      image: 'Water well construction',
+      category: 'Water & Sanitation'
+    }
+  ];
+
+  // Mock data for featured fundraisers
+  const featuredFundraisers = [
+    {
+      id: '1',
+      title: 'Build 50 Schools in Bangladesh',
+      charity: 'Education for All',
+      description: 'Long-term educational infrastructure development',
+      raised: 750000,
+      target: 1000000,
+      supporters: 3400,
+      deadline: 'Jun 2025',
+      image: 'School construction project',
+      category: 'Education'
+    },
+    {
+      id: '2',
+      title: 'Mobile Hospital Fleet',
+      charity: 'Medical Aid International',
+      description: 'Healthcare delivery to remote areas',
+      raised: 420000,
+      target: 600000,
+      supporters: 1890,
+      deadline: 'Apr 2025',
+      image: 'Mobile medical units',
+      category: 'Healthcare'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -105,46 +145,12 @@ const CharityPartnersPublic = () => {
 
         {/* Featured Campaigns */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Featured Campaigns</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {featuredCampaigns.map((campaign, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-48 bg-gradient-to-br from-islamic-green-400 to-islamic-green-600 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <Heart className="h-12 w-12 mx-auto mb-2" />
-                    <p className="font-medium">{campaign.image}</p>
-                  </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-semibold">{campaign.title}</h3>
-                    <Badge variant="outline">{campaign.daysLeft} days left</Badge>
-                  </div>
-                  
-                  <p className="text-gray-600 mb-4">by {campaign.charity}</p>
-                  
-                  <div className="mb-4">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>{campaign.donors} donors</span>
-                      <span>{campaign.raised} of {campaign.target}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-islamic-green-600 h-2 rounded-full" 
-                        style={{ width: `${(parseInt(campaign.raised.replace(/[£,]/g, '')) / parseInt(campaign.target.replace(/[£,]/g, ''))) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  
-                  <Button className="w-full bg-islamic-green-600 hover:bg-islamic-green-700">
-                    <Heart className="h-4 w-4 mr-2" />
-                    Donate Now
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <CampaignsCarousel campaigns={featuredCampaigns} title="Featured Campaigns" />
+        </div>
+
+        {/* Featured Fundraisers */}
+        <div className="mb-12">
+          <FundraisersCarousel fundraisers={featuredFundraisers} title="Long-term Fundraisers" />
         </div>
 
         {/* Charity Partners Component */}
