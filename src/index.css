@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -95,76 +96,125 @@
 
 @layer components {
   .gel-button {
-    @apply relative overflow-hidden rounded-2xl font-bold text-white transition-all duration-300 transform-gpu;
-    background: linear-gradient(135deg, currentColor 0%, currentColor 100%);
+    @apply relative overflow-hidden rounded-2xl font-bold text-white transition-all duration-500 transform-gpu cursor-pointer;
+    background: linear-gradient(145deg, currentColor 0%, currentColor 100%);
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.3),
-      inset 0 2px 8px rgba(255, 255, 255, 0.4),
-      inset 0 -2px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .gel-button:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 
-      0 12px 40px rgba(0, 0, 0, 0.4),
-      inset 0 3px 12px rgba(255, 255, 255, 0.5),
-      inset 0 -3px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .gel-button:active {
-    transform: translateY(1px) scale(0.98);
-    box-shadow: 
-      0 4px 16px rgba(0, 0, 0, 0.3),
-      inset 0 1px 4px rgba(255, 255, 255, 0.3),
-      inset 0 -1px 4px rgba(0, 0, 0, 0.2);
+      0 12px 48px rgba(0, 0, 0, 0.4),
+      0 6px 24px rgba(0, 0, 0, 0.3),
+      inset 0 4px 16px rgba(255, 255, 255, 0.6),
+      inset 0 -4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.8);
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    transform: translateY(0px) scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .gel-button::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    transition: left 0.5s;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(145deg, 
+      rgba(255, 255, 255, 0.3) 0%, 
+      rgba(255, 255, 255, 0.1) 30%, 
+      transparent 50%, 
+      rgba(0, 0, 0, 0.1) 70%, 
+      rgba(0, 0, 0, 0.2) 100%);
+    border-radius: inherit;
+    pointer-events: none;
   }
 
-  .gel-button:hover::before {
-    left: 100%;
+  .gel-button::after {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 12%;
+    width: 30%;
+    height: 25%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: gel-highlight 4s ease-in-out infinite;
+  }
+
+  .gel-button:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 
+      0 20px 64px rgba(0, 0, 0, 0.5),
+      0 12px 32px rgba(0, 0, 0, 0.4),
+      inset 0 6px 20px rgba(255, 255, 255, 0.7),
+      inset 0 -6px 20px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gel-button:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 2px 8px rgba(255, 255, 255, 0.5),
+      inset 0 -2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.7);
+    transition: all 0.15s ease;
   }
 
   .jannah-counter {
-    @apply relative overflow-hidden rounded-xl px-6 py-4 font-bold text-white;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
+    @apply relative overflow-hidden rounded-2xl px-8 py-5 font-bold text-white;
+    background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 30%, #db2777 70%, #e11d48 100%);
     box-shadow: 
-      0 8px 32px rgba(79, 70, 229, 0.4),
-      inset 0 2px 8px rgba(255, 255, 255, 0.3),
-      inset 0 -2px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+      0 16px 64px rgba(79, 70, 229, 0.5),
+      0 8px 32px rgba(124, 58, 237, 0.4),
+      inset 0 4px 16px rgba(255, 255, 255, 0.4),
+      inset 0 -4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 3px rgba(255, 255, 255, 0.8);
+    border: 3px solid rgba(255, 255, 255, 0.3);
     animation: jannah-glow 4s ease-in-out infinite;
+    backdrop-filter: blur(8px);
+  }
+
+  .jannah-counter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(145deg, 
+      rgba(255, 255, 255, 0.3) 0%, 
+      rgba(255, 255, 255, 0.1) 30%, 
+      transparent 50%, 
+      rgba(0, 0, 0, 0.1) 70%, 
+      rgba(0, 0, 0, 0.2) 100%);
+    border-radius: inherit;
+    pointer-events: none;
   }
 
   .jannah-counter::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    top: 10%;
+    left: 15%;
+    width: 35%;
+    height: 30%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    border-radius: 50%;
     animation: jannah-shimmer 6s linear infinite;
   }
 
   .gold-coin {
     @apply relative overflow-hidden rounded-full font-bold text-amber-900;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #fbbf24 50%, #d97706 75%, #92400e 100%);
+    background: linear-gradient(145deg, #ffd700 0%, #ffed4e 20%, #fbbf24 40%, #f59e0b 60%, #d97706 80%, #92400e 100%);
     box-shadow: 
-      0 12px 48px rgba(251, 191, 36, 0.8),
-      inset 0 6px 24px rgba(255, 255, 255, 0.7),
-      inset 0 -6px 24px rgba(146, 64, 14, 0.5),
-      inset 0 0 0 4px rgba(255, 215, 0, 0.9);
+      0 16px 64px rgba(251, 191, 36, 0.9),
+      0 8px 32px rgba(245, 158, 11, 0.7),
+      inset 0 6px 24px rgba(255, 255, 255, 0.8),
+      inset 0 -6px 24px rgba(146, 64, 14, 0.6),
+      inset 0 0 0 4px rgba(255, 215, 0, 0.9),
+      inset 0 2px 4px rgba(255, 255, 255, 0.9);
     border: 4px solid #b45309;
     animation: premium-coin-float 8s ease-in-out infinite, premium-coin-glow 3s ease-in-out infinite alternate;
   }
@@ -172,11 +222,11 @@
   .gold-coin::before {
     content: '';
     position: absolute;
-    top: 15%;
-    left: 15%;
-    width: 30%;
-    height: 30%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, transparent 70%);
+    top: 12%;
+    left: 12%;
+    width: 35%;
+    height: 35%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 80%);
     border-radius: 50%;
     animation: shine-pulse 2s ease-in-out infinite alternate;
   }
@@ -268,23 +318,23 @@
   }
 
   .professional-button {
-    @apply gel-button px-6 py-3;
+    @apply gel-button px-8 py-4;
   }
 
   .vibrant-gradient {
-    background: linear-gradient(135deg, #10b981, #059669, #047857);
+    background: linear-gradient(145deg, #10b981, #059669, #047857);
   }
 
   .accent-gradient {
-    background: linear-gradient(135deg, #3b82f6, #2563eb, #1d4ed8);
+    background: linear-gradient(145deg, #3b82f6, #2563eb, #1d4ed8);
   }
 
   .orange-gradient {
-    background: linear-gradient(135deg, #f97316, #ea580c, #dc2626);
+    background: linear-gradient(145deg, #f97316, #ea580c, #dc2626);
   }
 
   .purple-gradient {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed, #6d28d9);
+    background: linear-gradient(145deg, #8b5cf6, #7c3aed, #6d28d9);
   }
 
   .professional-card {
@@ -345,45 +395,72 @@
   50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); }
 }
 
+@keyframes gel-highlight {
+  0%, 100% { 
+    opacity: 0.8; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.1); 
+  }
+}
+
 @keyframes jannah-glow {
   0%, 100% { 
     box-shadow: 
-      0 8px 32px rgba(79, 70, 229, 0.4),
-      inset 0 2px 8px rgba(255, 255, 255, 0.3),
-      inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+      0 16px 64px rgba(79, 70, 229, 0.5),
+      0 8px 32px rgba(124, 58, 237, 0.4),
+      inset 0 4px 16px rgba(255, 255, 255, 0.4),
+      inset 0 -4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 3px rgba(255, 255, 255, 0.8);
   }
   50% { 
     box-shadow: 
-      0 12px 48px rgba(79, 70, 229, 0.6),
-      inset 0 3px 12px rgba(255, 255, 255, 0.4),
-      inset 0 -3px 12px rgba(0, 0, 0, 0.3);
+      0 20px 80px rgba(79, 70, 229, 0.7),
+      0 12px 48px rgba(124, 58, 237, 0.6),
+      inset 0 6px 20px rgba(255, 255, 255, 0.5),
+      inset 0 -6px 20px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.9);
   }
 }
 
 @keyframes jannah-shimmer {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { 
+    transform: rotate(0deg) scale(1); 
+    opacity: 0.6; 
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1); 
+    opacity: 0.9; 
+  }
+  100% { 
+    transform: rotate(360deg) scale(1); 
+    opacity: 0.6; 
+  }
 }
 
 @keyframes premium-coin-float {
-  0%, 100% { transform: translateY(0px) rotateY(0deg); }
-  25% { transform: translateY(-3px) rotateY(90deg); }
-  50% { transform: translateY(0px) rotateY(180deg); }
-  75% { transform: translateY(-2px) rotateY(270deg); }
+  0%, 100% { transform: translateY(0px) rotateY(0deg) scale(1); }
+  25% { transform: translateY(-4px) rotateY(90deg) scale(1.02); }
+  50% { transform: translateY(0px) rotateY(180deg) scale(1); }
+  75% { transform: translateY(-2px) rotateY(270deg) scale(1.01); }
 }
 
 @keyframes premium-coin-glow {
   0% { 
     box-shadow: 
-      0 12px 48px rgba(251, 191, 36, 0.8),
-      inset 0 6px 24px rgba(255, 255, 255, 0.7),
-      inset 0 -6px 24px rgba(146, 64, 14, 0.5);
+      0 16px 64px rgba(251, 191, 36, 0.9),
+      0 8px 32px rgba(245, 158, 11, 0.7),
+      inset 0 6px 24px rgba(255, 255, 255, 0.8),
+      inset 0 -6px 24px rgba(146, 64, 14, 0.6);
   }
   100% { 
     box-shadow: 
-      0 16px 64px rgba(251, 191, 36, 1.0),
+      0 20px 80px rgba(251, 191, 36, 1.0),
+      0 12px 48px rgba(245, 158, 11, 0.9),
       inset 0 8px 32px rgba(255, 255, 255, 0.9),
-      inset 0 -8px 32px rgba(146, 64, 14, 0.7);
+      inset 0 -8px 32px rgba(146, 64, 14, 0.8);
   }
 }
 
@@ -406,7 +483,7 @@
 
 @keyframes shine-pulse {
   0% { opacity: 0.8; transform: scale(1); }
-  100% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1.15); }
 }
 
 @keyframes bounce-in {
