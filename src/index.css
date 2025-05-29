@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -163,7 +162,7 @@
   }
 
   .electric-glow {
-    animation: electric-pulse 3s ease-in-out infinite;
+    animation: electric-pulse 8s ease-in-out infinite;
   }
 
   .jannah-counter {
