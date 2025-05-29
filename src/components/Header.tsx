@@ -119,7 +119,7 @@ const Header = () => {
                 <div className="mt-1">
                   <button className="text-xs text-gray-500 hover:text-purple-600 transition-colors duration-200 flex items-center gap-1">
                     <ArrowUp className="h-3 w-3" />
-                    Upgrade to VIP
+                    Upgrade to 3x
                   </button>
                 </div>
               </div>
