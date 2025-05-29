@@ -1,9 +1,13 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Star, User, Menu } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Star, User, Menu, Crown } from 'lucide-react';
 
 const Header = () => {
+  // Mock user membership status - in real app this would come from auth/database
+  const isMember = true; // Set to true to show member badge
+
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg">
       <div className="container mx-auto px-4 py-4">
@@ -79,6 +83,14 @@ const Header = () => {
               About
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
+            
+            {/* Become a Member - only show if not already a member */}
+            {!isMember && (
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105">
+                <Crown className="h-4 w-4 mr-2" />
+                Become a Member
+              </Button>
+            )}
           </nav>
 
           {/* User Section */}
@@ -87,13 +99,29 @@ const Header = () => {
             <div className="hidden sm:flex items-center space-x-2 jannah-counter px-4 py-2">
               <Star className="h-5 w-5 text-yellow-300" />
               <span className="text-lg font-bold">5,632 pts</span>
+              {isMember && (
+                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs ml-2 animate-pulse">
+                  <Crown className="h-3 w-3 mr-1" />
+                  2x Points
+                </Badge>
+              )}
             </div>
 
             {/* User Menu */}
-            <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
-              <User className="h-5 w-5 mr-2" />
-              <span className="hidden sm:inline">Ahmad M.</span>
-            </Button>
+            <div className="relative">
+              <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
+                <User className="h-5 w-5 mr-2" />
+                <span className="hidden sm:inline">Ahmad M.</span>
+              </Button>
+              
+              {/* Member Badge */}
+              {isMember && (
+                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs animate-bounce">
+                  <Crown className="h-3 w-3 mr-1" />
+                  VIP
+                </Badge>
+              )}
+            </div>
 
             {/* Mobile Menu */}
             <Button className="md:hidden gel-button bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 border-0 shadow-lg">

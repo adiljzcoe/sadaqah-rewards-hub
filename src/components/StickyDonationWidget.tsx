@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertCircle, Heart, Sparkles, Zap } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { AlertCircle, Heart, Sparkles, Zap, Crown } from 'lucide-react';
 
 const quickAmounts = [10, 25, 50, 100];
 const currencies = [
@@ -55,6 +57,9 @@ const StickyDonationWidget = () => {
   const [selectedCause, setSelectedCause] = useState('palestine');
   const [currency, setCurrency] = useState('GBP');
 
+  // Mock user membership status - in real app this would come from auth/database
+  const isMember = true;
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -68,15 +73,19 @@ const StickyDonationWidget = () => {
   const currentCurrency = currencies.find(c => c.code === currency);
   const currentCause = emergencyCauses.find(c => c.id === selectedCause);
   const donationAmount = Number(customAmount) || selectedAmount;
-  const sadaqahCoins = donationAmount * 10; // 10 coins per currency unit
-  const jannahPoints = donationAmount * 10; // 10 points per currency unit
+  
+  // Enhanced benefits for members
+  const memberMultiplier = isMember ? 2 : 1;
+  const sadaqahCoins = donationAmount * 10 * memberMultiplier;
+  const jannahPoints = donationAmount * 10 * memberMultiplier;
 
   // Dynamic impact message based on donation amount
   const getImpactMessage = (amount: number) => {
-    if (amount >= 100) return "= JANNAH SUPERSTAR! 🌟";
-    if (amount >= 50) return "= MASSIVE IMPACT! 💫";
-    if (amount >= 25) return "= HUGE IMPACT! ⚡";
-    if (amount >= 10) return "= AMAZING IMPACT! ✨";
+    const multipliedAmount = amount * memberMultiplier;
+    if (multipliedAmount >= 200) return "= JANNAH SUPERSTAR! 🌟";
+    if (multipliedAmount >= 100) return "= MASSIVE IMPACT! 💫";
+    if (multipliedAmount >= 50) return "= HUGE IMPACT! ⚡";
+    if (multipliedAmount >= 20) return "= AMAZING IMPACT! ✨";
     return "= GREAT IMPACT! 🎯";
   };
 
@@ -160,9 +169,14 @@ const StickyDonationWidget = () => {
 
               {/* Donate button */}
               <div className="col-span-2">
-                <Button className="w-full h-8 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium">
+                <Button className="w-full h-8 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative">
                   <Heart className="h-3 w-3 mr-1" />
                   {currentCurrency?.symbol}{donationAmount}
+                  {isMember && (
+                    <Badge className="absolute -top-1 -right-1 bg-purple-500 text-white text-[8px] px-1 py-0">
+                      2x
+                    </Badge>
+                  )}
                 </Button>
               </div>
             </div>
@@ -175,8 +189,9 @@ const StickyDonationWidget = () => {
                 <div className="relative px-3 py-2 rounded-lg bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-gradient-to-r from-emerald-200 via-blue-200 to-purple-200 animate-subtle-pulse">
                   <div className="flex items-center space-x-1 flex-wrap">
                     <Sparkles className="h-3 w-3 text-emerald-600 animate-bounce" />
+                    {isMember && <Crown className="h-3 w-3 text-purple-600 animate-pulse" />}
                     <span className="text-xs font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins from your jannah (bought by businesses = DOUBLE DONATION!) + {jannahPoints} jannah points for you {getImpactMessage(donationAmount)}
+                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins from your jannah (bought by businesses = DOUBLE DONATION!) + {jannahPoints} jannah points for you{isMember ? ' (MEMBER 2x BONUS!)' : ''} {getImpactMessage(donationAmount)}
                     </span>
                     <Zap className="h-3 w-3 text-blue-600 animate-pulse" />
                   </div>

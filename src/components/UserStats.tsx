@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Gift, Users, Heart, Award, Zap } from 'lucide-react';
+import { Star, Gift, Users, Heart, Award, Zap, Crown } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 
 const UserStats = () => {
@@ -12,6 +13,9 @@ const UserStats = () => {
   const progress = (currentPoints / nextLevelPoints) * 100;
   const sadaqahCoins = 142;
   const totalDonations = 28;
+  
+  // Mock user membership status - in real app this would come from auth/database
+  const isMember = true;
 
   return (
     <Card className="p-6 game-card">
@@ -22,19 +26,48 @@ const UserStats = () => {
           </div>
           <Badge className="absolute -top-1 -right-1 gel-button bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
             <Award className="h-3 w-3 mr-1" />
-            Rising Star
+            {isMember ? 'VIP Member' : 'Rising Star'}
           </Badge>
         </div>
-        <h3 className="font-bold text-xl text-gray-900">Ahmad M.</h3>
-        <p className="text-gray-600">Level {userLevel} Donor</p>
+        <h3 className="font-bold text-xl text-gray-900 flex items-center justify-center gap-2">
+          Ahmad M.
+          {isMember && (
+            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+              <Crown className="h-3 w-3 mr-1" />
+              VIP
+            </Badge>
+          )}
+        </h3>
+        <p className="text-gray-600">Level {userLevel} {isMember ? 'VIP ' : ''}Donor</p>
       </div>
 
       <div className="space-y-4">
+        {/* Member Benefits Banner */}
+        {isMember && (
+          <div className="game-card p-4 bg-gradient-to-r from-purple-100 to-pink-100 text-center relative overflow-hidden">
+            <div className="relative z-10">
+              <p className="font-bold text-purple-800 mb-1 text-lg flex items-center justify-center gap-2">
+                <Crown className="h-5 w-5" />
+                VIP Member Benefits Active!
+              </p>
+              <p className="text-sm font-bold text-purple-700">
+                💎 Double Jannah Points & Sadaqah Coins on all donations!
+              </p>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/50 to-transparent animate-shimmer"></div>
+          </div>
+        )}
+
         {/* Jannah Points */}
         <div className="jannah-counter text-center relative">
           <div className="flex items-center justify-center space-x-2 mb-2">
             <Star className="h-6 w-6 text-white animate-points-pop" />
             <span className="font-bold text-white text-lg">Jannah Points</span>
+            {isMember && (
+              <Badge className="bg-purple-500 text-white text-xs">
+                2x Rate
+              </Badge>
+            )}
           </div>
           <div className="text-3xl font-black text-white animate-points-pop">
             {currentPoints.toLocaleString()}
@@ -69,7 +102,14 @@ const UserStats = () => {
                 {sadaqahCoins}
               </GoldCoin3D>
               <div>
-                <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
+                  {isMember && (
+                    <Badge className="bg-purple-500 text-white text-xs">
+                      2x Rate
+                    </Badge>
+                  )}
+                </div>
                 <div className="text-sm text-amber-600">💰 Shop Currency</div>
               </div>
             </div>
@@ -117,7 +157,7 @@ const UserStats = () => {
             <p className="font-bold text-amber-800 mb-1 text-lg">🌙 Special Time!</p>
             <p className="text-sm font-bold text-amber-700">
               <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
-              Double points until Maghrib!
+              {isMember ? 'Quadruple' : 'Double'} points until Maghrib!
             </p>
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
