@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,8 +13,8 @@ const UserStats = () => {
   const sadaqahCoins = 142;
   const totalDonations = 28;
   
-  // Mock user membership status - in real app this would come from auth/database
-  const isMember = true;
+  // Mock user membership status - set to false to show upgrade link
+  const isMember = false;
 
   return (
     <Card className="p-6 game-card">
