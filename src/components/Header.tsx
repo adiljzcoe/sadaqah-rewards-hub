@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -5,7 +6,7 @@ import { Star, User, Menu, Crown, ArrowUp } from 'lucide-react';
 
 const Header = () => {
   // Mock user membership status - in real app this would come from auth/database
-  const isMember = false; // Changed to false to show upgrade link
+  const isMember = true; // Changed back to true to show VIP badge
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg">
@@ -108,24 +109,27 @@ const Header = () => {
 
             {/* User Menu */}
             <div className="relative">
-              <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
-                <User className="h-5 w-5 mr-2" />
-                <span className="hidden sm:inline">Ahmad M.</span>
-              </Button>
+              <div className="flex flex-col items-center">
+                <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
+                  <User className="h-5 w-5 mr-2" />
+                  <span className="hidden sm:inline">Ahmad M.</span>
+                </Button>
+                
+                {/* Subtle upgrade link under name */}
+                <div className="mt-1">
+                  <button className="text-xs text-gray-500 hover:text-purple-600 transition-colors duration-200 flex items-center gap-1">
+                    <ArrowUp className="h-3 w-3" />
+                    Upgrade to VIP
+                  </button>
+                </div>
+              </div>
               
-              {/* Member Badge or Upgrade Link */}
-              {isMember ? (
+              {/* Member Badge */}
+              {isMember && (
                 <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs animate-bounce">
                   <Crown className="h-3 w-3 mr-1" />
                   VIP
                 </Badge>
-              ) : (
-                <div className="absolute -top-2 -right-2">
-                  <button className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse border border-white">
-                    <ArrowUp className="h-3 w-3 mr-1 inline" />
-                    Upgrade
-                  </button>
-                </div>
               )}
             </div>
 
