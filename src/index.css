@@ -99,7 +99,6 @@
     @apply relative overflow-hidden rounded-2xl px-6 py-3 font-bold text-white transition-all duration-300 transform hover:scale-105 active:scale-95;
     background: linear-gradient(135deg, #ff0080, #ff8c00, #40e0d0);
     background-size: 200% 200%;
-    animation: rainbow 3s ease infinite;
     box-shadow: 0 4px 15px rgba(255, 0, 128, 0.4), 0 0 20px rgba(255, 140, 0, 0.3);
   }
 
@@ -128,7 +127,6 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: rainbow 4s ease infinite;
   }
 
   .glass-card {
@@ -141,62 +139,52 @@
   .neon-glow {
     box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
   }
-
-  .sparkle-bg::before {
-    content: '✨';
-    position: absolute;
-    top: 10%;
-    left: 10%;
-    animation: sparkle 2s ease-in-out infinite;
-  }
-
-  .sparkle-bg::after {
-    content: '⭐';
-    position: absolute;
-    top: 20%;
-    right: 15%;
-    animation: sparkle 2s ease-in-out infinite 0.5s;
-  }
-
-  .floating-hearts {
-    position: relative;
-  }
-
-  .floating-hearts::before {
-    content: '💖';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: float 2s ease-in-out infinite;
-  }
-
-  .donation-explosion {
-    position: relative;
-  }
-
-  .donation-explosion::after {
-    content: '🎉';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: explosion 0.8s ease-out;
-  }
 }
 
 @layer utilities {
   .candy-shadow {
-    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3), 0 0 20px rgba(64, 224, 208, 0.2);
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.2), 0 0 20px rgba(64, 224, 208, 0.1);
+  }
+
+  .subtle-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   .vibrant-border {
     border: 2px solid;
     border-image: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #a855f7) 1;
   }
-
-  .pulse-rainbow {
-    animation: glow 2s ease-in-out infinite alternate;
-    color: #ff0080;
-  }
 }
+
+/* Keyframes for refined animations */
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes success-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slide-in {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Animation classes */
+.animate-gentle-pulse { animation: gentle-pulse 2s ease-in-out infinite; }
+.animate-success-pop { animation: success-pop 0.3s ease-out; }
+.animate-slide-in { animation: slide-in 0.5s ease-out; }
+.animate-gentle-bounce { animation: gentle-bounce 2s ease-in-out infinite; }
+
+/* Hover effects only */
+.hover-lift:hover { transform: translateY(-2px); transition: transform 0.2s ease; }
+.hover-scale:hover { transform: scale(1.02); transition: transform 0.2s ease; }
+.hover-glow:hover { box-shadow: 0 0 20px rgba(255, 0, 128, 0.3); transition: box-shadow 0.3s ease; }
