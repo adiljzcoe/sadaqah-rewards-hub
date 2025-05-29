@@ -3,40 +3,71 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, User, Menu, Crown, ArrowUp } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
-  // Mock user membership status - in real app this would come from auth/database
-  const isMember = true; // Changed back to true to show VIP badge
+  const location = useLocation();
+  const isMember = true; // VIP status
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-3 hover-scale cursor-pointer">
+          <Link to="/" className="flex items-center space-x-3 hover-scale cursor-pointer">
             <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-full px-6 py-3 shadow-lg">
               <span className="text-white font-bold text-xl">Your Jannah</span>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray-700 hover:text-emerald-600 font-bold transition-all duration-300 hover:scale-105 relative group">
+            <Link 
+              to="/" 
+              className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
+                isActive('/') ? 'text-emerald-600' : 'text-gray-700 hover:text-emerald-600'
+              }`}
+            >
               Home
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="#" className="text-gray-700 hover:text-emerald-600 font-bold transition-all duration-300 hover:scale-105 relative group">
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ${
+                isActive('/') ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
+            </Link>
+            <Link 
+              to="/campaigns" 
+              className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
+                isActive('/campaigns') ? 'text-emerald-600' : 'text-gray-700 hover:text-emerald-600'
+              }`}
+            >
               Campaigns
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="#" className="text-gray-700 hover:text-emerald-600 font-bold transition-all duration-300 hover:scale-105 relative group">
-              Partners
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="#" className="text-gray-700 hover:text-emerald-600 font-bold transition-all duration-300 hover:scale-105 relative group">
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ${
+                isActive('/campaigns') ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
+            </Link>
+            <Link 
+              to="/leaderboards" 
+              className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
+                isActive('/leaderboards') ? 'text-emerald-600' : 'text-gray-700 hover:text-emerald-600'
+              }`}
+            >
+              Leaderboards
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ${
+                isActive('/leaderboards') ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
+            </Link>
+            <Link 
+              to="/about" 
+              className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
+                isActive('/about') ? 'text-emerald-600' : 'text-gray-700 hover:text-emerald-600'
+              }`}
+            >
               About
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ${
+                isActive('/about') ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
+            </Link>
             
             {/* Become a Member - only show if not already a member */}
             {!isMember && (
@@ -64,10 +95,12 @@ const Header = () => {
             {/* User Menu */}
             <div className="relative">
               <div className="flex flex-col items-center">
-                <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
-                  <User className="h-5 w-5 mr-2" />
-                  <span className="hidden sm:inline">Ahmad M.</span>
-                </Button>
+                <Link to="/profile">
+                  <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
+                    <User className="h-5 w-5 mr-2" />
+                    <span className="hidden sm:inline">Ahmad M.</span>
+                  </Button>
+                </Link>
                 
                 {/* Subtle upgrade link under name */}
                 <div className="mt-1">
