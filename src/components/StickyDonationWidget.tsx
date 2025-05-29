@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -70,6 +71,15 @@ const StickyDonationWidget = () => {
   const donationAmount = Number(customAmount) || selectedAmount;
   const sadaqahCoins = donationAmount * 10; // 10 coins per currency unit
   const jannahPoints = donationAmount * 10; // 10 points per currency unit
+
+  // Dynamic impact message based on donation amount
+  const getImpactMessage = (amount: number) => {
+    if (amount >= 100) return "= JANNAH SUPERSTAR! 🌟";
+    if (amount >= 50) return "= MASSIVE IMPACT! 💫";
+    if (amount >= 25) return "= HUGE IMPACT! ⚡";
+    if (amount >= 10) return "= AMAZING IMPACT! ✨";
+    return "= GREAT IMPACT! 🎯";
+  };
 
   return (
     <div className={`${isSticky ? 'fixed' : 'relative'} top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg transition-all duration-300`}>
@@ -164,20 +174,12 @@ const StickyDonationWidget = () => {
               <div className="flex-1 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 animate-shimmer opacity-20"></div>
                 <div className="relative px-3 py-2 rounded-lg bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-gradient-to-r from-emerald-200 via-blue-200 to-purple-200 animate-subtle-pulse">
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1 flex-wrap">
                     <Sparkles className="h-3 w-3 text-emerald-600 animate-bounce" />
                     <span className="text-xs font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount}
+                      {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins + {jannahPoints} Jannah points {getImpactMessage(donationAmount)}
                     </span>
                     <Zap className="h-3 w-3 text-blue-600 animate-pulse" />
-                  </div>
-                  <div className="flex items-center space-x-1 mt-1">
-                    <span className="text-xs font-medium text-emerald-700">
-                      ✨ {sadaqahCoins} Sadaqah coins by YourJannah
-                    </span>
-                    <span className="text-xs font-medium text-purple-700">
-                      🏆 {jannahPoints} Jannah points for you!
-                    </span>
                   </div>
                 </div>
               </div>
@@ -198,6 +200,7 @@ const StickyDonationWidget = () => {
                 </div>
               </div>
             </div>
+
           </TabsContent>
         </Tabs>
       </div>
