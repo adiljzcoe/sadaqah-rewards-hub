@@ -14,13 +14,13 @@ const UserStats = () => {
   const totalDonations = 28;
 
   return (
-    <Card className="p-6 professional-card">
+    <Card className="p-6 game-card">
       <div className="text-center mb-6">
         <div className="relative inline-block mb-4">
-          <div className="w-20 h-20 vibrant-gradient rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg animate-colorful-glow">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg animate-level-up rank-badge first">
             {userLevel}
           </div>
-          <Badge className="absolute -top-1 -right-1 accent-gradient text-white text-xs shadow-md">
+          <Badge className="absolute -top-1 -right-1 gel-button bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
             <Award className="h-3 w-3 mr-1" />
             Rising Star
           </Badge>
@@ -31,66 +31,94 @@ const UserStats = () => {
 
       <div className="space-y-4">
         {/* Jannah Points */}
-        <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Star className="h-5 w-5 text-blue-600" />
-              <span className="font-semibold text-blue-800">Jannah Points</span>
-            </div>
-            <span className="text-xl font-bold vibrant-text-blue">{currentPoints.toLocaleString()}</span>
+        <div className="jannah-counter text-center relative">
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <Star className="h-6 w-6 text-white animate-points-pop" />
+            <span className="font-bold text-white text-lg">Jannah Points</span>
           </div>
+          <div className="text-3xl font-black text-white animate-points-pop">
+            {currentPoints.toLocaleString()}
+          </div>
+          <div className="text-sm text-white/80 mt-1">✨ Divine Rewards ✨</div>
         </div>
 
         {/* Level Progress */}
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
+        <div className="game-card p-4">
           <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
             <span>Level {userLevel}</span>
             <span>Level {userLevel + 1}</span>
           </div>
-          <Progress value={progress} className="h-3 bg-white shadow-inner" />
-          <p className="text-sm text-center text-gray-600 mt-2">
-            {nextLevelPoints - currentPoints} points to next level
+          <Progress 
+            value={progress} 
+            className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 shadow-inner rounded-full overflow-hidden"
+          />
+          <div className="h-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full relative overflow-hidden" 
+               style={{ width: `${progress}%`, marginTop: '-16px' }}>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+          </div>
+          <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
+            {nextLevelPoints - currentPoints} points to level up! 🚀
           </p>
         </div>
 
         {/* Sadaqah Coins */}
-        <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-lg p-4 border border-emerald-200">
+        <div className="game-card p-4 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Gift className="h-5 w-5 text-emerald-600" />
-              <span className="font-semibold text-emerald-800">Sadaqah Coins</span>
+            <div className="flex items-center space-x-3">
+              <div className="gold-coin w-12 h-12 flex items-center justify-center text-sm font-black">
+                {sadaqahCoins}
+              </div>
+              <div>
+                <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
+                <div className="text-sm text-amber-600">💰 Shop Currency</div>
+              </div>
             </div>
-            <span className="text-xl font-bold vibrant-text-emerald">{sadaqahCoins}</span>
+            <div className="text-right">
+              <div className="text-2xl font-black text-amber-700 animate-points-pop">
+                {sadaqahCoins}
+              </div>
+            </div>
           </div>
+          <div className="absolute -right-4 -top-4 w-16 h-16 gold-coin opacity-20"></div>
         </div>
 
         {/* Total Donations */}
-        <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200">
+        <div className="game-card p-4 bg-gradient-to-r from-pink-50 to-red-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Heart className="h-5 w-5 text-purple-600" />
-              <span className="font-semibold text-purple-800">Total Donations</span>
+              <Heart className="h-6 w-6 text-red-500 animate-subtle-pulse" />
+              <span className="font-bold text-red-800 text-lg">Total Donations</span>
             </div>
-            <span className="text-xl font-bold vibrant-text-purple">{totalDonations}</span>
+            <span className="text-2xl font-black text-red-600 animate-points-pop">{totalDonations}</span>
           </div>
         </div>
 
         {/* Weekly Goal */}
-        <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+        <div className="game-card p-4">
           <div className="flex items-center justify-between mb-3">
-            <span className="font-semibold text-gray-900">Weekly Goal</span>
-            <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full border">3/5 donations</span>
+            <span className="font-bold text-gray-900">Weekly Goal 🎯</span>
+            <span className="text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-blue-500 px-3 py-1 rounded-full gel-button">
+              3/5 donations
+            </span>
           </div>
-          <Progress value={60} className="h-2 bg-gray-100" />
+          <div className="relative">
+            <Progress value={60} className="h-3 bg-gray-200 shadow-inner rounded-full" />
+            <div className="h-3 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full animate-gentle-fade" 
+                 style={{ width: '60%', marginTop: '-12px' }}>
+            </div>
+          </div>
         </div>
 
         {/* Special Multiplier */}
-        <div className="bg-gradient-to-r from-amber-100 to-yellow-100 rounded-lg p-4 border border-amber-200 text-center shadow-sm">
-          <p className="font-semibold text-amber-800 mb-1">🌙 Special Time!</p>
-          <p className="text-sm font-medium text-amber-700">
-            <Zap className="inline h-4 w-4 mr-1" />
-            Double points until Maghrib!
-          </p>
+        <div className="game-card p-4 bg-gradient-to-r from-amber-100 to-yellow-100 text-center relative overflow-hidden">
+          <div className="relative z-10">
+            <p className="font-bold text-amber-800 mb-1 text-lg">🌙 Special Time!</p>
+            <p className="text-sm font-bold text-amber-700">
+              <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
+              Double points until Maghrib!
+            </p>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
         </div>
       </div>
     </Card>
