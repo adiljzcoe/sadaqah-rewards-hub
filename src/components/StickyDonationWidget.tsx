@@ -68,7 +68,7 @@ const StickyDonationWidget = () => {
 
   const currentCurrency = currencies.find(c => c.code === currency);
   const currentCause = emergencyCauses.find(c => c.id === selectedCause);
-  const donationAmount = customAmount || selectedAmount;
+  const donationAmount = Number(customAmount) || selectedAmount;
   const totalImpact = donationAmount * 2;
 
   return (
