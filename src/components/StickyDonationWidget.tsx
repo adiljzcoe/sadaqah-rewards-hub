@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertCircle, Heart } from 'lucide-react';
+import { AlertCircle, Heart, Sparkles, Zap } from 'lucide-react';
 
 const quickAmounts = [10, 25, 50, 100];
 const currencies = [
@@ -159,26 +158,41 @@ const StickyDonationWidget = () => {
               </div>
             </div>
 
-            {/* Impact message & Payment icons */}
+            {/* Exciting Impact message & Payment icons */}
             <div className="flex items-center justify-between mt-2">
-              {/* Total impact message */}
-              <div className={`flex-1 px-2 py-1 rounded text-xs border ${currentCause?.bgColor}`}>
-                <span className={`font-medium ${currentCause?.color}`}>
-                  Total impact: {currentCurrency?.symbol}{donationAmount} plus {sadaqahCoins} Sadaqah coins donated by YourJannah & get {jannahPoints} Jannah points
-                </span>
+              {/* Exciting Total impact message */}
+              <div className="flex-1 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 animate-shimmer opacity-20"></div>
+                <div className="relative px-3 py-2 rounded-lg bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-gradient-to-r from-emerald-200 via-blue-200 to-purple-200 animate-subtle-pulse">
+                  <div className="flex items-center space-x-1">
+                    <Sparkles className="h-3 w-3 text-emerald-600 animate-bounce" />
+                    <span className="text-xs font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount}
+                    </span>
+                    <Zap className="h-3 w-3 text-blue-600 animate-pulse" />
+                  </div>
+                  <div className="flex items-center space-x-1 mt-1">
+                    <span className="text-xs font-medium text-emerald-700">
+                      ✨ {sadaqahCoins} Sadaqah coins by YourJannah
+                    </span>
+                    <span className="text-xs font-medium text-purple-700">
+                      🏆 {jannahPoints} Jannah points for you!
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* Payment icons */}
               <div className="flex items-center space-x-2 ml-2">
                 <span className="text-xs text-gray-500">Pay:</span>
                 <div className="flex space-x-1">
-                  <div className="w-5 h-3 bg-blue-600 rounded text-white text-[7px] flex items-center justify-center font-bold">
+                  <div className="w-5 h-3 bg-blue-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
                     PP
                   </div>
-                  <div className="w-5 h-3 bg-blue-800 rounded text-white text-[7px] flex items-center justify-center font-bold">
+                  <div className="w-5 h-3 bg-blue-800 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
                     V
                   </div>
-                  <div className="w-5 h-3 bg-red-600 rounded text-white text-[7px] flex items-center justify-center font-bold">
+                  <div className="w-5 h-3 bg-red-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
                     MC
                   </div>
                 </div>
