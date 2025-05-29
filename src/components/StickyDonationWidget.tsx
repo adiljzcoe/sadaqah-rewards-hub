@@ -158,10 +158,10 @@ const StickyDonationWidget = () => {
 
             {/* Impact message & Payment icons */}
             <div className="flex items-center justify-between mt-2">
-              {/* Psychological impact message */}
+              {/* Psychological impact message with double donation */}
               <div className={`flex-1 px-2 py-1 rounded text-xs border ${currentCause?.bgColor}`}>
                 <span className={`font-medium ${currentCause?.color}`}>
-                  {currentCause?.impact}: {currentCurrency?.symbol}{customAmount || selectedAmount} can make a real difference
+                  {currentCause?.impact}: {currentCurrency?.symbol}{customAmount || selectedAmount} • Double Donation: businesses match your amount
                 </span>
               </div>
 
