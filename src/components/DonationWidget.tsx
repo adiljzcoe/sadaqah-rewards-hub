@@ -2,14 +2,13 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Heart, Zap, Gift, Calendar, ArrowRight } from 'lucide-react';
+import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle } from 'lucide-react';
 
 const donationTypes = [
-  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'vibrant-gradient', description: 'Obligatory charity' },
-  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'orange-gradient', description: 'Voluntary charity' },
-  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'accent-gradient', description: 'For Allah\'s sake' },
-  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'purple-gradient', description: 'Regular giving' }
+  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'bg-emerald-600', description: 'Obligatory charity' },
+  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'bg-blue-600', description: 'Voluntary charity' },
+  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'bg-purple-600', description: 'For Allah\'s sake' },
+  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'bg-gray-600', description: 'Regular giving' }
 ];
 
 const quickAmounts = [10, 25, 50, 100];
@@ -20,13 +19,21 @@ const DonationWidget = () => {
   const [selectedAmount, setSelectedAmount] = useState(25);
 
   return (
-    <Card className="p-6 game-card">
+    <Card className="p-6 bg-white border border-gray-200 shadow-lg">
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2 flex items-center bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-          <Heart className="h-5 w-5 mr-2 text-red-500 animate-subtle-pulse" />
-          Quick Donation
+        <h3 className="text-xl font-semibold mb-2 flex items-center text-gray-900">
+          <Heart className="h-5 w-5 mr-2 text-emerald-600" />
+          Make a Donation
         </h3>
-        <p className="text-sm text-gray-600 font-medium">Choose your intention and amount</p>
+        <p className="text-sm text-gray-600">Choose your intention and amount</p>
+      </div>
+
+      {/* Trust indicators */}
+      <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
+        <div className="flex items-center text-emerald-800">
+          <Shield className="h-4 w-4 mr-2" />
+          <span className="text-sm font-medium">100% Donation Policy - All funds go directly to those in need</span>
+        </div>
       </div>
 
       {/* Donation Type Selection */}
@@ -35,34 +42,22 @@ const DonationWidget = () => {
           <button
             key={type.id}
             onClick={() => setSelectedType(type.id)}
-            className={`p-4 rounded-xl transition-all duration-300 transform-gpu border-2 ${
+            className={`p-4 rounded-lg transition-all duration-200 border-2 ${
               selectedType === type.id 
-                ? 'border-emerald-300 bg-gradient-to-br from-emerald-50 to-blue-50 scale-105 shadow-lg' 
-                : 'border-gray-200 hover:border-emerald-300 bg-white hover:scale-102 hover:shadow-md'
+                ? 'border-emerald-500 bg-emerald-50' 
+                : 'border-gray-200 hover:border-emerald-300 bg-white'
             }`}
           >
-            <div className="text-2xl mb-2 animate-subtle-pulse">{type.icon}</div>
-            <div className="text-sm font-bold text-gray-800">{type.name}</div>
-            <div className="text-xs text-gray-600 font-medium">{type.description}</div>
+            <div className="text-lg mb-2">{type.icon}</div>
+            <div className="text-sm font-semibold text-gray-800">{type.name}</div>
+            <div className="text-xs text-gray-600">{type.description}</div>
           </button>
         ))}
       </div>
 
-      {/* Special Multiplier Alert */}
-      <div className="game-card p-4 mb-6 bg-gradient-to-r from-yellow-100 to-orange-100 border-2 border-yellow-300 animate-colorful-glow">
-        <div className="flex items-center">
-          <div className="gold-coin w-8 h-8 flex items-center justify-center mr-3">
-            <Zap className="h-4 w-4" />
-          </div>
-          <span className="text-sm font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-            🌙 Special Time: 2x Points until Maghrib!
-          </span>
-        </div>
-      </div>
-
       {/* Amount Selection */}
       <div className="mb-6">
-        <label className="text-sm font-bold text-gray-700 mb-3 block">Amount (£)</label>
+        <label className="text-sm font-semibold text-gray-700 mb-3 block">Amount (£)</label>
         <div className="grid grid-cols-2 gap-3 mb-4">
           {quickAmounts.map((amount) => (
             <button
@@ -71,10 +66,10 @@ const DonationWidget = () => {
                 setSelectedAmount(amount);
                 setCustomAmount('');
               }}
-              className={`professional-button text-white font-bold py-4 transition-all duration-300 ${
+              className={`py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
                 selectedAmount === amount && !customAmount
-                  ? 'vibrant-gradient scale-105 shadow-lg'
-                  : 'accent-gradient hover:scale-102'
+                  ? 'bg-emerald-600 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
               }`}
             >
               £{amount}
@@ -84,29 +79,30 @@ const DonationWidget = () => {
         
         <input
           type="number"
-          placeholder="Custom amount"
+          placeholder="Enter custom amount"
           value={customAmount}
           onChange={(e) => {
             setCustomAmount(e.target.value);
             setSelectedAmount(0);
           }}
-          className="w-full p-4 border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-emerald-500/30 focus:border-emerald-500 font-medium transition-all duration-300"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
         />
       </div>
 
       {/* Impact Preview */}
-      <div className="game-card p-4 mb-6 bg-gradient-to-r from-white to-emerald-50 border-2 border-emerald-200">
-        <div className="text-sm font-medium text-gray-600 mb-2">Your impact:</div>
-        <div className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-2">
-          {customAmount ? `£${customAmount}` : `£${selectedAmount}`} = 5 Hot Meals for Orphans 🍽️
+      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="text-sm font-medium text-blue-900 mb-2">Your impact:</div>
+        <div className="text-lg font-semibold text-blue-900 mb-2">
+          {customAmount ? `£${customAmount}` : `£${selectedAmount}`} can provide 5 hot meals for families in need
         </div>
-        <div className="jannah-counter text-sm px-3 py-1 inline-block">
-          Points earned: {(customAmount ? parseInt(customAmount) || 0 : selectedAmount) * 2} ⭐ (2x multiplier)
+        <div className="flex items-center text-sm text-blue-800">
+          <CheckCircle className="h-4 w-4 mr-1" />
+          <span>Verified impact with our charity partners</span>
         </div>
       </div>
 
       {/* Donate Button */}
-      <Button className="w-full professional-button vibrant-gradient text-white font-bold py-4 text-lg shadow-xl">
+      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 text-base shadow-md transition-colors duration-200">
         <Gift className="h-5 w-5 mr-2" />
         Donate {customAmount ? `£${customAmount}` : `£${selectedAmount}`}
         <ArrowRight className="h-5 w-5 ml-2" />
@@ -114,18 +110,25 @@ const DonationWidget = () => {
 
       {/* Monthly Subscription Option */}
       {selectedType === 'monthly' && (
-        <div className="mt-6 game-card p-4 bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300 animate-gentle-fade">
+        <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
           <div className="flex items-center mb-3">
-            <div className="purple-gradient w-8 h-8 rounded-lg flex items-center justify-center mr-3">
+            <div className="bg-gray-600 w-8 h-8 rounded-lg flex items-center justify-center mr-3">
               <Calendar className="h-4 w-4 text-white" />
             </div>
-            <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Monthly Subscription</span>
+            <span className="text-sm font-semibold text-gray-800">Monthly Subscription</span>
           </div>
-          <p className="text-xs font-medium text-purple-700">
-            Set up automatic monthly donations and never miss an opportunity to give.
+          <p className="text-xs text-gray-600">
+            Set up automatic monthly donations for consistent support.
           </p>
         </div>
       )}
+
+      {/* Security notice */}
+      <div className="mt-4 text-center">
+        <p className="text-xs text-gray-500">
+          Secured by SSL encryption • Charity Commission registered
+        </p>
+      </div>
     </Card>
   );
 };
