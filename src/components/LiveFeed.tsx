@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, MapPin, Clock, Users, Zap } from 'lucide-react';
+import { Heart, MapPin, Clock, Users, Zap, TrendingUp } from 'lucide-react';
+import GoldCoin3D from './GoldCoin3D';
 
 interface DonationActivity {
   id: string;
@@ -13,6 +14,7 @@ interface DonationActivity {
   location: string;
   timestamp: Date;
   emoji: string;
+  impact: string;
 }
 
 const LiveFeed = () => {
@@ -25,7 +27,8 @@ const LiveFeed = () => {
       cause: 'Hot Meals for Orphans',
       location: 'Gaza',
       timestamp: new Date(Date.now() - 30000),
-      emoji: '🍽️'
+      emoji: '🍽️',
+      impact: '10 meals provided'
     },
     {
       id: '2',
@@ -35,7 +38,8 @@ const LiveFeed = () => {
       cause: 'Water Well Project',
       location: 'Bangladesh',
       timestamp: new Date(Date.now() - 60000),
-      emoji: '💧'
+      emoji: '💧',
+      impact: 'Clean water for 50 families'
     },
     {
       id: '3',
@@ -45,7 +49,8 @@ const LiveFeed = () => {
       cause: 'Emergency Relief',
       location: 'Syria',
       timestamp: new Date(Date.now() - 90000),
-      emoji: '🏥'
+      emoji: '🏥',
+      impact: 'Medical aid for 5 children'
     },
     {
       id: '4',
@@ -55,7 +60,8 @@ const LiveFeed = () => {
       cause: 'Orphan Education',
       location: 'Palestine',
       timestamp: new Date(Date.now() - 120000),
-      emoji: '📚'
+      emoji: '📚',
+      impact: 'School supplies for 40 students'
     }
   ]);
 
@@ -69,70 +75,123 @@ const LiveFeed = () => {
   };
 
   return (
-    <Card className="p-6 game-card">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold flex items-center">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center mr-3 shadow-lg">
-            <Heart className="h-5 w-5 text-white animate-subtle-pulse" />
+    <Card className="p-0 overflow-hidden bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30 border-2 border-white/50 shadow-2xl backdrop-blur-sm">
+      {/* Premium Header */}
+      <div className="relative p-6 bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="relative w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mr-4 shadow-lg border border-white/30">
+              <Heart className="h-6 w-6 text-white animate-subtle-pulse" />
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse border-2 border-white"></div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">Live Donation Feed</h3>
+              <p className="text-white/90 text-sm font-medium">Real-time impact happening now</p>
+            </div>
           </div>
-          <span className="bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
-            Live Donation Feed
-          </span>
-        </h3>
-        <Badge className="gel-button bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-4 py-2">
-          <Users className="h-4 w-4 mr-2" />
-          1,247 active
-        </Badge>
+          <Badge className="bg-white/20 backdrop-blur-sm text-white font-bold px-4 py-2 border border-white/30 shadow-lg hover:bg-white/30 transition-all duration-300">
+            <Users className="h-4 w-4 mr-2" />
+            1,247 active
+          </Badge>
+        </div>
       </div>
 
-      <div className="space-y-4 max-h-80 overflow-y-auto">
-        {activities.map((activity, index) => (
-          <div 
-            key={activity.id} 
-            className="leaderboard-item animate-gentle-fade"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-400 to-yellow-500 flex items-center justify-center text-2xl shadow-lg animate-subtle-pulse">
-                {activity.emoji}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-2 mb-2">
-                  <span className="font-bold text-gray-800">{activity.donor}</span>
-                  <span className="text-sm text-gray-600 font-medium">donated</span>
-                  <div className="jannah-counter text-lg px-3 py-1">
-                    {activity.currency}{activity.amount}
+      {/* Activities Feed */}
+      <div className="p-6">
+        <div className="space-y-4 max-h-80 overflow-y-auto">
+          {activities.map((activity, index) => (
+            <div 
+              key={activity.id} 
+              className="relative p-4 rounded-xl bg-gradient-to-r from-white via-slate-50/80 to-white border-2 border-slate-200/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group overflow-hidden"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              {/* Subtle shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              
+              <div className="relative z-10 flex items-center space-x-4">
+                {/* Premium emoji container */}
+                <div className="relative">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-400 via-yellow-500 to-amber-500 flex items-center justify-center text-2xl shadow-lg border-2 border-white/50 group-hover:scale-110 transition-transform duration-300">
+                    {activity.emoji}
+                  </div>
+                  <div className="absolute -bottom-1 -right-1">
+                    <GoldCoin3D size={20}>
+                      <Zap className="h-2 w-2" />
+                    </GoldCoin3D>
                   </div>
                 </div>
-                <div className="text-sm font-medium text-gray-700 mb-1">
-                  {activity.cause}
+
+                <div className="flex-1 min-w-0">
+                  {/* Donor and amount */}
+                  <div className="flex items-center space-x-3 mb-2">
+                    <span className="font-bold text-gray-800 text-lg">{activity.donor}</span>
+                    <span className="text-sm text-gray-600 font-medium">donated</span>
+                    <div className="relative px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 via-blue-600 to-purple-600 text-white font-bold text-lg shadow-lg">
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                      <span className="relative z-10">{activity.currency}{activity.amount}</span>
+                    </div>
+                  </div>
+
+                  {/* Cause */}
+                  <div className="text-base font-semibold text-gray-700 mb-1">
+                    {activity.cause}
+                  </div>
+
+                  {/* Impact */}
+                  <div className="flex items-center text-sm font-medium text-emerald-600 mb-2">
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    {activity.impact}
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center text-xs font-semibold text-gray-500">
+                    <MapPin className="h-3 w-3 mr-1 text-emerald-500" />
+                    {activity.location}
+                  </div>
                 </div>
-                <div className="flex items-center text-xs font-semibold text-gray-500">
-                  <MapPin className="h-3 w-3 mr-1 text-emerald-500" />
-                  {activity.location}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-xs text-gray-400 flex items-center mb-1">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {formatTimeAgo(activity.timestamp)}
-                </div>
-                <div className="gold-coin w-8 h-8 flex items-center justify-center text-xs">
-                  <Zap className="h-3 w-3" />
+
+                {/* Time and premium badge */}
+                <div className="text-center">
+                  <div className="text-xs text-gray-400 flex items-center mb-2 justify-center">
+                    <Clock className="h-3 w-3 mr-1" />
+                    {formatTimeAgo(activity.timestamp)}
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center shadow-lg border-2 border-white/50 group-hover:scale-110 transition-transform duration-300">
+                    <Zap className="h-3 w-3 text-white" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 game-card p-4 bg-gradient-to-r from-emerald-100 to-green-100 rounded-xl text-center relative overflow-hidden">
-        <div className="relative z-10">
-          <p className="text-sm font-bold text-emerald-800">
-            💚 Together we've raised <span className="jannah-counter text-lg px-3 py-1 mx-1">£50,000</span> today
-          </p>
+          ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-200/50 to-transparent animate-shimmer"></div>
+
+        {/* Premium Summary Card */}
+        <div className="mt-6 relative p-6 rounded-xl bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 text-center overflow-hidden shadow-xl">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+          <div className="absolute top-0 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center justify-center mb-4">
+              <Heart className="h-6 w-6 text-white mr-2 animate-subtle-pulse" />
+              <span className="text-xl font-bold text-white">Community Impact Today</span>
+            </div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
+              <p className="text-lg font-bold text-white">
+                Together we've raised{' '}
+                <span className="inline-block px-4 py-2 bg-white/30 backdrop-blur-sm rounded-lg text-2xl font-extrabold mx-2 border border-white/20 shadow-lg">
+                  £50,000
+                </span>
+                and helped{' '}
+                <span className="inline-block px-3 py-1 bg-yellow-400/80 text-yellow-900 rounded-lg font-extrabold mx-1">
+                  2,450 people
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </Card>
   );
