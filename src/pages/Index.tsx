@@ -20,57 +20,141 @@ const Index = () => {
         <div className="absolute top-1/4 right-20 w-20 h-20 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg rotate-45 animate-float"></div>
         <div className="absolute bottom-1/4 left-1/3 w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-wiggle"></div>
         <div className="absolute top-1/2 right-1/4 w-24 h-24 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg animate-rainbow"></div>
+        
+        {/* Additional battle royale elements */}
+        <div className="absolute top-20 right-1/3 w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 transform rotate-12 animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-8 h-8 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full animate-bounce"></div>
+        <div className="absolute top-1/3 left-1/4 w-6 h-6 bg-gradient-to-r from-green-300 to-blue-400 animate-spin"></div>
       </div>
       
       <Header />
       
-      {/* Hero Section with Battle Royale Style */}
-      <section className="container mx-auto px-4 py-8 relative z-10">
-        <div className="text-center mb-8">
-          <h2 className="text-5xl font-black bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 animate-glow">
-            🏆 CHARITY BATTLE ROYALE 🏆
-          </h2>
-          <p className="text-xl text-cyan-100 mb-6 max-w-3xl mx-auto font-bold">
-            Drop in, donate, and claim your 
-            <span className="text-pink-400 font-black animate-sparkle"> VICTORY ROYALE</span> in giving! 
-            Earn <span className="text-yellow-400 font-black">V-Bucks of Virtue</span> and 
-            <span className="text-purple-400 font-black"> Legendary Loot</span>
-          </p>
-          <div className="flex justify-center space-x-4 mb-6">
-            <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-black shadow-2xl border-2 border-pink-300 animate-glow">
-              🔥 STORM CLOSING: 2X POINTS
+      {/* Battle Royale Main Interface - More Game-Like Layout */}
+      <section className="container mx-auto px-4 py-4 relative z-10">
+        {/* Storm Warning Banner */}
+        <div className="mb-6 bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 rounded-2xl p-4 text-center shadow-2xl border-4 border-red-400 animate-pulse">
+          <div className="flex items-center justify-center space-x-4 text-white">
+            <div className="text-2xl animate-bounce">⚠️</div>
+            <div>
+              <div className="text-xl font-black">STORM CLOSING IN!</div>
+              <div className="text-lg font-bold">Double XP Active - Donate Now for Maximum Points!</div>
             </div>
-            <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl text-lg font-black shadow-2xl border-2 border-cyan-300 animate-bounce-in">
-              ⚡ LEGENDARY DROP ACTIVE
-            </div>
-            <div className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-6 py-3 rounded-xl text-lg font-black shadow-2xl border-2 border-yellow-300 animate-rainbow">
-              🎯 BATTLE PASS SEASON 1
-            </div>
+            <div className="text-3xl font-black bg-black/30 px-4 py-2 rounded-xl">05:42</div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Battle Arena */}
-          <div className="lg:col-span-2 space-y-6">
+        {/* Main Battle Interface Grid */}
+        <div className="grid lg:grid-cols-4 gap-6 mb-8">
+          {/* Battle Arena - Takes up more space like game lobby */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* Battle Stats Overlay */}
+            <div className="bg-black/60 rounded-2xl p-4 border-2 border-cyan-400 backdrop-blur-sm">
+              <div className="grid grid-cols-4 gap-4 text-center">
+                <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl p-3 border-2 border-green-300">
+                  <div className="text-2xl font-black text-white">147</div>
+                  <div className="text-sm font-bold text-green-100">PLAYERS ALIVE</div>
+                </div>
+                <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl p-3 border-2 border-blue-300">
+                  <div className="text-2xl font-black text-white">28</div>
+                  <div className="text-sm font-bold text-blue-100">SQUADS LEFT</div>
+                </div>
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl p-3 border-2 border-purple-300">
+                  <div className="text-2xl font-black text-white">£52K</div>
+                  <div className="text-sm font-bold text-purple-100">LOOT POOL</div>
+                </div>
+                <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-xl p-3 border-2 border-orange-300">
+                  <div className="text-2xl font-black text-white">ZONE 3</div>
+                  <div className="text-sm font-bold text-orange-100">CLOSING</div>
+                </div>
+              </div>
+            </div>
+            
             <div className="transform hover:scale-105 transition-all duration-300">
               <LiveVideo />
             </div>
-            <div className="transform hover:scale-105 transition-all duration-300">
+            
+            {/* Mini Map Style Live Feed */}
+            <div className="bg-black/80 rounded-2xl p-4 border-2 border-yellow-400">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xl font-black text-yellow-300">🗺️ BATTLE MAP</h3>
+                <div className="text-lg font-bold text-white bg-red-600 px-3 py-1 rounded-lg animate-pulse">
+                  STORM MOVING
+                </div>
+              </div>
               <LiveFeed />
             </div>
           </div>
 
-          {/* Player Stats & Leaderboard */}
-          <div className="space-y-6">
+          {/* Right Sidebar - Game HUD Style */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* Player Profile Card - Top Right like Fortnite */}
             <div className="transform hover:scale-105 transition-all duration-300">
               <UserStats />
             </div>
-            <div className="transform hover:scale-105 transition-all duration-300">
-              <DonationWidget />
+            
+            {/* Quick Actions - Fortnite Style Button Layout */}
+            <div className="bg-gradient-to-br from-purple-900/90 to-blue-900/90 border-4 border-cyan-400 rounded-2xl p-6 shadow-2xl backdrop-blur-sm">
+              <h3 className="text-2xl font-black text-cyan-100 mb-4 text-center">⚡ QUICK ACTIONS ⚡</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <button className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-black py-4 px-6 rounded-xl text-lg shadow-xl border-4 border-green-300 hover:scale-110 transition-all duration-300 transform">
+                  💚 DONATE £10
+                </button>
+                <button className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-black py-4 px-6 rounded-xl text-lg shadow-xl border-4 border-blue-300 hover:scale-110 transition-all duration-300 transform">
+                  💧 WATER £25
+                </button>
+                <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-4 px-6 rounded-xl text-lg shadow-xl border-4 border-purple-300 hover:scale-110 transition-all duration-300 transform">
+                  📚 EDUCATION £50
+                </button>
+                <button className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-black py-4 px-6 rounded-xl text-lg shadow-xl border-4 border-orange-300 hover:scale-110 transition-all duration-300 transform">
+                  🏥 MEDICAL £100
+                </button>
+              </div>
             </div>
+            
+            {/* Leaderboard as Battle Royale Rankings */}
             <div className="transform hover:scale-105 transition-all duration-300">
               <Leaderboard />
             </div>
+          </div>
+        </div>
+
+        {/* Battle Pass Progress - Bottom like Fortnite */}
+        <div className="bg-gradient-to-r from-purple-900/95 to-blue-900/95 rounded-2xl p-6 border-4 border-cyan-400 shadow-2xl backdrop-blur-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl font-black border-4 border-yellow-300 shadow-xl">
+                12
+              </div>
+              <div>
+                <h3 className="text-2xl font-black text-cyan-100">CHARITY BATTLE PASS</h3>
+                <p className="text-lg font-bold text-cyan-300">Season 1: Hearts of Hope</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-3xl font-black text-yellow-300">368/500 XP</div>
+              <div className="text-lg font-bold text-yellow-100">TO NEXT TIER</div>
+            </div>
+          </div>
+          
+          {/* Battle Pass Tiers Preview */}
+          <div className="grid grid-cols-5 gap-4">
+            {[10, 11, 12, 13, 14].map((tier, index) => (
+              <div key={tier} className={`relative ${index === 2 ? 'scale-110' : ''}`}>
+                <div className={`w-full h-24 rounded-xl border-4 ${
+                  index < 2 ? 'bg-gradient-to-r from-green-500 to-emerald-500 border-green-300' :
+                  index === 2 ? 'bg-gradient-to-r from-yellow-500 to-orange-500 border-yellow-300 animate-glow' :
+                  'bg-gradient-to-r from-gray-600 to-gray-700 border-gray-400'
+                } flex items-center justify-center text-white font-black text-lg shadow-xl`}>
+                  {index < 2 ? '✓' : index === 2 ? tier : '🔒'}
+                </div>
+                <div className="text-center mt-2">
+                  <div className="text-sm font-bold text-cyan-200">TIER {tier}</div>
+                  {index === 2 && (
+                    <div className="text-xs font-black text-yellow-300 animate-pulse">CURRENT</div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -82,70 +166,6 @@ const Index = () => {
       <section className="bg-gradient-to-r from-purple-900/90 to-blue-900/90 py-16 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <CharityPartners />
-        </div>
-      </section>
-
-      {/* Gaming Features Section */}
-      <section className="container mx-auto px-4 py-16 relative z-10">
-        <div className="text-center mb-12">
-          <h3 className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-4">
-            🎮 EPIC GAMING FEATURES 🎮
-          </h3>
-          <p className="text-xl text-cyan-100 max-w-3xl mx-auto font-bold">
-            Level up your charity game with these 
-            <span className="text-pink-400 font-black"> LEGENDARY </span>
-            features that make giving feel like victory!
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="text-center p-8 bg-gradient-to-br from-pink-500/20 to-purple-600/20 rounded-2xl border-2 border-pink-400 backdrop-blur-sm transform hover:scale-110 transition-all duration-300 hover:rotate-2">
-            <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-2xl animate-bounce-in border-2 border-pink-300">
-              🏆
-            </div>
-            <h4 className="font-black text-2xl mb-4 text-cyan-100">BATTLE ROYALE GIVING</h4>
-            <p className="text-pink-200 font-bold">Compete in charity battles, earn Victory Royales, and unlock legendary rewards!</p>
-          </div>
-          
-          <div className="text-center p-8 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-2xl border-2 border-cyan-400 backdrop-blur-sm transform hover:scale-110 transition-all duration-300 hover:-rotate-2">
-            <div className="w-20 h-20 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-2xl animate-float border-2 border-cyan-300">
-              🎯
-            </div>
-            <h4 className="font-black text-2xl mb-4 text-cyan-100">SQUAD LEADERBOARDS</h4>
-            <p className="text-cyan-200 font-bold">Team up with your city and mosque squads to dominate the charity arena!</p>
-          </div>
-          
-          <div className="text-center p-8 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 rounded-2xl border-2 border-yellow-400 backdrop-blur-sm transform hover:scale-110 transition-all duration-300 hover:rotate-2">
-            <div className="w-20 h-20 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-2xl animate-wiggle border-2 border-yellow-300">
-              🎪
-            </div>
-            <h4 className="font-black text-2xl mb-4 text-cyan-100">LIVE CHARITY SHOWS</h4>
-            <p className="text-yellow-200 font-bold">Watch epic charity events unfold in real-time and drop your donations!</p>
-          </div>
-        </div>
-
-        {/* Epic Stats Battle Card */}
-        <div className="mt-16 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 rounded-2xl p-8 text-center shadow-2xl border-4 border-white/30 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
-          <h4 className="text-3xl font-black text-white mb-6 relative z-10">⚡ GLOBAL BATTLE STATS ⚡</h4>
-          <div className="grid md:grid-cols-4 gap-6 relative z-10">
-            <div className="bg-black/30 rounded-xl p-6 backdrop-blur-sm border-2 border-pink-400 transform hover:scale-105 transition-all">
-              <div className="text-4xl font-black text-pink-300 animate-number-pop">1,247</div>
-              <div className="text-pink-100 font-bold text-lg">ACTIVE WARRIORS</div>
-            </div>
-            <div className="bg-black/30 rounded-xl p-6 backdrop-blur-sm border-2 border-cyan-400 transform hover:scale-105 transition-all">
-              <div className="text-4xl font-black text-cyan-300 animate-number-pop">£50K</div>
-              <div className="text-cyan-100 font-bold text-lg">LOOT COLLECTED</div>
-            </div>
-            <div className="bg-black/30 rounded-xl p-6 backdrop-blur-sm border-2 border-yellow-400 transform hover:scale-105 transition-all">
-              <div className="text-4xl font-black text-yellow-300 animate-number-pop">28</div>
-              <div className="text-yellow-100 font-bold text-lg">BATTLE ZONES</div>
-            </div>
-            <div className="bg-black/30 rounded-xl p-6 backdrop-blur-sm border-2 border-green-400 transform hover:scale-105 transition-all">
-              <div className="text-4xl font-black text-green-300 animate-number-pop">95%</div>
-              <div className="text-green-100 font-bold text-lg">VICTORY RATE</div>
-            </div>
-          </div>
         </div>
       </section>
 
