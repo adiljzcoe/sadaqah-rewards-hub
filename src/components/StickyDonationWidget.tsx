@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -177,7 +176,7 @@ const StickyDonationWidget = () => {
                   <div className="flex items-center space-x-1 flex-wrap">
                     <Sparkles className="h-3 w-3 text-emerald-600 animate-bounce" />
                     <span className="text-xs font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins + {jannahPoints} Jannah points {getImpactMessage(donationAmount)}
+                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins + {jannahPoints} Jannah points {getImpactMessage(donationAmount)}
                     </span>
                     <Zap className="h-3 w-3 text-blue-600 animate-pulse" />
                   </div>
