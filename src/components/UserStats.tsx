@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +16,8 @@ const UserStats = () => {
   
   // Mock user membership status - set to false to show upgrade link
   const isMember = false;
+
+  console.log('UserStats isMember:', isMember); // Debug log
 
   return (
     <Card className="p-6 game-card">
@@ -37,14 +40,16 @@ const UserStats = () => {
             </Badge>
           )}
         </h3>
-        <p className="text-gray-600">Level {userLevel} {isMember ? 'VIP ' : ''}Donor</p>
+        <p className="text-gray-600 mb-3">Level {userLevel} {isMember ? 'VIP ' : ''}Donor</p>
         
-        {/* Upgrade link for non-members */}
+        {/* Upgrade link for non-members - made more prominent */}
         {!isMember && (
-          <button className="mt-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse">
-            <ArrowUp className="h-4 w-4 mr-1 inline" />
-            Upgrade to VIP for 2x Points!
-          </button>
+          <div className="mt-3 mb-2">
+            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse border-2 border-white">
+              <ArrowUp className="h-4 w-4 mr-2 inline" />
+              Upgrade to VIP for 2x Points!
+            </button>
+          </div>
         )}
       </div>
 
