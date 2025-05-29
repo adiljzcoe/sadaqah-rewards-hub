@@ -11,6 +11,7 @@ import UserStats from '@/components/UserStats';
 import FloatingDonationWidget from '@/components/FloatingDonationWidget';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
+import CharityFeedSection from '@/components/CharityFeedSection';
 
 const Index = () => {
   return (
@@ -67,6 +68,9 @@ const Index = () => {
 
       {/* Business Partners Section */}
       <BusinessSection />
+
+      {/* Charity Feed Section - NEW */}
+      <CharityFeedSection />
 
       {/* Charity Partners Section */}
       <section className="bg-gradient-to-r from-white to-blue-50/50 py-16">
