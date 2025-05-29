@@ -5,56 +5,52 @@ import { Star, Gift, User, Menu } from 'lucide-react';
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-white via-candy-pink-50 to-electric-blue-50 shadow-lg border-b-4 border-gradient-to-r from-candy-pink-300 to-electric-blue-300 sticky top-0 z-50 backdrop-blur-sm">
+    <header className="bg-lime-green-500 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-candy-pink-500 to-purple-magic-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg hover-scale">
+            <div className="w-12 h-12 bg-candy-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
               <Gift className="h-7 w-7" />
             </div>
             <div>
-              <h1 className="text-2xl font-black gradient-text">Donate Feels Great! 🎉</h1>
-              <p className="text-sm text-gray-600 font-semibold">Making giving feel AMAZING ✨</p>
+              <h1 className="text-2xl font-black text-white">Donate Feels Great! 🎉</h1>
+              <p className="text-sm text-white/90 font-semibold">Making giving feel AMAZING ✨</p>
             </div>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray-700 hover:text-candy-pink-600 font-bold text-lg transition-all duration-300 hover-scale relative group">
+            <a href="#" className="text-white hover:text-yellow-200 font-bold text-lg transition-colors duration-300">
               Home 🏠
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-candy-pink-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#" className="text-gray-700 hover:text-electric-blue-600 font-bold text-lg transition-all duration-300 hover-scale relative group">
+            <a href="#" className="text-white hover:text-yellow-200 font-bold text-lg transition-colors duration-300">
               Campaigns 🚀
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-electric-blue-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#" className="text-gray-700 hover:text-lime-green-600 font-bold text-lg transition-all duration-300 hover-scale relative group">
+            <a href="#" className="text-white hover:text-yellow-200 font-bold text-lg transition-colors duration-300">
               Partners 🤝
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-green-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
-            <a href="#" className="text-gray-700 hover:text-vibrant-orange-600 font-bold text-lg transition-all duration-300 hover-scale relative group">
+            <a href="#" className="text-white hover:text-yellow-200 font-bold text-lg transition-colors duration-300">
               About ℹ️
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-vibrant-orange-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
           </nav>
 
           {/* User Section */}
           <div className="flex items-center space-x-4">
             {/* Points Display */}
-            <div className="hidden sm:flex items-center space-x-2 bg-gradient-to-r from-vibrant-orange-400 to-lime-green-400 px-4 py-2 rounded-2xl shadow-lg hover-scale animate-gentle-pulse">
+            <div className="hidden sm:flex items-center space-x-2 bg-vibrant-orange-500 px-4 py-2 rounded-2xl shadow-lg">
               <Star className="h-5 w-5 text-white" />
               <span className="text-lg font-black text-white">5,632 pts ⭐</span>
             </div>
 
             {/* User Menu */}
-            <Button className="candy-button border-0 shadow-lg hover-scale">
+            <Button className="bg-electric-blue-500 hover:bg-electric-blue-600 text-white border-0 shadow-lg font-bold">
               <User className="h-5 w-5 mr-2" />
               <span className="hidden sm:inline font-bold">Ahmad M. 👤</span>
             </Button>
 
             {/* Mobile Menu */}
-            <Button className="md:hidden bg-gradient-to-r from-purple-magic-500 to-candy-pink-500 text-white border-0 shadow-lg hover-scale">
+            <Button className="md:hidden bg-purple-magic-500 hover:bg-purple-magic-600 text-white border-0 shadow-lg">
               <Menu className="h-6 w-6" />
             </Button>
           </div>
