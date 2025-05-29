@@ -431,50 +431,12 @@
   100% { transform: scale(1); }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(10deg); }
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(5deg); }
-  75% { transform: rotate(-5deg); }
-}
-
-@keyframes rainbow {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
-
-@keyframes sparkle {
-  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
-}
-
-@keyframes number-pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4); }
-}
-
 .animate-gentle-fade { animation: gentle-fade 0.5s ease-out; }
 .animate-subtle-pulse { animation: subtle-pulse 3s ease-in-out infinite; }
 .animate-colorful-glow { animation: colorful-glow 2s ease-in-out infinite; }
 .animate-bounce-in { animation: bounce-in 0.6s ease-out; }
 .animate-level-up { animation: level-up 0.8s ease-out; }
 .animate-points-pop { animation: points-pop 0.4s ease-out; }
-.animate-float { animation: float 3s ease-in-out infinite; }
-.animate-wiggle { animation: wiggle 2s ease-in-out infinite; }
-.animate-rainbow { animation: rainbow 3s linear infinite; }
-.animate-sparkle { animation: sparkle 2s ease-in-out infinite; }
-.animate-number-pop { animation: number-pop 2s ease-in-out infinite; }
-.animate-glow { animation: glow 2s ease-in-out infinite; }
 
 @keyframes shimmer {
   0% { transform: translateX(-100%); }

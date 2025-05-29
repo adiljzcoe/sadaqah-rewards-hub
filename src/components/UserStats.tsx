@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Gift, Users, Heart, Award, Zap, Trophy, Target } from 'lucide-react';
+import { Star, Gift, Users, Heart, Award, Zap } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 
 const UserStats = () => {
@@ -11,123 +10,117 @@ const UserStats = () => {
   const currentPoints = 5632;
   const nextLevelPoints = 6000;
   const progress = (currentPoints / nextLevelPoints) * 100;
-  const vBucks = 142;
+  const sadaqahCoins = 142;
   const totalDonations = 28;
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-purple-900/90 to-blue-900/90 border-4 border-cyan-400 shadow-2xl backdrop-blur-sm">
+    <Card className="p-6 game-card">
       <div className="text-center mb-6">
         <div className="relative inline-block mb-4">
-          <div className="w-24 h-24 rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-2xl bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 border-4 border-yellow-300 animate-rainbow">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg animate-level-up rank-badge first">
             {userLevel}
           </div>
-          <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-sm shadow-xl border-2 border-pink-300 animate-bounce-in px-3 py-1">
-            <Award className="h-4 w-4 mr-1" />
-            LEGENDARY
+          <Badge className="absolute -top-1 -right-1 gel-button bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
+            <Award className="h-3 w-3 mr-1" />
+            Rising Star
           </Badge>
         </div>
-        <h3 className="font-black text-2xl text-cyan-100">AHMAD_M</h3>
-        <p className="text-cyan-300 font-bold text-lg">🏆 ELITE WARRIOR 🏆</p>
+        <h3 className="font-bold text-xl text-gray-900">Ahmad M.</h3>
+        <p className="text-gray-600">Level {userLevel} Donor</p>
       </div>
 
-      <div className="space-y-6">
-        {/* V-Bucks of Virtue */}
-        <div className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-2xl p-4 text-center relative overflow-hidden border-4 border-yellow-300 shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
-          <div className="flex items-center justify-center space-x-2 mb-2 relative z-10">
-            <Star className="h-8 w-8 text-white animate-sparkle" />
-            <span className="font-black text-white text-2xl">V-BUCKS OF VIRTUE</span>
+      <div className="space-y-4">
+        {/* Jannah Points */}
+        <div className="jannah-counter text-center relative">
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <Star className="h-6 w-6 text-white animate-points-pop" />
+            <span className="font-bold text-white text-lg">Jannah Points</span>
           </div>
-          <div className="text-5xl font-black text-white animate-number-pop relative z-10">
+          <div className="text-3xl font-black text-white animate-points-pop">
             {currentPoints.toLocaleString()}
           </div>
-          <div className="text-lg text-yellow-100 mt-1 font-bold relative z-10">⚡ DIVINE POWER ⚡</div>
+          <div className="text-sm text-white/80 mt-1">✨ Divine Rewards ✨</div>
         </div>
 
-        {/* Battle Pass Progress */}
-        <div className="bg-gradient-to-br from-purple-600/40 to-blue-600/40 rounded-2xl p-6 border-4 border-purple-400 backdrop-blur-sm">
-          <div className="flex justify-between text-lg font-black text-cyan-100 mb-4">
-            <span>🎯 TIER {userLevel}</span>
-            <span>🏆 TIER {userLevel + 1}</span>
+        {/* Level Progress */}
+        <div className="game-card p-4">
+          <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+            <span>Level {userLevel}</span>
+            <span>Level {userLevel + 1}</span>
           </div>
-          <div className="relative">
-            <Progress 
-              value={progress} 
-              className="h-6 bg-gradient-to-r from-gray-800 to-gray-900 shadow-inner rounded-full overflow-hidden border-2 border-cyan-400"
-            />
-            <div className="h-6 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-full relative overflow-hidden border-2 border-white/30" 
-                 style={{ width: `${progress}%`, marginTop: '-28px' }}>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-            </div>
+          <Progress 
+            value={progress} 
+            className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 shadow-inner rounded-full overflow-hidden"
+          />
+          <div className="h-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full relative overflow-hidden" 
+               style={{ width: `${progress}%`, marginTop: '-16px' }}>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
           </div>
-          <p className="text-lg text-center text-cyan-200 mt-4 font-black">
-            {nextLevelPoints - currentPoints} XP TO LEGENDARY TIER! 🚀
+          <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
+            {nextLevelPoints - currentPoints} points to level up! 🚀
           </p>
         </div>
 
-        {/* Legendary Loot (Gold Coins) */}
-        <div className="bg-gradient-to-br from-yellow-600/40 to-orange-600/40 rounded-2xl p-6 relative overflow-hidden border-4 border-yellow-400 backdrop-blur-sm">
+        {/* Sadaqah Coins */}
+        <div className="game-card p-4 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <GoldCoin3D size={60} className="animate-rainbow">
-                {vBucks}
+            <div className="flex items-center space-x-3">
+              <GoldCoin3D size={48} className="animate-subtle-pulse">
+                {sadaqahCoins}
               </GoldCoin3D>
               <div>
-                <span className="font-black text-yellow-100 text-2xl">LEGENDARY LOOT</span>
-                <div className="text-lg text-yellow-300 font-bold">💰 Epic Currency</div>
+                <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
+                <div className="text-sm text-amber-600">💰 Shop Currency</div>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-4xl font-black text-yellow-200 animate-number-pop">
-                {vBucks}
+              <div className="text-2xl font-black text-amber-700 animate-points-pop">
+                {sadaqahCoins}
               </div>
             </div>
           </div>
-          <div className="absolute -right-6 -top-6 w-20 h-20 opacity-30">
-            <GoldCoin3D size={80} />
+          <div className="absolute -right-4 -top-4 w-16 h-16 opacity-20">
+            <GoldCoin3D size={64} />
           </div>
         </div>
 
-        {/* Victory Royales */}
-        <div className="bg-gradient-to-br from-pink-600/40 to-red-600/40 rounded-2xl p-6 border-4 border-pink-400 backdrop-blur-sm">
+        {/* Total Donations */}
+        <div className="game-card p-4 bg-gradient-to-r from-pink-50 to-red-50">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-2xl flex items-center justify-center border-4 border-pink-300 shadow-xl">
-                <Heart className="h-8 w-8 text-white animate-sparkle" />
-              </div>
-              <span className="font-black text-pink-100 text-2xl">VICTORY ROYALES</span>
+            <div className="flex items-center space-x-2">
+              <Heart className="h-6 w-6 text-red-500 animate-subtle-pulse" />
+              <span className="font-bold text-red-800 text-lg">Total Donations</span>
             </div>
-            <span className="text-4xl font-black text-pink-200 animate-number-pop">{totalDonations}</span>
+            <span className="text-2xl font-black text-red-600 animate-points-pop">{totalDonations}</span>
           </div>
         </div>
 
-        {/* Weekly Challenge */}
-        <div className="bg-gradient-to-br from-green-600/40 to-emerald-600/40 rounded-2xl p-6 border-4 border-green-400 backdrop-blur-sm">
-          <div className="flex items-center justify-between mb-4">
-            <span className="font-black text-green-100 text-xl">🎯 WEEKLY CHALLENGE</span>
-            <span className="text-lg font-black text-white bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-2 rounded-xl border-2 border-green-300 shadow-xl">
-              3/5 ELIMINATIONS
+        {/* Weekly Goal */}
+        <div className="game-card p-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="font-bold text-gray-900">Weekly Goal 🎯</span>
+            <span className="text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-blue-500 px-3 py-1 rounded-full gel-button">
+              3/5 donations
             </span>
           </div>
           <div className="relative">
-            <Progress value={60} className="h-4 bg-gray-800 shadow-inner rounded-full border-2 border-green-400" />
-            <div className="h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-glow border-2 border-white/30" 
-                 style={{ width: '60%', marginTop: '-18px' }}>
+            <Progress value={60} className="h-3 bg-gray-200 shadow-inner rounded-full" />
+            <div className="h-3 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full animate-gentle-fade" 
+                 style={{ width: '60%', marginTop: '-12px' }}>
             </div>
           </div>
         </div>
 
-        {/* Storm Timer */}
-        <div className="bg-gradient-to-br from-purple-800/60 to-pink-800/60 rounded-2xl p-6 text-center relative overflow-hidden border-4 border-purple-400 backdrop-blur-sm">
+        {/* Special Multiplier */}
+        <div className="game-card p-4 bg-gradient-to-r from-amber-100 to-yellow-100 text-center relative overflow-hidden">
           <div className="relative z-10">
-            <p className="font-black text-purple-200 mb-2 text-2xl">⚡ STORM WARNING! ⚡</p>
-            <p className="text-lg font-black text-purple-100">
-              <Zap className="inline h-6 w-6 mr-2 animate-sparkle" />
-              2X POINTS UNTIL STORM CLOSES!
+            <p className="font-bold text-amber-800 mb-1 text-lg">🌙 Special Time!</p>
+            <p className="text-sm font-bold text-amber-700">
+              <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
+              Double points until Maghrib!
             </p>
-            <div className="text-3xl font-black text-white mt-2 animate-number-pop">05:42</div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-300/20 to-transparent animate-shimmer"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
         </div>
       </div>
     </Card>
