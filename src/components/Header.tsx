@@ -1,12 +1,11 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, User, Menu, Crown } from 'lucide-react';
+import { Star, User, Menu, Crown, ArrowUp } from 'lucide-react';
 
 const Header = () => {
   // Mock user membership status - in real app this would come from auth/database
-  const isMember = true; // Set to true to show member badge
+  const isMember = false; // Changed to false to show upgrade link
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg">
@@ -114,12 +113,19 @@ const Header = () => {
                 <span className="hidden sm:inline">Ahmad M.</span>
               </Button>
               
-              {/* Member Badge */}
-              {isMember && (
+              {/* Member Badge or Upgrade Link */}
+              {isMember ? (
                 <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs animate-bounce">
                   <Crown className="h-3 w-3 mr-1" />
                   VIP
                 </Badge>
+              ) : (
+                <div className="absolute -top-2 -right-2">
+                  <button className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 animate-pulse border border-white">
+                    <ArrowUp className="h-3 w-3 mr-1 inline" />
+                    Upgrade
+                  </button>
+                </div>
               )}
             </div>
 
