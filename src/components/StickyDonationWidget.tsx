@@ -236,9 +236,15 @@ const StickyDonationWidget = () => {
                 />
               </div>
 
-              {/* Donate button */}
+              {/* Enhanced Donate button with glow and shake */}
               <div className="col-span-2">
-                <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
+                <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
+                  shadow-lg shadow-emerald-500/50 
+                  hover:shadow-xl hover:shadow-emerald-500/60
+                  animate-[glow_2s_ease-in-out_infinite_alternate,wiggle_3s_ease-in-out_infinite]
+                  ring-2 ring-emerald-400/30
+                  hover:ring-emerald-400/50`}
+                >
                   <Heart className="h-3 w-3 mr-1" />
                   {currentCurrency?.symbol}{donationAmount}
                   {isMember && (
