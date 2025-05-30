@@ -21,7 +21,7 @@ const CharityTicker = () => {
     <div className="bg-white border-b border-gray-200 py-3 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center text-sm text-gray-600 mb-2 font-medium">
-          Trusted by leading charities worldwide
+          Our fundraising is distributed to our chosen charities below
         </div>
         
         {/* Ticker container */}
