@@ -8,15 +8,35 @@ import { Users, UserPlus, Trophy, Flame, Crown, Target } from 'lucide-react';
 
 const FriendsWidget = () => {
   const [friends] = useState([
-    { name: 'Sarah K.', level: 15, streak: 12, points: 5890, avatar: 'SK', status: 'donated today', rank: 46 },
-    { name: 'Ahmed R.', level: 11, streak: 5, points: 4320, avatar: 'AR', status: '2 days ago', rank: 52 },
-    { name: 'Fatima M.', level: 18, streak: 25, points: 7650, avatar: 'FM', status: 'donated today', rank: 23 },
-    { name: 'Omar S.', level: 8, streak: 0, points: 2100, avatar: 'OS', status: '1 week ago', rank: 89 },
+    { name: 'Sarah K.', level: 15, streak: 12, tier: 'gold', avatar: 'SK', status: 'donated today', rank: 46 },
+    { name: 'Ahmed R.', level: 11, streak: 5, tier: 'silver', avatar: 'AR', status: '2 days ago', rank: 52 },
+    { name: 'Fatima M.', level: 18, streak: 25, tier: 'platinum', avatar: 'FM', status: 'donated today', rank: 23 },
+    { name: 'Omar S.', level: 8, streak: 0, tier: 'bronze', avatar: 'OS', status: '1 week ago', rank: 89 },
   ]);
 
   const userRank = 47;
   const friendsAhead = friends.filter(f => f.rank < userRank).length;
   const friendsBehind = friends.filter(f => f.rank > userRank).length;
+
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case 'platinum': return 'text-purple-600 bg-purple-100';
+      case 'gold': return 'text-yellow-600 bg-yellow-100';
+      case 'silver': return 'text-gray-600 bg-gray-100';
+      case 'bronze': return 'text-orange-600 bg-orange-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getTierIcon = (tier: string) => {
+    switch (tier) {
+      case 'platinum': return '💎';
+      case 'gold': return '🥇';
+      case 'silver': return '🥈';
+      case 'bronze': return '🥉';
+      default: return '⭐';
+    }
+  };
 
   return (
     <Card className="p-6 game-card">
@@ -82,14 +102,16 @@ const FriendsWidget = () => {
               </div>
             </div>
             <div className="text-right">
-              <div className="text-sm font-bold">{friend.points.toLocaleString()}</div>
+              <div className={`text-sm font-bold px-2 py-1 rounded-full ${getTierColor(friend.tier)}`}>
+                {getTierIcon(friend.tier)} {friend.tier}
+              </div>
               {friend.rank < userRank ? (
-                <div className="text-xs text-red-600 font-semibold">
-                  -{Math.abs(friend.points - 5632)} pts ahead
+                <div className="text-xs text-red-600 font-semibold mt-1">
+                  Ahead of you
                 </div>
               ) : (
-                <div className="text-xs text-green-600 font-semibold">
-                  +{Math.abs(5632 - friend.points)} pts behind
+                <div className="text-xs text-green-600 font-semibold mt-1">
+                  Behind you
                 </div>
               )}
             </div>
@@ -106,10 +128,10 @@ const FriendsWidget = () => {
         
         <div className="game-card p-3 bg-gradient-to-r from-yellow-100 to-orange-100">
           <p className="text-sm font-bold text-orange-800 mb-2">
-            🎁 Invite 3 friends and get 500 bonus points!
+            🎁 Invite 3 friends and get bonus rewards!
           </p>
           <div className="text-xs text-orange-700">
-            Friends who join also get 200 welcome points
+            Friends who join also get welcome bonuses
           </div>
         </div>
       </div>
