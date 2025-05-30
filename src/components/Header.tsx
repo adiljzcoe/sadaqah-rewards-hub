@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -35,7 +36,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png" 
               alt="Your Jannah Logo" 
-              className="h-12 w-auto"
+              className="w-[350px] h-auto object-contain"
             />
           </Link>
 
@@ -227,3 +228,4 @@ const Header = () => {
 };
 
 export default Header;
+
