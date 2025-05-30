@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,33 +43,53 @@ const DonationWidget = () => {
         </div>
       </div>
 
-      {/* Donation Type Selection */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      {/* Donation Type Selection - Enhanced */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
         {donationTypes.map((type) => (
           <button
             key={type.id}
             onClick={() => setSelectedType(type.id)}
-            className={`gel-button p-4 rounded-xl transition-all duration-300 border-3 relative overflow-hidden ${type.color} ${
+            className={`gel-button p-5 rounded-2xl transition-all duration-500 border-0 relative overflow-hidden group ${type.color} ${
               selectedType === type.id 
-                ? 'transform scale-105 shadow-xl' 
-                : 'transform scale-100 hover:scale-102'
+                ? 'transform scale-105 shadow-2xl ring-4 ring-white/30' 
+                : 'transform scale-100 hover:scale-102 shadow-lg'
             }`}
+            style={{
+              background: selectedType === type.id 
+                ? `linear-gradient(145deg, var(--tw-gradient-stops))`
+                : undefined
+            }}
           >
-            <div className="relative z-10">
-              <div className="text-lg mb-2">{type.icon}</div>
-              <div className="text-sm font-bold text-white">{type.name}</div>
-              <div className="text-xs text-white/90">{type.description}</div>
+            <div className="relative z-20">
+              <div className="text-2xl mb-3 drop-shadow-sm">{type.icon}</div>
+              <div className="text-base font-bold text-white drop-shadow-md mb-1">{type.name}</div>
+              <div className="text-xs text-white/95 font-medium">{type.description}</div>
             </div>
+            
+            {/* Shimmer effect for selected */}
             {selectedType === type.id && (
-              <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+              <div className="absolute inset-0 z-10 animate-shimmer bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
+            )}
+            
+            {/* Hover glow effect */}
+            <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-gradient-to-r from-white/20 via-white/40 to-white/20"></div>
+            
+            {/* Inner highlight */}
+            <div className="absolute top-2 left-3 w-8 h-4 bg-white/30 rounded-full blur-sm z-10"></div>
+            
+            {/* Selection indicator */}
+            {selectedType === type.id && (
+              <div className="absolute top-2 right-2 w-5 h-5 bg-white/90 rounded-full flex items-center justify-center z-20">
+                <CheckCircle className="h-3 w-3 text-emerald-600" />
+              </div>
             )}
           </button>
         ))}
       </div>
 
-      {/* Amount Selection */}
+      {/* Amount Selection - Enhanced */}
       <div className="mb-6">
-        <label className="text-sm font-semibold text-gray-700 mb-3 block">Amount (£)</label>
+        <label className="text-sm font-semibold text-gray-700 mb-4 block">Choose Amount (£)</label>
         <div className="grid grid-cols-2 gap-3 mb-4">
           {quickAmounts.map((amount) => (
             <button
@@ -79,27 +98,35 @@ const DonationWidget = () => {
                 setSelectedAmount(amount);
                 setCustomAmount('');
               }}
-              className={`py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+              className={`py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 relative overflow-hidden group ${
                 selectedAmount === amount && !customAmount
-                  ? 'bg-emerald-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
+                  ? 'bg-emerald-600 text-white shadow-lg transform scale-105 ring-2 ring-emerald-300'
+                  : 'bg-gradient-to-br from-gray-50 to-gray-100 text-gray-700 hover:from-emerald-50 hover:to-emerald-100 hover:text-emerald-700 border-2 border-gray-200 hover:border-emerald-300 shadow-sm hover:shadow-md transform hover:scale-102'
               }`}
             >
-              £{amount}
+              <span className="relative z-10">£{amount}</span>
+              {selectedAmount === amount && !customAmount && (
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-emerald-300/20 to-emerald-400/20 animate-shimmer"></div>
+              )}
             </button>
           ))}
         </div>
         
-        <input
-          type="number"
-          placeholder="Enter custom amount"
-          value={customAmount}
-          onChange={(e) => {
-            setCustomAmount(e.target.value);
-            setSelectedAmount(0);
-          }}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900"
-        />
+        <div className="relative">
+          <input
+            type="number"
+            placeholder="Enter custom amount"
+            value={customAmount}
+            onChange={(e) => {
+              setCustomAmount(e.target.value);
+              setSelectedAmount(0);
+            }}
+            className="w-full p-4 border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 text-gray-900 text-lg font-semibold transition-all duration-200 bg-gradient-to-br from-white to-gray-50"
+          />
+          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 font-semibold">
+            £
+          </div>
+        </div>
       </div>
 
       {/* Dedication Section */}
@@ -161,24 +188,30 @@ const DonationWidget = () => {
         )}
       </div>
 
-      {/* Impact Preview */}
-      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <div className="text-sm font-medium text-blue-900 mb-2">Your impact:</div>
-        <div className="text-lg font-semibold text-blue-900 mb-2">
+      {/* Impact Preview - Enhanced */}
+      <div className="mb-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl">
+        <div className="text-sm font-bold text-blue-900 mb-2 flex items-center">
+          <Gift className="h-4 w-4 mr-2" />
+          Your impact:
+        </div>
+        <div className="text-xl font-bold text-blue-900 mb-3">
           {customAmount ? `£${customAmount}` : `£${selectedAmount}`} can provide 5 hot meals for families in need
         </div>
-        <div className="flex items-center text-sm text-blue-800">
-          <CheckCircle className="h-4 w-4 mr-1" />
-          <span>Verified impact with our charity partners</span>
+        <div className="flex items-center text-sm text-blue-800 bg-white/50 p-2 rounded-lg">
+          <CheckCircle className="h-4 w-4 mr-2 text-emerald-600" />
+          <span className="font-medium">Verified impact with our charity partners</span>
         </div>
       </div>
 
-      {/* Donate Button */}
-      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 text-base shadow-md transition-colors duration-200">
-        <Gift className="h-5 w-5 mr-2" />
-        Donate {customAmount ? `£${customAmount}` : `£${selectedAmount}`}
-        {onBehalfOf && ` on behalf of ${onBehalfOf}`}
-        <ArrowRight className="h-5 w-5 ml-2" />
+      {/* Donate Button - Enhanced */}
+      <Button className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-xl border-0 relative overflow-hidden group">
+        <div className="relative z-10 flex items-center justify-center">
+          <Gift className="h-5 w-5 mr-3" />
+          Donate {customAmount ? `£${customAmount}` : `£${selectedAmount}`}
+          {onBehalfOf && ` on behalf of ${onBehalfOf}`}
+          <ArrowRight className="h-5 w-5 ml-3" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </Button>
 
       {/* Monthly Subscription Option */}
