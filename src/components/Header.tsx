@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -177,30 +178,49 @@ const Header = () => {
               )}
             </div>
 
-            {/* User Menu with Level and VIP combined */}
+            {/* User Menu with VIP Crown integrated as plaque */}
             <div className="relative">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center space-y-2">
                 <Link to="/profile">
-                  <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
-                    <User className="h-5 w-5 mr-2" />
-                    <span className="hidden sm:inline">Ahmad M.</span>
-                  </Button>
+                  {isMember ? (
+                    <Button className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50">
+                      <Crown className="h-4 w-4 mr-2 text-amber-800" />
+                      <User className="h-4 w-4 mr-2 text-amber-800" />
+                      <span className="hidden sm:inline text-amber-900">VIP Ahmad M.</span>
+                      {/* Plaque shine effect */}
+                      <div className="absolute top-2 left-3 w-6 h-3 bg-gradient-to-r from-transparent via-yellow-200/60 to-transparent rounded-full animate-shimmer"></div>
+                    </Button>
+                  ) : (
+                    <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
+                      <User className="h-5 w-5 mr-2" />
+                      <span className="hidden sm:inline">Ahmad M.</span>
+                    </Button>
+                  )}
                 </Link>
                 
-                {/* Combined VIP Badge with Level and XP in one line */}
+                {/* Life Bar Style Level Display */}
                 {isMember && (
-                  <div className="mt-1">
-                    <Badge className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-amber-900 text-xs animate-bounce shadow-lg border-2 border-yellow-300/50 font-bold flex items-center space-x-2 px-3 py-1">
-                      <Crown className="h-3 w-3" />
-                      <span>VIP Level {userLevel}</span>
-                      <div className="w-8 bg-yellow-200 rounded-full h-1">
-                        <div 
-                          className="bg-gradient-to-r from-yellow-600 to-amber-700 h-1 rounded-full transition-all duration-300"
-                          style={{ width: `${progress}%` }}
-                        ></div>
+                  <div className="relative">
+                    <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg px-3 py-1 border-2 border-gray-600 shadow-lg">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs font-bold text-yellow-300">LV {userLevel}</span>
+                        <div className="relative w-16 h-2 bg-gray-900 rounded-full border border-gray-500">
+                          {/* Filled XP portion */}
+                          <div 
+                            className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all duration-300"
+                            style={{ width: `${progress}%` }}
+                          ></div>
+                          {/* Missing XP portion with flashing red */}
+                          <div 
+                            className="absolute right-0 top-0 h-full bg-red-500 rounded-r-full animate-pulse opacity-60"
+                            style={{ width: `${100 - progress}%` }}
+                          ></div>
+                          {/* Shine effect on the bar */}
+                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full"></div>
+                        </div>
+                        <span className="text-xs text-red-400 font-medium animate-pulse">{pointsToNextLevel}</span>
                       </div>
-                      <span className="text-xs">{pointsToNextLevel}</span>
-                    </Badge>
+                    </div>
                   </div>
                 )}
               </div>
