@@ -163,22 +163,38 @@ const Header = () => {
           </nav>
 
           {/* User Section */}
-          <div className="flex items-center space-x-4">
-            {/* Level Display with Progress */}
-            <div className="hidden lg:flex items-center space-x-3 bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-xl border border-blue-200/50">
+          <div className="flex items-center space-x-3">
+            {/* Level Display with Progress - Made visible on medium screens and up */}
+            <div className="hidden md:flex items-center space-x-3 bg-gradient-to-r from-blue-50 to-purple-50 px-3 py-2 rounded-xl border border-blue-200/50 shadow-sm">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
                   {userLevel}
                 </div>
                 <div className="flex flex-col">
                   <div className="text-xs font-semibold text-gray-700">Level {userLevel}</div>
-                  <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                  <div className="w-20 bg-gray-200 rounded-full h-2 shadow-inner">
                     <div 
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-1.5 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300 shadow-sm"
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
-                  <div className="text-xs text-gray-500">{pointsToNextLevel} to go</div>
+                  <div className="text-xs text-gray-500 font-medium">{pointsToNextLevel} to go</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Level Display - Compact version for smaller screens */}
+            <div className="md:hidden flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-purple-50 px-2 py-1 rounded-lg border border-blue-200/50">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                {userLevel}
+              </div>
+              <div className="flex flex-col">
+                <div className="text-xs font-semibold text-gray-700">Lv {userLevel}</div>
+                <div className="w-12 bg-gray-200 rounded-full h-1">
+                  <div 
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-1 rounded-full transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  ></div>
                 </div>
               </div>
             </div>
