@@ -2,8 +2,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, User, Menu, Crown, ArrowUp } from 'lucide-react';
+import { Star, User, Menu, Crown, ArrowUp, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const Header = () => {
   const location = useLocation();
@@ -35,28 +42,97 @@ const Header = () => {
                 isActive('/') ? 'w-full' : 'w-0 group-hover:w-full'
               }`}></span>
             </Link>
-            <Link 
-              to="/campaigns" 
-              className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
-                isActive('/campaigns') ? 'text-emerald-600' : 'text-gray-700 hover:text-emerald-600'
-              }`}
-            >
-              Campaigns
-              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ${
-                isActive('/campaigns') ? 'w-full' : 'w-0 group-hover:w-full'
-              }`}></span>
-            </Link>
-            <Link 
-              to="/leaderboards" 
-              className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
-                isActive('/leaderboards') ? 'text-emerald-600' : 'text-gray-700 hover:text-emerald-600'
-              }`}
-            >
-              Leaderboards
-              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ${
-                isActive('/leaderboards') ? 'w-full' : 'w-0 group-hover:w-full'
-              }`}></span>
-            </Link>
+
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="font-bold text-gray-700 hover:text-emerald-600">
+                    Donate
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4">
+                      <Link to="/campaigns" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Campaigns</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Support urgent causes and make a direct impact
+                        </p>
+                      </Link>
+                      <Link to="/charities" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Charity Partners</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Browse our trusted charity partners and their projects
+                        </p>
+                      </Link>
+                      <Link to="/why-donate" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Why Donate With Us</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Learn about our transparent fund distribution
+                        </p>
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="font-bold text-gray-700 hover:text-emerald-600">
+                    Community
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4">
+                      <Link to="/leaderboards" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Leaderboards</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          See top donors and earn recognition for your contributions
+                        </p>
+                      </Link>
+                      <Link to="/live" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Live Feed</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Real-time updates from charity partners and projects
+                        </p>
+                      </Link>
+                      <Link to="/blog" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Blog</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Stories, updates, and insights from our community
+                        </p>
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="font-bold text-gray-700 hover:text-emerald-600">
+                    Rewards
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid w-[400px] gap-3 p-4">
+                      <Link to="/coins" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Sadaqah Coins</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Purchase coins and unlock exclusive rewards
+                        </p>
+                      </Link>
+                      <Link to="/membership" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <div className="text-sm font-medium leading-none">Membership Tiers</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Upgrade for multiplied points and exclusive benefits
+                        </p>
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
             <Link 
               to="/about" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
@@ -104,10 +180,10 @@ const Header = () => {
                 
                 {/* Subtle upgrade link under name */}
                 <div className="mt-1">
-                  <button className="text-xs text-gray-500 hover:text-purple-600 transition-colors duration-200 flex items-center gap-1">
+                  <Link to="/membership" className="text-xs text-gray-500 hover:text-purple-600 transition-colors duration-200 flex items-center gap-1">
                     <ArrowUp className="h-3 w-3" />
                     Upgrade to 3x
-                  </button>
+                  </Link>
                 </div>
               </div>
               
