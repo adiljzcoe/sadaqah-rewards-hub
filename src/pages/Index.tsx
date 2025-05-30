@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -15,6 +16,10 @@ import CharityFeedSection from '@/components/CharityFeedSection';
 import CampaignsCarousel from '@/components/CampaignsCarousel';
 import FundraisersCarousel from '@/components/FundraisersCarousel';
 import InMemoryOfWidget from '@/components/InMemoryOfWidget';
+import StreakWidget from '@/components/StreakWidget';
+import AchievementSystem from '@/components/AchievementSystem';
+import FriendsWidget from '@/components/FriendsWidget';
+import SeasonalEvents from '@/components/SeasonalEvents';
 
 const Index = () => {
   // Mock data for campaigns
@@ -127,7 +132,19 @@ const Index = () => {
               <UserStats />
             </div>
             <div className="hover-lift">
+              <StreakWidget />
+            </div>
+            <div className="hover-lift">
               <PersonalLeagueWidget />
+            </div>
+            <div className="hover-lift">
+              <AchievementSystem />
+            </div>
+            <div className="hover-lift">
+              <FriendsWidget />
+            </div>
+            <div className="hover-lift">
+              <SeasonalEvents />
             </div>
             <div className="hover-lift">
               <DonationWidget />

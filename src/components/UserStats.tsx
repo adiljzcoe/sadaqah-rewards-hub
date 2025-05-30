@@ -5,8 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
+import { updateStreak, checkAchievements, getStreakData } from '@/utils/streakSystem';
+import { useToast } from '@/hooks/use-toast';
 
 const UserStats = () => {
+  const { toast } = useToast();
   const userLevel = 12;
   const currentPoints = 5632;
   const nextLevelPoints = 6000;
@@ -17,7 +20,35 @@ const UserStats = () => {
   // Mock user membership status - set to false to show upgrade link
   const isMember = false;
 
-  console.log('UserStats isMember:', isMember); // Debug log
+  // Check for new achievements when component loads
+  React.useEffect(() => {
+    const userStats = {
+      totalDonations,
+      totalAmount: 1240,
+      lastDonationAmount: 50
+    };
+    
+    const newAchievements = checkAchievements(userStats);
+    if (newAchievements.length > 0) {
+      newAchievements.forEach(achievement => {
+        toast({
+          title: `🏆 Achievement Unlocked!`,
+          description: `${achievement.icon} ${achievement.title}: ${achievement.description}`,
+        });
+      });
+    }
+  }, [toast]);
+
+  const handleDonation = () => {
+    // Simulate donation and update streak
+    const updatedStreak = updateStreak();
+    toast({
+      title: "Donation Successful! 🎉",
+      description: `Your donation streak is now ${updatedStreak.currentStreak} days!`,
+    });
+  };
+
+  console.log('UserStats isMember:', isMember);
 
   return (
     <Card className="p-6 game-card">
