@@ -1,4 +1,3 @@
-
 export interface StreakData {
   currentStreak: number;
   longestStreak: number;
@@ -42,6 +41,8 @@ export const achievements: Achievement[] = [
   { id: 'community_leader', title: 'Community Leader', description: 'Top 10 in your city', icon: '👑', type: 'social', requirement: 10, earned: false, rarity: 'epic', points: 400 },
 ];
 
+import { addToMatchingPool } from './matchingPool';
+
 export const getStreakData = (): StreakData => {
   const saved = localStorage.getItem('donationStreak');
   if (saved) {
@@ -80,17 +81,18 @@ export const calculateStreakBonus = (streakCount: number): number => {
   return bonus;
 };
 
-export const updateStreak = (): { streakData: StreakData; jannahPointsEarned: number } => {
+export const updateStreak = (): { streakData: StreakData; jannahPointsEarned: number; sadaqahCoinsToPool: number } => {
   const today = new Date().toDateString();
   const streakData = getStreakData();
   const lastDate = new Date(streakData.lastDonationDate).toDateString();
   const yesterday = new Date(Date.now() - 86400000).toDateString();
   
   let jannahPointsEarned = 0;
+  let sadaqahCoinsToPool = 0;
   
   if (lastDate === today) {
     // Already donated today, no change
-    return { streakData, jannahPointsEarned };
+    return { streakData, jannahPointsEarned, sadaqahCoinsToPool };
   } else if (lastDate === yesterday) {
     // Continuing streak
     streakData.currentStreak += 1;
@@ -98,6 +100,9 @@ export const updateStreak = (): { streakData: StreakData; jannahPointsEarned: nu
     
     // Award Jannah points for maintaining streak
     jannahPointsEarned = calculateStreakBonus(streakData.currentStreak);
+    
+    // Sadaqah coins from Jannah points go to matching pool
+    sadaqahCoinsToPool = jannahPointsEarned;
   } else if (streakData.streakFreeze && streakData.streakFreezeCount > 0) {
     // Use streak freeze
     streakData.streakFreezeCount -= 1;
@@ -105,12 +110,14 @@ export const updateStreak = (): { streakData: StreakData; jannahPointsEarned: nu
     
     // Award reduced points for using freeze
     jannahPointsEarned = Math.floor(calculateStreakBonus(streakData.currentStreak) * 0.5);
+    sadaqahCoinsToPool = jannahPointsEarned;
   } else {
     // Streak broken, start over
     streakData.currentStreak = 1;
     
     // Award basic points for new start
     jannahPointsEarned = calculateStreakBonus(1);
+    sadaqahCoinsToPool = jannahPointsEarned;
   }
   
   streakData.lastDonationDate = today;
@@ -121,7 +128,19 @@ export const updateStreak = (): { streakData: StreakData; jannahPointsEarned: nu
   const newPoints = currentPoints + jannahPointsEarned;
   localStorage.setItem('jannahPoints', newPoints.toString());
   
-  return { streakData, jannahPointsEarned };
+  // Add Sadaqah coins to matching pool instead of user's direct balance
+  if (sadaqahCoinsToPool > 0) {
+    addToMatchingPool({
+      userId: 'current_user', // In real app, this would be the actual user ID
+      userName: 'Ahmad M.',
+      donationId: `donation_${Date.now()}`,
+      sadaqahCoinsAmount: sadaqahCoinsToPool,
+      jannahPointsSource: jannahPointsEarned,
+      campaignName: 'Daily Streak Bonus'
+    });
+  }
+  
+  return { streakData, jannahPointsEarned, sadaqahCoinsToPool };
 };
 
 export const checkAchievements = (userStats: any): Achievement[] => {

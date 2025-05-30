@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -20,6 +19,7 @@ import StreakWidget from '@/components/StreakWidget';
 import AchievementSystem from '@/components/AchievementSystem';
 import FriendsWidget from '@/components/FriendsWidget';
 import SeasonalEvents from '@/components/SeasonalEvents';
+import MatchingPoolWidget from '@/components/MatchingPoolWidget';
 
 const Index = () => {
   // Mock data for campaigns
@@ -130,6 +130,9 @@ const Index = () => {
           <div className="space-y-6 px-4">
             <div className="hover-lift">
               <UserStats />
+            </div>
+            <div className="hover-lift">
+              <MatchingPoolWidget />
             </div>
             <div className="hover-lift">
               <StreakWidget />

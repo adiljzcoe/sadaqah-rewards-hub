@@ -2,9 +2,10 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp } from 'lucide-react';
+import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp, Building2 } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 import { updateStreak, checkAchievements, getStreakData } from '@/utils/streakSystem';
+import { getUserUnmatchedCoins } from '@/utils/matchingPool';
 import { useToast } from '@/hooks/use-toast';
 
 const UserStats = () => {
@@ -17,6 +18,7 @@ const UserStats = () => {
   const progress = (currentPoints / nextLevelPoints) * 100;
   const sadaqahCoins = 142;
   const totalDonations = 28;
+  const userUnmatchedCoins = getUserUnmatchedCoins('current_user');
   
   // Mock user membership status - set to false to show upgrade link
   const isMember = false;
@@ -42,12 +44,15 @@ const UserStats = () => {
 
   const handleDonation = () => {
     // Simulate donation and update streak
-    const { streakData, jannahPointsEarned } = updateStreak();
+    const { streakData, jannahPointsEarned, sadaqahCoinsToPool } = updateStreak();
     setCurrentPoints(prev => prev + jannahPointsEarned);
     
     let message = `Your donation streak is now ${streakData.currentStreak} days!`;
     if (jannahPointsEarned > 0) {
-      message += ` You earned ${jannahPointsEarned} Jannah points from your streak! 🌟`;
+      message += ` You earned ${jannahPointsEarned} Jannah points!`;
+    }
+    if (sadaqahCoinsToPool > 0) {
+      message += ` ${sadaqahCoinsToPool} Sadaqah coins added to business matching pool! 🏢`;
     }
     
     toast({
@@ -144,6 +149,25 @@ const UserStats = () => {
             {nextLevelPoints - currentPoints} points to level up! 🚀
           </p>
         </div>
+
+        {/* Matching Pool Info */}
+        {userUnmatchedCoins > 0 && (
+          <div className="game-card p-4 bg-gradient-to-r from-blue-100 to-purple-100 text-center relative overflow-hidden">
+            <div className="relative z-10">
+              <p className="font-bold text-blue-800 mb-1 text-lg flex items-center justify-center gap-2">
+                <Building2 className="h-5 w-5" />
+                Matching Pool
+              </p>
+              <p className="text-sm font-bold text-blue-700">
+                You have {userUnmatchedCoins} coins awaiting business match!
+              </p>
+              <div className="text-xs text-blue-600 mt-1">
+                💼 When matched, funds go directly to charity
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-200/50 to-transparent animate-shimmer"></div>
+          </div>
+        )}
 
         {/* Streak Bonus Info */}
         <div className="game-card p-4 bg-gradient-to-r from-orange-100 to-yellow-100 text-center relative overflow-hidden">
