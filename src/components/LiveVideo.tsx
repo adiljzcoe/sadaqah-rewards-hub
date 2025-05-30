@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -534,57 +533,47 @@ const LiveVideo = () => {
           </div>
         ))}
 
-        {/* Donation buttons at bottom - Thin background with floating buttons */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60">
-          {/* Thin background container - lower z-index */}
-          <div className="absolute inset-x-0 bottom-0 h-12 rounded-full shadow-2xl border border-gray-300/30 backdrop-blur-2xl bg-gradient-to-b from-gray-200/20 via-gray-100/15 to-gray-300/25 overflow-hidden">
-            {/* Mac OS frosted glass effect with subtle texture */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/10 to-white/5 rounded-full"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-full"></div>
-          </div>
-          
-          {/* Floating buttons container - higher z-index */}
-          <div className="relative z-10 flex justify-center items-center space-x-4 px-6 py-2">
-            {/* Regular donation buttons - Full opacity and floating */}
-            <div className="flex space-x-2">
-              {quickDonations.map((donation, index) => (
-                <button
-                  key={donation.key}
-                  onClick={() => handleQuickDonate(donation)}
-                  disabled={userCoins < donation.coins}
-                  className={`
-                    group relative w-16 h-16 rounded-2xl shadow-lg
-                    bg-gradient-to-br ${donation.color}
-                    hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                    transition-all duration-300 border-2 border-white/40
-                    ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60 hover:rotate-3' : ''}
-                  `}
-                  style={{
-                    animationDelay: `${index * 0.1}s`
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
-                  <div className="relative h-full flex flex-col items-center justify-center text-white z-10">
-                    <div className="text-xl mb-1 group-hover:scale-125 transition-transform animate-pulse">
-                      {currentEmojis[donation.category]}
-                    </div>
-                    <div className="flex items-center text-xs font-bold">
-                      <SimpleGoldCoin size={12} className="mr-1" />
-                      {donation.coins}
-                    </div>
-                    <div className="text-[8px] opacity-80">sadaqah coins</div>
+        {/* Donation buttons at bottom - No background, just floating buttons */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60 flex justify-center items-center space-x-4 px-6 py-2">
+          {/* Regular donation buttons - Full opacity and floating directly */}
+          <div className="flex space-x-2">
+            {quickDonations.map((donation, index) => (
+              <button
+                key={donation.key}
+                onClick={() => handleQuickDonate(donation)}
+                disabled={userCoins < donation.coins}
+                className={`
+                  group relative w-16 h-16 rounded-2xl shadow-lg
+                  bg-gradient-to-br ${donation.color}
+                  hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
+                  transition-all duration-300 border-2 border-white/40
+                  ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60 hover:rotate-3' : ''}
+                `}
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
+                <div className="relative h-full flex flex-col items-center justify-center text-white z-10">
+                  <div className="text-xl mb-1 group-hover:scale-125 transition-transform animate-pulse">
+                    {currentEmojis[donation.category]}
                   </div>
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/25 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
-                </button>
-              ))}
-            </div>
+                  <div className="flex items-center text-xs font-bold">
+                    <SimpleGoldCoin size={12} className="mr-1" />
+                    {donation.coins}
+                  </div>
+                  <div className="text-[8px] opacity-80">sadaqah coins</div>
+                </div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 rounded-2xl border-2 border-white/25 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
+              </button>
+            ))}
+          </div>
 
-            {/* Epic donation button - Full opacity and floating */}
-            <div className="flex items-center">
-              <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/40 to-transparent mx-2"></div>
-              <EpicDonationButton onEpicDonation={handleEpicDonation} />
-            </div>
+          {/* Epic donation button - Full opacity and floating */}
+          <div className="flex items-center">
+            <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/40 to-transparent mx-2"></div>
+            <EpicDonationButton onEpicDonation={handleEpicDonation} />
           </div>
         </div>
       </div>
