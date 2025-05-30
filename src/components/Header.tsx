@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -45,21 +46,23 @@ const Header = () => {
               />
             </Link>
 
-            {/* User Section - Moved to left */}
+            {/* User Section */}
             <div className="flex items-center space-x-4">
-              {/* Points Display */}
-              <div className="hidden sm:flex items-center space-x-2 jannah-counter px-3 py-2">
-                <Star className="h-4 w-4 text-yellow-300" />
-                <span className="text-base font-bold">5,632 pts</span>
-              </div>
-
               {/* User Menu with VIP Crown */}
               <div className="flex items-center space-x-3">
                 <Link to="/profile">
                   {isMember ? (
                     <Button className="relative overflow-hidden rounded-xl px-4 py-2 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50">
-                      <Crown className="h-4 w-4 mr-2 text-amber-800" />
-                      <span className="hidden sm:inline text-amber-900">VIP Ahmad M.</span>
+                      <div className="flex flex-col items-start">
+                        <div className="flex items-center">
+                          <Crown className="h-4 w-4 mr-2 text-amber-800" />
+                          <span className="hidden sm:inline text-amber-900">VIP Ahmad M.</span>
+                        </div>
+                        <div className="flex items-center ml-6">
+                          <Star className="h-3 w-3 text-yellow-300 mr-1" />
+                          <span className="text-xs font-medium text-amber-800">5,632 pts</span>
+                        </div>
+                      </div>
                       {/* Plaque shine effect */}
                       <div className="absolute top-2 left-3 w-6 h-3 bg-gradient-to-r from-transparent via-yellow-200/60 to-transparent rounded-full animate-shimmer"></div>
                     </Button>
