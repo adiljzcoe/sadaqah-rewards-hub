@@ -525,55 +525,55 @@ const LiveVideo = () => {
           </div>
         )}
 
-        {/* Recent donations feed - Ultra transparent */}
-        <div className="absolute left-4 top-32 space-y-2 z-20 max-w-sm">
-          {[...recentDonations, ...fakeDonations].slice(0, 4).map((donation) => (
+        {/* Recent donations feed - Left side - Made smaller and less overwhelming */}
+        <div className="absolute left-3 top-36 space-y-1.5 z-20 max-w-xs">
+          {[...recentDonations, ...fakeDonations].slice(0, 3).map((donation) => (
             <div
               key={donation.id}
-              className="bg-gradient-to-r from-emerald-500/25 to-green-600/25 text-white px-3 py-2 rounded-2xl text-sm font-medium flex items-center space-x-2 animate-slide-in-left shadow-xl border-2 border-emerald-300/25 hover:scale-105 transition-transform max-w-full backdrop-blur-xl"
+              className="bg-gradient-to-r from-emerald-500/30 to-green-600/30 text-white px-2.5 py-1.5 rounded-xl text-xs font-medium flex items-center space-x-2 animate-slide-in-left shadow-lg border border-emerald-300/30 hover:scale-105 transition-transform max-w-full backdrop-blur-xl"
             >
-              <span className="text-lg animate-bounce flex-shrink-0">{donation.emoji}</span>
+              <span className="text-sm animate-bounce flex-shrink-0">{donation.emoji}</span>
               <div className="flex-1 min-w-0">
-                <div className="font-bold truncate">
-                  {donation.user === 'You' ? 'You helped' : `${donation.user} helped`} with {donation.label}!
+                <div className="font-bold truncate text-xs">
+                  {donation.user === 'You' ? 'You helped' : `${donation.user} helped`}
                 </div>
-                <div className="text-xs opacity-90 flex items-center space-x-1">
-                  <span className="truncate">{donation.finalAmount} sadaqah coins • Streak {donation.streak}</span>
-                  {donation.multiplier > 1 && <Star className="h-3 w-3 text-yellow-300 animate-pulse flex-shrink-0" />}
+                <div className="text-[10px] opacity-90 flex items-center space-x-1">
+                  <span className="truncate">{donation.finalAmount} coins</span>
+                  {donation.multiplier > 1 && <Star className="h-2 w-2 text-yellow-300 animate-pulse flex-shrink-0" />}
                 </div>
               </div>
-              <div className="flex flex-col items-center bg-white/10 rounded-lg p-1 flex-shrink-0">
-                <Star className="h-3 w-3 text-yellow-300 animate-pulse" />
-                <span className="text-[10px]">+{Math.floor(donation.finalAmount * 10)} pts</span>
+              <div className="flex items-center bg-white/15 rounded-md px-1.5 py-0.5 flex-shrink-0">
+                <SimpleGoldCoin size={10} className="mr-1" />
+                <span className="text-[9px] font-bold">{donation.coins}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Dedication Feed - Right side */}
-        <div className="absolute right-4 top-32 space-y-2 z-20 max-w-xs">
-          {dedicationFeed.map((dedication) => (
+        {/* Dedication Feed - Right side - Also made smaller for balance */}
+        <div className="absolute right-3 top-36 space-y-1.5 z-20 max-w-xs">
+          {dedicationFeed.slice(0, 2).map((dedication) => (
             <div
               key={dedication.id}
-              className="bg-gradient-to-r from-purple-500/25 to-pink-600/25 text-white px-4 py-3 rounded-2xl text-sm font-medium animate-slide-in-right shadow-xl border-2 border-purple-300/25 hover:scale-105 transition-transform backdrop-blur-xl"
+              className="bg-gradient-to-r from-purple-600/40 to-pink-600/40 text-white px-2.5 py-2 rounded-xl text-xs font-medium animate-slide-in-right shadow-lg border border-purple-300/40 hover:scale-105 transition-transform backdrop-blur-xl"
             >
-              <div className="flex items-center space-x-2 mb-2">
-                <span className="text-lg animate-bounce flex-shrink-0">{dedication.emoji}</span>
+              <div className="flex items-center space-x-1.5 mb-1.5">
+                <span className="text-sm animate-bounce flex-shrink-0">{dedication.emoji}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs truncate">
-                    {dedication.user} donated on behalf of
+                  <div className="font-bold text-[10px] truncate opacity-90">
+                    {dedication.user} for
                   </div>
-                  <div className="font-bold text-purple-200 truncate">
+                  <div className="font-bold text-purple-200 truncate text-xs">
                     {dedication.onBehalfOf}
                   </div>
                 </div>
-                <div className="flex items-center bg-white/10 rounded-lg px-2 py-1 flex-shrink-0">
-                  <SimpleGoldCoin size={12} className="mr-1" />
-                  <span className="text-xs font-bold">{dedication.amount}</span>
+                <div className="flex items-center bg-white/15 rounded-md px-1.5 py-0.5 flex-shrink-0">
+                  <SimpleGoldCoin size={9} className="mr-1" />
+                  <span className="text-[9px] font-bold">{dedication.amount}</span>
                 </div>
               </div>
               
-              <div className="text-xs italic opacity-90 leading-relaxed bg-white/5 rounded-lg px-2 py-1 border border-white/10">
+              <div className="text-[10px] italic opacity-85 leading-relaxed bg-white/10 rounded-md px-1.5 py-1 border border-white/15 line-clamp-2">
                 "{dedication.note}"
               </div>
             </div>
