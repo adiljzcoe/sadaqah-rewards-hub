@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import GoldCoin3D from './GoldCoin3D';
 const LiveVideo = () => {
   const [recentDonations, setRecentDonations] = useState([]);
   const [userCoins, setUserCoins] = useState(1250);
+  const [userPoints, setUserPoints] = useState(5632); // Added user points
   const [floatingCoins, setFloatingCoins] = useState([]);
   const [celebrationMode, setCelebrationMode] = useState(false);
   const [streakCount, setStreakCount] = useState(0);
@@ -52,8 +54,8 @@ const LiveVideo = () => {
       const coinId = Date.now() + Math.random();
       const newCoin = {
         id: coinId,
-        x: Math.random() * 60 + 20,
-        y: Math.random() * 40 + 30,
+        x: Math.random() * 40 + 30, // Reduced range to prevent horizontal scroll
+        y: Math.random() * 30 + 35,
         emoji: fakeDonation.emoji,
         coins: fakeDonation.finalAmount,
         multiplier: 1
@@ -86,8 +88,8 @@ const LiveVideo = () => {
     const coinId = Date.now() + Math.random();
     const newCoin = {
       id: coinId,
-      x: Math.random() * 80 + 10,
-      y: Math.random() * 30 + 40,
+      x: Math.random() * 40 + 30, // Reduced range to prevent horizontal scroll
+      y: Math.random() * 25 + 40,
       emoji: donation.emoji,
       coins: donation.coins,
       multiplier: multiplier
@@ -104,12 +106,12 @@ const LiveVideo = () => {
     setCelebrationMode(true);
     setPulseEffect(true);
     
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 8; i++) { // Reduced from 12 to 8
       setTimeout(() => {
         const celebCoin = {
           id: Date.now() + i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
+          x: Math.random() * 60 + 20, // Contained within safe bounds
+          y: Math.random() * 60 + 20,
           emoji: ['🎉', '🔥', '⭐', '🏆', '💎', '🎯'][Math.floor(Math.random() * 6)],
           coins: '+' + (10 * multiplier),
           multiplier: 1
@@ -127,7 +129,11 @@ const LiveVideo = () => {
   const handleQuickDonate = (donation) => {
     if (userCoins >= donation.coins) {
       const finalAmount = donation.coins * multiplier;
+      const pointsGained = finalAmount * 10; // 10 points per sadaqah coin
+      
+      // Deduct sadaqah coins and add points
       setUserCoins(prev => prev - donation.coins);
+      setUserPoints(prev => prev + pointsGained);
       setStreakCount(prev => prev + 1);
       
       if (streakCount > 0 && streakCount % 3 === 0) {
@@ -164,9 +170,9 @@ const LiveVideo = () => {
   }, [streakCount]);
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="w-full max-w-full overflow-hidden">
       {/* Video Container - Fixed aspect ratio and no overflow */}
-      <div className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden">
+      <div className="relative w-full aspect-video bg-gray-900 rounded-t-xl overflow-hidden">
         {/* Background Video Placeholder */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           <div className="text-center text-white">
@@ -192,8 +198,13 @@ const LiveVideo = () => {
                 <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold">1,247</span>
               </div>
               <div className="w-px h-4 bg-white/30"></div>
+              <div className="flex items-center text-purple-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer">
+                <Star className="h-4 w-4 mr-1 text-purple-400" />
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{userPoints}</span>
+              </div>
+              <div className="w-px h-4 bg-white/30"></div>
               <div className="flex items-center text-amber-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer">
-                <GoldCoin3D size={18} className="mr-2 animate-spin" />
+                <GoldCoin3D size={18} className="mr-2" />
                 <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{userCoins}</span>
               </div>
               {streakCount > 0 && (
@@ -211,24 +222,24 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Get More Coins Button - Top Right */}
-        <div className="absolute top-4 right-4 z-20">
-          <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg px-3 py-2 text-xs font-bold rounded-lg hover:scale-105 transition-all duration-300 relative overflow-hidden group">
+        {/* Get More Coins Button - Top Right positioned absolutely */}
+        <div className="absolute top-20 right-4 z-30">
+          <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-            <Gift className="h-3 w-3 mr-1 group-hover:rotate-12 transition-transform" />
-            Get More Coins
-            <Sparkles className="h-3 w-3 ml-1 animate-pulse" />
+            <Gift className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+            Get More Sadaqah Coins
+            <Sparkles className="h-4 w-4 ml-2 animate-pulse" />
           </Button>
         </div>
 
         {/* Live Donations Feed */}
-        <div className="absolute left-4 top-20 space-y-2 z-30 max-w-xs">
+        <div className="absolute left-4 top-28 space-y-2 z-20 max-w-sm">
           {[...recentDonations, ...fakeDonations].slice(0, 4).map((donation) => (
             <div
               key={donation.id}
-              className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-2 rounded-2xl text-sm font-medium flex items-center space-x-2 animate-slide-in-left shadow-xl border-2 border-emerald-300 hover:scale-105 transition-transform"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-2 rounded-2xl text-sm font-medium flex items-center space-x-2 animate-slide-in-left shadow-xl border-2 border-emerald-300 hover:scale-105 transition-transform max-w-full"
             >
-              <span className="text-lg animate-bounce">{donation.emoji}</span>
+              <span className="text-lg animate-bounce flex-shrink-0">{donation.emoji}</span>
               <div className="flex-1 min-w-0">
                 <div className="font-bold truncate">
                   {donation.user === 'You' ? 'You helped' : `${donation.user} helped`} with {donation.label}!
@@ -240,7 +251,7 @@ const LiveVideo = () => {
               </div>
               <div className="flex flex-col items-center bg-white/20 rounded-lg p-1 flex-shrink-0">
                 <Star className="h-3 w-3 text-yellow-300 animate-pulse" />
-                <span className="text-[10px]">+{Math.floor(donation.finalAmount / 10)} XP</span>
+                <span className="text-[10px]">+{Math.floor(donation.finalAmount * 10)} pts</span>
               </div>
             </div>
           ))}
@@ -261,8 +272,8 @@ const LiveVideo = () => {
             key={coin.id}
             className="absolute pointer-events-none z-50 animate-bounce"
             style={{
-              left: `${coin.x}%`,
-              top: `${coin.y}%`,
+              left: `${Math.min(Math.max(coin.x, 10), 80)}%`, // Constrain between 10% and 80%
+              top: `${Math.min(Math.max(coin.y, 10), 80)}%`, // Constrain between 10% and 80%
               animation: 'floatUp 2s ease-out forwards'
             }}
           >
@@ -307,7 +318,7 @@ const LiveVideo = () => {
       </div>
 
       {/* Bottom Stats Section - Connected to video with no gap */}
-      <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50 -mt-1">
+      <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 p-2 hover:scale-110 transition-transform">
@@ -329,7 +340,7 @@ const LiveVideo = () => {
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="sm" className="bg-gray-700/50 border-gray-500 text-white hover:bg-gray-600/80 hover:scale-105 transition-all px-4 py-2 hover:border-blue-400">
               <Share2 className="h-4 w-4 mr-2" />
-              Share & Earn 50 Coins
+              Share & Earn 50 Sadaqah Coins
             </Button>
             
             <Button variant="outline" size="sm" className="bg-gray-700/50 border-gray-500 text-white hover:bg-gray-600/80 hover:scale-105 transition-all relative px-4 py-2 hover:border-pink-400">
