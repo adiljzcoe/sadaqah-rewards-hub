@@ -3,45 +3,137 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Play, Users, Heart, Share2, Volume2, Sparkles, Zap, Star, Gift, Trophy, Flame, Target } from 'lucide-react';
+import { Play, Users, Heart, Share2, Volume2, Sparkles, Zap, Star, Gift, Trophy, Flame, Target, Crown, Award } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 
 const LiveVideo = () => {
   const [recentDonations, setRecentDonations] = useState([]);
   const [userCoins, setUserCoins] = useState(1250);
-  const [userPoints, setUserPoints] = useState(5632); // Added user points
+  const [userPoints, setUserPoints] = useState(5632);
+  const [userLevel, setUserLevel] = useState(12);
   const [floatingCoins, setFloatingCoins] = useState([]);
   const [celebrationMode, setCelebrationMode] = useState(false);
   const [streakCount, setStreakCount] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
   const [pulseEffect, setPulseEffect] = useState(false);
   const [fakeDonations, setFakeDonations] = useState([]);
+  const [userBadges, setUserBadges] = useState(['first-donor', 'streak-master']);
+  const [dailyStreak, setDailyStreak] = useState(5);
+  const [weeklyStreak, setWeeklyStreak] = useState(2);
+
+  // Rotating emojis for each category
+  const categoryEmojis = {
+    food: ['🍽️', '🍞', '🥘', '🍲', '🥗', '🍚', '🥙', '🌮'],
+    water: ['💧', '🚰', '⛲', '🌊', '💦', '🪣', '🚿'],
+    shelter: ['🏠', '🏘️', '🏡', '🛖', '⛺', '🏕️', '🏰'],
+    education: ['📚', '📖', '🎓', '✏️', '🖊️', '📝', '🌍', '💻', '🔬'],
+    medicine: ['💊', '🏥', '🩺', '💉', '🧬', '⚕️', '🏨'],
+    comfort: ['🧸', '🎁', '💝', '🤗', '❤️', '🌟', '🎀']
+  };
+
+  const [currentEmojis, setCurrentEmojis] = useState({
+    food: categoryEmojis.food[0],
+    water: categoryEmojis.water[0],
+    shelter: categoryEmojis.shelter[0],
+    education: categoryEmojis.education[0],
+    medicine: categoryEmojis.medicine[0],
+    comfort: categoryEmojis.comfort[0]
+  });
 
   const quickDonations = [
-    { emoji: '🍽️', label: 'Hot Meal', coins: 50, impact: 'Feed 1 family', color: 'from-orange-400 to-red-500' },
-    { emoji: '💧', label: 'Clean Water', coins: 25, impact: 'Water for 1 day', color: 'from-blue-400 to-cyan-500' },
-    { emoji: '🏠', label: 'Shelter', coins: 100, impact: 'Safe night', color: 'from-green-400 to-emerald-600' },
-    { emoji: '📚', label: 'Education', coins: 30, impact: 'School supplies', color: 'from-purple-400 to-violet-600' },
-    { emoji: '💊', label: 'Medicine', coins: 75, impact: 'Medical aid', color: 'from-pink-400 to-rose-500' },
-    { emoji: '🧸', label: 'Comfort', coins: 20, impact: 'Child care', color: 'from-yellow-400 to-amber-500' }
+    { 
+      key: 'food', 
+      label: 'Hot Meal', 
+      coins: 50, 
+      impact: 'Feed 1 family', 
+      color: 'from-orange-400 to-red-500',
+      category: 'food'
+    },
+    { 
+      key: 'water', 
+      label: 'Clean Water', 
+      coins: 25, 
+      impact: 'Water for 1 day', 
+      color: 'from-blue-400 to-cyan-500',
+      category: 'water'
+    },
+    { 
+      key: 'shelter', 
+      label: 'Shelter', 
+      coins: 100, 
+      impact: 'Safe night', 
+      color: 'from-green-400 to-emerald-600',
+      category: 'shelter'
+    },
+    { 
+      key: 'education', 
+      label: 'Education', 
+      coins: 30, 
+      impact: 'School supplies', 
+      color: 'from-purple-400 to-violet-600',
+      category: 'education'
+    },
+    { 
+      key: 'medicine', 
+      label: 'Medicine', 
+      coins: 75, 
+      impact: 'Medical aid', 
+      color: 'from-pink-400 to-rose-500',
+      category: 'medicine'
+    },
+    { 
+      key: 'comfort', 
+      label: 'Comfort', 
+      coins: 20, 
+      impact: 'Child care', 
+      color: 'from-yellow-400 to-amber-500',
+      category: 'comfort'
+    }
   ];
+
+  const badges = {
+    'first-donor': { name: 'First Steps', icon: '🎯', color: 'from-blue-400 to-blue-600' },
+    'streak-master': { name: 'Streak Master', icon: '🔥', color: 'from-orange-400 to-red-600' },
+    'generous-heart': { name: 'Generous Heart', icon: '💖', color: 'from-pink-400 to-rose-600' },
+    'level-up': { name: 'Rising Star', icon: '⭐', color: 'from-yellow-400 to-amber-600' },
+    'weekly-warrior': { name: 'Weekly Warrior', icon: '⚡', color: 'from-purple-400 to-violet-600' }
+  };
 
   const fakeUsers = [
     'Ahmad M.', 'Sarah K.', 'Omar R.', 'Fatima S.', 'Yusuf A.', 'Aisha B.', 'Hassan M.', 'Khadija L.',
     'Ali T.', 'Zainab H.', 'Ibrahim K.', 'Maryam N.', 'Abdullah R.', 'Hafsa M.', 'Anonymous'
   ];
 
-  // Generate fake donations every 3-8 seconds for FOMO
+  // Rotate emojis every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentEmojis(prev => {
+        const newEmojis = {};
+        Object.keys(categoryEmojis).forEach(category => {
+          const emojis = categoryEmojis[category];
+          const currentIndex = emojis.indexOf(prev[category]);
+          const nextIndex = (currentIndex + 1) % emojis.length;
+          newEmojis[category] = emojis[nextIndex];
+        });
+        return newEmojis;
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Generate fake donations every 3-8 seconds
   useEffect(() => {
     const generateFakeDonation = () => {
       const randomDonation = quickDonations[Math.floor(Math.random() * quickDonations.length)];
       const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-      const randomMultiplier = Math.random() > 0.7 ? 2 : 1; // 30% chance of 2x multiplier
+      const randomMultiplier = Math.random() > 0.7 ? 2 : 1;
       
       const fakeDonation = {
         id: Date.now() + Math.random(),
         user: randomUser,
         ...randomDonation,
+        emoji: currentEmojis[randomDonation.category],
         finalAmount: randomDonation.coins * randomMultiplier,
         timestamp: new Date(),
         streak: Math.floor(Math.random() * 5) + 1,
@@ -50,12 +142,11 @@ const LiveVideo = () => {
 
       setFakeDonations(prev => [fakeDonation, ...prev.slice(0, 3)]);
       
-      // Create floating coin for fake donation
       const coinId = Date.now() + Math.random();
       const newCoin = {
         id: coinId,
-        x: Math.random() * 40 + 30, // Reduced range to prevent horizontal scroll
-        y: Math.random() * 30 + 35,
+        x: Math.random() * 60 + 20,
+        y: Math.random() * 40 + 30,
         emoji: fakeDonation.emoji,
         coins: fakeDonation.finalAmount,
         multiplier: 1
@@ -63,34 +154,54 @@ const LiveVideo = () => {
       
       setFloatingCoins(prev => [...prev, newCoin]);
       
-      // Remove fake donation after 6 seconds
       setTimeout(() => {
         setFakeDonations(prev => prev.filter(d => d.id !== fakeDonation.id));
       }, 6000);
       
-      // Remove floating coin after 2 seconds
       setTimeout(() => {
         setFloatingCoins(prev => prev.filter(coin => coin.id !== coinId));
       }, 2000);
     };
 
-    // Start generating fake donations immediately
     generateFakeDonation();
     
     const interval = setInterval(() => {
       generateFakeDonation();
-    }, Math.random() * 5000 + 3000); // Random interval between 3-8 seconds
+    }, Math.random() * 5000 + 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [currentEmojis]);
+
+  const calculateLevel = (points) => {
+    return Math.floor(points / 500) + 1;
+  };
+
+  const checkForBadges = (newStreak, newLevel, newPoints) => {
+    const newBadges = [...userBadges];
+    
+    if (newStreak >= 5 && !newBadges.includes('streak-master')) {
+      newBadges.push('streak-master');
+    }
+    if (newStreak >= 10 && !newBadges.includes('weekly-warrior')) {
+      newBadges.push('weekly-warrior');
+    }
+    if (newLevel >= 15 && !newBadges.includes('level-up')) {
+      newBadges.push('level-up');
+    }
+    if (newPoints >= 10000 && !newBadges.includes('generous-heart')) {
+      newBadges.push('generous-heart');
+    }
+    
+    setUserBadges(newBadges);
+  };
 
   const createFloatingCoin = (donation) => {
     const coinId = Date.now() + Math.random();
     const newCoin = {
       id: coinId,
-      x: Math.random() * 40 + 30, // Reduced range to prevent horizontal scroll
-      y: Math.random() * 25 + 40,
-      emoji: donation.emoji,
+      x: Math.random() * 60 + 20,
+      y: Math.random() * 40 + 30,
+      emoji: currentEmojis[donation.category],
       coins: donation.coins,
       multiplier: multiplier
     };
@@ -106,11 +217,11 @@ const LiveVideo = () => {
     setCelebrationMode(true);
     setPulseEffect(true);
     
-    for (let i = 0; i < 8; i++) { // Reduced from 12 to 8
+    for (let i = 0; i < 8; i++) {
       setTimeout(() => {
         const celebCoin = {
           id: Date.now() + i,
-          x: Math.random() * 60 + 20, // Contained within safe bounds
+          x: Math.random() * 60 + 20,
           y: Math.random() * 60 + 20,
           emoji: ['🎉', '🔥', '⭐', '🏆', '💎', '🎯'][Math.floor(Math.random() * 6)],
           coins: '+' + (10 * multiplier),
@@ -129,27 +240,37 @@ const LiveVideo = () => {
   const handleQuickDonate = (donation) => {
     if (userCoins >= donation.coins) {
       const finalAmount = donation.coins * multiplier;
-      const pointsGained = finalAmount * 10; // 10 points per sadaqah coin
+      const pointsGained = finalAmount * 10;
+      const newCoins = userCoins - donation.coins;
+      const newPoints = userPoints + pointsGained;
+      const newLevel = calculateLevel(newPoints);
+      const newStreak = streakCount + 1;
       
-      // Deduct sadaqah coins and add points
-      setUserCoins(prev => prev - donation.coins);
-      setUserPoints(prev => prev + pointsGained);
-      setStreakCount(prev => prev + 1);
+      setUserCoins(newCoins);
+      setUserPoints(newPoints);
+      setUserLevel(newLevel);
+      setStreakCount(newStreak);
       
-      if (streakCount > 0 && streakCount % 3 === 0) {
+      if (newLevel > userLevel) {
+        triggerCelebration();
+      }
+      
+      if (newStreak > 0 && newStreak % 3 === 0) {
         setMultiplier(prev => Math.min(prev + 0.5, 3));
         triggerCelebration();
       }
       
+      checkForBadges(newStreak, newLevel, newPoints);
       createFloatingCoin(donation);
       
       const newDonation = {
         id: Date.now(),
         user: 'You',
         ...donation,
+        emoji: currentEmojis[donation.category],
         finalAmount,
         timestamp: new Date(),
-        streak: streakCount + 1
+        streak: newStreak
       };
       
       setRecentDonations(prev => [newDonation, ...prev.slice(0, 4)]);
@@ -171,9 +292,7 @@ const LiveVideo = () => {
 
   return (
     <div className="w-full max-w-full overflow-hidden">
-      {/* Video Container - Fixed aspect ratio and no overflow */}
       <div className="relative w-full aspect-video bg-gray-900 rounded-t-xl overflow-hidden">
-        {/* Background Video Placeholder */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           <div className="text-center text-white">
             <Play className="h-20 w-20 mx-auto mb-6 opacity-80" />
@@ -182,37 +301,45 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Top UI Elements */}
         <div className="absolute top-0 left-0 right-0 p-4 z-10">
           <div className="flex justify-between items-start">
-            {/* Live Badge */}
             <Badge className="bg-red-500 hover:bg-red-600 text-white shadow-lg px-3 py-2 animate-pulse">
               <div className="w-2 h-2 bg-white rounded-full mr-2 animate-ping"></div>
               LIVE
             </Badge>
 
-            {/* Top Right Stats */}
             <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-md rounded-xl p-3 shadow-xl border border-white/20">
               <div className="flex items-center text-white text-sm font-medium hover:scale-110 transition-transform cursor-pointer">
                 <Users className={`h-4 w-4 mr-2 ${pulseEffect ? 'animate-pulse text-green-400' : ''}`} />
                 <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold">1,247</span>
               </div>
+              
               <div className="w-px h-4 bg-white/30"></div>
               <div className="flex items-center text-purple-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer">
                 <Star className="h-4 w-4 mr-1 text-purple-400" />
                 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{userPoints}</span>
               </div>
+              
               <div className="w-px h-4 bg-white/30"></div>
               <div className="flex items-center text-amber-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer">
                 <GoldCoin3D size={18} className="mr-2" />
                 <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{userCoins}</span>
               </div>
+              
+              <div className="w-px h-4 bg-white/30"></div>
+              <div className="flex items-center text-blue-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-blue-500/20 to-purple-500/20 px-2 py-1 rounded-lg border border-blue-400/30">
+                <Crown className="h-3 w-3 mr-1 text-yellow-400" />
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  Lv.{userLevel}
+                </span>
+              </div>
+              
               {streakCount > 0 && (
                 <>
                   <div className="w-px h-4 bg-white/30"></div>
-                  <div className="flex items-center text-purple-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-2 py-1 rounded-lg border border-purple-400/30">
+                  <div className="flex items-center text-purple-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-orange-500/20 to-red-500/20 px-2 py-1 rounded-lg border border-orange-400/30">
                     <Flame className="h-3 w-3 mr-1 text-orange-400 animate-pulse" />
-                    <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
                       {streakCount}x{multiplier}
                     </span>
                   </div>
@@ -222,7 +349,27 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Top Up Sadaqah Coins Button - Top Right positioned absolutely */}
+        {/* User Badges Display */}
+        <div className="absolute top-16 left-4 z-20 flex space-x-2">
+          {userBadges.slice(0, 3).map((badgeKey) => {
+            const badge = badges[badgeKey];
+            return (
+              <div
+                key={badgeKey}
+                className={`w-8 h-8 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-sm shadow-lg border-2 border-white/50 hover:scale-110 transition-transform cursor-pointer`}
+                title={badge.name}
+              >
+                {badge.icon}
+              </div>
+            );
+          })}
+          {userBadges.length > 3 && (
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-gray-400 to-gray-600 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/50">
+              +{userBadges.length - 3}
+            </div>
+          )}
+        </div>
+
         <div className="absolute top-20 right-4 z-30">
           <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -232,8 +379,7 @@ const LiveVideo = () => {
           </Button>
         </div>
 
-        {/* Live Donations Feed */}
-        <div className="absolute left-4 top-28 space-y-2 z-20 max-w-sm">
+        <div className="absolute left-4 top-32 space-y-2 z-20 max-w-sm">
           {[...recentDonations, ...fakeDonations].slice(0, 4).map((donation) => (
             <div
               key={donation.id}
@@ -257,7 +403,6 @@ const LiveVideo = () => {
           ))}
         </div>
 
-        {/* Celebration Overlay */}
         {celebrationMode && (
           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 animate-pulse z-40 pointer-events-none">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -266,7 +411,6 @@ const LiveVideo = () => {
           </div>
         )}
 
-        {/* Floating Coins Animation */}
         {floatingCoins.map((coin) => (
           <div
             key={coin.id}
@@ -285,16 +429,15 @@ const LiveVideo = () => {
           </div>
         ))}
 
-        {/* Donation Buttons - Bottom Center */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60">
           <div className="flex justify-center space-x-2 bg-gray-800/90 backdrop-blur-md rounded-2xl p-3 shadow-2xl border border-gray-600/50">
             {quickDonations.map((donation, index) => (
               <button
-                key={donation.label}
+                key={donation.key}
                 onClick={() => handleQuickDonate(donation)}
                 disabled={userCoins < donation.coins}
                 className={`
-                  group relative w-14 h-14 rounded-2xl shadow-lg
+                  group relative w-16 h-16 rounded-2xl shadow-lg
                   bg-gradient-to-br ${donation.color}
                   hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
                   transition-all duration-300 border-2 border-white/40
@@ -306,8 +449,11 @@ const LiveVideo = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
                 <div className="relative h-full flex flex-col items-center justify-center text-white z-10">
-                  <div className="text-lg mb-1 group-hover:scale-125 transition-transform">{donation.emoji}</div>
+                  <div className="text-xl mb-1 group-hover:scale-125 transition-transform animate-pulse">
+                    {currentEmojis[donation.category]}
+                  </div>
                   <div className="text-xs font-bold">{donation.coins}</div>
+                  <div className="text-[8px] opacity-80">sadaqah coins</div>
                 </div>
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
@@ -317,7 +463,6 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Bottom Stats Section - Connected to video with no gap */}
       <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
@@ -330,10 +475,6 @@ const LiveVideo = () => {
                 <span className="text-xs ml-1 opacity-80 text-emerald-300">sadaqah coins</span>
               </div>
               <span className="text-gray-300">donated in last hour</span>
-              <div className="flex items-center text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded-lg border border-yellow-400/30 animate-pulse">
-                <Flame className="h-3 w-3 mr-1 animate-pulse" />
-                <span className="text-xs font-bold">FOMO Alert!</span>
-              </div>
             </div>
           </div>
           
@@ -354,7 +495,6 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Enhanced Animations */}
       <style>{`
         @keyframes floatUp {
           0% {
