@@ -36,7 +36,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png" 
               alt="Your Jannah Logo" 
-              className="w-[350px] h-auto object-contain"
+              className="h-12 w-auto object-contain"
             />
           </Link>
 
