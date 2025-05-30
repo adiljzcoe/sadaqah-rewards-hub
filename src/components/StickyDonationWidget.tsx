@@ -86,7 +86,7 @@ const StickyDonationWidget = () => {
           const liveFeedHeight = liveFeedRect.height;
           const middleOfLiveFeed = liveFeedTop + (liveFeedHeight / 2);
           
-          setIsSticky(window.scrollY > middleOfliveFeed);
+          setIsSticky(window.scrollY > middleOfLiveFeed);
         } else {
           // Final fallback to original behavior if we can't find the element
           const viewportHeight = window.innerHeight;
