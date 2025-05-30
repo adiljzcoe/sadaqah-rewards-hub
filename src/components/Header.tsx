@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -164,41 +163,6 @@ const Header = () => {
 
           {/* User Section */}
           <div className="flex items-center space-x-3">
-            {/* Level Display with Progress - Made visible on medium screens and up */}
-            <div className="hidden md:flex items-center space-x-3 bg-gradient-to-r from-blue-50 to-purple-50 px-3 py-2 rounded-xl border border-blue-200/50 shadow-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
-                  {userLevel}
-                </div>
-                <div className="flex flex-col">
-                  <div className="text-xs font-semibold text-gray-700">Level {userLevel}</div>
-                  <div className="w-20 bg-gray-200 rounded-full h-2 shadow-inner">
-                    <div 
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300 shadow-sm"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
-                  <div className="text-xs text-gray-500 font-medium">{pointsToNextLevel} to go</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Level Display - Compact version for smaller screens */}
-            <div className="md:hidden flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-purple-50 px-2 py-1 rounded-lg border border-blue-200/50">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                {userLevel}
-              </div>
-              <div className="flex flex-col">
-                <div className="text-xs font-semibold text-gray-700">Lv {userLevel}</div>
-                <div className="w-12 bg-gray-200 rounded-full h-1">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-1 rounded-full transition-all duration-300"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-
             {/* Points Display */}
             <div className="hidden sm:flex items-center space-x-2 jannah-counter px-4 py-2">
               <Star className="h-5 w-5 text-yellow-300" />
@@ -211,7 +175,7 @@ const Header = () => {
               )}
             </div>
 
-            {/* User Menu */}
+            {/* User Menu with Level Display */}
             <div className="relative">
               <div className="flex flex-col items-center">
                 <Link to="/profile">
@@ -221,8 +185,25 @@ const Header = () => {
                   </Button>
                 </Link>
                 
-                {/* Subtle upgrade link under name */}
-                <div className="mt-1">
+                {/* Level display and upgrade link under name */}
+                <div className="mt-1 flex flex-col items-center space-y-1">
+                  {/* Compact Level Display */}
+                  <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-purple-50 px-2 py-1 rounded-lg border border-blue-200/50">
+                    <div className="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                      {userLevel}
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="text-xs font-semibold text-gray-700">Lv {userLevel}</div>
+                      <div className="w-8 bg-gray-200 rounded-full h-1">
+                        <div 
+                          className="bg-gradient-to-r from-blue-500 to-purple-600 h-1 rounded-full transition-all duration-300"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-500">{pointsToNextLevel}</div>
+                  </div>
+                  
                   <Link to="/membership" className="text-xs text-gray-500 hover:text-purple-600 transition-colors duration-200 flex items-center gap-1">
                     <ArrowUp className="h-3 w-3" />
                     Upgrade to 3x
