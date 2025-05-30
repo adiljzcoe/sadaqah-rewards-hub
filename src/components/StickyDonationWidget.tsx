@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Heart, Sparkles, Zap, Crown } from 'lucide-react';
+import { AlertCircle, Heart } from 'lucide-react';
 
 const quickAmounts = [10, 25, 50, 100];
 const currencies = [
@@ -71,29 +71,13 @@ const StickyDonationWidget = () => {
   }, []);
 
   const currentCurrency = currencies.find(c => c.code === currency);
-  const currentCause = emergencyCauses.find(c => c.id === selectedCause);
   const donationAmount = Number(customAmount) || selectedAmount;
-  
-  // Enhanced benefits for members
-  const memberMultiplier = isMember ? 2 : 1;
-  const sadaqahCoins = donationAmount * 10 * memberMultiplier;
-  const jannahPoints = donationAmount * 10 * memberMultiplier;
-
-  // Dynamic impact message based on donation amount
-  const getImpactMessage = (amount: number) => {
-    const multipliedAmount = amount * memberMultiplier;
-    if (multipliedAmount >= 200) return "= JANNAH SUPERSTAR! 🌟";
-    if (multipliedAmount >= 100) return "= MASSIVE IMPACT! 💫";
-    if (multipliedAmount >= 50) return "= HUGE IMPACT! ⚡";
-    if (multipliedAmount >= 20) return "= AMAZING IMPACT! ✨";
-    return "= GREAT IMPACT! 🎯";
-  };
 
   return (
     <div className={`${isSticky ? 'fixed' : 'relative'} top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-lg transition-all duration-300`}>
-      <div className="container mx-auto px-4 py-2">
+      <div className={`container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-4 mb-2 h-8">
+          <TabsList className={`grid grid-cols-4 mb-2 transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
             <TabsTrigger value="sadaqah" className="text-xs py-1">Sadaqah</TabsTrigger>
             <TabsTrigger value="zakat" className="text-xs py-1">Zakat</TabsTrigger>
             <TabsTrigger value="lillah" className="text-xs py-1">Lillah</TabsTrigger>
@@ -105,7 +89,7 @@ const StickyDonationWidget = () => {
               {/* Emergency Cause Selection */}
               <div className="col-span-4">
                 <Select value={selectedCause} onValueChange={setSelectedCause}>
-                  <SelectTrigger className="h-8 text-xs">
+                  <SelectTrigger className={`text-xs transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -130,7 +114,7 @@ const StickyDonationWidget = () => {
                       setSelectedAmount(amount);
                       setCustomAmount('');
                     }}
-                    className={`py-1.5 px-1 rounded text-xs font-medium transition-all ${
+                    className={`rounded text-xs font-medium transition-all ${isSticky ? 'py-1 px-1' : 'py-1.5 px-1'} ${
                       selectedAmount === amount && !customAmount
                         ? 'bg-emerald-600 text-white shadow-md'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -144,7 +128,7 @@ const StickyDonationWidget = () => {
               {/* Custom amount & Currency */}
               <div className="col-span-2 flex gap-1">
                 <Select value={currency} onValueChange={setCurrency}>
-                  <SelectTrigger className="h-8 w-12 text-xs">
+                  <SelectTrigger className={`w-12 text-xs transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -163,13 +147,13 @@ const StickyDonationWidget = () => {
                     setCustomAmount(e.target.value);
                     setSelectedAmount(0);
                   }}
-                  className="h-8 text-xs flex-1"
+                  className={`text-xs flex-1 transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}
                 />
               </div>
 
               {/* Donate button */}
               <div className="col-span-2">
-                <Button className="w-full h-8 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative">
+                <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
                   <Heart className="h-3 w-3 mr-1" />
                   {currentCurrency?.symbol}{donationAmount}
                   {isMember && (
@@ -181,39 +165,26 @@ const StickyDonationWidget = () => {
               </div>
             </div>
 
-            {/* Exciting Impact message & Payment icons */}
-            <div className="flex items-center justify-between mt-2">
-              {/* Exciting Total impact message */}
-              <div className="flex-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 animate-shimmer opacity-20"></div>
-                <div className="relative px-3 py-2 rounded-lg bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-gradient-to-r from-emerald-200 via-blue-200 to-purple-200 animate-subtle-pulse">
-                  <div className="flex items-center space-x-1 flex-wrap">
-                    <Sparkles className="h-3 w-3 text-emerald-600 animate-bounce" />
-                    {isMember && <Crown className="h-3 w-3 text-purple-600 animate-pulse" />}
-                    <span className="text-xs font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      🚀 TOTAL IMPACT: {currentCurrency?.symbol}{donationAmount} + {sadaqahCoins} Sadaqah coins from your jannah + {jannahPoints} jannah points for you {getImpactMessage(donationAmount)}
-                    </span>
-                    <Zap className="h-3 w-3 text-blue-600 animate-pulse" />
+            {/* Total impact message & Payment icons - Only show when not sticky */}
+            {!isSticky && (
+              <div className="flex items-center justify-between mt-2">
+                {/* Payment icons */}
+                <div className="flex items-center space-x-2 ml-auto">
+                  <span className="text-xs text-gray-500">Pay:</span>
+                  <div className="flex space-x-1">
+                    <div className="w-5 h-3 bg-blue-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
+                      PP
+                    </div>
+                    <div className="w-5 h-3 bg-blue-800 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
+                      V
+                    </div>
+                    <div className="w-5 h-3 bg-red-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
+                      MC
+                    </div>
                   </div>
                 </div>
               </div>
-
-              {/* Payment icons */}
-              <div className="flex items-center space-x-2 ml-2">
-                <span className="text-xs text-gray-500">Pay:</span>
-                <div className="flex space-x-1">
-                  <div className="w-5 h-3 bg-blue-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
-                    PP
-                  </div>
-                  <div className="w-5 h-3 bg-blue-800 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
-                    V
-                  </div>
-                  <div className="w-5 h-3 bg-red-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
-                    MC
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
 
           </TabsContent>
         </Tabs>
