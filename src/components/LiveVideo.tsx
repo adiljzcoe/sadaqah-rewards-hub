@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Play, Users, Heart, Share2, Volume2, Sparkles, Zap, Star, Gift, Trophy, Fire, Target } from 'lucide-react';
+import { Play, Users, Heart, Share2, Volume2, Sparkles, Zap, Star, Gift, Trophy, Flame, Target } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 
 const LiveVideo = () => {
@@ -176,7 +175,7 @@ const LiveVideo = () => {
                 <>
                   <div className="w-px h-4 bg-white/30"></div>
                   <div className="flex items-center text-purple-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-2 py-1 rounded-lg border border-purple-400/30">
-                    <Fire className="h-3 w-3 mr-1 text-orange-400 animate-pulse" />
+                    <Flame className="h-3 w-3 mr-1 text-orange-400 animate-pulse" />
                     <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                       {streakCount}x{multiplier}
                     </span>
@@ -205,7 +204,7 @@ const LiveVideo = () => {
                 <div className="font-bold">You helped with {donation.label}!</div>
                 <div className="text-xs opacity-90 flex items-center space-x-2">
                   <span>{donation.finalAmount} coins • Streak {donation.streak}</span>
-                  {donation.streak % 3 === 0 && <Fire className="h-3 w-3 text-orange-300 animate-pulse" />}
+                  {donation.streak % 3 === 0 && <Flame className="h-3 w-3 text-orange-300 animate-pulse" />}
                   <Target className="h-3 w-3 text-blue-300" />
                 </div>
               </div>
@@ -258,7 +257,7 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Bottom Section - All Grey with Enhanced Interactivity */}
+      {/* All Grey Bottom Section - Enhanced Interactivity */}
       <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           {/* Left Side - Enhanced Stats */}
@@ -273,7 +272,7 @@ const LiveVideo = () => {
               </div>
               <span className="text-gray-300">donated in last hour</span>
               <div className="flex items-center text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded-lg border border-yellow-400/30">
-                <Fire className="h-3 w-3 mr-1 animate-pulse" />
+                <Flame className="h-3 w-3 mr-1 animate-pulse" />
                 <span className="text-xs font-bold">Hot streak!</span>
               </div>
             </div>
