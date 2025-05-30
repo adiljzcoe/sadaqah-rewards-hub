@@ -533,11 +533,15 @@ const LiveVideo = () => {
           </div>
         ))}
 
-        {/* Donation buttons at bottom - Ultra transparent glass effect */}
+        {/* Donation buttons at bottom - Mac OS App Drawer Style */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60">
-          <div className="flex justify-center items-center space-x-4 bg-gray-800/10 backdrop-blur-xl rounded-2xl p-3 shadow-2xl border border-gray-600/25">
-            {/* Regular donation buttons */}
-            <div className="flex space-x-2">
+          <div className="flex justify-center items-center space-x-4 rounded-2xl p-4 shadow-2xl border border-gray-300/30 backdrop-blur-2xl bg-gradient-to-b from-gray-200/20 via-gray-100/15 to-gray-300/25 relative overflow-hidden">
+            {/* Mac OS frosted glass effect with subtle texture */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/10 to-white/5 rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-2xl"></div>
+            
+            {/* Regular donation buttons - Full opacity */}
+            <div className="flex space-x-2 relative z-10">
               {quickDonations.map((donation, index) => (
                 <button
                   key={donation.key}
@@ -547,13 +551,11 @@ const LiveVideo = () => {
                     group relative w-16 h-16 rounded-2xl shadow-lg
                     bg-gradient-to-br ${donation.color}
                     hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                    transition-all duration-300 border-2 border-white/25 backdrop-blur-sm
-                    ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/50 hover:rotate-3' : ''}
+                    transition-all duration-300 border-2 border-white/40
+                    ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60 hover:rotate-3' : ''}
                   `}
                   style={{
-                    animationDelay: `${index * 0.1}s`,
-                    background: `linear-gradient(to bottom right, var(--tw-gradient-stops))`,
-                    opacity: '0.25'
+                    animationDelay: `${index * 0.1}s`
                   }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
@@ -573,9 +575,9 @@ const LiveVideo = () => {
               ))}
             </div>
 
-            {/* Epic donation button */}
-            <div className="flex items-center">
-              <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/25 to-transparent mx-2"></div>
+            {/* Epic donation button - Full opacity */}
+            <div className="flex items-center relative z-10">
+              <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/40 to-transparent mx-2"></div>
               <EpicDonationButton onEpicDonation={handleEpicDonation} />
             </div>
           </div>
