@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -275,7 +274,7 @@ const LiveVideo = () => {
           ))}
         </div>
 
-        {/* Bottom Action Bar - Jackpot Style */}
+        {/* Bottom Action Bar - Moved buttons up */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-black/80 via-gray-900/90 to-black/80 backdrop-blur-sm p-4 z-20">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -291,12 +290,6 @@ const LiveVideo = () => {
             </div>
             
             <div className="flex items-center space-x-3">
-              {/* Top Up Coins - Call to Action */}
-              <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg border-2 border-yellow-300 animate-pulse">
-                <Gift className="h-4 w-4 mr-2" />
-                Get More Coins
-              </Button>
-              
               <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
                 <Share2 className="h-4 w-4 mr-2" />
                 Share & Earn 50 Coins
@@ -312,6 +305,14 @@ const LiveVideo = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Get More Coins Button - Moved below video */}
+      <div className="flex justify-center py-4 bg-gradient-to-r from-gray-900 via-gray-800 to-black">
+        <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg border-2 border-yellow-300 animate-pulse px-8 py-3">
+          <Gift className="h-5 w-5 mr-2" />
+          Get More Coins
+        </Button>
       </div>
 
       {/* Custom Animations */}
