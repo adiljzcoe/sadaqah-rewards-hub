@@ -105,47 +105,19 @@ const LiveVideo = () => {
 
   return (
     <div className="relative">
-      {/* Video Container */}
+      {/* Video Container with proper z-index hierarchy */}
       <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-t-xl shadow-2xl">
-        {/* Background Video Placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-          <div className="text-center text-white z-10">
+        {/* Background Video Placeholder - z-0 (base layer) */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center z-0">
+          <div className="text-center text-white">
             <Play className="h-20 w-20 mx-auto mb-6 opacity-80" />
             <h3 className="text-2xl font-bold mb-3">Live: Emergency Relief for Gaza</h3>
             <p className="text-gray-300 text-lg">Providing urgent aid to families in need</p>
           </div>
         </div>
 
-        {/* Floating Coins Animation */}
-        {floatingCoins.map((coin) => (
-          <div
-            key={coin.id}
-            className="absolute pointer-events-none z-30 animate-bounce"
-            style={{
-              left: `${coin.x}%`,
-              top: `${coin.y}%`,
-              animation: 'floatUp 2s ease-out forwards'
-            }}
-          >
-            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-              <span className="text-lg">{coin.emoji}</span>
-              <span>+{coin.coins * coin.multiplier}</span>
-              <Sparkles className="h-3 w-3 animate-spin" />
-            </div>
-          </div>
-        ))}
-
-        {/* Celebration Overlay */}
-        {celebrationMode && (
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 animate-pulse z-20 pointer-events-none">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-6xl animate-bounce">🎉</div>
-            </div>
-          </div>
-        )}
-
-        {/* Top UI Elements */}
-        <div className="absolute top-0 left-0 right-0 p-6 z-20">
+        {/* Top UI Elements - z-10 */}
+        <div className="absolute top-0 left-0 right-0 p-6 z-10">
           <div className="flex justify-between items-start">
             {/* Live Badge */}
             <Badge className="bg-red-500 hover:bg-red-600 text-white shadow-lg px-3 py-2">
@@ -192,7 +164,7 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Recent Donations Feed with Enhanced Animation */}
+        {/* Recent Donations Feed - z-20 */}
         <div className="absolute left-6 top-24 space-y-2 z-20">
           {recentDonations.map((donation) => (
             <div
@@ -216,48 +188,76 @@ const LiveVideo = () => {
           ))}
         </div>
 
-        {/* Floating Donation Buttons - Now overlapping the video border */}
-        <div className="absolute bottom-0 left-0 right-0 z-30 transform translate-y-1/2">
-          <div className="flex justify-center px-6">
-            <div className="grid grid-cols-6 gap-4 bg-gray-800/80 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-gray-600/50">
-              {quickDonations.map((donation, index) => (
-                <button
-                  key={donation.label}
-                  onClick={() => handleQuickDonate(donation)}
-                  disabled={userCoins < donation.coins}
-                  className={`
-                    group relative w-20 h-20 rounded-2xl shadow-lg
-                    bg-gradient-to-br ${donation.color}
-                    hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                    transition-all duration-300 border-4 border-white/40
-                    ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/80 hover:rotate-3' : ''}
-                  `}
-                  style={{
-                    animationDelay: `${index * 0.1}s`
-                  }}
-                >
-                  {/* Shine Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
-                  
-                  <div className="relative h-full flex flex-col items-center justify-center text-white">
-                    <div className="text-2xl mb-1 group-hover:scale-125 transition-transform">{donation.emoji}</div>
-                    <div className="text-xs font-bold">{donation.coins}</div>
-                    <div className="text-[8px] opacity-80">coins</div>
-                  </div>
-
-                  {/* Glow Effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
-                  {/* Pulse Ring */}
-                  <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
-                </button>
-              ))}
+        {/* Celebration Overlay - z-30 */}
+        {celebrationMode && (
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 animate-pulse z-30 pointer-events-none">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-6xl animate-bounce">🎉</div>
             </div>
+          </div>
+        )}
+
+        {/* Floating Coins Animation - z-40 (highest priority for visibility) */}
+        {floatingCoins.map((coin) => (
+          <div
+            key={coin.id}
+            className="absolute pointer-events-none z-40 animate-bounce"
+            style={{
+              left: `${coin.x}%`,
+              top: `${coin.y}%`,
+              animation: 'floatUp 2s ease-out forwards'
+            }}
+          >
+            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+              <span className="text-lg">{coin.emoji}</span>
+              <span>+{coin.coins * coin.multiplier}</span>
+              <Sparkles className="h-3 w-3 animate-spin" />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Floating Donation Buttons - z-50 (highest to ensure visibility) */}
+      <div className="absolute bottom-0 left-0 right-0 z-50 transform translate-y-1/2">
+        <div className="flex justify-center px-6">
+          <div className="grid grid-cols-6 gap-4 bg-gray-800/80 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-gray-600/50">
+            {quickDonations.map((donation, index) => (
+              <button
+                key={donation.label}
+                onClick={() => handleQuickDonate(donation)}
+                disabled={userCoins < donation.coins}
+                className={`
+                  group relative w-20 h-20 rounded-2xl shadow-lg
+                  bg-gradient-to-br ${donation.color}
+                  hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
+                  transition-all duration-300 border-4 border-white/40
+                  ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/80 hover:rotate-3' : ''}
+                `}
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                {/* Shine Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
+                
+                <div className="relative h-full flex flex-col items-center justify-center text-white z-10">
+                  <div className="text-2xl mb-1 group-hover:scale-125 transition-transform">{donation.emoji}</div>
+                  <div className="text-xs font-bold">{donation.coins}</div>
+                  <div className="text-[8px] opacity-80">coins</div>
+                </div>
+
+                {/* Glow Effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Pulse Ring */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* All Grey Bottom Section - Enhanced Interactivity */}
+      {/* All Grey Bottom Section */}
       <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-16 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           {/* Left Side - Enhanced Stats */}
@@ -296,7 +296,7 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Get More Coins - Enhanced Design */}
+      {/* Get More Coins */}
       <div className="mt-4 flex justify-center">
         <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-xl border-2 border-yellow-300 px-8 py-3 text-lg font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
