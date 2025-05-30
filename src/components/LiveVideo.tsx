@@ -7,7 +7,7 @@ import { Play, Users, Heart, Share2, Volume2 } from 'lucide-react';
 
 const LiveVideo = () => {
   return (
-    <Card className="relative overflow-hidden">
+    <div className="relative overflow-hidden">
       {/* Video Container */}
       <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center">
         {/* Placeholder for video - would be YouTube embed in real implementation */}
@@ -91,7 +91,7 @@ const LiveVideo = () => {
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

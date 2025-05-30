@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -101,27 +100,8 @@ const Index = () => {
       <Header />
       <StickyDonationWidget />
       
-      {/* Hero Section with Live Stream */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Make a Difference, Earn Rewards
-          </h2>
-          <p className="text-lg text-gray-700 mb-6 max-w-2xl mx-auto">
-            Join thousands of donors making an impact while earning 
-            <span className="vibrant-text-emerald font-semibold"> Jannah Points</span> and 
-            <span className="vibrant-text-blue font-semibold"> Sadaqah Coins</span>
-          </p>
-          <div className="flex justify-center space-x-4 mb-6">
-            <div className="vibrant-gradient text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg">
-              🔥 2x Points Active
-            </div>
-            <div className="accent-gradient text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg">
-              ⚡ Live Rewards
-            </div>
-          </div>
-        </div>
-
+      {/* Main Content - Video Section */}
+      <section className="container mx-auto px-4">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Live Stream - Main Column */}
           <div className="lg:col-span-2 space-y-6">
