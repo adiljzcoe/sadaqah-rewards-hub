@@ -20,6 +20,8 @@ const LiveVideo = () => {
   const [userBadges, setUserBadges] = useState(['first-donor', 'streak-master']);
   const [dailyStreak, setDailyStreak] = useState(5);
   const [weeklyStreak, setWeeklyStreak] = useState(2);
+  const [showAffirmation, setShowAffirmation] = useState(false);
+  const [currentAffirmation, setCurrentAffirmation] = useState('');
 
   // Rotating emojis for each category
   const categoryEmojis = {
@@ -99,6 +101,19 @@ const LiveVideo = () => {
     'weekly-warrior': { name: 'Weekly Warrior', icon: '⚡', color: 'from-purple-400 to-violet-600' }
   };
 
+  const affirmations = [
+    'You are so generous! 💖',
+    'Your kindness is amazing! ✨',
+    'What a beautiful heart! 🌟',
+    'You\'re making a real difference! 🙌',
+    'Your compassion inspires others! 💫',
+    'Such a generous soul! 🤲',
+    'You are truly blessed! 🌈',
+    'Your charity is beautiful! 💝',
+    'Allah will reward your kindness! 🤲',
+    'You have a golden heart! 💛'
+  ];
+
   const fakeUsers = [
     'Ahmad M.', 'Sarah K.', 'Omar R.', 'Fatima S.', 'Yusuf A.', 'Aisha B.', 'Hassan M.', 'Khadija L.',
     'Ali T.', 'Zainab H.', 'Ibrahim K.', 'Maryam N.', 'Abdullah R.', 'Hafsa M.', 'Anonymous'
@@ -108,7 +123,7 @@ const LiveVideo = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentEmojis(prev => {
-        const newEmojis = {};
+        const newEmojis = { ...prev };
         Object.keys(categoryEmojis).forEach(category => {
           const emojis = categoryEmojis[category];
           const currentIndex = emojis.indexOf(prev[category]);
@@ -195,6 +210,16 @@ const LiveVideo = () => {
     setUserBadges(newBadges);
   };
 
+  const showRandomAffirmation = () => {
+    const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+    setCurrentAffirmation(randomAffirmation);
+    setShowAffirmation(true);
+    
+    setTimeout(() => {
+      setShowAffirmation(false);
+    }, 3000);
+  };
+
   const createFloatingCoin = (donation) => {
     const coinId = Date.now() + Math.random();
     const newCoin = {
@@ -262,6 +287,7 @@ const LiveVideo = () => {
       
       checkForBadges(newStreak, newLevel, newPoints);
       createFloatingCoin(donation);
+      showRandomAffirmation();
       
       const newDonation = {
         id: Date.now(),
@@ -379,6 +405,15 @@ const LiveVideo = () => {
           </Button>
         </div>
 
+        {/* Positive Affirmation */}
+        {showAffirmation && (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
+            <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-2xl text-lg font-bold shadow-xl border-2 border-white/50">
+              {currentAffirmation}
+            </div>
+          </div>
+        )}
+
         <div className="absolute left-4 top-32 space-y-2 z-20 max-w-sm">
           {[...recentDonations, ...fakeDonations].slice(0, 4).map((donation) => (
             <div
@@ -452,7 +487,10 @@ const LiveVideo = () => {
                   <div className="text-xl mb-1 group-hover:scale-125 transition-transform animate-pulse">
                     {currentEmojis[donation.category]}
                   </div>
-                  <div className="text-xs font-bold">{donation.coins}</div>
+                  <div className="flex items-center text-xs font-bold">
+                    <GoldCoin3D size={12} className="mr-1" />
+                    {donation.coins}
+                  </div>
                   <div className="text-[8px] opacity-80">sadaqah coins</div>
                 </div>
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
