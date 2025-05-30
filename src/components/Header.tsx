@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,9 +32,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 hover-scale cursor-pointer">
-            <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-full px-6 py-3 shadow-lg">
-              <span className="text-white font-bold text-xl">Your Jannah</span>
-            </div>
+            <img 
+              src="/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png" 
+              alt="Your Jannah Logo" 
+              className="h-12 w-auto"
+            />
           </Link>
 
           {/* Navigation */}
