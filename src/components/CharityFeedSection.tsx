@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Heart, MapPin, Clock, Camera, MessageSquare, Users, Eye } from 'lucide-react';
 
 interface FeedPost {
@@ -114,8 +113,9 @@ const CharityFeedSection = () => {
         </p>
       </div>
 
-      <ScrollArea className="h-96">
-        <div className="p-6 space-y-4">
+      <div className="flex">
+        {/* Feed Content - Left Side */}
+        <div className="w-2/3 p-6 space-y-4">
           {feedPosts.map((post, index) => (
             <Card 
               key={post.id}
@@ -209,15 +209,59 @@ const CharityFeedSection = () => {
               </div>
             </Card>
           ))}
-        </div>
-      </ScrollArea>
 
-      {/* Load More Button */}
-      <div className="p-4 border-t bg-gray-50/50">
-        <button className="w-full gel-button vibrant-gradient px-4 py-2 rounded-lg font-medium text-white hover:scale-105 transition-transform duration-300 text-sm">
-          <Users className="h-4 w-4 mr-2" />
-          Load More Updates
-        </button>
+          {/* Load More Button */}
+          <div className="pt-4">
+            <button className="w-full gel-button vibrant-gradient px-4 py-2 rounded-lg font-medium text-white hover:scale-105 transition-transform duration-300 text-sm">
+              <Users className="h-4 w-4 mr-2" />
+              Load More Updates
+            </button>
+          </div>
+        </div>
+
+        {/* Right Sidebar - Ad Space */}
+        <div className="w-1/3 p-6 border-l border-gray-100">
+          <div className="space-y-4">
+            {/* Banner Ad Placeholder */}
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-dashed border-blue-200 rounded-lg p-6 text-center">
+              <div className="text-blue-600 mb-2">📢</div>
+              <h4 className="font-semibold text-gray-800 mb-2">Featured Charity</h4>
+              <p className="text-sm text-gray-600 mb-3">Help us reach our winter appeal goal</p>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors">
+                Learn More
+              </button>
+            </div>
+
+            {/* Another Ad Space */}
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-dashed border-emerald-200 rounded-lg p-6 text-center">
+              <div className="text-emerald-600 mb-2">🌟</div>
+              <h4 className="font-semibold text-gray-800 mb-2">Quick Impact</h4>
+              <p className="text-sm text-gray-600 mb-3">Small donations, big difference</p>
+              <button className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-emerald-700 transition-colors">
+                Donate £10
+              </button>
+            </div>
+
+            {/* Stats Box */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h5 className="font-semibold text-gray-800 mb-3">Today's Impact</h5>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Updates Posted</span>
+                  <span className="font-semibold">12</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Communities Helped</span>
+                  <span className="font-semibold">8</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Lives Touched</span>
+                  <span className="font-semibold">2,450</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Card>
   );
