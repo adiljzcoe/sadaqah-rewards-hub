@@ -187,24 +187,20 @@ const Header = () => {
                   </Button>
                 </Link>
                 
-                {/* Combined VIP Badge with Level and XP */}
+                {/* Combined VIP Badge with Level and XP in one line */}
                 {isMember && (
-                  <div className="mt-1 flex flex-col items-center space-y-1">
-                    <Badge className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-amber-900 text-xs animate-bounce shadow-lg border-2 border-yellow-300/50 font-bold">
-                      <Crown className="h-3 w-3 mr-1" />
-                      VIP Level {userLevel}
-                    </Badge>
-                    
-                    {/* XP Progress Bar */}
-                    <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-50 to-amber-50 px-2 py-1 rounded-lg border border-yellow-200/50">
-                      <div className="w-12 bg-yellow-200 rounded-full h-1">
+                  <div className="mt-1">
+                    <Badge className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-amber-900 text-xs animate-bounce shadow-lg border-2 border-yellow-300/50 font-bold flex items-center space-x-2 px-3 py-1">
+                      <Crown className="h-3 w-3" />
+                      <span>VIP Level {userLevel}</span>
+                      <div className="w-8 bg-yellow-200 rounded-full h-1">
                         <div 
-                          className="bg-gradient-to-r from-yellow-500 to-amber-600 h-1 rounded-full transition-all duration-300"
+                          className="bg-gradient-to-r from-yellow-600 to-amber-700 h-1 rounded-full transition-all duration-300"
                           style={{ width: `${progress}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-amber-700 font-medium">{pointsToNextLevel}</div>
-                    </div>
+                      <span className="text-xs">{pointsToNextLevel}</span>
+                    </Badge>
                   </div>
                 )}
               </div>
