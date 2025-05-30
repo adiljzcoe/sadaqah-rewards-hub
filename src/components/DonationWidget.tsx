@@ -1,14 +1,13 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle } from 'lucide-react';
 
 const donationTypes = [
-  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'from-emerald-500 to-green-600', description: 'Obligatory charity' },
-  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'from-blue-500 to-cyan-600', description: 'Voluntary charity' },
-  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'from-purple-500 to-violet-600', description: 'For Allah\'s sake' },
-  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'from-orange-500 to-red-500', description: 'Regular giving' }
+  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'bg-gradient-to-br from-emerald-500 to-green-600', description: 'Obligatory charity' },
+  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'bg-gradient-to-br from-blue-500 to-cyan-600', description: 'Voluntary charity' },
+  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'bg-gradient-to-br from-purple-500 to-violet-600', description: 'For Allah\'s sake' },
+  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'bg-gradient-to-br from-orange-500 to-red-500', description: 'Regular giving' }
 ];
 
 const quickAmounts = [10, 25, 50, 100];
@@ -54,12 +53,7 @@ const DonationWidget = () => {
               selectedType === type.id 
                 ? 'scale-105 shadow-2xl' 
                 : 'hover:scale-105 shadow-lg'
-            }`}
-            style={{
-              background: `linear-gradient(145deg, var(--tw-gradient-stops))`,
-              '--tw-gradient-from': type.color.split(' ')[0].replace('from-', ''),
-              '--tw-gradient-to': type.color.split(' ')[2].replace('to-', ''),
-            }}
+            } ${type.color}`}
           >
             <div className="relative z-10">
               <div className="text-2xl mb-2">{type.icon}</div>
@@ -67,7 +61,7 @@ const DonationWidget = () => {
               <div className="text-xs opacity-90">{type.description}</div>
             </div>
             {/* Gel highlight effect */}
-            <div className="absolute top-2 left-3 w-8 h-6 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full animate-shimmer"></div>
+            <div className="absolute top-2 left-3 w-8 h-6 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full"></div>
             {/* Inner glow for selected state */}
             {selectedType === type.id && (
               <div className="absolute inset-0 bg-white/10 rounded-2xl"></div>
