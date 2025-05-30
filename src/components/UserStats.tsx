@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp, Building2 } from 'lucide-react';
+import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp, Building2, Shield } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 import { updateStreak, checkAchievements, getStreakData } from '@/utils/streakSystem';
 import { getUserUnmatchedCoins } from '@/utils/matchingPool';
+import { getUserRank, getNextRank, getRankProgress, getPointsToNextRank } from '@/utils/rankSystem';
 import { useToast } from '@/hooks/use-toast';
 
 const UserStats = () => {
@@ -20,6 +20,12 @@ const UserStats = () => {
   const sadaqahCoins = 142;
   const totalDonations = 28;
   const userUnmatchedCoins = getUserUnmatchedCoins('current_user');
+  
+  // Get user's current rank and next rank
+  const currentRank = getUserRank(currentPoints);
+  const nextRank = getNextRank(currentPoints);
+  const rankProgress = getRankProgress(currentPoints);
+  const pointsToNextRank = getPointsToNextRank(currentPoints);
   
   // Mock user membership status - set to false to show upgrade link
   const isMember = false;
@@ -66,16 +72,18 @@ const UserStats = () => {
 
   return (
     <Card className="p-6 game-card">
+      {/* Rank Badge Display */}
       <div className="text-center mb-6">
         <div className="relative inline-block mb-4">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg animate-level-up rank-badge first">
-            {userLevel}
+          <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r ${currentRank.gradient} ring-4 ring-white/20`}>
+            <span className="text-2xl">{currentRank.icon}</span>
           </div>
-          <Badge className="absolute -top-1 -right-1 gel-button bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
-            <Award className="h-3 w-3 mr-1" />
-            {isMember ? 'VIP Member' : 'Rising Star'}
+          <Badge className={`absolute -top-1 -right-1 gel-button bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-md animate-bounce-in`}>
+            <Shield className="h-3 w-3 mr-1" />
+            {currentRank.badge}
           </Badge>
         </div>
+        
         <h3 className="font-bold text-xl text-gray-900 flex items-center justify-center gap-2">
           Ahmad M.
           {isMember && (
@@ -85,7 +93,30 @@ const UserStats = () => {
             </Badge>
           )}
         </h3>
-        <p className="text-gray-600 mb-3">Level {userLevel} {isMember ? 'VIP ' : ''}Donor</p>
+        
+        <p className="text-gray-600 mb-2">{currentRank.name}</p>
+        <p className="text-sm text-gray-500">{currentRank.description}</p>
+        
+        {/* Next Rank Incentive */}
+        {nextRank && (
+          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-dashed border-blue-200">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className="text-2xl">{nextRank.icon}</span>
+              <div>
+                <div className="font-bold text-gray-800">{nextRank.name}</div>
+                <div className="text-sm text-gray-600">Next Rank</div>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-blue-600 animate-pulse">
+                {pointsToNextRank.toLocaleString()} points to unlock!
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                Unlock: {nextRank.benefits.join(', ')}
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Upgrade link for non-members - electric glow */}
         {!isMember && (
@@ -95,6 +126,29 @@ const UserStats = () => {
               Upgrade to VIP for 2x Points!
             </button>
           </div>
+        )}
+      </div>
+
+      {/* Rank Progress Bar */}
+      <div className="mb-6">
+        <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
+          <span>{currentRank.badge}</span>
+          {nextRank ? <span>{nextRank.badge}</span> : <span>Max Rank</span>}
+        </div>
+        <div className="relative">
+          <Progress 
+            value={rankProgress} 
+            className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 shadow-inner rounded-full overflow-hidden"
+          />
+          <div className={`h-4 bg-gradient-to-r ${currentRank.gradient} rounded-full relative overflow-hidden`} 
+               style={{ width: `${rankProgress}%`, marginTop: '-16px' }}>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+          </div>
+        </div>
+        {nextRank && (
+          <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
+            {pointsToNextRank.toLocaleString()} points to {nextRank.name}! 🚀
+          </p>
         )}
       </div>
 

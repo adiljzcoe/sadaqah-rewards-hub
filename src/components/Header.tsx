@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { getUserRank, getNextRank } from '@/utils/rankSystem';
 
 const Header = () => {
   const location = useLocation();
@@ -23,6 +23,10 @@ const Header = () => {
   const nextLevelPoints = 6000;
   const pointsToNextLevel = nextLevelPoints - currentPoints;
   const progress = (currentPoints / nextLevelPoints) * 100;
+
+  // Get user's rank
+  const currentRank = getUserRank(currentPoints);
+  const nextRank = getNextRank(currentPoints);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -166,10 +170,14 @@ const Header = () => {
 
           {/* User Section */}
           <div className="flex items-center space-x-3">
-            {/* Points Display */}
+            {/* Points Display with Rank */}
             <div className="hidden sm:flex items-center space-x-2 jannah-counter px-4 py-2">
               <Star className="h-5 w-5 text-yellow-300" />
               <span className="text-lg font-bold">5,632 pts</span>
+              <Badge className={`bg-gradient-to-r ${currentRank.gradient} text-white text-xs ml-2 shadow-lg border border-white/20`}>
+                <span className="mr-1">{currentRank.icon}</span>
+                {currentRank.badge}
+              </Badge>
               {isMember && (
                 <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
                   <Crown className="h-3 w-3 mr-1" />
