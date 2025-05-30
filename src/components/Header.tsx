@@ -176,8 +176,17 @@ const Header = () => {
               <Star className="h-5 w-5 text-yellow-300" />
               <span className="text-lg font-bold">5,632 pts</span>
               <Badge className={`bg-gradient-to-r ${currentRank.gradient} text-white text-xs ml-2 shadow-lg border border-white/20`}>
-                <span className="mr-1">{currentRank.icon}</span>
-                {currentRank.badge}
+                {currentRank.name === "Guardian Angel" ? (
+                  <div className="flex flex-col items-center py-1">
+                    <span className="text-sm leading-none">{currentRank.icon}</span>
+                    <span className="text-xs leading-none mt-1">{currentRank.badge}</span>
+                  </div>
+                ) : (
+                  <>
+                    <span className="mr-1">{currentRank.icon}</span>
+                    {currentRank.badge}
+                  </>
+                )}
               </Badge>
               {isMember && (
                 <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
