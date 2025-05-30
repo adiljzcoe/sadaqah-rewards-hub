@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -156,7 +157,7 @@ const Header = () => {
             
             {/* Become a Member - only show if not already a member */}
             {!isMember && (
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105">
+              <Button className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105">
                 <Crown className="h-4 w-4 mr-2" />
                 Become a Member
               </Button>
@@ -170,7 +171,7 @@ const Header = () => {
               <Star className="h-5 w-5 text-yellow-300" />
               <span className="text-lg font-bold">5,632 pts</span>
               {isMember && (
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs ml-2 animate-pulse">
+                <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
                   <Crown className="h-3 w-3 mr-1" />
                   2x Points
                 </Badge>
@@ -205,7 +206,7 @@ const Header = () => {
                   
                   {/* VIP Badge */}
                   {isMember && (
-                    <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs animate-bounce">
+                    <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs animate-bounce shadow-lg border border-white/20">
                       <Crown className="h-3 w-3 mr-1" />
                       VIP
                     </Badge>
