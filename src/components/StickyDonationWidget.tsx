@@ -165,13 +165,21 @@ const StickyDonationWidget = () => {
               </div>
             </div>
 
-            {/* Total impact & Payment icons - Hide only when sticky */}
+            {/* Total impact with Sadaqah & Jannah points & Payment icons - Hide only when sticky */}
             {!isSticky && (
               <div className="flex items-center justify-between mt-2">
-                {/* Total impact section */}
-                <div className="text-xs text-gray-600">
-                  <span className="font-medium text-emerald-600">£2.4M raised today</span> • 
-                  <span className="ml-1">5,234 lives impacted</span>
+                {/* Total impact section with points calculation */}
+                <div className="text-xs text-gray-600 flex items-center space-x-3">
+                  <div>
+                    <span className="font-medium text-emerald-600">£2.4M raised today</span> • 
+                    <span className="ml-1">5,234 lives impacted</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded px-2 py-1">
+                    <span className="font-medium text-amber-700">Your donation = {donationAmount * 10} Sadaqah points</span>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded px-2 py-1">
+                    <span className="font-medium text-purple-700">+ {donationAmount * 5} Jannah points</span>
+                  </div>
                 </div>
                 
                 {/* Payment icons */}
