@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -63,7 +62,9 @@ const StickyDonationWidget = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsSticky(scrollY > 100);
+      const viewportHeight = window.innerHeight;
+      const scrollThreshold = viewportHeight * 0.05; // 5% of viewport height
+      setIsSticky(scrollY > scrollThreshold);
     };
 
     window.addEventListener('scroll', handleScroll);
