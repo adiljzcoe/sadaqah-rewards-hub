@@ -106,7 +106,7 @@ const LiveVideo = () => {
   return (
     <div className="relative">
       {/* Video Container */}
-      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-xl shadow-2xl">
+      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-t-xl shadow-2xl">
         {/* Background Video Placeholder */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           <div className="text-center text-white z-10">
@@ -215,50 +215,50 @@ const LiveVideo = () => {
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Floating Donation Buttons - Enhanced Design */}
-      <div className="relative -mt-16 z-30">
-        <div className="flex justify-center px-6">
-          <div className="grid grid-cols-6 gap-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 backdrop-blur-sm rounded-2xl p-4 shadow-2xl border-2 border-gray-600/50">
-            {quickDonations.map((donation, index) => (
-              <button
-                key={donation.label}
-                onClick={() => handleQuickDonate(donation)}
-                disabled={userCoins < donation.coins}
-                className={`
-                  group relative w-20 h-20 rounded-2xl shadow-lg
-                  bg-gradient-to-br ${donation.color}
-                  hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                  transition-all duration-300 border-4 border-white/40
-                  ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/80 hover:rotate-3' : ''}
-                `}
-                style={{
-                  animationDelay: `${index * 0.1}s`
-                }}
-              >
-                {/* Shine Effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
-                
-                <div className="relative h-full flex flex-col items-center justify-center text-white">
-                  <div className="text-2xl mb-1 group-hover:scale-125 transition-transform">{donation.emoji}</div>
-                  <div className="text-xs font-bold">{donation.coins}</div>
-                  <div className="text-[8px] opacity-80">coins</div>
-                </div>
+        {/* Floating Donation Buttons - Now overlapping the video border */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 transform translate-y-1/2">
+          <div className="flex justify-center px-6">
+            <div className="grid grid-cols-6 gap-4 bg-gray-800/80 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-gray-600/50">
+              {quickDonations.map((donation, index) => (
+                <button
+                  key={donation.label}
+                  onClick={() => handleQuickDonate(donation)}
+                  disabled={userCoins < donation.coins}
+                  className={`
+                    group relative w-20 h-20 rounded-2xl shadow-lg
+                    bg-gradient-to-br ${donation.color}
+                    hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
+                    transition-all duration-300 border-4 border-white/40
+                    ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/80 hover:rotate-3' : ''}
+                  `}
+                  style={{
+                    animationDelay: `${index * 0.1}s`
+                  }}
+                >
+                  {/* Shine Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
+                  
+                  <div className="relative h-full flex flex-col items-center justify-center text-white">
+                    <div className="text-2xl mb-1 group-hover:scale-125 transition-transform">{donation.emoji}</div>
+                    <div className="text-xs font-bold">{donation.coins}</div>
+                    <div className="text-[8px] opacity-80">coins</div>
+                  </div>
 
-                {/* Glow Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                {/* Pulse Ring */}
-                <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
-              </button>
-            ))}
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  {/* Pulse Ring */}
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* All Grey Bottom Section - Enhanced Interactivity */}
-      <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50">
+      <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-16 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           {/* Left Side - Enhanced Stats */}
           <div className="flex items-center space-x-6">
