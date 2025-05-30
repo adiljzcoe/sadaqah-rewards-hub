@@ -49,6 +49,37 @@ const emergencyCauses = [
   }
 ];
 
+const donationTypeStyles = {
+  sadaqah: {
+    gradient: 'bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700',
+    shadow: 'shadow-blue-500/30',
+    border: 'border-blue-400/50',
+    text: 'text-white',
+    icon: '💝'
+  },
+  zakat: {
+    gradient: 'bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700',
+    shadow: 'shadow-emerald-500/30',
+    border: 'border-emerald-400/50',
+    text: 'text-white',
+    icon: '☪️'
+  },
+  lillah: {
+    gradient: 'bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700',
+    shadow: 'shadow-purple-500/30',
+    border: 'border-purple-400/50',
+    text: 'text-white',
+    icon: '🤲'
+  },
+  monthly: {
+    gradient: 'bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700',
+    shadow: 'shadow-orange-500/30',
+    border: 'border-orange-400/50',
+    text: 'text-white',
+    icon: '📅'
+  }
+};
+
 const StickyDonationWidget = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState(25);
@@ -107,12 +138,36 @@ const StickyDonationWidget = () => {
     <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 bg-white shadow-lg transition-all duration-300`}>
       <div className={`container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className={`grid grid-cols-4 mb-2 transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
-            <TabsTrigger value="sadaqah" className="text-xs py-1">Sadaqah</TabsTrigger>
-            <TabsTrigger value="zakat" className="text-xs py-1">Zakat</TabsTrigger>
-            <TabsTrigger value="lillah" className="text-xs py-1">Lillah</TabsTrigger>
-            <TabsTrigger value="monthly" className="text-xs py-1">Monthly</TabsTrigger>
-          </TabsList>
+          {/* Enhanced TabsList with beautiful styling */}
+          <div className={`grid grid-cols-4 gap-2 mb-2 transition-all duration-300 ${isSticky ? 'mb-1' : 'mb-2'}`}>
+            {Object.entries(donationTypeStyles).map(([key, style]) => (
+              <button
+                key={key}
+                onClick={() => setActiveTab(key)}
+                className={`relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 border-2 ${isSticky ? 'py-1 px-2' : 'py-2 px-3'} ${
+                  activeTab === key 
+                    ? `${style.gradient} ${style.shadow} shadow-lg ${style.border} scale-105` 
+                    : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-gray-200 hover:to-gray-300 border-gray-300 shadow-sm hover:shadow-md'
+                }`}
+              >
+                {/* Animated background shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                
+                {/* Content */}
+                <div className="relative z-10 flex items-center justify-center space-x-1">
+                  <span className="text-sm">{style.icon}</span>
+                  <span className={`${activeTab === key ? style.text : 'text-gray-700'} font-bold capitalize`}>
+                    {key}
+                  </span>
+                </div>
+                
+                {/* Inner glow effect for active state */}
+                {activeTab === key && (
+                  <div className="absolute top-1 left-2 w-8 h-3 bg-white/30 rounded-full blur-sm"></div>
+                )}
+              </button>
+            ))}
+          </div>
 
           <TabsContent value={activeTab} className="mt-0">
             <div className="grid grid-cols-12 gap-2 items-end">
