@@ -23,6 +23,7 @@ const LiveVideo = () => {
   const [showAffirmation, setShowAffirmation] = useState(false);
   const [currentAffirmation, setCurrentAffirmation] = useState('');
   const [epicNotification, setEpicNotification] = useState(null);
+  const [dedicationFeed, setDedicationFeed] = useState([]);
 
   // Rotating emojis for each category
   const categoryEmojis = {
@@ -184,6 +185,50 @@ const LiveVideo = () => {
     const interval = setInterval(() => {
       generateFakeDonation();
     }, Math.random() * 5000 + 3000);
+
+    return () => clearInterval(interval);
+  }, [currentEmojis]);
+
+  // Generate fake dedication donations
+  useEffect(() => {
+    const generateDedicationDonation = () => {
+      const dedications = [
+        { onBehalfOf: 'Father', note: 'May Allah grant him Jannah. He taught me the value of giving.' },
+        { onBehalfOf: 'Prophet Muhammad (PBUH)', note: 'Following his example of compassion and charity.' },
+        { onBehalfOf: 'Mother', note: 'For all her sacrifices and unconditional love.' },
+        { onBehalfOf: 'Grandmother', note: 'She always fed the poor before herself.' },
+        { onBehalfOf: 'All Muslims', note: 'May Allah unite us in good deeds.' },
+        { onBehalfOf: 'Deceased loved one', note: 'May this sadaqah reach them as a blessing.' },
+        { onBehalfOf: 'Friend', note: 'In gratitude for their friendship and support.' },
+        { onBehalfOf: 'Brother', note: 'He inspires me to be better every day.' }
+      ];
+
+      const randomDedication = dedications[Math.floor(Math.random() * dedications.length)];
+      const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+      const randomDonation = quickDonations[Math.floor(Math.random() * quickDonations.length)];
+      
+      const dedicationDonation = {
+        id: Date.now() + Math.random(),
+        user: randomUser,
+        amount: randomDonation.coins,
+        emoji: currentEmojis[randomDonation.category],
+        onBehalfOf: randomDedication.onBehalfOf,
+        note: randomDedication.note,
+        timestamp: new Date()
+      };
+
+      setDedicationFeed(prev => [dedicationDonation, ...prev.slice(0, 2)]);
+      
+      setTimeout(() => {
+        setDedicationFeed(prev => prev.filter(d => d.id !== dedicationDonation.id));
+      }, 12000);
+    };
+
+    const interval = setInterval(() => {
+      if (Math.random() > 0.6) { // 40% chance of dedication donation
+        generateDedicationDonation();
+      }
+    }, Math.random() * 8000 + 5000);
 
     return () => clearInterval(interval);
   }, [currentEmojis]);
@@ -505,6 +550,36 @@ const LiveVideo = () => {
           ))}
         </div>
 
+        {/* Dedication Feed - Right side */}
+        <div className="absolute right-4 top-32 space-y-2 z-20 max-w-xs">
+          {dedicationFeed.map((dedication) => (
+            <div
+              key={dedication.id}
+              className="bg-gradient-to-r from-purple-500/25 to-pink-600/25 text-white px-4 py-3 rounded-2xl text-sm font-medium animate-slide-in-right shadow-xl border-2 border-purple-300/25 hover:scale-105 transition-transform backdrop-blur-xl"
+            >
+              <div className="flex items-center space-x-2 mb-2">
+                <span className="text-lg animate-bounce flex-shrink-0">{dedication.emoji}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-xs truncate">
+                    {dedication.user} donated on behalf of
+                  </div>
+                  <div className="font-bold text-purple-200 truncate">
+                    {dedication.onBehalfOf}
+                  </div>
+                </div>
+                <div className="flex items-center bg-white/10 rounded-lg px-2 py-1 flex-shrink-0">
+                  <SimpleGoldCoin size={12} className="mr-1" />
+                  <span className="text-xs font-bold">{dedication.amount}</span>
+                </div>
+              </div>
+              
+              <div className="text-xs italic opacity-90 leading-relaxed bg-white/5 rounded-lg px-2 py-1 border border-white/10">
+                "{dedication.note}"
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* Celebration overlay - Ultra transparent */}
         {celebrationMode && (
           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/5 to-amber-500/5 animate-pulse z-40 pointer-events-none">
@@ -638,8 +713,23 @@ const LiveVideo = () => {
           }
         }
         
+        @keyframes slideInRight {
+          0% {
+            opacity: 0;
+            transform: translateX(100%) scale(0.8);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+          }
+        }
+        
         .animate-slide-in-left {
           animation: slideInLeft 0.6s ease-out;
+        }
+        
+        .animate-slide-in-right {
+          animation: slideInRight 0.6s ease-out;
         }
       `}</style>
     </div>

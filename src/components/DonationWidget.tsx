@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle } from 'lucide-react';
+import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle } from 'lucide-react';
 
 const donationTypes = [
   { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'bg-emerald-600', description: 'Obligatory charity' },
@@ -13,10 +13,18 @@ const donationTypes = [
 
 const quickAmounts = [10, 25, 50, 100];
 
+const dedicationSuggestions = [
+  'Father', 'Mother', 'Prophet Muhammad (PBUH)', 'Grandmother', 'Grandfather', 
+  'Sister', 'Brother', 'Friend', 'All Muslims', 'Deceased loved one'
+];
+
 const DonationWidget = () => {
   const [selectedType, setSelectedType] = useState('sadaqah');
   const [customAmount, setCustomAmount] = useState('');
   const [selectedAmount, setSelectedAmount] = useState(25);
+  const [onBehalfOf, setOnBehalfOf] = useState('');
+  const [dedicationNote, setDedicationNote] = useState('');
+  const [showDedication, setShowDedication] = useState(false);
 
   return (
     <Card className="p-6 bg-white border border-gray-200 shadow-lg">
@@ -89,6 +97,65 @@ const DonationWidget = () => {
         />
       </div>
 
+      {/* Dedication Section */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <label className="text-sm font-semibold text-gray-700">Donate on behalf of (Optional)</label>
+          <button
+            onClick={() => setShowDedication(!showDedication)}
+            className="text-emerald-600 text-sm hover:text-emerald-700 flex items-center"
+          >
+            <Users className="h-4 w-4 mr-1" />
+            {showDedication ? 'Hide' : 'Add dedication'}
+          </button>
+        </div>
+
+        {showDedication && (
+          <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div>
+              <input
+                type="text"
+                placeholder="e.g., Father, Mother, Prophet Muhammad (PBUH)"
+                value={onBehalfOf}
+                onChange={(e) => setOnBehalfOf(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+              />
+              
+              <div className="flex flex-wrap gap-2 mt-2">
+                {dedicationSuggestions.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    onClick={() => setOnBehalfOf(suggestion)}
+                    className="text-xs px-3 py-1 bg-white border border-gray-300 rounded-full hover:bg-blue-100 hover:border-blue-300 transition-colors"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <textarea
+                placeholder="Add a personal note (will be shared in live feed)"
+                value={dedicationNote}
+                onChange={(e) => setDedicationNote(e.target.value)}
+                maxLength={150}
+                rows={3}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 resize-none"
+              />
+              <div className="text-xs text-gray-500 text-right mt-1">
+                {dedicationNote.length}/150 characters
+              </div>
+            </div>
+
+            <div className="flex items-center text-sm text-blue-700">
+              <MessageCircle className="h-4 w-4 mr-2" />
+              <span>Your dedication will appear in the live feed for the community to see</span>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Impact Preview */}
       <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <div className="text-sm font-medium text-blue-900 mb-2">Your impact:</div>
@@ -105,6 +172,7 @@ const DonationWidget = () => {
       <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 text-base shadow-md transition-colors duration-200">
         <Gift className="h-5 w-5 mr-2" />
         Donate {customAmount ? `£${customAmount}` : `£${selectedAmount}`}
+        {onBehalfOf && ` on behalf of ${onBehalfOf}`}
         <ArrowRight className="h-5 w-5 ml-2" />
       </Button>
 
