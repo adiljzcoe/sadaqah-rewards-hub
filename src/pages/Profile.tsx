@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -43,43 +44,6 @@ const Profile = () => {
     { name: "Big Heart", icon: "💝", earned: true, description: "Donated over £500 total" },
     { name: "Rising Star", icon: "⭐", earned: false, description: "Reach level 15" },
     { name: "Community Leader", icon: "👑", earned: false, description: "Reach top 10 in your city" },
-  ];
-
-  // Epic donation badges of honour
-  const epicDonationBadges = [
-    {
-      id: 'care-package',
-      title: 'Guardian Angel',
-      description: 'Air-dropped emergency care packages',
-      icon: '📦',
-      emoji: '✈️',
-      count: 3,
-      totalAmount: 1500,
-      color: 'from-purple-500 to-pink-600',
-      lastDonated: '2 days ago'
-    },
-    {
-      id: 'medical-kit',
-      title: 'Life Saver',
-      description: 'Provided emergency medical aid',
-      icon: '🏥',
-      emoji: '💉',
-      count: 2,
-      totalAmount: 1500,
-      color: 'from-red-500 to-rose-600',
-      lastDonated: '1 week ago'
-    },
-    {
-      id: 'golden-feast',
-      title: 'Community Feeder',
-      description: 'Fed entire communities',
-      icon: '🍽️',
-      emoji: '🌟',
-      count: 1,
-      totalAmount: 1000,
-      color: 'from-yellow-500 to-amber-600',
-      lastDonated: '3 days ago'
-    }
   ];
 
   return (
