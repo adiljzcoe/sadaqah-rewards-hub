@@ -26,7 +26,7 @@ const CharityTicker = () => {
         
         {/* Ticker container */}
         <div className="relative overflow-hidden">
-          <div className="flex animate-[scroll_30s_linear_infinite] space-x-8">
+          <div className="flex animate-ticker space-x-8">
             {/* First set of logos */}
             {charityLogos.map((charity, index) => (
               <div
@@ -51,17 +51,6 @@ const CharityTicker = () => {
           </div>
         </div>
       </div>
-      
-      <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </div>
   );
 };
