@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plane, Package, Heart, Zap, Gift, Star } from 'lucide-react';
@@ -75,9 +74,64 @@ const EpicDonationButton: React.FC<EpicDonationButtonProps> = ({ onEpicDonation 
     return () => clearInterval(timer);
   }, [currentDonation]);
 
+  const saveEpicDonationToProfile = (donation) => {
+    // Get existing epic donations from localStorage
+    const existingDonations = JSON.parse(localStorage.getItem('epicDonationBadges') || '[]');
+    
+    // Find existing badge or create new one
+    const existingBadgeIndex = existingDonations.findIndex(badge => badge.id === donation.id);
+    
+    if (existingBadgeIndex >= 0) {
+      // Update existing badge
+      existingDonations[existingBadgeIndex].count += 1;
+      existingDonations[existingBadgeIndex].totalAmount += donation.amount;
+      existingDonations[existingBadgeIndex].lastDonated = 'Just now';
+    } else {
+      // Create new badge
+      const newBadge = {
+        id: donation.id,
+        title: getBadgeTitle(donation.id),
+        description: donation.description,
+        icon: donation.emoji,
+        emoji: getBadgeEmoji(donation.id),
+        count: 1,
+        totalAmount: donation.amount,
+        color: donation.color,
+        lastDonated: 'Just now'
+      };
+      existingDonations.push(newBadge);
+    }
+    
+    // Save back to localStorage
+    localStorage.setItem('epicDonationBadges', JSON.stringify(existingDonations));
+  };
+
+  const getBadgeTitle = (donationId) => {
+    const titles = {
+      'care-package': 'Guardian Angel',
+      'medical-kit': 'Life Saver',
+      'golden-feast': 'Community Feeder',
+      'super-shelter': 'Home Builder'
+    };
+    return titles[donationId] || 'Epic Donor';
+  };
+
+  const getBadgeEmoji = (donationId) => {
+    const emojis = {
+      'care-package': '✈️',
+      'medical-kit': '💉',
+      'golden-feast': '🌟',
+      'super-shelter': '🏠'
+    };
+    return emojis[donationId] || '🏆';
+  };
+
   const handleEpicDonate = () => {
     setIsAnimating(true);
     const donation = epicDonations[currentDonation];
+    
+    // Save to profile badges
+    saveEpicDonationToProfile(donation);
     
     // Trigger the epic donation notification
     if (onEpicDonation) {

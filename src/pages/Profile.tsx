@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,14 @@ import GoldCoin3D from '@/components/GoldCoin3D';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [epicDonationBadges, setEpicDonationBadges] = useState([]);
   const isMember = true; // VIP status
+
+  // Load epic donation badges from localStorage
+  useEffect(() => {
+    const savedBadges = JSON.parse(localStorage.getItem('epicDonationBadges') || '[]');
+    setEpicDonationBadges(savedBadges);
+  }, []);
 
   const userStats = {
     level: 12,
@@ -37,6 +43,43 @@ const Profile = () => {
     { name: "Big Heart", icon: "💝", earned: true, description: "Donated over £500 total" },
     { name: "Rising Star", icon: "⭐", earned: false, description: "Reach level 15" },
     { name: "Community Leader", icon: "👑", earned: false, description: "Reach top 10 in your city" },
+  ];
+
+  // Epic donation badges of honour
+  const epicDonationBadges = [
+    {
+      id: 'care-package',
+      title: 'Guardian Angel',
+      description: 'Air-dropped emergency care packages',
+      icon: '📦',
+      emoji: '✈️',
+      count: 3,
+      totalAmount: 1500,
+      color: 'from-purple-500 to-pink-600',
+      lastDonated: '2 days ago'
+    },
+    {
+      id: 'medical-kit',
+      title: 'Life Saver',
+      description: 'Provided emergency medical aid',
+      icon: '🏥',
+      emoji: '💉',
+      count: 2,
+      totalAmount: 1500,
+      color: 'from-red-500 to-rose-600',
+      lastDonated: '1 week ago'
+    },
+    {
+      id: 'golden-feast',
+      title: 'Community Feeder',
+      description: 'Fed entire communities',
+      icon: '🍽️',
+      emoji: '🌟',
+      count: 1,
+      totalAmount: 1000,
+      color: 'from-yellow-500 to-amber-600',
+      lastDonated: '3 days ago'
+    }
   ];
 
   return (
@@ -132,6 +175,74 @@ const Profile = () => {
             <p className="font-semibold text-gray-900">Amount Donated</p>
           </Card>
         </div>
+
+        {/* Epic Donations Showcase */}
+        <Card className="p-6 mb-8 hover-lift">
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <Trophy className="h-6 w-6 text-yellow-500" />
+            Epic Donation Badges of Honour
+            {epicDonationBadges.length > 0 && (
+              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                {epicDonationBadges.length} earned
+              </Badge>
+            )}
+          </h3>
+          
+          {epicDonationBadges.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-4">
+              {epicDonationBadges.map((badge) => (
+                <div key={badge.id} className={`relative p-6 rounded-xl bg-gradient-to-br ${badge.color} text-white hover-lift overflow-hidden transform hover:scale-105 transition-all duration-300`}>
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="text-4xl animate-bounce">{badge.icon}</div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold">{badge.count}x</div>
+                        <div className="text-xs opacity-80">times</div>
+                      </div>
+                    </div>
+                    <h4 className="font-bold text-lg mb-2">{badge.title}</h4>
+                    <p className="text-sm opacity-90 mb-3">{badge.description}</p>
+                    <div className="flex items-center justify-between text-xs">
+                      <span>£{badge.totalAmount} donated</span>
+                      <span className="opacity-80">{badge.lastDonated}</span>
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-2 text-6xl opacity-20">{badge.emoji}</div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-pulse"></div>
+                  
+                  {/* Special effects for high counts */}
+                  {badge.count >= 5 && (
+                    <div className="absolute -top-2 -right-2">
+                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold text-xs animate-pulse">
+                        👑
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <div className="text-6xl mb-4">🏆</div>
+              <h4 className="text-xl font-semibold mb-2 text-gray-700">No Epic Donations Yet</h4>
+              <p className="text-gray-600 mb-6">Make your first epic donation to earn exclusive badges of honour!</p>
+              <div className="flex justify-center gap-4 text-sm">
+                <div className="flex items-center gap-2 bg-purple-100 px-3 py-2 rounded-lg">
+                  <span>📦</span>
+                  <span>Guardian Angel</span>
+                </div>
+                <div className="flex items-center gap-2 bg-red-100 px-3 py-2 rounded-lg">
+                  <span>🏥</span>
+                  <span>Life Saver</span>
+                </div>
+                <div className="flex items-center gap-2 bg-yellow-100 px-3 py-2 rounded-lg">
+                  <span>🍽️</span>
+                  <span>Community Feeder</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </Card>
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="donations" className="space-y-6">
