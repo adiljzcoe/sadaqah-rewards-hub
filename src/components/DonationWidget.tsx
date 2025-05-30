@@ -1,13 +1,46 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle } from 'lucide-react';
 
 const donationTypes = [
-  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'vibrant-gradient', description: 'Obligatory charity' },
-  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'accent-gradient', description: 'Voluntary charity' },
-  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'purple-gradient', description: 'For Allah\'s sake' },
-  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'orange-gradient', description: 'Regular giving' }
+  { 
+    id: 'zakat', 
+    name: 'Zakat', 
+    icon: '☪️', 
+    description: 'Obligatory charity',
+    gradient: 'bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600',
+    shadow: 'shadow-emerald-500/50',
+    ring: 'ring-emerald-300'
+  },
+  { 
+    id: 'sadaqah', 
+    name: 'Sadaqah', 
+    icon: '💝', 
+    description: 'Voluntary charity',
+    gradient: 'bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600',
+    shadow: 'shadow-blue-500/50',
+    ring: 'ring-blue-300'
+  },
+  { 
+    id: 'lillah', 
+    name: 'Lillah', 
+    icon: '🤲', 
+    description: 'For Allah\'s sake',
+    gradient: 'bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600',
+    shadow: 'shadow-purple-500/50',
+    ring: 'ring-purple-300'
+  },
+  { 
+    id: 'monthly', 
+    name: 'Monthly', 
+    icon: '📅', 
+    description: 'Regular giving',
+    gradient: 'bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600',
+    shadow: 'shadow-orange-500/50',
+    ring: 'ring-orange-300'
+  }
 ];
 
 const quickAmounts = [10, 25, 50, 100];
@@ -43,46 +76,43 @@ const DonationWidget = () => {
         </div>
       </div>
 
-      {/* Donation Type Selection - Enhanced */}
+      {/* Donation Type Selection - Dramatically Enhanced */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         {donationTypes.map((type) => (
           <button
             key={type.id}
             onClick={() => setSelectedType(type.id)}
-            className={`gel-button p-5 rounded-2xl transition-all duration-500 border-0 relative overflow-hidden group ${type.color} ${
+            className={`relative p-6 rounded-2xl transition-all duration-500 border-0 overflow-hidden group transform hover:scale-105 ${type.gradient} ${
               selectedType === type.id 
-                ? 'transform scale-105 shadow-2xl ring-4 ring-white/30' 
-                : 'transform scale-100 hover:scale-102 shadow-lg'
+                ? `scale-110 shadow-2xl ${type.shadow} ring-4 ${type.ring}` 
+                : `shadow-xl ${type.shadow} hover:shadow-2xl`
             }`}
-            style={{
-              background: selectedType === type.id 
-                ? `linear-gradient(145deg, var(--tw-gradient-stops))`
-                : undefined
-            }}
           >
+            {/* Animated background shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            
+            {/* Glass morphism overlay */}
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-2xl"></div>
+            
+            {/* Content */}
             <div className="relative z-20">
-              <div className="text-2xl mb-3 drop-shadow-sm">{type.icon}</div>
-              <div className="text-base font-bold text-white drop-shadow-md mb-1">{type.name}</div>
-              <div className="text-xs text-white/95 font-medium">{type.description}</div>
+              <div className="text-3xl mb-4 drop-shadow-lg filter">{type.icon}</div>
+              <div className="text-lg font-bold text-white drop-shadow-lg mb-2">{type.name}</div>
+              <div className="text-sm text-white/95 font-medium drop-shadow-md">{type.description}</div>
             </div>
             
-            {/* Shimmer effect for selected */}
+            {/* Selection indicator with animation */}
             {selectedType === type.id && (
-              <div className="absolute inset-0 z-10 animate-shimmer bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
-            )}
-            
-            {/* Hover glow effect */}
-            <div className="absolute inset-0 z-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-gradient-to-r from-white/20 via-white/40 to-white/20"></div>
-            
-            {/* Inner highlight */}
-            <div className="absolute top-2 left-3 w-8 h-4 bg-white/30 rounded-full blur-sm z-10"></div>
-            
-            {/* Selection indicator */}
-            {selectedType === type.id && (
-              <div className="absolute top-2 right-2 w-5 h-5 bg-white/90 rounded-full flex items-center justify-center z-20">
-                <CheckCircle className="h-3 w-3 text-emerald-600" />
+              <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center z-30 animate-pulse">
+                <CheckCircle className="h-4 w-4 text-green-600" />
               </div>
             )}
+            
+            {/* Inner glow effect */}
+            <div className="absolute top-3 left-4 w-12 h-6 bg-white/40 rounded-full blur-md z-10"></div>
+            
+            {/* Border highlight */}
+            <div className="absolute inset-0 rounded-2xl border-2 border-white/20 z-10"></div>
           </button>
         ))}
       </div>
@@ -106,7 +136,7 @@ const DonationWidget = () => {
             >
               <span className="relative z-10">£{amount}</span>
               {selectedAmount === amount && !customAmount && (
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-emerald-300/20 to-emerald-400/20 animate-shimmer"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-emerald-300/20 to-emerald-400/20"></div>
               )}
             </button>
           ))}
