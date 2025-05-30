@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -32,19 +33,19 @@ const Header = () => {
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg">
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 hover-scale cursor-pointer">
             <img 
               src="/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png" 
               alt="Your Jannah Logo" 
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain"
             />
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group ${
@@ -168,76 +169,96 @@ const Header = () => {
             )}
           </nav>
 
-          {/* User Section */}
-          <div className="flex items-center space-x-3">
-            {/* Points Display with Rank */}
-            <div className="hidden sm:flex items-center space-x-2 jannah-counter px-4 py-2">
-              <Star className="h-5 w-5 text-yellow-300" />
-              <span className="text-lg font-bold">5,632 pts</span>
-              <Badge className={`bg-gradient-to-r ${currentRank.gradient} text-white text-xs ml-2 shadow-lg border border-white/20`}>
-                <span className="mr-1">{currentRank.icon}</span>
-                {currentRank.badge}
-              </Badge>
-              {isMember && (
-                <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
-                  <Crown className="h-3 w-3 mr-1" />
-                  2x Points
-                </Badge>
-              )}
-            </div>
-
-            {/* User Menu with VIP Crown integrated as plaque */}
-            <div className="relative">
-              <div className="flex flex-col items-center space-y-2">
-                <Link to="/profile">
-                  {isMember ? (
-                    <Button className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50">
-                      <Crown className="h-4 w-4 mr-2 text-amber-800" />
-                      <User className="h-4 w-4 mr-2 text-amber-800" />
-                      <span className="hidden sm:inline text-amber-900">VIP Ahmad M.</span>
-                      {/* Plaque shine effect */}
-                      <div className="absolute top-2 left-3 w-6 h-3 bg-gradient-to-r from-transparent via-yellow-200/60 to-transparent rounded-full animate-shimmer"></div>
-                    </Button>
-                  ) : (
-                    <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300">
-                      <User className="h-5 w-5 mr-2" />
-                      <span className="hidden sm:inline">Ahmad M.</span>
-                    </Button>
-                  )}
-                </Link>
-                
-                {/* Life Bar Style Level Display */}
-                {isMember && (
-                  <div className="relative">
-                    <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg px-3 py-1 border-2 border-gray-600 shadow-lg">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs font-bold text-yellow-300">LV {userLevel}</span>
-                        <div className="relative w-16 h-2 bg-gray-900 rounded-full border border-gray-500">
-                          {/* Filled XP portion */}
-                          <div 
-                            className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all duration-300"
-                            style={{ width: `${progress}%` }}
-                          ></div>
-                          {/* Missing XP portion with flashing red */}
-                          <div 
-                            className="absolute right-0 top-0 h-full bg-red-500 rounded-r-full animate-pulse opacity-60"
-                            style={{ width: `${100 - progress}%` }}
-                          ></div>
-                          {/* Shine effect on the bar */}
-                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full"></div>
-                        </div>
-                        <span className="text-xs text-red-400 font-medium animate-pulse">{pointsToNextLevel}</span>
-                      </div>
+          {/* Right Side - Points, User, and Controls */}
+          <div className="flex items-center space-x-4">
+            {/* Points Display with Rank - Improved Layout */}
+            <div className="hidden md:flex items-center">
+              <div className="bg-gradient-to-r from-sky-400 via-blue-500 to-cyan-500 rounded-2xl px-6 py-3 shadow-lg border border-white/20 backdrop-blur-sm">
+                <div className="flex items-center space-x-4">
+                  {/* Points Section */}
+                  <div className="flex items-center space-x-2">
+                    <Star className="h-5 w-5 text-white animate-subtle-pulse" />
+                    <div className="text-white">
+                      <div className="text-xl font-bold leading-tight">{currentPoints.toLocaleString()}</div>
+                      <div className="text-xs opacity-90 leading-tight">pts</div>
                     </div>
                   </div>
-                )}
+
+                  {/* Rank Badge */}
+                  <div className="flex items-center">
+                    <Badge className={`bg-gradient-to-r ${currentRank.gradient} text-white px-3 py-1 text-sm font-bold shadow-md border border-white/30`}>
+                      <span className="mr-1 text-base">{currentRank.icon}</span>
+                      {currentRank.badge}
+                    </Badge>
+                  </div>
+
+                  {/* VIP Multiplier */}
+                  {isMember && (
+                    <Badge className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-3 py-1 text-sm font-bold shadow-md border border-white/30 animate-pulse">
+                      <Crown className="h-3 w-3 mr-1" />
+                      2x Points
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Mobile Menu */}
-            <Button className="md:hidden gel-button bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 border-0 shadow-lg">
-              <Menu className="h-5 w-5" />
-            </Button>
+            {/* User Section - Improved Layout */}
+            <div className="flex items-center space-x-3">
+              {/* VIP User Button */}
+              <Link to="/profile">
+                {isMember ? (
+                  <Button className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50 hover:scale-105">
+                    <div className="flex items-center space-x-2">
+                      <Crown className="h-4 w-4 text-amber-800" />
+                      <User className="h-4 w-4 text-amber-800" />
+                      <span className="hidden sm:inline text-amber-900 font-bold">VIP Ahmad M.</span>
+                    </div>
+                    {/* Enhanced plaque shine effect */}
+                    <div className="absolute top-2 left-3 w-8 h-4 bg-gradient-to-r from-transparent via-yellow-200/80 to-transparent rounded-full animate-shimmer"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-yellow-300/20 rounded-xl"></div>
+                  </Button>
+                ) : (
+                  <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300 hover:scale-105">
+                    <User className="h-5 w-5 mr-2" />
+                    <span className="hidden sm:inline">Ahmad M.</span>
+                  </Button>
+                )}
+              </Link>
+              
+              {/* Level Bar - Improved Gaming Style */}
+              {isMember && (
+                <div className="hidden md:block">
+                  <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl px-4 py-2 border-2 border-gray-600 shadow-xl">
+                    <div className="flex items-center space-x-3">
+                      <div className="text-yellow-300 font-bold text-sm">LV {userLevel}</div>
+                      <div className="relative w-20 h-3 bg-gray-900 rounded-full border border-gray-500 overflow-hidden">
+                        {/* Filled XP portion with glow */}
+                        <div 
+                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(59,130,246,0.6)]"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                        {/* Missing XP portion with enhanced red flash */}
+                        <div 
+                          className="absolute right-0 top-0 h-full bg-gradient-to-r from-red-500 to-red-600 rounded-r-full animate-pulse opacity-70 shadow-[0_0_6px_rgba(239,68,68,0.5)]"
+                          style={{ width: `${100 - progress}%` }}
+                        ></div>
+                        {/* Enhanced shine effect */}
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"></div>
+                      </div>
+                      <div className="text-red-400 font-bold text-sm animate-pulse min-w-[3rem] text-right">
+                        {pointsToNextLevel}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Mobile Menu Button */}
+              <Button className="md:hidden lg:hidden gel-button bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 border-0 shadow-lg">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
