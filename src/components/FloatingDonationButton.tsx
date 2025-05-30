@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -52,15 +51,48 @@ const FloatingDonationButton = () => {
 
       <Button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-16 h-16 rounded-full gel-button bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:scale-110 shadow-2xl text-white border-0 animate-colorful-glow relative overflow-hidden"
+        className="relative w-20 h-20 rounded-full border-0 shadow-2xl text-white overflow-hidden group"
         size="lg"
       >
-        <Heart className="h-7 w-7 animate-subtle-pulse" />
-        <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full shadow-lg">
-          <GoldCoin3D size={24}>
+        {/* Ray of light behind the bin */}
+        <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/80 via-yellow-300/60 to-white/80 animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-yellow-200/40 to-transparent animate-shimmer"></div>
+        
+        {/* 3D Charity bin with shaking animation */}
+        <div className="relative z-10 w-full h-full flex items-center justify-center animate-bounce">
+          {/* Charity bin base */}
+          <div className="relative">
+            {/* Bin shadow/depth */}
+            <div className="absolute top-1 left-1 w-12 h-14 bg-gradient-to-br from-gray-600 to-gray-800 rounded-lg transform rotate-1"></div>
+            
+            {/* Main bin body */}
+            <div className="relative w-12 h-14 bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-700 rounded-lg border-2 border-emerald-300 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+              {/* Bin opening/slot */}
+              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-1.5 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full shadow-inner"></div>
+              
+              {/* Charity symbol on bin */}
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-lg">
+                💝
+              </div>
+              
+              {/* Bin handle */}
+              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-4 h-2 border-2 border-emerald-300 rounded-full bg-transparent"></div>
+              
+              {/* 3D highlight */}
+              <div className="absolute top-1 left-1 w-3 h-4 bg-gradient-to-br from-white/60 to-transparent rounded-tl-lg"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Floating coins animation */}
+        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-lg animate-bounce" style={{ animationDelay: '0.5s' }}>
+          <GoldCoin3D size={32}>
             🔥
           </GoldCoin3D>
         </div>
+        
+        {/* Additional light rays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent animate-pulse" style={{ animationDelay: '1s' }}></div>
       </Button>
     </div>
   );
