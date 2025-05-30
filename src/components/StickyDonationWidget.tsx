@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -61,10 +62,38 @@ const StickyDonationWidget = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      const scrollThreshold = viewportHeight * 0.15; // 15% of viewport height
-      setIsSticky(scrollY > scrollThreshold);
+      // Find the live feed section by looking for elements with specific classes
+      const liveFeedElement = document.querySelector('[class*="LiveFeed"]') || 
+                             document.querySelector('.space-y-6 .hover-lift:nth-child(3)') ||
+                             document.querySelector('[class*="live-feed"]');
+      
+      if (liveFeedElement) {
+        const liveFeedRect = liveFeedElement.getBoundingClientRect();
+        const liveFeedTop = liveFeedRect.top + window.scrollY;
+        const liveFeedHeight = liveFeedRect.height;
+        const middleOfLiveFeed = liveFeedTop + (liveFeedHeight / 2);
+        
+        // Become sticky when we reach the middle of the live feed section
+        setIsSticky(window.scrollY > middleOfLiveFeed);
+      } else {
+        // Fallback: look for any element that might be the live feed section
+        // This targets the third hover-lift element which should be the LiveFeed component
+        const fallbackElements = document.querySelectorAll('.hover-lift');
+        if (fallbackElements.length >= 3) {
+          const liveFeedElement = fallbackElements[2]; // Third element (0-indexed)
+          const liveFeedRect = liveFeedElement.getBoundingClientRect();
+          const liveFeedTop = liveFeedRect.top + window.scrollY;
+          const liveFeedHeight = liveFeedRect.height;
+          const middleOfLiveFeed = liveFeedTop + (liveFeedHeight / 2);
+          
+          setIsSticky(window.scrollY > middleOfliveFeed);
+        } else {
+          // Final fallback to original behavior if we can't find the element
+          const viewportHeight = window.innerHeight;
+          const scrollThreshold = viewportHeight * 0.6; // Higher threshold as fallback
+          setIsSticky(window.scrollY > scrollThreshold);
+        }
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
