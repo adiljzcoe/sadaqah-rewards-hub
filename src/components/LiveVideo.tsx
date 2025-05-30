@@ -212,6 +212,16 @@ const LiveVideo = () => {
           </div>
         </div>
 
+        {/* Get More Coins Button - Top Right */}
+        <div className="absolute top-6 right-6 z-15">
+          <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg border border-yellow-300 px-4 py-2 text-sm font-bold rounded-lg hover:scale-105 transition-all duration-300 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <Gift className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
+            Get More Coins
+            <Sparkles className="h-3 w-3 ml-1 animate-pulse" />
+          </Button>
+        </div>
+
         {/* Live Donations Feed - z-20 */}
         <div className="absolute left-6 top-24 space-y-2 z-20 max-w-sm">
           {[...recentDonations, ...fakeDonations].slice(0, 5).map((donation) => (
@@ -225,7 +235,7 @@ const LiveVideo = () => {
                   {donation.user === 'You' ? 'You helped' : `${donation.user} helped`} with {donation.label}!
                 </div>
                 <div className="text-xs opacity-90 flex items-center space-x-2">
-                  <span>{donation.finalAmount} coins • Streak {donation.streak}</span>
+                  <span>{donation.finalAmount} sadaqah coins • Streak {donation.streak}</span>
                   {donation.multiplier > 1 && <Star className="h-3 w-3 text-yellow-300 animate-pulse" />}
                   <Target className="h-3 w-3 text-blue-300" />
                 </div>
@@ -299,7 +309,7 @@ const LiveVideo = () => {
       </div>
 
       {/* Bottom Stats Section */}
-      <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-8 px-8 rounded-b-xl border-t border-gray-600/50 mt-2">
+      <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 p-2 hover:scale-110 transition-transform">
@@ -308,7 +318,7 @@ const LiveVideo = () => {
             <div className="text-sm text-emerald-400 flex items-center space-x-4 font-medium">
               <div className="flex items-center bg-emerald-500/20 px-3 py-1 rounded-lg border border-emerald-400/30 hover:scale-105 transition-transform cursor-pointer">
                 <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">5,850</span>
-                <span className="text-xs ml-1 opacity-80 text-emerald-300">coins</span>
+                <span className="text-xs ml-1 opacity-80 text-emerald-300">sadaqah coins</span>
               </div>
               <span className="text-gray-300">donated in last hour</span>
               <div className="flex items-center text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded-lg border border-yellow-400/30 animate-pulse">
@@ -333,16 +343,6 @@ const LiveVideo = () => {
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* Get More Coins Button */}
-      <div className="mt-4 flex justify-center">
-        <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-xl border-2 border-yellow-300 px-8 py-3 text-lg font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-          <Gift className="h-5 w-5 mr-3 group-hover:rotate-12 transition-transform" />
-          Get More Coins
-          <Sparkles className="h-4 w-4 ml-2 animate-pulse" />
-        </Button>
       </div>
 
       {/* Enhanced Animations */}
