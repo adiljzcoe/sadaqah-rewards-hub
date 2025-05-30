@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -189,7 +190,7 @@ const Header = () => {
               </Badge>
               {isMember && (
                 <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
-                  2✖️ Points
+                  2✨ Points
                 </Badge>
               )}
             </div>
