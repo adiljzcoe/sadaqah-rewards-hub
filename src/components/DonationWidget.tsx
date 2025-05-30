@@ -1,13 +1,14 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle } from 'lucide-react';
 
 const donationTypes = [
-  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'bg-gradient-to-br from-emerald-500 to-green-600', description: 'Obligatory charity' },
-  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'bg-gradient-to-br from-blue-500 to-cyan-600', description: 'Voluntary charity' },
-  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'bg-gradient-to-br from-purple-500 to-violet-600', description: 'For Allah\'s sake' },
-  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'bg-gradient-to-br from-orange-500 to-red-500', description: 'Regular giving' }
+  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'bg-emerald-600', description: 'Obligatory charity' },
+  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'bg-blue-600', description: 'Voluntary charity' },
+  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'bg-purple-600', description: 'For Allah\'s sake' },
+  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'bg-gray-600', description: 'Regular giving' }
 ];
 
 const quickAmounts = [10, 25, 50, 100];
@@ -43,29 +44,21 @@ const DonationWidget = () => {
         </div>
       </div>
 
-      {/* Donation Type Selection with Gel Buttons */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      {/* Donation Type Selection */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
         {donationTypes.map((type) => (
           <button
             key={type.id}
             onClick={() => setSelectedType(type.id)}
-            className={`gel-button relative overflow-hidden rounded-2xl p-4 font-bold text-white transition-all duration-500 transform-gpu cursor-pointer ${
+            className={`p-4 rounded-lg transition-all duration-200 border-2 ${
               selectedType === type.id 
-                ? 'scale-105 shadow-2xl' 
-                : 'hover:scale-105 shadow-lg'
-            } ${type.color}`}
+                ? 'border-emerald-500 bg-emerald-50' 
+                : 'border-gray-200 hover:border-emerald-300 bg-white'
+            }`}
           >
-            <div className="relative z-10">
-              <div className="text-2xl mb-2">{type.icon}</div>
-              <div className="text-sm font-bold">{type.name}</div>
-              <div className="text-xs opacity-90">{type.description}</div>
-            </div>
-            {/* Gel highlight effect */}
-            <div className="absolute top-2 left-3 w-8 h-6 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full"></div>
-            {/* Inner glow for selected state */}
-            {selectedType === type.id && (
-              <div className="absolute inset-0 bg-white/10 rounded-2xl"></div>
-            )}
+            <div className="text-lg mb-2">{type.icon}</div>
+            <div className="text-sm font-semibold text-gray-800">{type.name}</div>
+            <div className="text-xs text-gray-600">{type.description}</div>
           </button>
         ))}
       </div>
