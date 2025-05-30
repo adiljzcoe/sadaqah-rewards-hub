@@ -347,18 +347,33 @@ const LiveVideo = () => {
   return (
     <div className="w-full max-w-full overflow-hidden">
       <div className="relative w-full aspect-video bg-gray-900 rounded-t-xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-          <div className="text-center text-white">
-            <Play className="h-20 w-20 mx-auto mb-6 opacity-80" />
-            <h3 className="text-2xl font-bold mb-3">Live: Emergency Relief for Gaza</h3>
-            <p className="text-gray-300 text-lg">Providing urgent aid to families in need</p>
+        {/* Mock Video Background */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80"
+            alt="Gaza Relief Video"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+          
+          {/* Fake video overlay elements to make it look like a video */}
+          <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm rounded px-2 py-1">
+            <div className="flex items-center text-white text-sm">
+              <div className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
+              00:15:42
+            </div>
+          </div>
+          
+          {/* Video quality indicator */}
+          <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm rounded px-2 py-1 text-white text-xs">
+            HD 1080p
           </div>
         </div>
 
-        {/* Epic Donation Notification */}
+        {/* Epic Donation Notification - Reduced opacity */}
         {epicNotification && (
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-sm z-60 flex items-center justify-center animate-fade-in">
-            <div className="text-center text-white">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-pink-900/40 backdrop-blur-sm z-60 flex items-center justify-center animate-fade-in">
+            <div className="text-center text-white bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/20">
               <div className="text-6xl mb-4 animate-bounce">{epicNotification.emoji}</div>
               <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
                 EPIC DONATION!
@@ -377,14 +392,15 @@ const LiveVideo = () => {
           </div>
         )}
 
+        {/* Top overlay with stats - Slightly reduced opacity */}
         <div className="absolute top-0 left-0 right-0 p-4 z-10">
           <div className="flex justify-between items-start">
-            <Badge className="bg-red-500 hover:bg-red-600 text-white shadow-lg px-3 py-2 animate-pulse">
+            <Badge className="bg-red-500/90 hover:bg-red-600 text-white shadow-lg px-3 py-2 animate-pulse backdrop-blur-sm">
               <div className="w-2 h-2 bg-white rounded-full mr-2 animate-ping"></div>
               LIVE
             </Badge>
 
-            <div className="flex items-center space-x-3 bg-black/60 backdrop-blur-md rounded-xl p-3 shadow-xl border border-white/20">
+            <div className="flex items-center space-x-3 bg-black/40 backdrop-blur-md rounded-xl p-3 shadow-xl border border-white/20">
               <div className="flex items-center text-white text-sm font-medium hover:scale-110 transition-transform cursor-pointer">
                 <Users className={`h-4 w-4 mr-2 ${pulseEffect ? 'animate-pulse text-green-400' : ''}`} />
                 <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold">1,247</span>
@@ -432,7 +448,7 @@ const LiveVideo = () => {
             return (
               <div
                 key={badgeKey}
-                className={`w-8 h-8 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-sm shadow-lg border-2 border-white/50 hover:scale-110 transition-transform cursor-pointer`}
+                className={`w-8 h-8 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-sm shadow-lg border-2 border-white/50 hover:scale-110 transition-transform cursor-pointer backdrop-blur-sm`}
                 title={badge.name}
               >
                 {badge.icon}
@@ -440,14 +456,14 @@ const LiveVideo = () => {
             );
           })}
           {userBadges.length > 3 && (
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-gray-400 to-gray-600 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/50">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-gray-400 to-gray-600 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/50 backdrop-blur-sm">
               +{userBadges.length - 3}
             </div>
           )}
         </div>
 
         <div className="absolute top-20 right-4 z-30">
-          <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
+          <Button className="bg-gradient-to-r from-amber-500/90 to-yellow-600/90 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group backdrop-blur-sm">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             <Gift className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
             Top Up Sadaqah Coins
@@ -455,20 +471,21 @@ const LiveVideo = () => {
           </Button>
         </div>
 
-        {/* Positive Affirmation */}
+        {/* Positive Affirmation - Reduced opacity */}
         {showAffirmation && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
-            <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-2xl text-lg font-bold shadow-xl border-2 border-white/50">
+            <div className="bg-gradient-to-r from-pink-500/90 to-purple-600/90 text-white px-6 py-3 rounded-2xl text-lg font-bold shadow-xl border-2 border-white/50 backdrop-blur-sm">
               {currentAffirmation}
             </div>
           </div>
         )}
 
+        {/* Recent donations feed - Reduced opacity */}
         <div className="absolute left-4 top-32 space-y-2 z-20 max-w-sm">
           {[...recentDonations, ...fakeDonations].slice(0, 4).map((donation) => (
             <div
               key={donation.id}
-              className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-2 rounded-2xl text-sm font-medium flex items-center space-x-2 animate-slide-in-left shadow-xl border-2 border-emerald-300 hover:scale-105 transition-transform max-w-full"
+              className="bg-gradient-to-r from-emerald-500/90 to-green-600/90 text-white px-3 py-2 rounded-2xl text-sm font-medium flex items-center space-x-2 animate-slide-in-left shadow-xl border-2 border-emerald-300/50 hover:scale-105 transition-transform max-w-full backdrop-blur-sm"
             >
               <span className="text-lg animate-bounce flex-shrink-0">{donation.emoji}</span>
               <div className="flex-1 min-w-0">
@@ -488,14 +505,16 @@ const LiveVideo = () => {
           ))}
         </div>
 
+        {/* Celebration overlay - Reduced opacity */}
         {celebrationMode && (
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-amber-500/20 animate-pulse z-40 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/10 to-amber-500/10 animate-pulse z-40 pointer-events-none">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-6xl animate-bounce">🎉</div>
             </div>
           </div>
         )}
 
+        {/* Floating coins */}
         {floatingCoins.map((coin) => (
           <div
             key={coin.id}
@@ -506,7 +525,7 @@ const LiveVideo = () => {
               animation: 'floatUp 2s ease-out forwards'
             }}
           >
-            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400/90 to-amber-500/90 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg backdrop-blur-sm">
               <span className="text-lg">{coin.emoji}</span>
               <span>+{coin.coins * coin.multiplier}</span>
               <Sparkles className="h-3 w-3 animate-spin" />
@@ -514,8 +533,9 @@ const LiveVideo = () => {
           </div>
         ))}
 
+        {/* Donation buttons at bottom */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60">
-          <div className="flex justify-center items-center space-x-4 bg-gray-800/90 backdrop-blur-md rounded-2xl p-3 shadow-2xl border border-gray-600/50">
+          <div className="flex justify-center items-center space-x-4 bg-gray-800/70 backdrop-blur-md rounded-2xl p-3 shadow-2xl border border-gray-600/50">
             {/* Regular donation buttons */}
             <div className="flex space-x-2">
               {quickDonations.map((donation, index) => (
@@ -560,6 +580,7 @@ const LiveVideo = () => {
         </div>
       </div>
 
+      {/* Bottom controls section */}
       <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 py-6 px-8 rounded-b-xl border-t border-gray-600/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
