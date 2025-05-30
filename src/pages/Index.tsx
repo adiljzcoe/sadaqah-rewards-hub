@@ -14,6 +14,7 @@ import StickyDonationWidget from '@/components/StickyDonationWidget';
 import CharityFeedSection from '@/components/CharityFeedSection';
 import CampaignsCarousel from '@/components/CampaignsCarousel';
 import FundraisersCarousel from '@/components/FundraisersCarousel';
+import InMemoryOfWidget from '@/components/InMemoryOfWidget';
 
 const Index = () => {
   // Mock data for campaigns
@@ -127,6 +128,9 @@ const Index = () => {
             </div>
             <div className="hover-lift">
               <DonationWidget />
+            </div>
+            <div className="hover-lift">
+              <InMemoryOfWidget />
             </div>
             <div className="hover-lift">
               <Leaderboard />
