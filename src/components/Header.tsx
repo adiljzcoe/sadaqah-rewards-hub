@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -45,13 +46,17 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User */}
           <div className="flex items-center space-x-6">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 hover-scale cursor-pointer drop-shadow-lg">
+            {/* Logo with cloud effects */}
+            <Link to="/" className="relative overflow-hidden bg-gradient-to-br from-white/80 via-sky-100/80 to-blue-200/80 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-3 border-2 border-white/40 hover:scale-110 hover:from-white/90 hover:via-sky-50/90 hover:to-blue-100/90 cursor-pointer">
               <img 
                 src="/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png" 
                 alt="Your Jannah Logo" 
-                className="h-10 w-auto object-contain filter drop-shadow-md"
+                className="h-10 w-auto object-contain filter drop-shadow-md relative z-10"
               />
+              {/* Cloud sparkle effects */}
+              <div className="absolute top-1 left-2 w-8 h-4 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
+              <div className="absolute bottom-1 right-2 w-6 h-3 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full animate-shimmer delay-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-full"></div>
             </Link>
 
             {/* User Section */}
