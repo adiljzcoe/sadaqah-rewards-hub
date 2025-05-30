@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -201,55 +200,52 @@ const Header = () => {
               </div>
             </div>
 
-            {/* User Section and Level Bar */}
+            {/* Combined VIP User Section and Level Bar - Unified Gold Plaque */}
             <div className="flex items-center space-x-3">
-              {/* VIP User Button */}
-              <Link to="/profile">
-                {isMember ? (
-                  <Button className="relative overflow-hidden rounded-xl px-4 py-2.5 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50 hover:scale-105">
-                    <div className="flex items-center space-x-2">
-                      <Crown className="h-4 w-4 text-amber-800" />
-                      <User className="h-4 w-4 text-amber-800" />
-                      <span className="hidden sm:inline text-amber-900 font-bold text-sm">VIP Ahmad M.</span>
+              {isMember ? (
+                <Link to="/profile">
+                  <div className="relative overflow-hidden rounded-xl px-4 py-3 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50 hover:scale-105 cursor-pointer">
+                    <div className="flex items-center space-x-4">
+                      {/* User Info Section */}
+                      <div className="flex items-center space-x-2">
+                        <Crown className="h-4 w-4 text-amber-800" />
+                        <User className="h-4 w-4 text-amber-800" />
+                        <span className="hidden sm:inline text-amber-900 font-bold text-sm">VIP Ahmad M.</span>
+                      </div>
+                      
+                      {/* Level Section */}
+                      <div className="hidden lg:flex items-center space-x-2 bg-gradient-to-r from-amber-600 to-amber-700 rounded-lg px-3 py-1.5 border border-amber-300/50">
+                        <div className="text-yellow-200 font-bold text-xs">LV {userLevel}</div>
+                        <div className="relative w-16 h-2.5 bg-amber-900 rounded-full border border-amber-600 overflow-hidden">
+                          {/* Filled XP portion with glow */}
+                          <div 
+                            className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-200 to-yellow-300 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+                            style={{ width: `${progress}%` }}
+                          ></div>
+                          {/* Missing XP portion with enhanced red flash */}
+                          <div 
+                            className="absolute right-0 top-0 h-full bg-gradient-to-r from-red-600 to-red-700 rounded-r-full animate-pulse opacity-70"
+                            style={{ width: `${100 - progress}%` }}
+                          ></div>
+                          {/* Enhanced shine effect */}
+                          <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"></div>
+                        </div>
+                        <div className="text-red-300 font-bold text-xs animate-pulse min-w-[2.5rem] text-right">
+                          {pointsToNextLevel}
+                        </div>
+                      </div>
                     </div>
+                    
                     {/* Enhanced plaque shine effect */}
                     <div className="absolute top-2 left-3 w-8 h-4 bg-gradient-to-r from-transparent via-yellow-200/80 to-transparent rounded-full animate-shimmer"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-yellow-300/20 rounded-xl"></div>
-                  </Button>
-                ) : (
-                  <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300 hover:scale-105">
-                    <User className="h-5 w-5 mr-2" />
-                    <span className="hidden sm:inline">Ahmad M.</span>
-                  </Button>
-                )}
-              </Link>
-              
-              {/* Level Bar - Tidied up gaming style */}
-              {isMember && (
-                <div className="hidden lg:block">
-                  <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl px-3 py-2 border-2 border-gray-600 shadow-xl">
-                    <div className="flex items-center space-x-2">
-                      <div className="text-yellow-300 font-bold text-xs">LV {userLevel}</div>
-                      <div className="relative w-16 h-2.5 bg-gray-900 rounded-full border border-gray-500 overflow-hidden">
-                        {/* Filled XP portion with glow */}
-                        <div 
-                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(59,130,246,0.6)]"
-                          style={{ width: `${progress}%` }}
-                        ></div>
-                        {/* Missing XP portion with enhanced red flash */}
-                        <div 
-                          className="absolute right-0 top-0 h-full bg-gradient-to-r from-red-500 to-red-600 rounded-r-full animate-pulse opacity-70 shadow-[0_0_6px_rgba(239,68,68,0.5)]"
-                          style={{ width: `${100 - progress}%` }}
-                        ></div>
-                        {/* Enhanced shine effect */}
-                        <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"></div>
-                      </div>
-                      <div className="text-red-400 font-bold text-xs animate-pulse min-w-[2.5rem] text-right">
-                        {pointsToNextLevel}
-                      </div>
-                    </div>
                   </div>
-                </div>
+                </Link>
+              ) : (
+                <Button className="professional-button vibrant-gradient text-white border-0 font-bold shadow-xl transition-all duration-300 hover:scale-105">
+                  <User className="h-5 w-5 mr-2" />
+                  <span className="hidden sm:inline">Ahmad M.</span>
+                </Button>
               )}
 
               {/* Mobile Menu Button */}
