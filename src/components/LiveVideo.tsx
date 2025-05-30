@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,8 +27,8 @@ const LiveVideo = () => {
     const coinId = Date.now() + Math.random();
     const newCoin = {
       id: coinId,
-      x: Math.random() * 80 + 10, // Random position 10-90%
-      y: Math.random() * 30 + 40, // Start from middle area
+      x: Math.random() * 80 + 10,
+      y: Math.random() * 30 + 40,
       emoji: donation.emoji,
       coins: donation.coins,
       multiplier: multiplier
@@ -35,7 +36,6 @@ const LiveVideo = () => {
     
     setFloatingCoins(prev => [...prev, newCoin]);
     
-    // Remove coin after animation
     setTimeout(() => {
       setFloatingCoins(prev => prev.filter(coin => coin.id !== coinId));
     }, 2000);
@@ -43,7 +43,6 @@ const LiveVideo = () => {
 
   const triggerCelebration = () => {
     setCelebrationMode(true);
-    // Create multiple celebration coins
     for (let i = 0; i < 5; i++) {
       setTimeout(() => {
         const celebCoin = {
@@ -67,16 +66,13 @@ const LiveVideo = () => {
       setUserCoins(prev => prev - donation.coins);
       setStreakCount(prev => prev + 1);
       
-      // Increase multiplier based on streak
       if (streakCount > 0 && streakCount % 3 === 0) {
         setMultiplier(prev => Math.min(prev + 0.5, 3));
         triggerCelebration();
       }
       
-      // Create floating coin effect
       createFloatingCoin(donation);
       
-      // Add to recent donations with enhanced animation
       const newDonation = {
         id: Date.now(),
         ...donation,
@@ -87,14 +83,12 @@ const LiveVideo = () => {
       
       setRecentDonations(prev => [newDonation, ...prev.slice(0, 4)]);
       
-      // Remove after 8 seconds
       setTimeout(() => {
         setRecentDonations(prev => prev.filter(d => d.id !== newDonation.id));
       }, 8000);
     }
   };
 
-  // Reset streak after 10 seconds of inactivity
   useEffect(() => {
     const timer = setTimeout(() => {
       setStreakCount(0);
@@ -105,9 +99,9 @@ const LiveVideo = () => {
   }, [streakCount]);
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      {/* Video Container - Centered and Viewable */}
-      <div className="relative aspect-video flex items-center justify-center">
+    <div className="relative">
+      {/* Video Container */}
+      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Background Video Placeholder */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           <div className="text-center text-white z-10">
@@ -154,105 +148,33 @@ const LiveVideo = () => {
               LIVE
             </Badge>
 
-            {/* Top Right Stats */}
-            <div className="space-y-2">
+            {/* Top Right - Single Line Layout */}
+            <div className="flex items-center space-x-3">
               {/* Viewer Count */}
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1 shadow-lg">
-                <div className="flex items-center text-white text-sm">
-                  <Users className="h-4 w-4 mr-1" />
-                  1,247 viewers
-                </div>
+              <div className="bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1 shadow-lg flex items-center text-white text-sm">
+                <Users className="h-4 w-4 mr-1" />
+                1,247 viewers
               </div>
 
               {/* User Coins with 3D Effect */}
-              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 backdrop-blur-sm rounded-lg px-3 py-2 shadow-xl border-2 border-yellow-300">
-                <div className="flex items-center text-white text-sm font-bold">
-                  <GoldCoin3D size={24} className="mr-2" />
-                  {userCoins} Sadaqah Coins
-                </div>
+              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 backdrop-blur-sm rounded-lg px-3 py-2 shadow-xl border-2 border-yellow-300 flex items-center text-white text-sm font-bold">
+                <GoldCoin3D size={20} className="mr-2" />
+                {userCoins} Sadaqah Coins
               </div>
 
               {/* Streak & Multiplier Display */}
               {streakCount > 0 && (
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 backdrop-blur-sm rounded-lg px-3 py-1 shadow-lg animate-pulse">
-                  <div className="flex items-center text-white text-xs font-bold">
-                    <Zap className="h-3 w-3 mr-1" />
-                    {streakCount} Streak • {multiplier}x Multiplier
-                  </div>
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 backdrop-blur-sm rounded-lg px-3 py-1 shadow-lg animate-pulse flex items-center text-white text-xs font-bold">
+                  <Zap className="h-3 w-3 mr-1" />
+                  {streakCount} Streak • {multiplier}x
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Side Donation Buttons - Moved Lower */}
-        <div className="absolute left-4 bottom-32 space-y-3 z-20">
-          {quickDonations.slice(0, 3).map((donation, index) => (
-            <button
-              key={donation.label}
-              onClick={() => handleQuickDonate(donation)}
-              disabled={userCoins < donation.coins}
-              className={`
-                group relative w-20 h-20 rounded-2xl shadow-xl
-                bg-gradient-to-br ${donation.color}
-                hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                transition-all duration-300 border-4 border-white/30
-                ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60' : ''}
-              `}
-              style={{
-                animationDelay: `${index * 0.1}s`
-              }}
-            >
-              {/* Shine Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
-              
-              <div className="relative h-full flex flex-col items-center justify-center text-white">
-                <div className="text-2xl mb-1 animate-bounce">{donation.emoji}</div>
-                <div className="text-xs font-bold">{donation.coins}</div>
-                <div className="text-[8px] opacity-80">coins</div>
-              </div>
-
-              {/* Glow Effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-          ))}
-        </div>
-
-        {/* Right Side Donation Buttons - Moved Lower */}
-        <div className="absolute right-4 bottom-32 space-y-3 z-20">
-          {quickDonations.slice(3).map((donation, index) => (
-            <button
-              key={donation.label}
-              onClick={() => handleQuickDonate(donation)}
-              disabled={userCoins < donation.coins}
-              className={`
-                group relative w-20 h-20 rounded-2xl shadow-xl
-                bg-gradient-to-br ${donation.color}
-                hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                transition-all duration-300 border-4 border-white/30
-                ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60' : ''}
-              `}
-              style={{
-                animationDelay: `${(index + 3) * 0.1}s`
-              }}
-            >
-              {/* Shine Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
-              
-              <div className="relative h-full flex flex-col items-center justify-center text-white">
-                <div className="text-2xl mb-1 animate-bounce">{donation.emoji}</div>
-                <div className="text-xs font-bold">{donation.coins}</div>
-                <div className="text-[8px] opacity-80">coins</div>
-              </div>
-
-              {/* Glow Effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
-          ))}
-        </div>
-
-        {/* Recent Donations Feed - Enhanced */}
-        <div className="absolute left-6 bottom-20 space-y-2 z-20">
+        {/* Recent Donations Feed */}
+        <div className="absolute left-6 top-24 space-y-2 z-20">
           {recentDonations.map((donation) => (
             <div
               key={donation.id}
@@ -273,46 +195,82 @@ const LiveVideo = () => {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Bottom Action Bar - Moved buttons up */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-black/80 via-gray-900/90 to-black/80 backdrop-blur-sm p-4 z-20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                <Volume2 className="h-4 w-4" />
-              </Button>
-              <div className="text-sm text-gray-300 flex items-center space-x-2">
-                <Sparkles className="h-4 w-4 text-yellow-400 animate-pulse" />
-                <span>
-                  <span className="font-bold text-emerald-400">2,850 coins</span> donated in last hour
-                </span>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
-                <Share2 className="h-4 w-4 mr-2" />
-                Share & Earn 50 Coins
-              </Button>
-              
-              <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20 relative">
-                <Heart className="h-4 w-4 mr-2" />
-                Follow
-                <Badge className="absolute -top-1 -right-1 bg-amber-500 text-white text-[8px] px-1">
-                  +25
-                </Badge>
-              </Button>
-            </div>
+      {/* Floating Donation Buttons - 50% on video, 50% below */}
+      <div className="relative -mt-12 z-30">
+        <div className="flex justify-center">
+          <div className="flex space-x-3 px-6">
+            {quickDonations.map((donation, index) => (
+              <button
+                key={donation.label}
+                onClick={() => handleQuickDonate(donation)}
+                disabled={userCoins < donation.coins}
+                className={`
+                  group relative w-20 h-20 rounded-2xl shadow-xl
+                  bg-gradient-to-br ${donation.color}
+                  hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
+                  transition-all duration-300 border-4 border-white/30
+                  ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60' : ''}
+                `}
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                {/* Shine Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
+                
+                <div className="relative h-full flex flex-col items-center justify-center text-white">
+                  <div className="text-2xl mb-1 animate-bounce">{donation.emoji}</div>
+                  <div className="text-xs font-bold">{donation.coins}</div>
+                  <div className="text-[8px] opacity-80">coins</div>
+                </div>
+
+                {/* Glow Effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Get More Coins Button - Moved below video */}
-      <div className="flex justify-center py-4 bg-gradient-to-r from-gray-900 via-gray-800 to-black">
-        <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg border-2 border-yellow-300 animate-pulse px-8 py-3">
-          <Gift className="h-5 w-5 mr-2" />
-          Get More Coins
-        </Button>
+      {/* Bottom Section - Single Line Layout */}
+      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black py-4 px-6">
+        <div className="flex items-center justify-between">
+          {/* Left Side - Stats */}
+          <div className="flex items-center space-x-6">
+            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+              <Volume2 className="h-4 w-4" />
+            </Button>
+            <div className="text-sm text-gray-300 flex items-center space-x-2">
+              <Sparkles className="h-4 w-4 text-yellow-400 animate-pulse" />
+              <span>
+                <span className="font-bold text-emerald-400">2,850 coins</span> donated in last hour
+              </span>
+            </div>
+          </div>
+          
+          {/* Right Side - Action Buttons */}
+          <div className="flex items-center space-x-3">
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+              <Share2 className="h-4 w-4 mr-2" />
+              Share & Earn 50 Coins
+            </Button>
+            
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20 relative">
+              <Heart className="h-4 w-4 mr-2" />
+              Follow
+              <Badge className="absolute -top-1 -right-1 bg-amber-500 text-white text-[8px] px-1">
+                +25
+              </Badge>
+            </Button>
+
+            <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg border-2 border-yellow-300 animate-pulse">
+              <Gift className="h-4 w-4 mr-2" />
+              Get More Coins
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Custom Animations */}
