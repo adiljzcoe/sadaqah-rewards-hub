@@ -315,7 +315,7 @@ const LiveVideo = () => {
       </div>
 
       {/* Custom Animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes floatUp {
           0% {
             opacity: 1;
