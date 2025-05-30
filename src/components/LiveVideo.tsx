@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -533,15 +534,19 @@ const LiveVideo = () => {
           </div>
         ))}
 
-        {/* Donation buttons at bottom - Mac OS App Drawer Style */}
+        {/* Donation buttons at bottom - Thin background with floating buttons */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60">
-          <div className="flex justify-center items-center space-x-4 rounded-2xl p-4 shadow-2xl border border-gray-300/30 backdrop-blur-2xl bg-gradient-to-b from-gray-200/20 via-gray-100/15 to-gray-300/25 relative overflow-hidden">
+          {/* Thin background container - lower z-index */}
+          <div className="absolute inset-x-0 bottom-0 h-12 rounded-full shadow-2xl border border-gray-300/30 backdrop-blur-2xl bg-gradient-to-b from-gray-200/20 via-gray-100/15 to-gray-300/25 overflow-hidden">
             {/* Mac OS frosted glass effect with subtle texture */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/10 to-white/5 rounded-2xl"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-2xl"></div>
-            
-            {/* Regular donation buttons - Full opacity */}
-            <div className="flex space-x-2 relative z-10">
+            <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/10 to-white/5 rounded-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-full"></div>
+          </div>
+          
+          {/* Floating buttons container - higher z-index */}
+          <div className="relative z-10 flex justify-center items-center space-x-4 px-6 py-2">
+            {/* Regular donation buttons - Full opacity and floating */}
+            <div className="flex space-x-2">
               {quickDonations.map((donation, index) => (
                 <button
                   key={donation.key}
@@ -575,8 +580,8 @@ const LiveVideo = () => {
               ))}
             </div>
 
-            {/* Epic donation button - Full opacity */}
-            <div className="flex items-center relative z-10">
+            {/* Epic donation button - Full opacity and floating */}
+            <div className="flex items-center">
               <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/40 to-transparent mx-2"></div>
               <EpicDonationButton onEpicDonation={handleEpicDonation} />
             </div>
