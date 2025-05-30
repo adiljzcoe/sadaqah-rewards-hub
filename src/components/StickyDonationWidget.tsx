@@ -165,11 +165,17 @@ const StickyDonationWidget = () => {
               </div>
             </div>
 
-            {/* Payment icons - Hide only when sticky */}
+            {/* Total impact & Payment icons - Hide only when sticky */}
             {!isSticky && (
               <div className="flex items-center justify-between mt-2">
+                {/* Total impact section */}
+                <div className="text-xs text-gray-600">
+                  <span className="font-medium text-emerald-600">£2.4M raised today</span> • 
+                  <span className="ml-1">5,234 lives impacted</span>
+                </div>
+                
                 {/* Payment icons */}
-                <div className="flex items-center space-x-2 ml-auto">
+                <div className="flex items-center space-x-2">
                   <span className="text-xs text-gray-500">Pay:</span>
                   <div className="flex space-x-1">
                     <div className="w-5 h-3 bg-blue-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
