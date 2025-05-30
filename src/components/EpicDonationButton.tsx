@@ -51,7 +51,11 @@ const epicDonations = [
   }
 ];
 
-const EpicDonationButton = () => {
+interface EpicDonationButtonProps {
+  onEpicDonation?: (donation: any) => void;
+}
+
+const EpicDonationButton: React.FC<EpicDonationButtonProps> = ({ onEpicDonation }) => {
   const [currentDonation, setCurrentDonation] = useState(0);
   const [timeLeft, setTimeLeft] = useState(epicDonations[0].duration);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -73,6 +77,16 @@ const EpicDonationButton = () => {
 
   const handleEpicDonate = () => {
     setIsAnimating(true);
+    const donation = epicDonations[currentDonation];
+    
+    // Trigger the epic donation notification
+    if (onEpicDonation) {
+      onEpicDonation({
+        ...donation,
+        user: 'Abdul' // For now using a fixed name, could be dynamic later
+      });
+    }
+    
     setTimeout(() => setIsAnimating(false), 2000);
   };
 

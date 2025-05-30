@@ -22,6 +22,7 @@ const LiveVideo = () => {
   const [weeklyStreak, setWeeklyStreak] = useState(2);
   const [showAffirmation, setShowAffirmation] = useState(false);
   const [currentAffirmation, setCurrentAffirmation] = useState('');
+  const [epicNotification, setEpicNotification] = useState(null);
 
   // Rotating emojis for each category
   const categoryEmojis = {
@@ -307,6 +308,33 @@ const LiveVideo = () => {
     }
   };
 
+  const handleEpicDonation = (donation) => {
+    setEpicNotification(donation);
+    
+    // Create massive celebration effect
+    triggerCelebration();
+    
+    // Add massive floating coins
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => {
+        const epicCoin = {
+          id: Date.now() + i + Math.random(),
+          x: Math.random() * 80 + 10,
+          y: Math.random() * 80 + 10,
+          emoji: donation.emoji,
+          coins: `+${donation.amount}`,
+          multiplier: 1
+        };
+        setFloatingCoins(prev => [...prev, epicCoin]);
+      }, i * 100);
+    }
+    
+    // Hide notification after 5 seconds
+    setTimeout(() => {
+      setEpicNotification(null);
+    }, 5000);
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setStreakCount(0);
@@ -326,6 +354,28 @@ const LiveVideo = () => {
             <p className="text-gray-300 text-lg">Providing urgent aid to families in need</p>
           </div>
         </div>
+
+        {/* Epic Donation Notification */}
+        {epicNotification && (
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-900/80 backdrop-blur-sm z-60 flex items-center justify-center animate-fade-in">
+            <div className="text-center text-white">
+              <div className="text-6xl mb-4 animate-bounce">{epicNotification.emoji}</div>
+              <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
+                EPIC DONATION!
+              </div>
+              <div className="text-2xl font-bold mb-4">
+                {epicNotification.user} just air-dropped a massive {epicNotification.title}!
+              </div>
+              <div className="flex items-center justify-center text-xl font-semibold">
+                <SimpleGoldCoin size={24} className="mr-2" />
+                {epicNotification.amount} Sadaqah Coins
+              </div>
+              <div className="text-lg mt-2 opacity-90">
+                Everyone in the community can see this amazing generosity! 🎉
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="absolute top-0 left-0 right-0 p-4 z-10">
           <div className="flex justify-between items-start">
@@ -504,7 +554,7 @@ const LiveVideo = () => {
             {/* Epic donation button */}
             <div className="flex items-center">
               <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/50 to-transparent mx-2"></div>
-              <EpicDonationButton />
+              <EpicDonationButton onEpicDonation={handleEpicDonation} />
             </div>
           </div>
         </div>
