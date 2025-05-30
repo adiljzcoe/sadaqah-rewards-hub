@@ -1,4 +1,3 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
@@ -40,6 +39,12 @@
   100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.8); }
 }
 
+/* Shimmer animation for heavenly effects */
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(200%) rotate(45deg); }
+}
+
 /* Custom utility classes */
 .professional-card {
   @apply bg-white/70 backdrop-blur-sm border border-white/20 shadow-lg;
@@ -67,6 +72,11 @@
 
 .hover-scale {
   @apply transition-transform duration-200 hover:scale-105;
+}
+
+/* Heavenly shimmer animation utility */
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
 }
 
 /* Islamic-themed colors */
