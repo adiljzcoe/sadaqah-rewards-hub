@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -101,7 +102,7 @@ const Index = () => {
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
-      <section className="container mx-auto px-4">
+      <section className="w-full">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Live Stream - Main Column */}
           <div className="lg:col-span-2 space-y-6">
@@ -110,17 +111,17 @@ const Index = () => {
             </div>
             
             {/* Charity Feed Section - Right below video */}
-            <div className="hover-lift">
+            <div className="hover-lift px-4">
               <CharityFeedSection />
             </div>
             
-            <div className="hover-lift">
+            <div className="hover-lift px-4">
               <LiveFeed />
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-6 px-4">
             <div className="hover-lift">
               <UserStats />
             </div>
