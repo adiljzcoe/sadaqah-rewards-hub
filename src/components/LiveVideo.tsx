@@ -222,12 +222,12 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Get More Coins Button - Top Right positioned absolutely */}
+        {/* Top Up Sadaqah Coins Button - Top Right positioned absolutely */}
         <div className="absolute top-20 right-4 z-30">
           <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             <Gift className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform" />
-            Get More Sadaqah Coins
+            Top Up Sadaqah Coins
             <Sparkles className="h-4 w-4 ml-2 animate-pulse" />
           </Button>
         </div>
@@ -272,8 +272,8 @@ const LiveVideo = () => {
             key={coin.id}
             className="absolute pointer-events-none z-50 animate-bounce"
             style={{
-              left: `${Math.min(Math.max(coin.x, 10), 80)}%`, // Constrain between 10% and 80%
-              top: `${Math.min(Math.max(coin.y, 10), 80)}%`, // Constrain between 10% and 80%
+              left: `${Math.min(Math.max(coin.x, 10), 80)}%`,
+              top: `${Math.min(Math.max(coin.y, 10), 80)}%`,
               animation: 'floatUp 2s ease-out forwards'
             }}
           >
