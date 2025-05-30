@@ -170,14 +170,14 @@ const Header = () => {
               <Star className="h-5 w-5 text-yellow-300" />
               <span className="text-lg font-bold">5,632 pts</span>
               {isMember && (
-                <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
                   <Crown className="h-3 w-3 mr-1" />
                   2x Points
                 </Badge>
               )}
             </div>
 
-            {/* User Menu with Level and VIP in one row */}
+            {/* User Menu with Level and VIP combined */}
             <div className="relative">
               <div className="flex flex-col items-center">
                 <Link to="/profile">
@@ -187,30 +187,26 @@ const Header = () => {
                   </Button>
                 </Link>
                 
-                {/* Combined Level and VIP row */}
-                <div className="mt-1 flex items-center space-x-2">
-                  {/* Level Display */}
-                  <div className="flex items-center space-x-1 bg-gradient-to-r from-blue-50 to-purple-50 px-2 py-1 rounded-lg border border-blue-200/50">
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                      {userLevel}
-                    </div>
-                    <div className="w-6 bg-gray-200 rounded-full h-1">
-                      <div 
-                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-1 rounded-full transition-all duration-300"
-                        style={{ width: `${progress}%` }}
-                      ></div>
-                    </div>
-                    <div className="text-xs text-gray-500">{pointsToNextLevel}</div>
-                  </div>
-                  
-                  {/* VIP Badge - Gold Plaque Style */}
-                  {isMember && (
+                {/* Combined VIP Badge with Level and XP */}
+                {isMember && (
+                  <div className="mt-1 flex flex-col items-center space-y-1">
                     <Badge className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-amber-900 text-xs animate-bounce shadow-lg border-2 border-yellow-300/50 font-bold">
                       <Crown className="h-3 w-3 mr-1" />
-                      VIP
+                      VIP Level {userLevel}
                     </Badge>
-                  )}
-                </div>
+                    
+                    {/* XP Progress Bar */}
+                    <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-50 to-amber-50 px-2 py-1 rounded-lg border border-yellow-200/50">
+                      <div className="w-12 bg-yellow-200 rounded-full h-1">
+                        <div 
+                          className="bg-gradient-to-r from-yellow-500 to-amber-600 h-1 rounded-full transition-all duration-300"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="text-xs text-amber-700 font-medium">{pointsToNextLevel}</div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
