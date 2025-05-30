@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -120,7 +121,7 @@ const UserStats = () => {
             <Star className="h-6 w-6 text-white animate-points-pop" />
             <span className="font-bold text-white text-lg">Jannah Points</span>
             {isMember && (
-              <Badge className="bg-purple-500 text-white text-xs">
+              <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs shadow-lg border border-white/20">
                 2x Rate
               </Badge>
             )}
@@ -195,7 +196,7 @@ const UserStats = () => {
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
                   {isMember && (
-                    <Badge className="bg-purple-500 text-white text-xs">
+                    <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs shadow-lg border border-white/20">
                       2x Rate
                     </Badge>
                   )}
