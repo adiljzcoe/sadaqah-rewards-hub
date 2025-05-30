@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -101,13 +100,13 @@ const LiveVideo = () => {
   return (
     <div className="relative">
       {/* Video Container */}
-      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-xl shadow-2xl">
         {/* Background Video Placeholder */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           <div className="text-center text-white z-10">
-            <Play className="h-16 w-16 mx-auto mb-4 opacity-80" />
-            <h3 className="text-xl font-semibold mb-2">Live: Emergency Relief for Gaza</h3>
-            <p className="text-gray-300">Providing urgent aid to families in need</p>
+            <Play className="h-20 w-20 mx-auto mb-6 opacity-80" />
+            <h3 className="text-2xl font-bold mb-3">Live: Emergency Relief for Gaza</h3>
+            <p className="text-gray-300 text-lg">Providing urgent aid to families in need</p>
           </div>
         </div>
 
@@ -140,34 +139,40 @@ const LiveVideo = () => {
         )}
 
         {/* Top UI Elements */}
-        <div className="absolute top-0 left-0 right-0 p-4 z-20">
+        <div className="absolute top-0 left-0 right-0 p-6 z-20">
           <div className="flex justify-between items-start">
             {/* Live Badge */}
-            <Badge className="bg-red-500 hover:bg-red-600 text-white shadow-lg">
+            <Badge className="bg-red-500 hover:bg-red-600 text-white shadow-lg px-3 py-2">
               <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
               LIVE
             </Badge>
 
-            {/* Top Right - Single Line Layout */}
-            <div className="flex items-center space-x-3">
+            {/* Top Right - Cleaner Single Line */}
+            <div className="flex items-center space-x-3 bg-black/40 backdrop-blur-sm rounded-xl p-3 shadow-xl">
               {/* Viewer Count */}
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1 shadow-lg flex items-center text-white text-sm">
-                <Users className="h-4 w-4 mr-1" />
-                1,247 viewers
+              <div className="flex items-center text-white text-sm font-medium">
+                <Users className="h-4 w-4 mr-2" />
+                1,247
               </div>
 
-              {/* User Coins with 3D Effect */}
-              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 backdrop-blur-sm rounded-lg px-3 py-2 shadow-xl border-2 border-yellow-300 flex items-center text-white text-sm font-bold">
-                <GoldCoin3D size={20} className="mr-2" />
-                {userCoins} Sadaqah Coins
+              {/* Separator */}
+              <div className="w-px h-4 bg-white/30"></div>
+
+              {/* User Coins */}
+              <div className="flex items-center text-amber-300 text-sm font-bold">
+                <GoldCoin3D size={18} className="mr-2" />
+                {userCoins}
               </div>
 
-              {/* Streak & Multiplier Display */}
+              {/* Streak & Multiplier */}
               {streakCount > 0 && (
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 backdrop-blur-sm rounded-lg px-3 py-1 shadow-lg animate-pulse flex items-center text-white text-xs font-bold">
-                  <Zap className="h-3 w-3 mr-1" />
-                  {streakCount} Streak • {multiplier}x
-                </div>
+                <>
+                  <div className="w-px h-4 bg-white/30"></div>
+                  <div className="flex items-center text-purple-300 text-sm font-bold">
+                    <Zap className="h-3 w-3 mr-1" />
+                    {streakCount}x{multiplier}
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -197,21 +202,21 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Floating Donation Buttons - 50% on video, 50% below */}
-      <div className="relative -mt-12 z-30">
-        <div className="flex justify-center">
-          <div className="flex space-x-3 px-6">
+      {/* Floating Donation Buttons - Perfect 50/50 split */}
+      <div className="relative -mt-16 z-30">
+        <div className="flex justify-center px-6">
+          <div className="grid grid-cols-6 gap-4 bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-2xl border border-gray-200/50">
             {quickDonations.map((donation, index) => (
               <button
                 key={donation.label}
                 onClick={() => handleQuickDonate(donation)}
                 disabled={userCoins < donation.coins}
                 className={`
-                  group relative w-20 h-20 rounded-2xl shadow-xl
+                  group relative w-20 h-20 rounded-2xl shadow-lg
                   bg-gradient-to-br ${donation.color}
                   hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
-                  transition-all duration-300 border-4 border-white/30
-                  ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/60' : ''}
+                  transition-all duration-300 border-4 border-white/40
+                  ${userCoins >= donation.coins ? 'hover:shadow-2xl hover:border-white/80' : ''}
                 `}
                 style={{
                   animationDelay: `${index * 0.1}s`
@@ -221,7 +226,7 @@ const LiveVideo = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"></div>
                 
                 <div className="relative h-full flex flex-col items-center justify-center text-white">
-                  <div className="text-2xl mb-1 animate-bounce">{donation.emoji}</div>
+                  <div className="text-2xl mb-1">{donation.emoji}</div>
                   <div className="text-xs font-bold">{donation.coins}</div>
                   <div className="text-[8px] opacity-80">coins</div>
                 </div>
@@ -234,43 +239,47 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Bottom Section - Single Line Layout */}
-      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black py-4 px-6">
+      {/* Bottom Section - Clean Single Line Layout */}
+      <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-black py-6 px-8 rounded-b-xl">
         <div className="flex items-center justify-between">
-          {/* Left Side - Stats */}
+          {/* Left Side - Stats with better styling */}
           <div className="flex items-center space-x-6">
-            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-              <Volume2 className="h-4 w-4" />
+            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20 p-2">
+              <Volume2 className="h-5 w-5" />
             </Button>
-            <div className="text-sm text-gray-300 flex items-center space-x-2">
-              <Sparkles className="h-4 w-4 text-yellow-400 animate-pulse" />
-              <span>
-                <span className="font-bold text-emerald-400">2,850 coins</span> donated in last hour
-              </span>
+            <div className="text-sm text-emerald-400 flex items-center space-x-3 font-medium">
+              <div className="flex items-center">
+                <span className="text-2xl font-bold">2,850</span>
+                <span className="text-xs ml-1 opacity-80">coins</span>
+              </div>
+              <span className="text-gray-400">donated in last hour</span>
             </div>
           </div>
           
-          {/* Right Side - Action Buttons */}
-          <div className="flex items-center space-x-3">
-            <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+          {/* Right Side - Action Buttons with better spacing */}
+          <div className="flex items-center space-x-4">
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20 px-4 py-2">
               <Share2 className="h-4 w-4 mr-2" />
               Share & Earn 50 Coins
             </Button>
             
-            <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20 relative">
+            <Button variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20 relative px-4 py-2">
               <Heart className="h-4 w-4 mr-2" />
               Follow
               <Badge className="absolute -top-1 -right-1 bg-amber-500 text-white text-[8px] px-1">
                 +25
               </Badge>
             </Button>
-
-            <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-lg border-2 border-yellow-300 animate-pulse">
-              <Gift className="h-4 w-4 mr-2" />
-              Get More Coins
-            </Button>
           </div>
         </div>
+      </div>
+
+      {/* Get More Coins - Separate section below */}
+      <div className="mt-4 flex justify-center">
+        <Button className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white shadow-xl border-2 border-yellow-300 px-8 py-3 text-lg font-bold rounded-xl">
+          <Gift className="h-5 w-5 mr-3" />
+          Get More Coins
+        </Button>
       </div>
 
       {/* Custom Animations */}
