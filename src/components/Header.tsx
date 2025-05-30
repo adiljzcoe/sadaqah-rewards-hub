@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { Star, User, Menu, Crown, ArrowUp, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -15,6 +16,13 @@ import {
 const Header = () => {
   const location = useLocation();
   const isMember = true; // VIP status
+
+  // User level data - this would come from your user context/state management
+  const userLevel = 12;
+  const currentPoints = 5632;
+  const nextLevelPoints = 6000;
+  const pointsToNextLevel = nextLevelPoints - currentPoints;
+  const progress = (currentPoints / nextLevelPoints) * 100;
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -156,6 +164,25 @@ const Header = () => {
 
           {/* User Section */}
           <div className="flex items-center space-x-4">
+            {/* Level Display with Progress */}
+            <div className="hidden lg:flex items-center space-x-3 bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-2 rounded-xl border border-blue-200/50">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
+                  {userLevel}
+                </div>
+                <div className="flex flex-col">
+                  <div className="text-xs font-semibold text-gray-700">Level {userLevel}</div>
+                  <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-1.5 rounded-full transition-all duration-300"
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-xs text-gray-500">{pointsToNextLevel} to go</div>
+                </div>
+              </div>
+            </div>
+
             {/* Points Display */}
             <div className="hidden sm:flex items-center space-x-2 jannah-counter px-4 py-2">
               <Star className="h-5 w-5 text-yellow-300" />
