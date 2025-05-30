@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -204,9 +203,9 @@ const Header = () => {
                     <div className="text-xs text-gray-500">{pointsToNextLevel}</div>
                   </div>
                   
-                  {/* VIP Badge */}
+                  {/* VIP Badge - Gold Plaque Style */}
                   {isMember && (
-                    <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs animate-bounce shadow-lg border border-white/20">
+                    <Badge className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 text-amber-900 text-xs animate-bounce shadow-lg border-2 border-yellow-300/50 font-bold">
                       <Crown className="h-3 w-3 mr-1" />
                       VIP
                     </Badge>
