@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 const UserStats = () => {
   const { toast } = useToast();
   const userLevel = 12;
-  const currentPoints = 5632;
+  const [currentPoints, setCurrentPoints] = React.useState(
+    parseInt(localStorage.getItem('jannahPoints') || '5632')
+  );
   const nextLevelPoints = 6000;
   const progress = (currentPoints / nextLevelPoints) * 100;
   const sadaqahCoins = 142;
@@ -41,10 +42,17 @@ const UserStats = () => {
 
   const handleDonation = () => {
     // Simulate donation and update streak
-    const updatedStreak = updateStreak();
+    const { streakData, jannahPointsEarned } = updateStreak();
+    setCurrentPoints(prev => prev + jannahPointsEarned);
+    
+    let message = `Your donation streak is now ${streakData.currentStreak} days!`;
+    if (jannahPointsEarned > 0) {
+      message += ` You earned ${jannahPointsEarned} Jannah points from your streak! 🌟`;
+    }
+    
     toast({
       title: "Donation Successful! 🎉",
-      description: `Your donation streak is now ${updatedStreak.currentStreak} days!`,
+      description: message,
     });
   };
 
@@ -115,7 +123,7 @@ const UserStats = () => {
           <div className="text-3xl font-black text-white animate-points-pop">
             {currentPoints.toLocaleString()}
           </div>
-          <div className="text-sm text-white/80 mt-1">✨ Divine Rewards ✨</div>
+          <div className="text-sm text-white/80 mt-1">✨ Divine Rewards + Streak Bonuses ✨</div>
         </div>
 
         {/* Level Progress */}
@@ -135,6 +143,21 @@ const UserStats = () => {
           <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
             {nextLevelPoints - currentPoints} points to level up! 🚀
           </p>
+        </div>
+
+        {/* Streak Bonus Info */}
+        <div className="game-card p-4 bg-gradient-to-r from-orange-100 to-yellow-100 text-center relative overflow-hidden">
+          <div className="relative z-10">
+            <p className="font-bold text-orange-800 mb-1 text-lg">🔥 Streak Rewards!</p>
+            <p className="text-sm font-bold text-orange-700">
+              <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
+              Longer streaks = More Jannah points!
+            </p>
+            <div className="text-xs text-orange-600 mt-2">
+              3+ days: +25 points • 7+ days: +50 points • 30+ days: +200 points
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
         </div>
 
         {/* Sadaqah Coins */}

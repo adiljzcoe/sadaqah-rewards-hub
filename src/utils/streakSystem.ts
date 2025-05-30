@@ -56,31 +56,72 @@ export const getStreakData = (): StreakData => {
   };
 };
 
-export const updateStreak = (): StreakData => {
+export const calculateStreakBonus = (streakCount: number): number => {
+  // Base streak bonus points
+  let bonus = 0;
+  
+  if (streakCount >= 100) {
+    bonus = 500; // Legendary streak bonus
+  } else if (streakCount >= 30) {
+    bonus = 200; // Epic streak bonus
+  } else if (streakCount >= 7) {
+    bonus = 50; // Rare streak bonus
+  } else if (streakCount >= 3) {
+    bonus = 25; // Common streak bonus
+  } else if (streakCount >= 1) {
+    bonus = 10; // Basic streak bonus
+  }
+  
+  // Additional multiplier for very long streaks
+  if (streakCount > 30) {
+    bonus += Math.floor(streakCount / 10) * 10;
+  }
+  
+  return bonus;
+};
+
+export const updateStreak = (): { streakData: StreakData; jannahPointsEarned: number } => {
   const today = new Date().toDateString();
   const streakData = getStreakData();
   const lastDate = new Date(streakData.lastDonationDate).toDateString();
   const yesterday = new Date(Date.now() - 86400000).toDateString();
   
+  let jannahPointsEarned = 0;
+  
   if (lastDate === today) {
     // Already donated today, no change
-    return streakData;
+    return { streakData, jannahPointsEarned };
   } else if (lastDate === yesterday) {
     // Continuing streak
     streakData.currentStreak += 1;
     streakData.longestStreak = Math.max(streakData.longestStreak, streakData.currentStreak);
+    
+    // Award Jannah points for maintaining streak
+    jannahPointsEarned = calculateStreakBonus(streakData.currentStreak);
   } else if (streakData.streakFreeze && streakData.streakFreezeCount > 0) {
     // Use streak freeze
     streakData.streakFreezeCount -= 1;
     streakData.streakFreeze = false;
+    
+    // Award reduced points for using freeze
+    jannahPointsEarned = Math.floor(calculateStreakBonus(streakData.currentStreak) * 0.5);
   } else {
-    // Streak broken
+    // Streak broken, start over
     streakData.currentStreak = 1;
+    
+    // Award basic points for new start
+    jannahPointsEarned = calculateStreakBonus(1);
   }
   
   streakData.lastDonationDate = today;
   localStorage.setItem('donationStreak', JSON.stringify(streakData));
-  return streakData;
+  
+  // Update user's total Jannah points
+  const currentPoints = parseInt(localStorage.getItem('jannahPoints') || '5632');
+  const newPoints = currentPoints + jannahPointsEarned;
+  localStorage.setItem('jannahPoints', newPoints.toString());
+  
+  return { streakData, jannahPointsEarned };
 };
 
 export const checkAchievements = (userStats: any): Achievement[] => {
