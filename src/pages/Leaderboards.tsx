@@ -3,15 +3,22 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Trophy, Medal, Award, Crown, Users, MapPin, Building, Star } from 'lucide-react';
+import { Trophy, Medal, Award, Crown, Users, MapPin, Building, Star, Target, ArrowUp } from 'lucide-react';
 import Header from '@/components/Header';
+import { getUserLeague, getNextLeague, leagues } from '@/utils/leagueSystem';
 
 const Leaderboards = () => {
   const [timeFilter, setTimeFilter] = useState('weekly');
   
+  const userPoints = 5632;
+  const userRank = 47;
+  const userCity = "London";
+  const userLeague = getUserLeague(userPoints);
+  const nextLeague = getNextLeague(userPoints);
+  
   const individualLeaders = [
-    { rank: 1, name: "Sarah K.", points: 12450, donations: 45, city: "London", badge: "Crown" },
-    { rank: 2, name: "Mohammed A.", points: 11230, donations: 38, city: "Birmingham", badge: "VIP" },
+    { rank: 1, name: "Sarah K.", points: 12450, donations: 45, city: "London", badge: "Crown", league: "Diamond Saints" },
+    { rank: 2, name: "Mohammed A.", points: 11230, donations: 38, city: "Birmingham", badge: "VIP", league: "Diamond Saints" },
     { rank: 3, name: "David L.", points: 10890, donations: 42, city: "Manchester", badge: null },
     { rank: 4, name: "Fatima H.", points: 9650, donations: 35, city: "London", badge: "VIP" },
     { rank: 5, name: "James R.", points: 8920, donations: 29, city: "Glasgow", badge: null },
@@ -20,10 +27,15 @@ const Leaderboards = () => {
     { rank: 8, name: "Zara P.", points: 7230, donations: 26, city: "London", badge: null },
     { rank: 9, name: "Adam W.", points: 6890, donations: 24, city: "Cardiff", badge: null },
     { rank: 10, name: "Layla N.", points: 6450, donations: 23, city: "Edinburgh", badge: null },
+    { rank: 46, name: "Sarah K.", points: 5890, donations: 28, city: "London", badge: null, league: "Gold Donors" },
+    { rank: 47, name: "Ahmad M. (YOU)", points: 5632, donations: 26, city: "London", badge: null, league: "Gold Donors", isUser: true },
+    { rank: 48, name: "David M.", points: 5420, donations: 24, city: "Leeds", badge: null, league: "Gold Donors" },
+    { rank: 49, name: "Aisha R.", points: 5380, donations: 21, city: "Manchester", badge: null, league: "Gold Donors" },
+    { rank: 50, name: "James W.", points: 5200, donations: 23, city: "Glasgow", badge: null, league: "Gold Donors" },
   ];
 
   const cityLeaders = [
-    { rank: 1, name: "London", points: 125400, donors: 1247, avgDonation: 65 },
+    { rank: 1, name: "London", points: 125400, donors: 1247, avgDonation: 65, isUserCity: true },
     { rank: 2, name: "Birmingham", points: 98200, donors: 856, avgDonation: 58 },
     { rank: 3, name: "Manchester", points: 87600, donors: 734, avgDonation: 62 },
     { rank: 4, name: "Glasgow", points: 76300, donors: 612, avgDonation: 55 },
@@ -78,6 +90,44 @@ const Leaderboards = () => {
           </p>
         </div>
 
+        {/* Personal League Status */}
+        <Card className="p-6 mb-8 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4 flex items-center justify-center">
+              <Trophy className="h-6 w-6 mr-2 text-purple-600" />
+              Your League Standing
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className={`p-4 rounded-xl bg-gradient-to-r ${userLeague.gradient} text-white`}>
+                <div className="text-3xl mb-2">{userLeague.icon}</div>
+                <div className="font-bold text-lg">{userLeague.name}</div>
+                <div className="text-sm opacity-90">Current League</div>
+              </div>
+              <div className="p-4 rounded-xl bg-gradient-to-r from-gray-400 to-gray-600 text-white">
+                <div className="text-3xl mb-2">#{userRank}</div>
+                <div className="font-bold text-lg">Your Rank</div>
+                <div className="text-sm opacity-90">Global Position</div>
+              </div>
+              <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-400 to-blue-500 text-white">
+                <div className="text-3xl mb-2">#{cityLeaders.find(c => c.name === userCity)?.rank || 'N/A'}</div>
+                <div className="font-bold text-lg">{userCity}</div>
+                <div className="text-sm opacity-90">City Rank</div>
+              </div>
+            </div>
+            {nextLeague && (
+              <div className="mt-6 p-4 bg-white/20 rounded-lg backdrop-blur-sm">
+                <p className="text-purple-800 font-bold mb-2">
+                  <ArrowUp className="inline h-4 w-4 mr-1" />
+                  Next League: {nextLeague.name}
+                </p>
+                <p className="text-purple-700">
+                  You need {nextLeague.minPoints - userPoints} more points to advance!
+                </p>
+              </div>
+            )}
+          </div>
+        </Card>
+
         {/* Time Filter */}
         <div className="flex justify-center mb-8">
           <Select value={timeFilter} onValueChange={setTimeFilter}>
@@ -94,54 +144,42 @@ const Leaderboards = () => {
         </div>
 
         <Tabs defaultValue="individual" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="individual">Individual</TabsTrigger>
             <TabsTrigger value="cities">Cities</TabsTrigger>
             <TabsTrigger value="mosques">Mosques</TabsTrigger>
+            <TabsTrigger value="leagues">Leagues</TabsTrigger>
           </TabsList>
           
           <TabsContent value="individual">
             <Card className="p-6">
               <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <Trophy className="h-6 w-6 text-yellow-500" />
-                Top Individual Donors
+                Individual Donors - Around Your Rank
               </h3>
               
-              {/* Top 3 Podium */}
-              <div className="grid md:grid-cols-3 gap-4 mb-8">
-                {individualLeaders.slice(0, 3).map((leader, index) => (
-                  <div key={leader.rank} className={`text-center p-6 rounded-xl ${getRankBadge(leader.rank)} hover-lift`}>
-                    <div className="flex justify-center mb-4">
-                      {getRankIcon(leader.rank)}
-                    </div>
-                    <h4 className="font-bold text-lg text-white mb-2">{leader.name}</h4>
-                    <div className="text-2xl font-black text-white mb-2">{leader.points.toLocaleString()}</div>
-                    <p className="text-white/90 text-sm">{leader.donations} donations</p>
-                    <div className="flex items-center justify-center gap-1 mt-2 text-white/80 text-xs">
-                      <MapPin className="h-3 w-3" />
-                      {leader.city}
-                    </div>
-                    {leader.badge && (
-                      <Badge className="mt-2 bg-white/20 text-white">
-                        {leader.badge === "Crown" ? <Crown className="h-3 w-3 mr-1" /> : <Star className="h-3 w-3 mr-1" />}
-                        {leader.badge}
-                      </Badge>
-                    )}
-                  </div>
-                ))}
-              </div>
-              
-              {/* Rest of the leaderboard */}
+              {/* Focus on user's area */}
               <div className="space-y-3">
-                {individualLeaders.slice(3).map((leader) => (
-                  <div key={leader.rank} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover-lift">
+                {individualLeaders.slice(-10).map((leader) => (
+                  <div key={leader.rank} className={`flex items-center justify-between p-4 rounded-lg hover-lift ${
+                    leader.isUser ? 'bg-gradient-to-r from-purple-50 to-pink-50 ring-2 ring-purple-300' : 'bg-gray-50'
+                  }`}>
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-700">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white ${
+                        leader.isUser ? 'bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse' : getRankBadge(leader.rank)
+                      }`}>
                         {leader.rank}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h4 className="font-semibold text-gray-900">{leader.name}</h4>
+                          <h4 className={`font-semibold ${leader.isUser ? 'text-purple-700' : 'text-gray-900'}`}>
+                            {leader.name}
+                            {leader.isUser && (
+                              <Badge className="ml-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+                                YOU
+                              </Badge>
+                            )}
+                          </h4>
                           {leader.badge && (
                             <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
                               <Crown className="h-3 w-3 mr-1" />
@@ -149,15 +187,26 @@ const Leaderboards = () => {
                             </Badge>
                           )}
                         </div>
-                        <div className="flex items-center gap-1 text-sm text-gray-600">
-                          <MapPin className="h-3 w-3" />
-                          {leader.city}
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            {leader.city}
+                          </span>
+                          <span className="text-purple-600 font-semibold">{leader.league}</span>
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-lg text-emerald-600">{leader.points.toLocaleString()}</div>
+                      <div className={`font-bold text-lg ${leader.isUser ? 'text-purple-600' : 'text-emerald-600'}`}>
+                        {leader.points.toLocaleString()}
+                      </div>
                       <div className="text-sm text-gray-600">{leader.donations} donations</div>
+                      {leader.rank === 46 && (
+                        <div className="text-xs text-red-600 font-bold">
+                          <Target className="inline h-3 w-3 mr-1" />
+                          Beat me!
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -173,13 +222,24 @@ const Leaderboards = () => {
               </h3>
               <div className="space-y-4">
                 {cityLeaders.map((city) => (
-                  <div key={city.rank} className="flex items-center justify-between p-6 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg hover-lift">
+                  <div key={city.rank} className={`flex items-center justify-between p-6 rounded-lg hover-lift ${
+                    city.isUserCity ? 'bg-gradient-to-r from-blue-50 to-emerald-50 ring-2 ring-emerald-300' : 'bg-gradient-to-r from-gray-50 to-blue-50'
+                  }`}>
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-white ${getRankBadge(city.rank)}`}>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-white ${getRankBadge(city.rank)} ${
+                        city.isUserCity ? 'animate-pulse' : ''
+                      }`}>
                         {city.rank}
                       </div>
                       <div>
-                        <h4 className="font-bold text-xl text-gray-900">{city.name}</h4>
+                        <h4 className={`font-bold text-xl ${city.isUserCity ? 'text-emerald-700' : 'text-gray-900'}`}>
+                          {city.name}
+                          {city.isUserCity && (
+                            <Badge className="ml-2 bg-gradient-to-r from-emerald-500 to-blue-500 text-white text-xs">
+                              YOUR CITY
+                            </Badge>
+                          )}
+                        </h4>
                         <div className="flex items-center gap-4 text-sm text-gray-600">
                           <span className="flex items-center gap-1">
                             <Users className="h-4 w-4" />
@@ -190,7 +250,9 @@ const Leaderboards = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-2xl text-emerald-600">{city.points.toLocaleString()}</div>
+                      <div className={`font-bold text-2xl ${city.isUserCity ? 'text-emerald-600' : 'text-emerald-600'}`}>
+                        {city.points.toLocaleString()}
+                      </div>
                       <div className="text-sm text-gray-600">points</div>
                     </div>
                   </div>
@@ -229,6 +291,70 @@ const Leaderboards = () => {
                     <div className="text-right">
                       <div className="font-bold text-2xl text-emerald-600">{mosque.points.toLocaleString()}</div>
                       <div className="text-sm text-gray-600">points</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="leagues">
+            <Card className="p-6">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Trophy className="h-6 w-6 text-purple-500" />
+                Giving Leagues
+              </h3>
+              <div className="space-y-4">
+                {leagues.map((league, index) => (
+                  <div key={index} className={`p-6 rounded-xl border-2 transition-all ${
+                    league.name === userLeague.name ? 'border-purple-300 bg-purple-50 ring-2 ring-purple-200' : 'border-gray-200 bg-gray-50'
+                  }`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${league.gradient} flex items-center justify-center text-3xl shadow-lg`}>
+                          {league.icon}
+                        </div>
+                        <div>
+                          <h4 className={`font-bold text-xl ${league.name === userLeague.name ? 'text-purple-700' : 'text-gray-900'}`}>
+                            {league.name}
+                            {league.name === userLeague.name && (
+                              <Badge className="ml-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm">
+                                YOUR LEAGUE
+                              </Badge>
+                            )}
+                          </h4>
+                          <p className="text-gray-600">
+                            {league.minPoints.toLocaleString()} - {league.maxPoints === Infinity ? '∞' : league.maxPoints.toLocaleString()} points
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <h5 className="font-semibold text-gray-700 mb-2">Benefits:</h5>
+                        <ul className="space-y-1">
+                          {league.benefits.map((benefit, idx) => (
+                            <li key={idx} className="text-sm text-gray-600 flex items-center">
+                              <Star className="h-3 w-3 mr-1 text-yellow-500" />
+                              {benefit}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      {league.name === userLeague.name && nextLeague && (
+                        <div className="bg-white/60 p-4 rounded-lg">
+                          <h5 className="font-semibold text-purple-700 mb-2">Next League Progress:</h5>
+                          <p className="text-sm text-purple-600 mb-2">
+                            {nextLeague.minPoints - userPoints} points to {nextLeague.name}
+                          </p>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div 
+                              className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all"
+                              style={{ width: `${Math.min(((userPoints - league.minPoints) / (nextLeague.minPoints - league.minPoints)) * 100, 100)}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

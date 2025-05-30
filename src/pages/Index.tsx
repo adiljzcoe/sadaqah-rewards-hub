@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -8,6 +7,7 @@ import FloatingDonationButton from '@/components/FloatingDonationButton';
 import CharityPartners from '@/components/CharityPartners';
 import LiveFeed from '@/components/LiveFeed';
 import UserStats from '@/components/UserStats';
+import PersonalLeagueWidget from '@/components/PersonalLeagueWidget';
 import FloatingDonationWidget from '@/components/FloatingDonationWidget';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
@@ -125,6 +125,9 @@ const Index = () => {
           <div className="space-y-6 px-4">
             <div className="hover-lift">
               <UserStats />
+            </div>
+            <div className="hover-lift">
+              <PersonalLeagueWidget />
             </div>
             <div className="hover-lift">
               <DonationWidget />
