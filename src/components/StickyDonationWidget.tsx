@@ -165,7 +165,7 @@ const StickyDonationWidget = () => {
               </div>
             </div>
 
-            {/* Total impact message & Payment icons - Only show when not sticky */}
+            {/* Payment icons - Hide only when sticky */}
             {!isSticky && (
               <div className="flex items-center justify-between mt-2">
                 {/* Payment icons */}
