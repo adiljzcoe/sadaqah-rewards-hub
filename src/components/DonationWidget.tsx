@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle } from 'lucide-react';
 
 const donationTypes = [
-  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'bg-emerald-600', description: 'Obligatory charity' },
-  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'bg-blue-600', description: 'Voluntary charity' },
-  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'bg-purple-600', description: 'For Allah\'s sake' },
-  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'bg-gray-600', description: 'Regular giving' }
+  { id: 'zakat', name: 'Zakat', icon: '☪️', color: 'vibrant-gradient', description: 'Obligatory charity' },
+  { id: 'sadaqah', name: 'Sadaqah', icon: '💝', color: 'accent-gradient', description: 'Voluntary charity' },
+  { id: 'lillah', name: 'Lillah', icon: '🤲', color: 'purple-gradient', description: 'For Allah\'s sake' },
+  { id: 'monthly', name: 'Monthly', icon: '📅', color: 'orange-gradient', description: 'Regular giving' }
 ];
 
 const quickAmounts = [10, 25, 50, 100];
@@ -50,15 +50,20 @@ const DonationWidget = () => {
           <button
             key={type.id}
             onClick={() => setSelectedType(type.id)}
-            className={`p-4 rounded-lg transition-all duration-200 border-2 ${
+            className={`gel-button p-4 rounded-xl transition-all duration-300 border-3 relative overflow-hidden ${type.color} ${
               selectedType === type.id 
-                ? 'border-emerald-500 bg-emerald-50' 
-                : 'border-gray-200 hover:border-emerald-300 bg-white'
+                ? 'transform scale-105 shadow-xl' 
+                : 'transform scale-100 hover:scale-102'
             }`}
           >
-            <div className="text-lg mb-2">{type.icon}</div>
-            <div className="text-sm font-semibold text-gray-800">{type.name}</div>
-            <div className="text-xs text-gray-600">{type.description}</div>
+            <div className="relative z-10">
+              <div className="text-lg mb-2">{type.icon}</div>
+              <div className="text-sm font-bold text-white">{type.name}</div>
+              <div className="text-xs text-white/90">{type.description}</div>
+            </div>
+            {selectedType === type.id && (
+              <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            )}
           </button>
         ))}
       </div>
