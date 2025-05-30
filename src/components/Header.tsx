@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -187,11 +188,6 @@ const Header = () => {
                   </>
                 )}
               </Badge>
-              {isMember && (
-                <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs ml-2 animate-pulse shadow-lg border border-white/20">
-                  x2 ✨ Points
-                </Badge>
-              )}
             </div>
 
             {/* User Menu with VIP Crown integrated as plaque */}
@@ -213,9 +209,25 @@ const Header = () => {
                   )}
                 </Link>
                 
-                {/* Life Bar Style Level Display */}
+                {/* Member badges stacked */}
                 {isMember && (
-                  <div className="relative">
+                  <div className="flex flex-col space-y-1 w-full">
+                    {/* Guardian Angel badge */}
+                    <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg px-3 py-1 border-2 border-gray-600 shadow-lg">
+                      <div className="flex items-center justify-center space-x-2">
+                        <span className="text-lg">{currentRank.icon}</span>
+                        <span className="text-xs font-bold text-yellow-300">{currentRank.badge}</span>
+                      </div>
+                    </div>
+                    
+                    {/* X2 Points badge */}
+                    <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg px-3 py-1 border-2 border-gray-600 shadow-lg">
+                      <div className="flex items-center justify-center">
+                        <span className="text-xs font-bold text-green-400">x2 ✨ Points</span>
+                      </div>
+                    </div>
+                    
+                    {/* Life Bar Style Level Display */}
                     <div className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg px-3 py-1 border-2 border-gray-600 shadow-lg">
                       <div className="flex items-center space-x-2">
                         <span className="text-xs font-bold text-yellow-300">LV {userLevel}</span>
