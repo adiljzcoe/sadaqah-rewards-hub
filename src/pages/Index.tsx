@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -20,6 +21,7 @@ import AchievementSystem from '@/components/AchievementSystem';
 import FriendsWidget from '@/components/FriendsWidget';
 import SeasonalEvents from '@/components/SeasonalEvents';
 import MatchingPoolWidget from '@/components/MatchingPoolWidget';
+import CharityTicker from '@/components/CharityTicker';
 
 const Index = () => {
   // Mock data for campaigns
@@ -105,6 +107,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <Header />
+      <CharityTicker />
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
