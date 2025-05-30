@@ -175,7 +175,7 @@ const Header = () => {
               )}
             </div>
 
-            {/* User Menu with Level Display */}
+            {/* User Menu with Level and VIP in one row */}
             <div className="relative">
               <div className="flex flex-col items-center">
                 <Link to="/profile">
@@ -185,39 +185,31 @@ const Header = () => {
                   </Button>
                 </Link>
                 
-                {/* Level display and upgrade link under name */}
-                <div className="mt-1 flex flex-col items-center space-y-1">
-                  {/* Compact Level Display */}
-                  <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-purple-50 px-2 py-1 rounded-lg border border-blue-200/50">
-                    <div className="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                {/* Combined Level and VIP row */}
+                <div className="mt-1 flex items-center space-x-2">
+                  {/* Level Display */}
+                  <div className="flex items-center space-x-1 bg-gradient-to-r from-blue-50 to-purple-50 px-2 py-1 rounded-lg border border-blue-200/50">
+                    <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
                       {userLevel}
                     </div>
-                    <div className="flex flex-col">
-                      <div className="text-xs font-semibold text-gray-700">Lv {userLevel}</div>
-                      <div className="w-8 bg-gray-200 rounded-full h-1">
-                        <div 
-                          className="bg-gradient-to-r from-blue-500 to-purple-600 h-1 rounded-full transition-all duration-300"
-                          style={{ width: `${progress}%` }}
-                        ></div>
-                      </div>
+                    <div className="w-6 bg-gray-200 rounded-full h-1">
+                      <div 
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-1 rounded-full transition-all duration-300"
+                        style={{ width: `${progress}%` }}
+                      ></div>
                     </div>
                     <div className="text-xs text-gray-500">{pointsToNextLevel}</div>
                   </div>
                   
-                  <Link to="/membership" className="text-xs text-gray-500 hover:text-purple-600 transition-colors duration-200 flex items-center gap-1">
-                    <ArrowUp className="h-3 w-3" />
-                    Upgrade to 3x
-                  </Link>
+                  {/* VIP Badge */}
+                  {isMember && (
+                    <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs animate-bounce">
+                      <Crown className="h-3 w-3 mr-1" />
+                      VIP
+                    </Badge>
+                  )}
                 </div>
               </div>
-              
-              {/* Member Badge */}
-              {isMember && (
-                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs animate-bounce">
-                  <Crown className="h-3 w-3 mr-1" />
-                  VIP
-                </Badge>
-              )}
             </div>
 
             {/* Mobile Menu */}
