@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, Crown, ArrowUp, ChevronDown } from 'lucide-react';
+import { Star, User, Cloud, Crown, ArrowUp, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   NavigationMenu,
@@ -249,9 +249,12 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Mobile Menu */}
-          <Button className="md:hidden bg-gradient-to-r from-sky-300/80 to-indigo-400/80 backdrop-blur-sm text-slate-700 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl border border-white/30">
-            <Menu className="h-5 w-5" />
+          {/* Mobile Menu - Cloud shaped */}
+          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-white/80 via-sky-100/80 to-blue-200/80 backdrop-blur-sm text-sky-700 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-3 border-2 border-white/40 hover:scale-110 hover:from-white/90 hover:via-sky-50/90 hover:to-blue-100/90">
+            <Cloud className="h-6 w-6 drop-shadow-sm" />
+            {/* Cloud sparkle effects */}
+            <div className="absolute top-1 left-2 w-4 h-2 bg-gradient-to-r from-transparent via-white/60 to-transparent rounded-full animate-shimmer"></div>
+            <div className="absolute bottom-1 right-2 w-3 h-1.5 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full animate-shimmer delay-500"></div>
           </Button>
         </div>
       </div>
