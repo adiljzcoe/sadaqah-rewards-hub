@@ -186,8 +186,8 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Side Donation Buttons - Jackpot Style */}
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 space-y-3 z-20">
+        {/* Side Donation Buttons - Moved Lower */}
+        <div className="absolute left-4 bottom-32 space-y-3 z-20">
           {quickDonations.slice(0, 3).map((donation, index) => (
             <button
               key={donation.label}
@@ -219,8 +219,8 @@ const LiveVideo = () => {
           ))}
         </div>
 
-        {/* Right Side Donation Buttons */}
-        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 space-y-3 z-20">
+        {/* Right Side Donation Buttons - Moved Lower */}
+        <div className="absolute right-4 bottom-32 space-y-3 z-20">
           {quickDonations.slice(3).map((donation, index) => (
             <button
               key={donation.label}
