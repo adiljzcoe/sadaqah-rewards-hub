@@ -170,49 +170,47 @@ const Header = () => {
           </nav>
 
           {/* Right Side - Points, User, and Controls */}
-          <div className="flex items-center space-x-4">
-            {/* Points Display with Rank - Improved Layout */}
+          <div className="flex items-center space-x-3">
+            {/* Points Display with Rank - Better organized layout */}
             <div className="hidden md:flex items-center">
-              <div className="bg-gradient-to-r from-sky-400 via-blue-500 to-cyan-500 rounded-2xl px-6 py-3 shadow-lg border border-white/20 backdrop-blur-sm">
-                <div className="flex items-center space-x-4">
+              <div className="bg-gradient-to-r from-sky-400 via-blue-500 to-cyan-500 rounded-2xl px-4 py-2.5 shadow-lg border border-white/20 backdrop-blur-sm">
+                <div className="flex items-center space-x-3">
                   {/* Points Section */}
                   <div className="flex items-center space-x-2">
-                    <Star className="h-5 w-5 text-white animate-subtle-pulse" />
+                    <Star className="h-4 w-4 text-white animate-subtle-pulse" />
                     <div className="text-white">
-                      <div className="text-xl font-bold leading-tight">{currentPoints.toLocaleString()}</div>
+                      <div className="text-lg font-bold leading-tight">{currentPoints.toLocaleString()}</div>
                       <div className="text-xs opacity-90 leading-tight">pts</div>
                     </div>
                   </div>
 
                   {/* Rank Badge */}
-                  <div className="flex items-center">
-                    <Badge className={`bg-gradient-to-r ${currentRank.gradient} text-white px-3 py-1 text-sm font-bold shadow-md border border-white/30`}>
-                      <span className="mr-1 text-base">{currentRank.icon}</span>
-                      {currentRank.badge}
-                    </Badge>
-                  </div>
+                  <Badge className={`bg-gradient-to-r ${currentRank.gradient} text-white px-2.5 py-1 text-xs font-bold shadow-md border border-white/30`}>
+                    <span className="mr-1 text-sm">{currentRank.icon}</span>
+                    {currentRank.badge}
+                  </Badge>
 
                   {/* VIP Multiplier */}
                   {isMember && (
-                    <Badge className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-3 py-1 text-sm font-bold shadow-md border border-white/30 animate-pulse">
+                    <Badge className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-2.5 py-1 text-xs font-bold shadow-md border border-white/30 animate-pulse">
                       <Crown className="h-3 w-3 mr-1" />
-                      2x Points
+                      2x
                     </Badge>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* User Section - Improved Layout */}
+            {/* User Section and Level Bar */}
             <div className="flex items-center space-x-3">
               {/* VIP User Button */}
               <Link to="/profile">
                 {isMember ? (
-                  <Button className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50 hover:scale-105">
+                  <Button className="relative overflow-hidden rounded-xl px-4 py-2.5 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50 hover:scale-105">
                     <div className="flex items-center space-x-2">
                       <Crown className="h-4 w-4 text-amber-800" />
                       <User className="h-4 w-4 text-amber-800" />
-                      <span className="hidden sm:inline text-amber-900 font-bold">VIP Ahmad M.</span>
+                      <span className="hidden sm:inline text-amber-900 font-bold text-sm">VIP Ahmad M.</span>
                     </div>
                     {/* Enhanced plaque shine effect */}
                     <div className="absolute top-2 left-3 w-8 h-4 bg-gradient-to-r from-transparent via-yellow-200/80 to-transparent rounded-full animate-shimmer"></div>
@@ -226,13 +224,13 @@ const Header = () => {
                 )}
               </Link>
               
-              {/* Level Bar - Improved Gaming Style */}
+              {/* Level Bar - Tidied up gaming style */}
               {isMember && (
-                <div className="hidden md:block">
-                  <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl px-4 py-2 border-2 border-gray-600 shadow-xl">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-yellow-300 font-bold text-sm">LV {userLevel}</div>
-                      <div className="relative w-20 h-3 bg-gray-900 rounded-full border border-gray-500 overflow-hidden">
+                <div className="hidden lg:block">
+                  <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl px-3 py-2 border-2 border-gray-600 shadow-xl">
+                    <div className="flex items-center space-x-2">
+                      <div className="text-yellow-300 font-bold text-xs">LV {userLevel}</div>
+                      <div className="relative w-16 h-2.5 bg-gray-900 rounded-full border border-gray-500 overflow-hidden">
                         {/* Filled XP portion with glow */}
                         <div 
                           className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(59,130,246,0.6)]"
@@ -244,9 +242,9 @@ const Header = () => {
                           style={{ width: `${100 - progress}%` }}
                         ></div>
                         {/* Enhanced shine effect */}
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"></div>
+                        <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"></div>
                       </div>
-                      <div className="text-red-400 font-bold text-sm animate-pulse min-w-[3rem] text-right">
+                      <div className="text-red-400 font-bold text-xs animate-pulse min-w-[2.5rem] text-right">
                         {pointsToNextLevel}
                       </div>
                     </div>
