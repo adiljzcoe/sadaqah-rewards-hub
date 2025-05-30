@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -193,7 +194,6 @@ const Header = () => {
                   {isMember ? (
                     <Button className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-900 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 border-2 border-yellow-300/50">
                       <Crown className="h-4 w-4 mr-2 text-amber-800" />
-                      <User className="h-4 w-4 mr-2 text-amber-800" />
                       <span className="hidden sm:inline text-amber-900">VIP Ahmad M.</span>
                       {/* Plaque shine effect */}
                       <div className="absolute top-2 left-3 w-6 h-3 bg-gradient-to-r from-transparent via-yellow-200/60 to-transparent rounded-full animate-shimmer"></div>
