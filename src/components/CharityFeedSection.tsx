@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Heart, MapPin, Clock, Camera, MessageSquare, Users, Eye } from 'lucide-react';
 
 interface FeedPost {
@@ -113,114 +115,228 @@ const CharityFeedSection = () => {
         </p>
       </div>
 
-      <div className="flex">
-        {/* Feed Content - Left Side */}
-        <div className="w-2/3 p-6 space-y-4">
-          {feedPosts.map((post, index) => (
-            <Card 
-              key={post.id}
-              className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group border border-gray-100"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Post Header */}
-              <div className="p-4 pb-3">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-2 h-2 rounded-full ${getCategoryColor(post.category)}`}></div>
+      {/* Mobile and Desktop Layout */}
+      <div className="block lg:flex">
+        {/* Feed Content */}
+        <div className="w-full lg:w-2/3 p-6">
+          {/* Desktop: Vertical layout */}
+          <div className="hidden lg:block space-y-4">
+            {feedPosts.map((post, index) => (
+              <Card 
+                key={post.id}
+                className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group border border-gray-100"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {/* Post Header */}
+                <div className="p-4 pb-3">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                      <div className={`w-2 h-2 rounded-full ${getCategoryColor(post.category)}`}></div>
+                      <Badge 
+                        variant="secondary" 
+                        className={`${getCategoryColor(post.category)} text-white border-0 text-xs`}
+                      >
+                        {post.category}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {formatTimeAgo(post.timestamp)}
+                    </div>
+                  </div>
+
+                  <h4 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                    {post.title}
+                  </h4>
+
+                  <div className="flex items-center text-xs text-gray-600 mb-3">
+                    <span className="font-medium">{post.author}</span>
+                    {post.location && (
+                      <>
+                        <span className="mx-2">•</span>
+                        <MapPin className="h-3 w-3 mr-1" />
+                        <span>{post.location}</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Image (if available) */}
+                {post.image && (
+                  <div className="relative mx-4 mb-3 rounded-lg overflow-hidden">
+                    <AspectRatio ratio={16 / 9}>
+                      <img
+                        src={`https://images.unsplash.com/${post.image}?auto=format&fit=crop&w=400&q=80`}
+                        alt={post.title}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-full p-1">
+                        <Camera className="h-3 w-3 text-white" />
+                      </div>
+                    </AspectRatio>
+                  </div>
+                )}
+
+                {/* Content */}
+                <div className="px-4 pb-4">
+                  <p className="text-sm text-gray-700 leading-relaxed mb-3 line-clamp-3">
+                    {post.content}
+                  </p>
+
+                  {/* Engagement Stats */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                      <div className="flex items-center space-x-1 hover:text-red-500 transition-colors cursor-pointer">
+                        <Heart className="h-3 w-3" />
+                        <span>{post.likes}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 hover:text-blue-500 transition-colors cursor-pointer">
+                        <MessageSquare className="h-3 w-3" />
+                        <span>{post.comments}</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Eye className="h-3 w-3" />
+                        <span>{post.views}</span>
+                      </div>
+                    </div>
+
                     <Badge 
-                      variant="secondary" 
-                      className={`${getCategoryColor(post.category)} text-white border-0 text-xs`}
+                      variant="outline" 
+                      className={`text-xs ${
+                        post.type === 'charity_update' 
+                          ? 'border-emerald-200 text-emerald-700 bg-emerald-50' 
+                          : 'border-blue-200 text-blue-700 bg-blue-50'
+                      }`}
                     >
-                      {post.category}
+                      {post.type === 'charity_update' ? 'Field Update' : 'Community'}
                     </Badge>
                   </div>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {formatTimeAgo(post.timestamp)}
-                  </div>
                 </div>
+              </Card>
+            ))}
 
-                <h4 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2">
-                  {post.title}
-                </h4>
+            {/* Load More Button */}
+            <div className="pt-4">
+              <button className="w-full gel-button vibrant-gradient px-4 py-2 rounded-lg font-medium text-white hover:scale-105 transition-transform duration-300 text-sm">
+                <Users className="h-4 w-4 mr-2" />
+                Load More Updates
+              </button>
+            </div>
+          </div>
 
-                <div className="flex items-center text-xs text-gray-600 mb-3">
-                  <span className="font-medium">{post.author}</span>
-                  {post.location && (
-                    <>
-                      <span className="mx-2">•</span>
-                      <MapPin className="h-3 w-3 mr-1" />
-                      <span>{post.location}</span>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Image (if available) */}
-              {post.image && (
-                <div className="relative mx-4 mb-3 rounded-lg overflow-hidden">
-                  <AspectRatio ratio={16 / 9}>
-                    <img
-                      src={`https://images.unsplash.com/${post.image}?auto=format&fit=crop&w=400&q=80`}
-                      alt={post.title}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-full p-1">
-                      <Camera className="h-3 w-3 text-white" />
-                    </div>
-                  </AspectRatio>
-                </div>
-              )}
-
-              {/* Content */}
-              <div className="px-4 pb-4">
-                <p className="text-sm text-gray-700 leading-relaxed mb-3 line-clamp-3">
-                  {post.content}
-                </p>
-
-                {/* Engagement Stats */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
-                    <div className="flex items-center space-x-1 hover:text-red-500 transition-colors cursor-pointer">
-                      <Heart className="h-3 w-3" />
-                      <span>{post.likes}</span>
-                    </div>
-                    <div className="flex items-center space-x-1 hover:text-blue-500 transition-colors cursor-pointer">
-                      <MessageSquare className="h-3 w-3" />
-                      <span>{post.comments}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Eye className="h-3 w-3" />
-                      <span>{post.views}</span>
-                    </div>
-                  </div>
-
-                  <Badge 
-                    variant="outline" 
-                    className={`text-xs ${
-                      post.type === 'charity_update' 
-                        ? 'border-emerald-200 text-emerald-700 bg-emerald-50' 
-                        : 'border-blue-200 text-blue-700 bg-blue-50'
-                    }`}
+          {/* Mobile: Horizontal scrolling layout */}
+          <div className="lg:hidden">
+            <ScrollArea className="w-full">
+              <div className="flex space-x-4 pb-4">
+                {feedPosts.map((post, index) => (
+                  <Card 
+                    key={post.id}
+                    className="flex-shrink-0 w-80 overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100"
+                    style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    {post.type === 'charity_update' ? 'Field Update' : 'Community'}
-                  </Badge>
-                </div>
-              </div>
-            </Card>
-          ))}
+                    {/* Post Header */}
+                    <div className="p-4 pb-3">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center space-x-2">
+                          <div className={`w-2 h-2 rounded-full ${getCategoryColor(post.category)}`}></div>
+                          <Badge 
+                            variant="secondary" 
+                            className={`${getCategoryColor(post.category)} text-white border-0 text-xs`}
+                          >
+                            {post.category}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center text-xs text-gray-500">
+                          <Clock className="h-3 w-3 mr-1" />
+                          {formatTimeAgo(post.timestamp)}
+                        </div>
+                      </div>
 
-          {/* Load More Button */}
-          <div className="pt-4">
-            <button className="w-full gel-button vibrant-gradient px-4 py-2 rounded-lg font-medium text-white hover:scale-105 transition-transform duration-300 text-sm">
-              <Users className="h-4 w-4 mr-2" />
-              Load More Updates
-            </button>
+                      <h4 className="text-base font-semibold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                        {post.title}
+                      </h4>
+
+                      <div className="flex items-center text-xs text-gray-600 mb-3">
+                        <span className="font-medium truncate">{post.author}</span>
+                        {post.location && (
+                          <>
+                            <span className="mx-2">•</span>
+                            <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                            <span className="truncate">{post.location}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Image (if available) */}
+                    {post.image && (
+                      <div className="relative mx-4 mb-3 rounded-lg overflow-hidden">
+                        <AspectRatio ratio={16 / 9}>
+                          <img
+                            src={`https://images.unsplash.com/${post.image}?auto=format&fit=crop&w=400&q=80`}
+                            alt={post.title}
+                            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm rounded-full p-1">
+                            <Camera className="h-3 w-3 text-white" />
+                          </div>
+                        </AspectRatio>
+                      </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="px-4 pb-4">
+                      <p className="text-sm text-gray-700 leading-relaxed mb-3 line-clamp-3">
+                        {post.content}
+                      </p>
+
+                      {/* Engagement Stats */}
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <div className="flex items-center space-x-1 hover:text-red-500 transition-colors cursor-pointer">
+                            <Heart className="h-3 w-3" />
+                            <span>{post.likes}</span>
+                          </div>
+                          <div className="flex items-center space-x-1 hover:text-blue-500 transition-colors cursor-pointer">
+                            <MessageSquare className="h-3 w-3" />
+                            <span>{post.comments}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Eye className="h-3 w-3" />
+                            <span>{post.views}</span>
+                          </div>
+                        </div>
+
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${
+                            post.type === 'charity_update' 
+                              ? 'border-emerald-200 text-emerald-700 bg-emerald-50' 
+                              : 'border-blue-200 text-blue-700 bg-blue-50'
+                          }`}
+                        >
+                          {post.type === 'charity_update' ? 'Field Update' : 'Community'}
+                        </Badge>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" className="mt-2" />
+            </ScrollArea>
+
+            {/* Mobile Load More Button */}
+            <div className="pt-4">
+              <button className="w-full gel-button vibrant-gradient px-4 py-2 rounded-lg font-medium text-white hover:scale-105 transition-transform duration-300 text-sm">
+                <Users className="h-4 w-4 mr-2" />
+                Load More Updates
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Right Sidebar - Ad Space */}
-        <div className="w-1/3 p-6 border-l border-gray-100">
+        {/* Right Sidebar - Only on Desktop */}
+        <div className="hidden lg:block w-1/3 p-6 border-l border-gray-100">
           <div className="space-y-4">
             {/* Banner Ad Placeholder */}
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-dashed border-blue-200 rounded-lg p-6 text-center">
