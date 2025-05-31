@@ -77,23 +77,6 @@ const BusinessAdvert = () => {
 
   return (
     <Card className="overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-2 border-amber-200/50 shadow-xl hover:shadow-2xl transition-all duration-500 group">
-      {/* Sponsored Badge */}
-      <div className="absolute top-4 left-4 z-20">
-        <Badge className="bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg">
-          <Star className="h-3 w-3 mr-1" />
-          Sponsored
-        </Badge>
-      </div>
-
-      {/* New Badge */}
-      {currentAd.badge && (
-        <div className="absolute top-4 right-4 z-20">
-          <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 shadow-lg animate-pulse">
-            {currentAd.badge}
-          </Badge>
-        </div>
-      )}
-
       <div className="relative">
         {/* Business Ad Image */}
         <div className="relative h-48 overflow-hidden">
