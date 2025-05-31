@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -65,27 +64,39 @@ const Header = () => {
 
             {/* User Section with FF styling */}
             <div className="flex items-center space-x-4">
-              {/* User Menu with VIP Crown + Guardian Rank - FF style */}
+              {/* Unified VIP + Guardian User Button */}
               <div className="flex items-center space-x-3">
                 <Link to="/profile">
                   {isMember ? (
-                    <Button className="relative overflow-hidden rounded-2xl px-4 py-2 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
-                      <div className="flex flex-col items-start">
+                    <Button className="relative overflow-hidden rounded-2xl px-5 py-3 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
+                      <div className="flex items-center space-x-4">
+                        {/* Left side - VIP Crown + User */}
                         <div className="flex items-center">
-                          <Crown className="h-4 w-4 mr-2 text-amber-100 drop-shadow-sm" />
-                          <span className="hidden sm:inline text-amber-100 drop-shadow-sm mr-3">VIP Ahmad M.</span>
-                          <div className="flex items-center bg-gradient-to-r from-blue-600/90 to-cyan-600/90 backdrop-blur-sm rounded-lg px-2 py-1 border border-cyan-400/40 shadow-inner">
-                            <span className="text-xs drop-shadow-sm mr-1">{currentRank.icon}</span>
-                            <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">{currentRank.badge}</span>
+                          <Crown className="h-5 w-5 mr-2 text-amber-100 drop-shadow-sm" />
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
+                            <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">VIP Member</span>
                           </div>
                         </div>
-                        <div className="flex items-center ml-6 mt-1">
-                          <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
-                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                        
+                        {/* Divider */}
+                        <div className="w-px h-8 bg-amber-300/40"></div>
+                        
+                        {/* Right side - Guardian Rank + Points */}
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center bg-gradient-to-r from-blue-600/90 to-cyan-600/90 backdrop-blur-sm rounded-lg px-2.5 py-1 border border-cyan-400/40 shadow-inner mb-1">
+                            <span className="text-xs drop-shadow-sm mr-1.5">{currentRank.icon}</span>
+                            <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">{currentRank.badge}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
+                            <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                          </div>
                         </div>
                       </div>
+                      
                       {/* Enhanced magical shine effect */}
-                      <div className="absolute top-1 left-2 w-8 h-4 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
+                      <div className="absolute top-1 left-2 w-12 h-4 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-2xl"></div>
                     </Button>
                   ) : (
