@@ -147,6 +147,18 @@ const StickyDonationWidget = () => {
             transform: scale(1);
           }
         }
+        
+        @keyframes green-glow-resonate {
+          0% {
+            box-shadow: 0 0 5px rgba(34, 197, 94, 0.4), 0 0 10px rgba(34, 197, 94, 0.3), 0 0 15px rgba(34, 197, 94, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.6), 0 0 20px rgba(34, 197, 94, 0.4), 0 0 30px rgba(34, 197, 94, 0.3), 0 0 40px rgba(34, 197, 94, 0.1);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(34, 197, 94, 0.4), 0 0 10px rgba(34, 197, 94, 0.3), 0 0 15px rgba(34, 197, 94, 0.2);
+          }
+        }
       `}</style>
       
       <div className={`${isSticky ? 'fixed bottom-0' : 'relative'} left-0 right-0 z-50 transition-all duration-300 bg-white border-t border-gray-200 shadow-lg`}>
@@ -296,11 +308,11 @@ const StickyDonationWidget = () => {
                   </div>
                 </div>
 
-                {/* Pay button with gentle pulse animation */}
+                {/* Pay button with gentle pulse animation and green glow */}
                 <div className="sm:col-span-4 relative">
                   <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                     style={{
-                      animation: 'gentle-pulse 3s ease-in-out infinite'
+                      animation: 'gentle-pulse 3s ease-in-out infinite, green-glow-resonate 2.5s ease-in-out infinite'
                     }}
                   >
                     <span className="relative z-10">
