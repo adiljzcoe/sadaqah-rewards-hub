@@ -72,6 +72,9 @@ const DonationWidget = () => {
   const [memoryNote, setMemoryNote] = useState('');
   const [selectedCause, setSelectedCause] = useState('clean-water');
 
+  console.log('DonationWidget rendered, selectedType:', selectedType);
+  console.log('Available donation types:', donationTypes);
+
   return (
     <Card className="p-6 bg-white border border-gray-200 shadow-lg">
       <div className="mb-6">
@@ -92,48 +95,55 @@ const DonationWidget = () => {
 
       {/* Donation Type Selection - Dramatically Enhanced */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        {donationTypes.map((type) => (
-          <button
-            key={type.id}
-            onClick={() => setSelectedType(type.id)}
-            className={`relative p-6 rounded-2xl transition-all duration-500 border-0 overflow-hidden group transform hover:scale-105 ${type.gradient} ${
-              selectedType === type.id 
-                ? `scale-110 shadow-2xl ${type.shadow} ring-4 ${type.ring}` 
-                : `shadow-xl ${type.shadow} hover:shadow-2xl`
-            }`}
-          >
-            {/* Animated background shine effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-            
-            {/* Glass morphism overlay */}
-            <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-2xl"></div>
-            
-            {/* Content */}
-            <div className="relative z-20">
-              <div className="text-3xl mb-4 drop-shadow-lg filter">{type.icon}</div>
-              <div className="text-lg font-bold text-white drop-shadow-lg mb-2">{type.name}</div>
-              <div className="text-sm text-white/95 font-medium drop-shadow-md">{type.description}</div>
-            </div>
-            
-            {/* Selection indicator with animation */}
-            {selectedType === type.id && (
-              <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center z-30 animate-pulse">
-                <CheckCircle className="h-4 w-4 text-green-600" />
+        {donationTypes.map((type) => {
+          console.log('Rendering donation type:', type.name, type.id);
+          return (
+            <button
+              key={type.id}
+              onClick={() => {
+                console.log('Selected donation type:', type.id);
+                setSelectedType(type.id);
+              }}
+              className={`relative p-6 rounded-2xl transition-all duration-500 border-0 overflow-hidden group transform hover:scale-105 ${type.gradient} ${
+                selectedType === type.id 
+                  ? `scale-110 shadow-2xl ${type.shadow} ring-4 ${type.ring}` 
+                  : `shadow-xl ${type.shadow} hover:shadow-2xl`
+              }`}
+            >
+              {/* Animated background shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              
+              {/* Glass morphism overlay */}
+              <div className="absolute inset-0 bg-white/10 backdrop-blur-sm rounded-2xl"></div>
+              
+              {/* Content */}
+              <div className="relative z-20">
+                <div className="text-3xl mb-4 drop-shadow-lg filter">{type.icon}</div>
+                <div className="text-lg font-bold text-white drop-shadow-lg mb-2">{type.name}</div>
+                <div className="text-sm text-white/95 font-medium drop-shadow-md">{type.description}</div>
               </div>
-            )}
-            
-            {/* Inner glow effect */}
-            <div className="absolute top-3 left-4 w-12 h-6 bg-white/40 rounded-full blur-md z-10"></div>
-            
-            {/* Border highlight */}
-            <div className="absolute inset-0 rounded-2xl border-2 border-white/20 z-10"></div>
-          </button>
-        ))}
+              
+              {/* Selection indicator with animation */}
+              {selectedType === type.id && (
+                <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center z-30 animate-pulse">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                </div>
+              )}
+              
+              {/* Inner glow effect */}
+              <div className="absolute top-3 left-4 w-12 h-6 bg-white/40 rounded-full blur-md z-10"></div>
+              
+              {/* Border highlight */}
+              <div className="absolute inset-0 rounded-2xl border-2 border-white/20 z-10"></div>
+            </button>
+          );
+        })}
       </div>
 
       {/* In Memory Section */}
       {selectedType === 'in-memory' && (
         <div className="mb-6 p-5 bg-gradient-to-br from-rose-50 to-pink-50 border-2 border-rose-200 rounded-xl">
+          {console.log('Rendering In Memory section')}
           <div className="flex items-center mb-4">
             <Flower className="h-5 w-5 mr-2 text-rose-600" />
             <h4 className="text-lg font-semibold text-rose-900">Memorial Donation</h4>
