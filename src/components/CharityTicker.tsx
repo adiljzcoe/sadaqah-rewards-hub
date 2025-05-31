@@ -11,50 +11,58 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden max-w-full">
-      <div className="container mx-auto px-4 overflow-hidden max-w-full">
-        <div className="text-center text-xs text-gray-400 mb-6 font-light tracking-wide">
-          Charities we choose to fundraise for
-        </div>
-        
-        {/* Ticker container */}
-        <div className="relative overflow-hidden w-full max-w-full">
-          <div 
-            className="flex space-x-12 animate-ticker"
-            style={{ 
-              width: 'calc(240px * 10)',
-              minWidth: '200%'
-            }}
-          >
-            {/* First set of logos */}
-            {charityLogos.map((charity, index) => (
-              <div
-                key={`first-${index}`}
-                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
-                style={{ minWidth: '120px', maxWidth: '120px' }}
-              >
-                <img 
-                  src={charity.logo} 
-                  alt={charity.name}
-                  className="w-20 h-10 object-contain filter grayscale"
-                />
-              </div>
-            ))}
-            
-            {/* Duplicate set for seamless loop */}
-            {charityLogos.map((charity, index) => (
-              <div
-                key={`second-${index}`}
-                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
-                style={{ minWidth: '120px', maxWidth: '120px' }}
-              >
-                <img 
-                  src={charity.logo} 
-                  alt={charity.name}
-                  className="w-20 h-10 object-contain filter grayscale"
-                />
-              </div>
-            ))}
+    <div className="w-full border-b border-gray-100 overflow-hidden max-w-full relative">
+      {/* Seamless gradient background that matches sticky donation widget final color */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-600 via-slate-400 via-slate-300 to-white"></div>
+      
+      {/* Additional gradient layer for smoother transition */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-500/60 via-gray-400/40 via-gray-300/30 to-transparent"></div>
+      
+      <div className="relative z-10 py-6">
+        <div className="container mx-auto px-4 overflow-hidden max-w-full">
+          <div className="text-center text-xs text-gray-600 mb-6 font-light tracking-wide">
+            Charities we choose to fundraise for
+          </div>
+          
+          {/* Ticker container */}
+          <div className="relative overflow-hidden w-full max-w-full">
+            <div 
+              className="flex space-x-12 animate-ticker"
+              style={{ 
+                width: 'calc(240px * 10)',
+                minWidth: '200%'
+              }}
+            >
+              {/* First set of logos */}
+              {charityLogos.map((charity, index) => (
+                <div
+                  key={`first-${index}`}
+                  className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-50 hover:opacity-70 transition-opacity duration-300"
+                  style={{ minWidth: '120px', maxWidth: '120px' }}
+                >
+                  <img 
+                    src={charity.logo} 
+                    alt={charity.name}
+                    className="w-20 h-10 object-contain filter grayscale"
+                  />
+                </div>
+              ))}
+              
+              {/* Duplicate set for seamless loop */}
+              {charityLogos.map((charity, index) => (
+                <div
+                  key={`second-${index}`}
+                  className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-50 hover:opacity-70 transition-opacity duration-300"
+                  style={{ minWidth: '120px', maxWidth: '120px' }}
+                >
+                  <img 
+                    src={charity.logo} 
+                    alt={charity.name}
+                    className="w-20 h-10 object-contain filter grayscale"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
