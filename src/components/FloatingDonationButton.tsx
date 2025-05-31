@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { X, HandHeart } from 'lucide-react';
+import { X, HandHeart, TrendingUp } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import HeavenlyBirdMascot from './HeavenlyBirdMascot';
 
@@ -20,10 +21,11 @@ const FloatingDonationButton = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleQuickDonate = (amount: number) => {
-    // Simulate donation logic here
-    console.log(`Donated ${amount}!`);
+  const handleFundraisingDonate = (amount: number) => {
+    const valueReceived = amount * 7;
+    console.log(`Fundraising Donation: £${amount} = £${valueReceived} value!`);
     setIsExpanded(false);
+    // Here you would typically integrate with your donation processing system
   };
 
   const toggleStickyWidget = () => {
@@ -100,39 +102,97 @@ const FloatingDonationButton = () => {
               ? 'mt-6 md:mb-6 md:mt-0' 
               : 'mb-6'
           }`}>
+            {/* Header with special fundraising badge */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Support Gaza Relief</h3>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Fundraising Donation</h3>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full text-xs font-bold animate-pulse">
+                    🚀 7X VALUE!
+                  </div>
+                  <span className="text-xs text-gray-600">Help us raise more funds</span>
+                </div>
+              </div>
               <Button variant="ghost" size="icon" onClick={() => setIsExpanded(false)}>
                 <X className="h-4 w-4 text-gray-600" />
               </Button>
             </div>
-            <p className="text-sm text-gray-700 mb-4">Your donation provides critical aid to families in need.</p>
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <Button variant="outline" className="bg-blue-50 hover:bg-blue-100 text-blue-700" onClick={() => handleQuickDonate(5)}>
-                <div className="flex items-center">
+
+            {/* Explanation */}
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-3 mb-4">
+              <p className="text-sm text-orange-800 font-medium">
+                ✨ Special Fundraising Donation: Every £1 you donate = £7 worth of value!
+              </p>
+              <p className="text-xs text-orange-700 mt-1">
+                This helps us raise more funds and gives you incredible rewards.
+              </p>
+            </div>
+
+            {/* Donation amounts with value display */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <Button 
+                variant="outline" 
+                className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 p-4 h-auto flex-col"
+                onClick={() => handleFundraisingDonate(5)}
+              >
+                <div className="flex items-center mb-1">
                   <SimpleGoldCoin size={14} className="mr-1" />
-                  5
+                  <span className="font-bold">£5</span>
                 </div>
+                <div className="text-xs text-green-600 font-semibold">= £35 value!</div>
               </Button>
-              <Button variant="outline" className="bg-green-50 hover:bg-green-100 text-green-700" onClick={() => handleQuickDonate(10)}>
-                <div className="flex items-center">
+              
+              <Button 
+                variant="outline" 
+                className="bg-green-50 hover:bg-green-100 text-green-700 border-2 border-green-200 p-4 h-auto flex-col"
+                onClick={() => handleFundraisingDonate(10)}
+              >
+                <div className="flex items-center mb-1">
                   <SimpleGoldCoin size={14} className="mr-1" />
-                  10
+                  <span className="font-bold">£10</span>
                 </div>
+                <div className="text-xs text-green-600 font-semibold">= £70 value!</div>
               </Button>
-              <Button variant="outline" className="bg-amber-50 hover:bg-amber-100 text-amber-700" onClick={() => handleQuickDonate(25)}>
-                <div className="flex items-center">
+              
+              <Button 
+                variant="outline" 
+                className="bg-purple-50 hover:bg-purple-100 text-purple-700 border-2 border-purple-200 p-4 h-auto flex-col"
+                onClick={() => handleFundraisingDonate(25)}
+              >
+                <div className="flex items-center mb-1">
                   <SimpleGoldCoin size={14} className="mr-1" />
-                  25
+                  <span className="font-bold">£25</span>
                 </div>
+                <div className="text-xs text-green-600 font-semibold">= £175 value!</div>
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                className="bg-amber-50 hover:bg-amber-100 text-amber-700 border-2 border-amber-200 p-4 h-auto flex-col"
+                onClick={() => handleFundraisingDonate(50)}
+              >
+                <div className="flex items-center mb-1">
+                  <SimpleGoldCoin size={14} className="mr-1" />
+                  <span className="font-bold">£50</span>
+                </div>
+                <div className="text-xs text-green-600 font-semibold">= £350 value!</div>
               </Button>
             </div>
-            <Button className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 text-white font-bold hover:from-emerald-600 hover:to-blue-600" onClick={() => handleQuickDonate(50)}>
+
+            {/* Featured donation button */}
+            <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:from-orange-600 hover:to-red-600 py-3 text-lg shadow-lg" onClick={() => handleFundraisingDonate(100)}>
               <div className="flex items-center justify-center">
-                <HandHeart className="h-4 w-4 mr-2" />
-                Donate 50
+                <TrendingUp className="h-5 w-5 mr-2" />
+                Donate £100 = £700 Value! 🎯
               </div>
             </Button>
+
+            {/* Bottom info */}
+            <div className="text-center mt-4">
+              <p className="text-xs text-gray-500">
+                Fundraising donations help us reach our goals faster
+              </p>
+            </div>
           </div>
         )}
 
