@@ -227,11 +227,6 @@ const FloatingDonationButton = () => {
             className="relative z-10 w-full h-full transition-all duration-300 group-hover:scale-110"
           />
 
-          {/* Donation amount indicator */}
-          <div className="absolute -bottom-2 -right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white">
-            £5+
-          </div>
-
           {/* Subtle glow effect on hover */}
           <div className={`absolute inset-0 rounded-lg transition-opacity duration-300 ${
             isActive ? 'opacity-50' : 'opacity-0 group-hover:opacity-30'
