@@ -82,10 +82,25 @@ const Header = () => {
                         {/* Divider */}
                         <div className="w-px h-8 bg-amber-300/40"></div>
                         
-                        {/* Right side - Points */}
-                        <div className="flex items-center">
-                          <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
-                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                        {/* Right side - Level + Points */}
+                        <div className="flex flex-col space-y-1">
+                          {/* Level bar */}
+                          <div className="flex items-center space-x-2">
+                            <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
+                            <div className="relative w-12 h-1.5 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
+                              <div 
+                                className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
+                                style={{ width: `${progress}%` }}
+                              ></div>
+                              {/* Gold XP bar inner glow */}
+                              <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-amber-200/20 rounded-full"></div>
+                            </div>
+                          </div>
+                          {/* Points */}
+                          <div className="flex items-center">
+                            <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
+                            <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                          </div>
                         </div>
                       </div>
                       
@@ -247,7 +262,7 @@ const Header = () => {
             {/* Become a Member - FF style */}
             {!isMember && (
               <Button className="bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-700 hover:to-cyan-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-2xl ring-2 ring-cyan-400/30 hover:ring-cyan-300/50">
-                <Crown className="h-4 w-4 mr-2" />
+                <span className="text-lg mr-2">🛡️</span>
                 Become a Member
               </Button>
             )}
