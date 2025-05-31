@@ -157,84 +157,102 @@ function DonationTin({ isActive }: DonationTinProps) {
         </mesh>
       </group>
 
-      {/* V-Shaped Dwarf Beard - redesigned to form a proper V */}
+      {/* Abraham Lincoln Style Beard - chin curtain without mustache connection */}
       <group ref={beardRef} position={[0, -0.08, 0.35]}>
-        {/* Mustache - bushier dwarf style */}
-        <mesh position={[-0.08, 0.08, 0.06]}>
-          <sphereGeometry args={[0.05, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        {/* NO MUSTACHE - Lincoln's beard doesn't connect to mustache */}
+        
+        {/* Sideburn foundations - thick and full */}
+        <mesh position={[-0.28, 0.1, 0.02]} rotation={[0, 0, -0.2]}>
+          <boxGeometry args={[0.12, 0.25, 0.12]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
-        <mesh position={[0.08, 0.08, 0.06]}>
-          <sphereGeometry args={[0.05, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-        <mesh position={[0, 0.06, 0.08]}>
-          <sphereGeometry args={[0.04, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        <mesh position={[0.28, 0.1, 0.02]} rotation={[0, 0, 0.2]}>
+          <boxGeometry args={[0.12, 0.25, 0.12]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
 
-        {/* V-Shape Top: Upper beard layer forming the V */}
-        <mesh position={[-0.15, -0.1, 0.03]} rotation={[0, 0, -0.3]}>
-          <boxGeometry args={[0.08, 0.2, 0.1]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        {/* Upper jaw line beard - connecting sideburns */}
+        <mesh position={[-0.22, -0.05, 0.05]} rotation={[0, 0, -0.1]}>
+          <boxGeometry args={[0.1, 0.2, 0.1]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
-        <mesh position={[0.15, -0.1, 0.03]} rotation={[0, 0, 0.3]}>
-          <boxGeometry args={[0.08, 0.2, 0.1]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        <mesh position={[0.22, -0.05, 0.05]} rotation={[0, 0, 0.1]}>
+          <boxGeometry args={[0.1, 0.2, 0.1]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
 
-        {/* V-Shape Middle: Mid beard extending the V */}
-        <mesh position={[-0.12, -0.25, 0.02]} rotation={[0, 0, -0.4]}>
+        {/* Chin curtain - the main feature of Lincoln's beard */}
+        <mesh position={[-0.15, -0.2, 0.08]}>
+          <boxGeometry args={[0.08, 0.3, 0.1]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.15, -0.2, 0.08]}>
+          <boxGeometry args={[0.08, 0.3, 0.1]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, -0.25, 0.1]}>
+          <boxGeometry args={[0.2, 0.35, 0.12]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
+        </mesh>
+
+        {/* Lower chin curtain - extending downward */}
+        <mesh position={[-0.1, -0.4, 0.06]}>
           <boxGeometry args={[0.06, 0.25, 0.08]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
-        <mesh position={[0.12, -0.25, 0.02]} rotation={[0, 0, 0.4]}>
+        <mesh position={[0.1, -0.4, 0.06]}>
           <boxGeometry args={[0.06, 0.25, 0.08]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, -0.45, 0.08]}>
+          <boxGeometry args={[0.15, 0.3, 0.1]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
 
-        {/* V-Shape Bottom: Lower beard completing the V */}
-        <mesh position={[-0.08, -0.4, 0.01]} rotation={[0, 0, -0.5]}>
+        {/* Bottom of beard - fuller and wider like Lincoln's */}
+        <mesh position={[-0.08, -0.6, 0.04]}>
           <boxGeometry args={[0.05, 0.2, 0.06]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
-        <mesh position={[0.08, -0.4, 0.01]} rotation={[0, 0, 0.5]}>
+        <mesh position={[0.08, -0.6, 0.04]}>
           <boxGeometry args={[0.05, 0.2, 0.06]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, -0.65, 0.06]}>
+          <boxGeometry args={[0.12, 0.25, 0.08]} />
+          <meshStandardMaterial color="#5D4037" roughness={0.9} />
         </mesh>
 
-        {/* V-Shape Point: The pointed tip of the V */}
-        <mesh position={[0, -0.5, 0]}>
-          <coneGeometry args={[0.04, 0.1, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        {/* Beard texture details - add depth and realism */}
+        <mesh position={[-0.2, -0.15, 0.12]}>
+          <sphereGeometry args={[0.025, 6, 6]} />
+          <meshStandardMaterial color="#6D4C41" roughness={0.95} />
         </mesh>
-
-        {/* Beard texture details - positioned to enhance V-shape */}
-        <mesh position={[-0.1, -0.15, 0.08]}>
+        <mesh position={[0.2, -0.15, 0.12]}>
+          <sphereGeometry args={[0.025, 6, 6]} />
+          <meshStandardMaterial color="#6D4C41" roughness={0.95} />
+        </mesh>
+        <mesh position={[-0.12, -0.35, 0.1]}>
           <sphereGeometry args={[0.02, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+          <meshStandardMaterial color="#6D4C41" roughness={0.95} />
         </mesh>
-        <mesh position={[0.1, -0.15, 0.08]}>
+        <mesh position={[0.12, -0.35, 0.1]}>
           <sphereGeometry args={[0.02, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+          <meshStandardMaterial color="#6D4C41" roughness={0.95} />
         </mesh>
-        <mesh position={[-0.06, -0.3, 0.06]}>
+        <mesh position={[0, -0.5, 0.09]}>
           <sphereGeometry args={[0.018, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.95} />
-        </mesh>
-        <mesh position={[0.06, -0.3, 0.06]}>
-          <sphereGeometry args={[0.018, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+          <meshStandardMaterial color="#6D4C41" roughness={0.95} />
         </mesh>
 
-        {/* Additional V-shape enhancement details */}
-        <mesh position={[-0.04, -0.45, 0.02]}>
-          <sphereGeometry args={[0.012, 6, 6]} />
-          <meshStandardMaterial color="#9B6347" roughness={0.98} />
+        {/* Additional texture for Lincoln's distinctive look */}
+        <mesh position={[-0.05, -0.55, 0.07]}>
+          <sphereGeometry args={[0.015, 6, 6]} />
+          <meshStandardMaterial color="#795548" roughness={0.98} />
         </mesh>
-        <mesh position={[0.04, -0.45, 0.02]}>
-          <sphereGeometry args={[0.012, 6, 6]} />
-          <meshStandardMaterial color="#9B6347" roughness={0.98} />
+        <mesh position={[0.05, -0.55, 0.07]}>
+          <sphereGeometry args={[0.015, 6, 6]} />
+          <meshStandardMaterial color="#795548" roughness={0.98} />
         </mesh>
       </group>
 
