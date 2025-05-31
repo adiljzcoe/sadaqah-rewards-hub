@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -15,6 +16,9 @@ function DonationTin({ isActive }: DonationTinProps) {
     if (tinRef.current) {
       const time = state.clock.elapsedTime;
       
+      // Add slow rotation to show different angles
+      tinRef.current.rotation.y = Math.sin(time * 0.2) * 0.3 + time * 0.05;
+      
       // More personality: excited bouncing when active, gentle sway when not
       if (isActive) {
         // Excited bouncing animation
@@ -24,7 +28,7 @@ function DonationTin({ isActive }: DonationTinProps) {
         // Wiggle side to side with excitement
         tinRef.current.position.x = Math.sin(time * 7) * 0.05;
         
-        // More pronounced rotation when excited
+        // More pronounced rotation when excited (in addition to the base rotation)
         tinRef.current.rotation.z = Math.sin(time * 6) * 0.08;
         
         // Eyebrow animation when excited
