@@ -11,7 +11,7 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-100 via-blue-50 to-blue-100 border-b border-blue-200 py-4 overflow-hidden">
+    <div className="bg-blue-100 border-b border-blue-200 py-4 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center text-sm text-blue-700 mb-3 font-medium">
           Our fundraising is distributed to our chosen charities below
@@ -24,19 +24,18 @@ const CharityTicker = () => {
             {charityLogos.map((charity, index) => (
               <div
                 key={`first-${index}`}
-                className="flex items-center space-x-3 whitespace-nowrap flex-shrink-0 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-3 hover:bg-white/80 transition-all duration-300 border border-blue-200/50 shadow-sm hover:shadow-md"
+                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 hover:scale-110 transition-all duration-300"
               >
-                <div className="w-8 h-8 flex items-center justify-center">
+                <div className="w-16 h-16 flex items-center justify-center">
                   <img 
                     src={charity.logo} 
                     alt={charity.name}
-                    className="max-w-full max-h-full object-contain filter brightness-75 contrast-125 hue-rotate-180 saturate-150"
+                    className="max-w-full max-h-full object-contain filter brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)"
                     style={{
-                      filter: 'brightness(0.8) contrast(1.2) hue-rotate(200deg) saturate(1.3)'
+                      filter: 'brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)'
                     }}
                   />
                 </div>
-                <span className="text-sm font-medium text-blue-800">{charity.name}</span>
               </div>
             ))}
             
@@ -44,19 +43,18 @@ const CharityTicker = () => {
             {charityLogos.map((charity, index) => (
               <div
                 key={`second-${index}`}
-                className="flex items-center space-x-3 whitespace-nowrap flex-shrink-0 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-3 hover:bg-white/80 transition-all duration-300 border border-blue-200/50 shadow-sm hover:shadow-md"
+                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 hover:scale-110 transition-all duration-300"
               >
-                <div className="w-8 h-8 flex items-center justify-center">
+                <div className="w-16 h-16 flex items-center justify-center">
                   <img 
                     src={charity.logo} 
                     alt={charity.name}
-                    className="max-w-full max-h-full object-contain filter brightness-75 contrast-125 hue-rotate-180 saturate-150"
+                    className="max-w-full max-h-full object-contain filter brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)"
                     style={{
-                      filter: 'brightness(0.8) contrast(1.2) hue-rotate(200deg) saturate(1.3)'
+                      filter: 'brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)'
                     }}
                   />
                 </div>
-                <span className="text-sm font-medium text-blue-800">{charity.name}</span>
               </div>
             ))}
           </div>
