@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -217,8 +218,8 @@ const StickyDonationWidget = () => {
                   <div className="w-20 sm:col-span-1">
                     <Select value={currency} onValueChange={setCurrency}>
                       <SelectTrigger className={`w-full text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
-                        <div className="flex items-center space-x-1">
-                          <span>{currentCurrency?.flag}</span>
+                        <div className="flex items-center justify-center space-x-1">
+                          <span className="text-sm">🇬🇧</span>
                           <span className="font-medium">{currentCurrency?.symbol}</span>
                         </div>
                       </SelectTrigger>
