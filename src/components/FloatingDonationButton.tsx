@@ -11,7 +11,6 @@ interface FallingCoin {
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isWiggling, setIsWiggling] = useState(false);
-  const [isAttentionShaking, setIsAttentionShaking] = useState(false);
   const [fallingCoins, setFallingCoins] = useState<FallingCoin[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -59,18 +58,6 @@ const FloatingDonationButton = () => {
     }, 30000); // Every 30 seconds
 
     return () => clearInterval(messageInterval);
-  }, []);
-
-  // Periodic attention-grabbing shake every 10 seconds
-  useEffect(() => {
-    const shakeInterval = setInterval(() => {
-      setIsAttentionShaking(true);
-      
-      // Stop shaking after animation completes
-      setTimeout(() => setIsAttentionShaking(false), 1500);
-    }, 10000); // Every 10 seconds
-
-    return () => clearInterval(shakeInterval);
   }, []);
 
   // Generate falling coins periodically
@@ -205,17 +192,17 @@ const FloatingDonationButton = () => {
           100% { transform: translateX(0) translateY(0) rotate(0deg); }
         }
 
-        @keyframes attention-shake {
+        @keyframes continuous-shake {
           0% { transform: translateX(0) translateY(0); }
-          10% { transform: translateX(-2px) translateY(-1px); }
-          20% { transform: translateX(2px) translateY(1px); }
-          30% { transform: translateX(-2px) translateY(0px); }
-          40% { transform: translateX(2px) translateY(-1px); }
-          50% { transform: translateX(-1px) translateY(1px); }
-          60% { transform: translateX(1px) translateY(0px); }
-          70% { transform: translateX(-1px) translateY(-1px); }
-          80% { transform: translateX(1px) translateY(1px); }
-          90% { transform: translateX(-0.5px) translateY(0px); }
+          10% { transform: translateX(-3px) translateY(-2px); }
+          20% { transform: translateX(3px) translateY(2px); }
+          30% { transform: translateX(-2px) translateY(-3px); }
+          40% { transform: translateX(2px) translateY(1px); }
+          50% { transform: translateX(-1px) translateY(-2px); }
+          60% { transform: translateX(1px) translateY(2px); }
+          70% { transform: translateX(-2px) translateY(-1px); }
+          80% { transform: translateX(2px) translateY(1px); }
+          90% { transform: translateX(-1px) translateY(-1px); }
           100% { transform: translateX(0) translateY(0); }
         }
       `}</style>
@@ -314,93 +301,74 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* Adorable charity collection tin with enhanced emotional features */}
+          {/* Adorable charity collection tin with continuous shaking */}
           <div 
-            className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
-              isWiggling ? 'animate-[charity-shake_2s_ease-in-out]' : ''
-            } ${
-              isAttentionShaking ? 'animate-[attention-shake_1.5s_ease-in-out]' : ''
-            }`}
+            className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 animate-[continuous-shake_1s_ease-in-out_infinite]"
+            style={{
+              animation: isWiggling 
+                ? 'charity-shake 2s ease-in-out, continuous-shake 1s ease-in-out infinite' 
+                : 'continuous-shake 1s ease-in-out infinite'
+            }}
           >
             {/* Enhanced soft shadow for depth */}
             <div className="absolute top-1 left-1 w-9 h-14 bg-gradient-to-br from-pink-300/50 to-purple-400/50 rounded-2xl transform rotate-1 blur-md"></div>
             
             {/* Main collection tin body */}
             <div className="relative w-9 h-14 bg-gradient-to-br from-pink-300 via-pink-400 to-rose-400 rounded-2xl border-2 border-pink-200 shadow-2xl transform transition-all duration-300">
-              {/* Soft top lid - more rounded */}
+              {/* ... keep existing code (tin design elements) */}
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-10 h-2 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full border border-pink-300"></div>
               
-              {/* Coin slot - smaller and cuter */}
               <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-gray-800 rounded-full shadow-inner"></div>
               
-              {/* BIGGER adorable eyes when wiggling - enhanced emotional appeal */}
               <div className="absolute top-1.5 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                {/* Left eye - bigger when wiggling */}
                 <div className={`relative bg-white rounded-full border border-pink-300 shadow-sm transition-all duration-300 ${
                   isWiggling ? 'w-3 h-3 animate-[big-eyes_0.6s_ease-out_forwards]' : 'w-2 h-2'
                 }`}>
-                  {/* Pupil */}
                   <div className={`absolute bg-gray-800 rounded-full transition-all duration-300 ${
                     isWiggling ? 'top-0.5 left-0.5 w-1.5 h-1.5' : 'top-0.5 left-0.5 w-1 h-1'
                   }`}>
-                    {/* Light reflection */}
                     <div className="absolute top-0 left-0 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
                   </div>
-                  {/* Cute eyelash */}
                   <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-pink-600 rounded-full"></div>
                 </div>
                 
-                {/* Right eye - bigger when wiggling */}
                 <div className={`relative bg-white rounded-full border border-pink-300 shadow-sm transition-all duration-300 ${
                   isWiggling ? 'w-3 h-3 animate-[big-eyes_0.6s_ease-out_forwards]' : 'w-2 h-2'
                 }`}>
-                  {/* Pupil */}
                   <div className={`absolute bg-gray-800 rounded-full transition-all duration-300 ${
                     isWiggling ? 'top-0.5 left-0.5 w-1.5 h-1.5' : 'top-0.5 left-0.5 w-1 h-1'
                   }`}>
-                    {/* Light reflection */}
                     <div className="absolute top-0 left-0 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
                   </div>
-                  {/* Cute eyelash */}
                   <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-pink-600 rounded-full"></div>
                 </div>
               </div>
               
-              {/* Tiny pink nose */}
               <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-1 h-0.5 bg-rose-600 rounded-full"></div>
               
-              {/* Sweet smile - wider and more cheerful */}
               <div className="absolute top-4.5 left-1/2 transform -translate-x-1/2 w-4 h-1.5 border-b-2 border-white rounded-full opacity-90"></div>
               
-              {/* Rosy cheeks for extra cuteness */}
               <div className="absolute top-3.5 left-0.5 w-1.5 h-1 bg-rose-300 rounded-full opacity-60"></div>
               <div className="absolute top-3.5 right-0.5 w-1.5 h-1 bg-rose-300 rounded-full opacity-60"></div>
               
-              {/* Soft white belly area */}
               <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-6 h-4 bg-white/80 rounded-lg border border-pink-200">
                 <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-pink-600 text-[4px] font-bold">
                   DONATE
                 </div>
-                {/* Cute heart */}
                 <div className="absolute bottom-0.5 left-1/2 transform -translate-x-1/2 text-pink-500 text-[6px]">
                   💝
                 </div>
               </div>
               
-              {/* Thin handle area - softer and more proportional */}
               <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-7 h-2 bg-gradient-to-r from-pink-500 to-rose-600 rounded-lg border border-pink-400 shadow-inner"></div>
               
-              {/* Soft bottom rim */}
               <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-9 h-1 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full"></div>
               
-              {/* Soft highlight for 3D effect */}
               <div className="absolute top-0 left-1 w-1.5 h-12 bg-gradient-to-r from-white/50 to-transparent rounded-l-2xl"></div>
               
-              {/* Cute ear-like decorations */}
               <div className="absolute -top-0.5 left-1 w-1 h-1 bg-pink-500 rounded-full border border-pink-300"></div>
               <div className="absolute -top-0.5 right-1 w-1 h-1 bg-pink-500 rounded-full border border-pink-300"></div>
               
-              {/* Magical sparkles on hover */}
               <div className="absolute -top-2 -left-2 text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping text-xs">
                 ✨
               </div>
@@ -421,7 +389,6 @@ const FloatingDonationButton = () => {
             {/* Enhanced floating hearts around the face when clicked */}
             {isWiggling && (
               <>
-                {/* Hearts floating around the face */}
                 <div className="absolute -top-2 -left-2 text-red-400 text-lg animate-[floating-hearts_2s_ease-out]">
                   💕
                 </div>
