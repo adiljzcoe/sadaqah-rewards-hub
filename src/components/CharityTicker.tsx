@@ -11,15 +11,15 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-white py-6 w-full border-b border-gray-100">
+    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center text-sm text-gray-400 mb-6 font-light tracking-wide">
           Charities we choose to fundraise for
         </div>
         
         {/* Ticker container */}
-        <div className="relative overflow-hidden">
-          <div className="flex animate-ticker space-x-12">
+        <div className="relative overflow-hidden w-full">
+          <div className="flex animate-scroll space-x-12 w-max">
             {/* First set of logos */}
             {charityLogos.map((charity, index) => (
               <div
@@ -50,6 +50,21 @@ const CharityTicker = () => {
           </div>
         </div>
       </div>
+      
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .animate-scroll {
+          animation: scroll 20s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };
