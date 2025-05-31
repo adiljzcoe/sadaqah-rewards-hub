@@ -129,7 +129,7 @@ interface HeavenlyBirdMascotProps {
 
 const HeavenlyBirdMascot: React.FC<HeavenlyBirdMascotProps> = ({ isActive, className }) => {
   return (
-    <div className={className} style={{ width: '300px', height: '300px' }}>
+    <div className={className} style={{ width: '200px', height: '200px' }}>
       <Canvas camera={{ position: [1.5, 1, 2], fov: 50 }}>
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={0.8} />
