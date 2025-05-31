@@ -64,7 +64,7 @@ const Header = () => {
 
             {/* User Section with FF styling */}
             <div className="flex items-center space-x-4">
-              {/* Unified VIP + Guardian User Button */}
+              {/* Unified Guardian User Button */}
               <div className="flex items-center space-x-3">
                 <Link to="/profile">
                   {isMember ? (
@@ -82,16 +82,10 @@ const Header = () => {
                         {/* Divider */}
                         <div className="w-px h-8 bg-amber-300/40"></div>
                         
-                        {/* Right side - Guardian Rank + Points */}
-                        <div className="flex flex-col items-center">
-                          <div className="flex items-center bg-amber-700/40 backdrop-blur-sm rounded-lg px-2.5 py-1 border border-amber-400/30 shadow-inner mb-1">
-                            <span className="text-xs drop-shadow-sm mr-1.5 text-amber-100">{currentRank.icon}</span>
-                            <span className="text-xs font-bold text-amber-100 drop-shadow-sm">{currentRank.badge}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
-                            <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
-                          </div>
+                        {/* Right side - Points */}
+                        <div className="flex items-center">
+                          <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
+                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
                         </div>
                       </div>
                       
