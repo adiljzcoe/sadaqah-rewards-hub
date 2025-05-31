@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -23,6 +24,7 @@ import MatchingPoolWidget from '@/components/MatchingPoolWidget';
 import CharityTicker from '@/components/CharityTicker';
 import BusinessAdvert from '@/components/BusinessAdvert';
 import LeagueTablesCarousel from '@/components/LeagueTablesCarousel';
+import DonationProducts from '@/components/DonationProducts';
 
 const Index = () => {
   // Mock data for campaigns
@@ -65,7 +67,6 @@ const Index = () => {
     }
   ];
 
-  // Mock data for fundraisers
   const fundraisers = [
     {
       id: '1',
@@ -179,6 +180,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Donation Products Section - New section added */}
+      <DonationProducts />
 
       {/* Campaigns Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
