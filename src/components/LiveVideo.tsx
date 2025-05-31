@@ -485,7 +485,7 @@ const LiveVideo = () => {
             <span>Level {userLevel}</span>
             <span>{userPoints % 500}/500 XP</span>
           </div>
-          <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+          <div className="w-full bg-white/10 rounded-full h-1 overflow-hidden">
             <div 
               className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full transition-all duration-500 shadow-lg"
               style={{ width: `${(userPoints % 500) / 500 * 100}%` }}
@@ -647,7 +647,7 @@ const LiveVideo = () => {
       </div>
 
       {/* Donation Messages Display - New smooth section below video */}
-      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[80px] flex items-center">
+      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[80px] flex items-center rounded-b-xl">
         <div className="w-full px-4">
           <div className="grid grid-cols-2 gap-2">
             {displayedMessages.map((donation, index) => (
