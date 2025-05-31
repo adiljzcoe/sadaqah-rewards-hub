@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Heart } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -329,7 +328,7 @@ const StickyDonationWidget = () => {
                   />
                 </div>
 
-                {/* Enhanced Donate button with glow and shake */}
+                {/* Enhanced Pay button with glow and shake */}
                 <div className="col-span-2">
                   <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
                     shadow-lg shadow-emerald-500/50 
@@ -338,8 +337,7 @@ const StickyDonationWidget = () => {
                     ring-2 ring-emerald-400/30
                     hover:ring-emerald-400/50`}
                   >
-                    <Heart className="h-3 w-3 mr-1" />
-                    {currentCurrency?.symbol}{donationAmount}
+                    Pay {currentCurrency?.symbol}{donationAmount}
                     {isMember && (
                       <Badge className="absolute -top-1 -right-1 bg-purple-500 text-white text-[8px] px-1 py-0">
                         2x
