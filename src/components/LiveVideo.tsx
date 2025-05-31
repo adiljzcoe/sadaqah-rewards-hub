@@ -415,8 +415,9 @@ const LiveVideo = () => {
     return () => clearTimeout(timer);
   }, [streakCount]);
 
-  const formatTimeAgo = (timestamp: Date) => {
-    const seconds = Math.floor((Date.now() - timestamp.getTime()) / 1000);
+  const formatTimeAgo = (timestamp: Date | string) => {
+    const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
     if (seconds < 60) return `${seconds}s ago`;
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) return `${minutes}m ago`;
