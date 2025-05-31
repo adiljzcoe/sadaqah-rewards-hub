@@ -50,10 +50,9 @@ const FloatingDonationButton = () => {
         </div>
       )}
 
-      <Button
+      <div
         onClick={() => setIsExpanded(!isExpanded)}
-        className="relative w-20 h-20 rounded-full border-0 shadow-2xl text-white overflow-hidden group"
-        size="lg"
+        className="relative w-20 h-20 cursor-pointer overflow-hidden group"
       >
         {/* Ray of light behind the tin */}
         <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/80 via-yellow-300/60 to-white/80 animate-pulse"></div>
@@ -110,7 +109,7 @@ const FloatingDonationButton = () => {
         
         {/* Additional light rays */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent animate-pulse" style={{ animationDelay: '1s' }}></div>
-      </Button>
+      </div>
     </div>
   );
 };
