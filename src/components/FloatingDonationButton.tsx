@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
@@ -26,6 +25,7 @@ const FloatingDonationButton = () => {
   const handleFundraisingDonate = (amount: number) => {
     const valueReceived = amount * 7;
     console.log(`Fundraising Donation: £${amount} = £${valueReceived} value!`);
+    console.log('About to trigger coin animation...');
     
     // Trigger coin animation
     setCoinAnimationTrigger(true);
@@ -33,6 +33,7 @@ const FloatingDonationButton = () => {
     // Reset the trigger after a short delay
     setTimeout(() => {
       setCoinAnimationTrigger(false);
+      console.log('Coin animation trigger reset');
     }, 100);
     
     setIsExpanded(false);
@@ -189,24 +190,29 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot - made bigger */}
+        {/* Main donation button with donation tin mascot - made bigger and positioned for coin animation */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-32 h-32 cursor-pointer transition-all duration-300 group overflow-visible"
+          className="relative w-32 h-32 cursor-pointer transition-all duration-300 group"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
-          <HeavenlyBirdMascot 
-            isActive={showCallToAction} 
-            className="w-full h-full overflow-visible"
-          />
+          {/* Mascot */}
+          <div className="relative w-full h-full overflow-visible">
+            <HeavenlyBirdMascot 
+              isActive={showCallToAction} 
+              className="w-full h-full"
+            />
+          </div>
           
-          {/* Coin Animation Overlay */}
-          <CoinAnimation 
-            trigger={coinAnimationTrigger}
-            onComplete={() => console.log('Coin animation completed!')}
-          />
+          {/* Coin Animation Overlay - positioned to cover the mascot area */}
+          <div className="absolute inset-0 pointer-events-none overflow-visible">
+            <CoinAnimation 
+              trigger={coinAnimationTrigger}
+              onComplete={() => console.log('Coin animation completed!')}
+            />
+          </div>
         </div>
       </div>
     </>
