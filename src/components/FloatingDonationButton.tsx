@@ -192,17 +192,15 @@ const FloatingDonationButton = () => {
           100% { transform: translateX(0) translateY(0) rotate(0deg); }
         }
 
-        @keyframes continuous-shake {
+        @keyframes gentle-shake {
           0% { transform: translateX(0) translateY(0); }
-          10% { transform: translateX(-3px) translateY(-2px); }
-          20% { transform: translateX(3px) translateY(2px); }
-          30% { transform: translateX(-2px) translateY(-3px); }
-          40% { transform: translateX(2px) translateY(1px); }
-          50% { transform: translateX(-1px) translateY(-2px); }
-          60% { transform: translateX(1px) translateY(2px); }
-          70% { transform: translateX(-2px) translateY(-1px); }
-          80% { transform: translateX(2px) translateY(1px); }
-          90% { transform: translateX(-1px) translateY(-1px); }
+          12.5% { transform: translateX(-1px) translateY(-1px); }
+          25% { transform: translateX(1px) translateY(1px); }
+          37.5% { transform: translateX(-1px) translateY(1px); }
+          50% { transform: translateX(1px) translateY(-1px); }
+          62.5% { transform: translateX(-0.5px) translateY(-0.5px); }
+          75% { transform: translateX(0.5px) translateY(0.5px); }
+          87.5% { transform: translateX(-0.5px) translateY(0.5px); }
           100% { transform: translateX(0) translateY(0); }
         }
       `}</style>
@@ -301,13 +299,13 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* Adorable charity collection tin with continuous shaking */}
+          {/* Adorable charity collection tin with gentle continuous shaking */}
           <div 
-            className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 animate-[continuous-shake_1s_ease-in-out_infinite]"
+            className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 animate-[gentle-shake_3s_ease-in-out_infinite]"
             style={{
               animation: isWiggling 
-                ? 'charity-shake 2s ease-in-out, continuous-shake 1s ease-in-out infinite' 
-                : 'continuous-shake 1s ease-in-out infinite'
+                ? 'charity-shake 2s ease-in-out, gentle-shake 3s ease-in-out infinite' 
+                : 'gentle-shake 3s ease-in-out infinite'
             }}
           >
             {/* Enhanced soft shadow for depth */}
