@@ -11,26 +11,43 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-white py-8 w-full">
+    <div className="bg-white py-6 w-full border-b border-gray-100">
       <div className="container mx-auto px-4">
-        <div className="text-center text-sm text-gray-400 mb-8 font-light tracking-wide">
+        <div className="text-center text-sm text-gray-400 mb-6 font-light tracking-wide">
           Charities we choose to fundraise for
         </div>
         
-        {/* Logo grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-items-center">
-          {charityLogos.map((charity, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300"
-            >
-              <img 
-                src={charity.logo} 
-                alt={charity.name}
-                className="max-w-24 max-h-12 object-contain filter grayscale"
-              />
-            </div>
-          ))}
+        {/* Ticker container */}
+        <div className="relative overflow-hidden">
+          <div className="flex animate-ticker space-x-12">
+            {/* First set of logos */}
+            {charityLogos.map((charity, index) => (
+              <div
+                key={`first-${index}`}
+                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
+              >
+                <img 
+                  src={charity.logo} 
+                  alt={charity.name}
+                  className="max-w-24 max-h-12 object-contain filter grayscale"
+                />
+              </div>
+            ))}
+            
+            {/* Duplicate set for seamless loop */}
+            {charityLogos.map((charity, index) => (
+              <div
+                key={`second-${index}`}
+                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
+              >
+                <img 
+                  src={charity.logo} 
+                  alt={charity.name}
+                  className="max-w-24 max-h-12 object-contain filter grayscale"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
