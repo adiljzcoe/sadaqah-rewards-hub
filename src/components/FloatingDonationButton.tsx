@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -13,10 +12,33 @@ const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isWiggling, setIsWiggling] = useState(false);
   const [fallingCoins, setFallingCoins] = useState<FallingCoin[]>([]);
+  const [showSpeechBubble, setShowSpeechBubble] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState('');
+
+  const prayerMessages = [
+    "JazakAllahu Khair! 🤲",
+    "May Allah bless you abundantly! ✨",
+    "Barakallahu feeki! 💝",
+    "Your kindness is a blessing! 🌟",
+    "May this sadaqah bring you barakah! 💚",
+    "Allah sees your generous heart! 👁️",
+    "May Allah multiply your reward! 📈",
+    "Your donation is a light in darkness! 💡",
+    "SubhanAllah, such generosity! 🙏",
+    "May Allah grant you Jannah! 🏞️"
+  ];
 
   const handleTinClick = () => {
     setIsExpanded(!isExpanded);
     setIsWiggling(true);
+    
+    // Show speech bubble with random prayer message
+    const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
+    setCurrentMessage(randomMessage);
+    setShowSpeechBubble(true);
+    
+    // Hide speech bubble after 3 seconds
+    setTimeout(() => setShowSpeechBubble(false), 3000);
     setTimeout(() => setIsWiggling(false), 600);
   };
 
@@ -60,9 +82,74 @@ const FloatingDonationButton = () => {
             opacity: 0;
           }
         }
+        
+        @keyframes magical-background {
+          0% {
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
+            transform: scale(1);
+          }
+          50% {
+            background: radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.2) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(251, 191, 36, 0.1) 70%);
+            transform: scale(1.5);
+          }
+          100% {
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
+            transform: scale(1);
+          }
+        }
+        
+        @keyframes speech-bubble-appear {
+          0% {
+            opacity: 0;
+            transform: translateY(10px) scale(0.8);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        
+        @keyframes speech-bubble-disappear {
+          0% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.8);
+          }
+        }
       `}</style>
       
       <div className="fixed bottom-8 right-8 z-50">
+        {/* Magical Background Effect */}
+        {isWiggling && (
+          <div 
+            className="absolute -inset-20 pointer-events-none"
+            style={{
+              animation: 'magical-background 2s ease-in-out'
+            }}
+          />
+        )}
+
+        {/* Speech Bubble */}
+        {showSpeechBubble && (
+          <div className="absolute -top-20 -left-32 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
+            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 p-0.5 rounded-2xl shadow-xl">
+              <div className="bg-white rounded-2xl px-4 py-3 relative">
+                <p className="text-sm font-semibold text-gray-800 whitespace-nowrap">
+                  {currentMessage}
+                </p>
+                {/* Speech bubble tail */}
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                  <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white"></div>
+                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[9px] border-r-[9px] border-t-[9px] border-transparent border-t-purple-400"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {isExpanded && (
           <div className="mb-6 game-card rounded-2xl p-6 w-80 animate-gentle-fade">
             <div className="flex items-center justify-between mb-4">
@@ -135,11 +222,11 @@ const FloatingDonationButton = () => {
           <div className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ${
             isWiggling ? 'animate-charity-shake' : 'animate-charity-shake'
           } group-hover:scale-110`}>
-            {/* Soft shadow for depth - more rounded */}
-            <div className="absolute top-1 left-1 w-9 h-14 bg-gradient-to-br from-pink-300/40 to-purple-400/40 rounded-2xl transform rotate-1 blur-sm"></div>
+            {/* Enhanced soft shadow for depth */}
+            <div className="absolute top-1 left-1 w-9 h-14 bg-gradient-to-br from-pink-300/50 to-purple-400/50 rounded-2xl transform rotate-1 blur-md"></div>
             
-            {/* Main collection tin body - more rounded and softer */}
-            <div className="relative w-9 h-14 bg-gradient-to-br from-pink-300 via-pink-400 to-rose-400 rounded-2xl border-2 border-pink-200 shadow-xl transform transition-all duration-300">
+            {/* Main collection tin body - enhanced with better gradients */}
+            <div className="relative w-9 h-14 bg-gradient-to-br from-pink-300 via-pink-400 to-rose-400 rounded-2xl border-2 border-pink-200 shadow-2xl transform transition-all duration-300">
               {/* Soft top lid - more rounded */}
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-10 h-2 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full border border-pink-300"></div>
               
