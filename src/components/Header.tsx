@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -49,13 +50,19 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User */}
           <div className="flex items-center space-x-3">
-            {/* Clean standalone logo */}
-            <Link to="/" className="transition-all duration-300 hover:scale-105">
+            {/* Logo with gloss effect */}
+            <Link to="/" className="relative transition-all duration-300 hover:scale-105">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
-                className="h-8 w-auto object-contain"
+                className="w-[300px] h-auto object-contain"
               />
+              {/* Gloss effect overlay */}
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div className="absolute top-2 left-8 w-24 h-6 bg-gradient-to-r from-transparent via-white/60 to-transparent rounded-full animate-shimmer transform -rotate-12"></div>
+                <div className="absolute top-4 right-8 w-16 h-4 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full animate-shimmer delay-500 transform rotate-12"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 rounded-lg"></div>
+              </div>
             </Link>
 
             {/* User Section with FF styling */}
