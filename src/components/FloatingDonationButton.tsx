@@ -85,16 +85,19 @@ const FloatingDonationButton = () => {
         
         @keyframes magical-background {
           0% {
-            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
-            transform: scale(1);
+            opacity: 0;
+            transform: scale(0.8);
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.2) 0%, rgba(59, 130, 246, 0.15) 30%, rgba(16, 185, 129, 0.1) 60%, transparent 80%);
           }
           50% {
-            background: radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.2) 0%, rgba(16, 185, 129, 0.15) 50%, rgba(251, 191, 36, 0.1) 70%);
-            transform: scale(1.5);
+            opacity: 1;
+            transform: scale(1.2);
+            background: radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.25) 0%, rgba(16, 185, 129, 0.2) 30%, rgba(251, 191, 36, 0.15) 60%, rgba(168, 85, 247, 0.1) 80%);
           }
           100% {
-            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15) 0%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
-            transform: scale(1);
+            opacity: 0;
+            transform: scale(1.5);
+            background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, rgba(236, 72, 153, 0.2) 30%, rgba(59, 130, 246, 0.15) 60%, transparent 80%);
           }
         }
         
@@ -109,25 +112,25 @@ const FloatingDonationButton = () => {
           }
         }
         
-        @keyframes speech-bubble-disappear {
+        @keyframes gentle-fade {
           0% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+            opacity: 0;
+            transform: translateY(-10px);
           }
           100% {
-            opacity: 0;
-            transform: translateY(-10px) scale(0.8);
+            opacity: 1;
+            transform: translateY(0);
           }
         }
       `}</style>
       
       <div className="fixed bottom-8 right-8 z-50">
-        {/* Magical Background Effect */}
+        {/* Enhanced Magical Background Effect */}
         {isWiggling && (
           <div 
-            className="absolute -inset-20 pointer-events-none"
+            className="absolute -inset-24 pointer-events-none rounded-full"
             style={{
-              animation: 'magical-background 2s ease-in-out'
+              animation: 'magical-background 1.5s ease-out forwards'
             }}
           />
         )}
@@ -135,7 +138,7 @@ const FloatingDonationButton = () => {
         {/* Speech Bubble */}
         {showSpeechBubble && (
           <div className="absolute -top-20 -left-32 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
-            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 p-0.5 rounded-2xl shadow-xl">
+            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 p-0.5 rounded-2xl shadow-2xl">
               <div className="bg-white rounded-2xl px-4 py-3 relative">
                 <p className="text-sm font-semibold text-gray-800 whitespace-nowrap">
                   {currentMessage}
@@ -151,42 +154,39 @@ const FloatingDonationButton = () => {
         )}
 
         {isExpanded && (
-          <div className="mb-6 game-card rounded-2xl p-6 w-80 animate-gentle-fade">
+          <div className="mb-6 bg-white/95 backdrop-blur-lg rounded-2xl p-6 w-80 shadow-2xl border border-white/30 animate-[gentle-fade_0.3s_ease-out]">
             <div className="flex items-center justify-between mb-4">
               <h4 className="font-bold text-lg text-gray-900">Quick Donate ⚡</h4>
               <button
                 onClick={() => setIsExpanded(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors gel-button w-8 h-8 bg-gradient-to-r from-gray-400 to-gray-500"
+                className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
             
             <div className="space-y-4">
-              <Button className="w-full justify-start gel-button bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-4 rounded-xl shadow-xl">
-                <Heart className="h-5 w-5 mr-3 animate-subtle-pulse" />
+              <Button className="w-full justify-start bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <Heart className="h-5 w-5 mr-3" />
                 <span>£10 - Hot Meals 🍲</span>
               </Button>
               
-              <Button className="w-full justify-start gel-button bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold py-4 rounded-xl shadow-xl">
-                <Heart className="h-5 w-5 mr-3 animate-subtle-pulse" />
+              <Button className="w-full justify-start bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <Heart className="h-5 w-5 mr-3" />
                 <span>£25 - Water Wells 💧</span>
               </Button>
               
-              <Button className="w-full justify-start gel-button bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold py-4 rounded-xl shadow-xl">
-                <Heart className="h-5 w-5 mr-3 animate-subtle-pulse" />
+              <Button className="w-full justify-start bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <Heart className="h-5 w-5 mr-3" />
                 <span>£50 - Education 📚</span>
               </Button>
             </div>
             
-            <div className="mt-4 game-card p-4 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-xl text-center relative overflow-hidden">
-              <div className="relative z-10">
-                <div className="flex items-center justify-center text-sm font-bold text-amber-800">
-                  <Zap className="h-5 w-5 mr-2 animate-subtle-pulse" />
-                  Double points active! 🔥
-                </div>
+            <div className="mt-4 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-xl p-4 text-center border border-amber-200">
+              <div className="flex items-center justify-center text-sm font-bold text-amber-800">
+                <Zap className="h-5 w-5 mr-2" />
+                Double points active! 🔥
               </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
             </div>
           </div>
         )}
@@ -220,7 +220,7 @@ const FloatingDonationButton = () => {
 
           {/* Adorable charity collection tin with cat-like features */}
           <div className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ${
-            isWiggling ? 'animate-charity-shake' : 'animate-charity-shake'
+            isWiggling ? 'animate-charity-shake' : ''
           } group-hover:scale-110`}>
             {/* Enhanced soft shadow for depth */}
             <div className="absolute top-1 left-1 w-9 h-14 bg-gradient-to-br from-pink-300/50 to-purple-400/50 rounded-2xl transform rotate-1 blur-md"></div>
