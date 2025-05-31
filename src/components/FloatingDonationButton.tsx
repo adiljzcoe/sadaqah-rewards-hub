@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X, HandHeart } from 'lucide-react';
@@ -70,7 +71,7 @@ const FloatingDonationButton = () => {
       
       <div className={`fixed ${
         isStickyWidgetActive 
-          ? 'top-[6.5rem] right-4 md:bottom-20 md:right-8' 
+          ? 'top-4 right-4 md:bottom-20 md:right-8' 
           : 'bottom-8 right-8'
       } z-50 transition-all duration-300`}>
         {/* Call to action message */}
