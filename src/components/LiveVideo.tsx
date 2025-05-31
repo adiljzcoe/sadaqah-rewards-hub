@@ -646,6 +646,69 @@ const LiveVideo = () => {
         </div>
       </div>
 
+      {/* Donation Messages Feed */}
+      <div className="bg-gradient-to-r from-slate-800/95 via-blue-800/95 to-purple-800/95 backdrop-blur-xl border-t border-white/10 p-3 md:p-4 rounded-b-xl">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-white font-semibold text-sm flex items-center">
+            <Heart className="h-4 w-4 mr-2 text-red-400" />
+            Recent Donations
+          </h3>
+          <div className="flex items-center text-xs text-white/70">
+            <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+            Live
+          </div>
+        </div>
+        
+        <div className="space-y-2 max-h-32 overflow-y-auto scrollbar-hide">
+          {displayedMessages.length === 0 ? (
+            <div className="text-white/60 text-sm text-center py-2">
+              No recent donations
+            </div>
+          ) : (
+            displayedMessages.map((message) => (
+              <div key={message.id} className="flex items-center justify-between bg-white/5 rounded-lg p-2 border border-white/10 hover:bg-white/10 transition-colors">
+                <div className="flex items-center space-x-2 min-w-0 flex-1">
+                  <span className="text-lg flex-shrink-0">{message.emoji}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-white font-medium text-sm truncate">
+                        {message.user}
+                      </span>
+                      {message.onBehalfOf && (
+                        <span className="text-white/70 text-xs">
+                          for {message.onBehalfOf}
+                        </span>
+                      )}
+                    </div>
+                    {message.note && (
+                      <div className="text-white/60 text-xs mt-1 truncate">
+                        "{message.note}"
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-2 flex-shrink-0">
+                  <div className="flex items-center text-yellow-400 font-bold text-sm">
+                    <SimpleGoldCoin size={12} className="mr-1" />
+                    {message.finalAmount || message.amount}
+                  </div>
+                  {message.streak && message.streak > 1 && (
+                    <div className="flex items-center text-orange-400 text-xs">
+                      <Flame className="h-3 w-3 mr-1" />
+                      {message.streak}x
+                    </div>
+                  )}
+                  <span className="text-white/50 text-xs">
+                    {formatTimeAgo(message.timestamp)}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
       <style>{`
         @keyframes floatUp {
           0% {
