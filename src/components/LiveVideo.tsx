@@ -520,14 +520,6 @@ const LiveVideo = () => {
           </div>
         </div>
 
-        {/* Viewers count - top left */}
-        <div className="absolute top-4 left-4 z-10">
-          <div className="flex items-center bg-black/20 backdrop-blur-xl rounded-lg px-3 py-2 shadow-xl border border-white/10">
-            <Users className={`h-4 w-4 mr-2 text-green-400 ${pulseEffect ? 'animate-pulse' : ''}`} />
-            <span className="text-white font-bold">1,247</span>
-          </div>
-        </div>
-
         {/* Epic Donation Notification - Ultra transparent */}
         {epicNotification && (
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/5 to-pink-900/5 backdrop-blur-sm z-60 flex items-center justify-center animate-fade-in">
@@ -587,10 +579,10 @@ const LiveVideo = () => {
           </div>
         ))}
 
-        {/* Donation buttons at bottom - Heavily constrained */}
+        {/* All donation buttons at bottom */}
         <div className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 z-60 flex justify-center items-center px-2 py-2 max-w-[90%] overflow-hidden">
-          {/* Regular donation buttons - Much smaller and more constrained */}
           <div className="flex space-x-1 justify-center max-w-full overflow-x-auto scrollbar-hide">
+            {/* Regular donation buttons */}
             {quickDonations.map((donation, index) => (
               <button
                 key={donation.key}
@@ -621,14 +613,35 @@ const LiveVideo = () => {
                 <div className="absolute inset-0 rounded-xl border-2 border-white/25 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
               </button>
             ))}
-          </div>
 
-          {/* Epic donation button - More constrained */}
-          <div className="flex items-center flex-shrink-0 ml-2">
-            <div className="w-px h-8 md:h-12 bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
-            <div className="ml-2 max-w-[80px] md:max-w-[100px]">
-              <EpicDonationButton onEpicDonation={handleEpicDonation} />
-            </div>
+            {/* Epic donation button - same size as others */}
+            <button
+              onClick={() => {
+                const epicDonation = {
+                  id: Date.now(),
+                  user: 'You',
+                  amount: 1000,
+                  emoji: '🎁',
+                  timestamp: new Date(),
+                  title: 'Epic Gift Package'
+                };
+                handleEpicDonation(epicDonation);
+              }}
+              className="group relative w-10 h-10 md:w-12 md:h-12 rounded-xl shadow-lg bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/40 flex-shrink-0 hover:shadow-2xl hover:border-white/60"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-xl"></div>
+              <div className="relative h-full flex flex-col items-center justify-center text-white z-10">
+                <div className="text-sm md:text-lg mb-0.5 group-hover:scale-125 transition-transform animate-pulse">
+                  🎁
+                </div>
+                <div className="flex items-center text-[8px] md:text-[10px] font-bold">
+                  <SimpleGoldCoin size={6} className="mr-0.5" />
+                  1000
+                </div>
+              </div>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 rounded-xl border-2 border-white/25 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
+            </button>
           </div>
         </div>
       </div>
