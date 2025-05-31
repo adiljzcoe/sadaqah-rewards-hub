@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -111,30 +110,30 @@ const Index = () => {
       
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">
-        <div className="grid lg:grid-cols-3 gap-8 max-w-full overflow-x-hidden px-4">
-          {/* Live Stream - Main Column */}
+        <div className="grid lg:grid-cols-3 gap-0 max-w-full overflow-x-hidden">
+          {/* Live Stream - Main Column - Remove padding for edge-to-edge */}
           <div className="lg:col-span-2 max-w-full overflow-x-hidden">
             <div className="hover-lift max-w-full overflow-x-hidden">
               <LiveVideo />
             </div>
             
             {/* CharityTicker moved here - below the video */}
-            <div className="max-w-full overflow-x-hidden mt-6">
+            <div className="max-w-full overflow-x-hidden mt-6 px-4">
               <CharityTicker />
             </div>
             
             {/* Charity Feed Section - Right below charity ticker */}
-            <div className="hover-lift mt-6 max-w-full overflow-x-hidden">
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <CharityFeedSection />
             </div>
             
-            <div className="hover-lift mt-6 max-w-full overflow-x-hidden">
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <LiveFeed />
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 max-w-full overflow-x-hidden">
+          <div className="space-y-6 max-w-full overflow-x-hidden px-4">
             <div className="hover-lift">
               <UserStats />
             </div>

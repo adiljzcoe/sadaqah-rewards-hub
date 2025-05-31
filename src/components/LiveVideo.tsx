@@ -426,7 +426,7 @@ const LiveVideo = () => {
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
+    <div className="w-full">
       {/* User Stats Header - Above Video */}
       <div className="bg-gradient-to-r from-slate-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-xl border border-white/10 rounded-t-xl p-3 md:p-4">
         <div className="flex items-center justify-between gap-2">
