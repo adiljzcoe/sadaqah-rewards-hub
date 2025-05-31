@@ -128,7 +128,7 @@ const FloatingDonationButton = () => {
           }
         }
         
-        @keyframes charity-bin-shake {
+        @keyframes charity-character-shake {
           0%, 100% { transform: translateX(0px) rotate(0deg); }
           10% { transform: translateX(-3px) rotate(-2deg); }
           20% { transform: translateX(3px) rotate(1.5deg); }
@@ -238,39 +238,17 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* Professional charity collection tin */}
+          {/* Charity Collection Character */}
           <div 
             className={`relative z-10 w-full h-full transition-all duration-300 group-hover:scale-110 ${
-              isActive ? 'animate-[charity-bin-shake_1.5s_ease-in-out]' : 'animate-[gentle-float_4s_ease-in-out_infinite]'
+              isActive ? 'animate-[charity-character-shake_1.5s_ease-in-out]' : 'animate-[gentle-float_4s_ease-in-out_infinite]'
             }`}
           >
-            {/* Main charity tin body */}
-            <div className="relative w-full h-full">
-              {/* Tin container - metallic silver/grey look */}
-              <div className="w-full h-16 bg-gradient-to-b from-gray-300 via-gray-400 to-gray-500 rounded-lg shadow-xl border-2 border-gray-200 relative overflow-hidden">
-                {/* Metallic shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform skew-x-12 animate-[shimmer_3s_ease-in-out_infinite]"></div>
-                
-                {/* Label on the tin */}
-                <div className="absolute inset-2 bg-white rounded-md shadow-inner flex flex-col items-center justify-center">
-                  <div className="text-xs font-bold text-gray-800 leading-tight text-center">
-                    DONATE
-                  </div>
-                  <div className="text-[8px] text-emerald-600 font-semibold">
-                    CHARITY
-                  </div>
-                </div>
-                
-                {/* Coin slot at top */}
-                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gray-800 rounded-full shadow-inner"></div>
-              </div>
-              
-              {/* Handle */}
-              <div className="absolute -right-1 top-2 w-3 h-8 border-2 border-gray-400 rounded-full bg-transparent"></div>
-              
-              {/* Collection can base */}
-              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-2 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full shadow-lg"></div>
-            </div>
+            <img 
+              src="/lovable-uploads/1a8b9a72-1fd0-4905-8f8f-cd7b8b5e9096.png" 
+              alt="Charity Collection Character"
+              className="w-full h-full object-contain"
+            />
 
             {/* Donation amount indicator */}
             <div className="absolute -bottom-2 -right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white">
