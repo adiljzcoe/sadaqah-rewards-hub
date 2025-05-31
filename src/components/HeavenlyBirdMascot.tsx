@@ -1,5 +1,4 @@
 
-
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -13,7 +12,6 @@ function DonationTin({ isActive }: DonationTinProps) {
   const eyesRef = useRef<THREE.Group>(null);
   const eyebrowsRef = useRef<THREE.Group>(null);
   const beardRef = useRef<THREE.Group>(null);
-  const hatRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
     if (tinRef.current) {
@@ -39,14 +37,10 @@ function DonationTin({ isActive }: DonationTinProps) {
           eyebrowsRef.current.position.y = Math.sin(time * 8) * 0.01 + 0.25;
         }
 
-        // Gentle beard movement when excited
+        // Enhanced beard movement when excited - more dramatic for dwarf beard
         if (beardRef.current) {
-          beardRef.current.rotation.z = Math.sin(time * 6) * 0.02;
-        }
-
-        // Gentle hat movement when excited
-        if (hatRef.current) {
-          hatRef.current.rotation.z = Math.sin(time * 5) * 0.015;
+          beardRef.current.rotation.z = Math.sin(time * 6) * 0.03;
+          beardRef.current.rotation.x = Math.sin(time * 4) * 0.02;
         }
       } else {
         // Gentle swaying when idle
@@ -64,14 +58,10 @@ function DonationTin({ isActive }: DonationTinProps) {
           eyebrowsRef.current.position.y = Math.sin(time * 3) * 0.005 + 0.25;
         }
 
-        // Subtle beard sway
+        // Subtle beard sway - gentle movement for dwarf beard
         if (beardRef.current) {
-          beardRef.current.rotation.z = Math.sin(time * 2.5) * 0.01;
-        }
-
-        // Subtle hat movement
-        if (hatRef.current) {
-          hatRef.current.rotation.z = Math.sin(time * 2) * 0.008;
+          beardRef.current.rotation.z = Math.sin(time * 2.5) * 0.015;
+          beardRef.current.rotation.x = Math.sin(time * 2) * 0.01;
         }
       }
       
@@ -122,43 +112,6 @@ function DonationTin({ isActive }: DonationTinProps) {
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
 
-      {/* Muslim Hat (Taqiyah/Kufi) - positioned on top and made bigger */}
-      <group ref={hatRef} position={[0, 0.58, 0]}>
-        {/* Main hat body - larger and positioned to sit around the rim */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.35, 12, 8]} />
-          <meshStandardMaterial 
-            color="#F5F5F5" 
-            roughness={0.6}
-            metalness={0.05}
-          />
-        </mesh>
-        
-        {/* Hat brim - larger to fit around the tin rim */}
-        <mesh position={[0, -0.12, 0]}>
-          <cylinderGeometry args={[0.38, 0.35, 0.06, 16]} />
-          <meshStandardMaterial 
-            color="#EEEEEE" 
-            roughness={0.7}
-            metalness={0.05}
-          />
-        </mesh>
-
-        {/* Small decorative pattern on hat - adjusted for larger size */}
-        <mesh position={[0, 0.08, 0.33]}>
-          <boxGeometry args={[0.12, 0.03, 0.015]} />
-          <meshStandardMaterial color="#E0E0E0" />
-        </mesh>
-        <mesh position={[-0.09, 0.08, 0.28]} rotation={[0, 0.5, 0]}>
-          <boxGeometry args={[0.09, 0.03, 0.015]} />
-          <meshStandardMaterial color="#E0E0E0" />
-        </mesh>
-        <mesh position={[0.09, 0.08, 0.28]} rotation={[0, -0.5, 0]}>
-          <boxGeometry args={[0.09, 0.03, 0.015]} />
-          <meshStandardMaterial color="#E0E0E0" />
-        </mesh>
-      </group>
-
       {/* Eyes group for blinking - made larger and more friendly */}
       <group ref={eyesRef}>
         {/* Left eye - larger and rounder */}
@@ -205,42 +158,90 @@ function DonationTin({ isActive }: DonationTinProps) {
         </mesh>
       </group>
 
-      {/* Beard group - friendly brown beard */}
+      {/* Enhanced Dwarf Beard - much fuller and more textured */}
       <group ref={beardRef} position={[0, -0.08, 0.35]}>
-        {/* Main beard body */}
-        <mesh position={[0, -0.1, 0.05]}>
-          <sphereGeometry args={[0.15, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        {/* Main beard body - larger and more prominent */}
+        <mesh position={[0, -0.15, 0.05]}>
+          <sphereGeometry args={[0.22, 12, 12]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
         </mesh>
         
-        {/* Beard sides for fuller look */}
-        <mesh position={[-0.08, -0.05, 0.03]} rotation={[0, 0.3, 0]}>
-          <sphereGeometry args={[0.08, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
-        </mesh>
-        <mesh position={[0.08, -0.05, 0.03]} rotation={[0, -0.3, 0]}>
-          <sphereGeometry args={[0.08, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        {/* Extended beard length - classic dwarf style */}
+        <mesh position={[0, -0.3, 0.02]}>
+          <sphereGeometry args={[0.18, 10, 10]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
         </mesh>
 
-        {/* Mustache */}
-        <mesh position={[-0.06, 0.08, 0.06]}>
-          <sphereGeometry args={[0.04, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
-        </mesh>
-        <mesh position={[0.06, 0.08, 0.06]}>
-          <sphereGeometry args={[0.04, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        {/* Beard tip - pointed dwarf style */}
+        <mesh position={[0, -0.42, 0]}>
+          <sphereGeometry args={[0.12, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
         </mesh>
 
-        {/* Small beard texture details */}
-        <mesh position={[-0.03, -0.08, 0.08]}>
-          <sphereGeometry args={[0.015, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.9} />
+        {/* Fuller beard sides */}
+        <mesh position={[-0.12, -0.1, 0.03]} rotation={[0, 0.4, 0]}>
+          <sphereGeometry args={[0.12, 10, 10]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
         </mesh>
-        <mesh position={[0.03, -0.08, 0.08]}>
+        <mesh position={[0.12, -0.1, 0.03]} rotation={[0, -0.4, 0]}>
+          <sphereGeometry args={[0.12, 10, 10]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* Additional side volume for fuller dwarf beard */}
+        <mesh position={[-0.18, -0.2, 0]} rotation={[0, 0.6, 0]}>
+          <sphereGeometry args={[0.1, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.18, -0.2, 0]} rotation={[0, -0.6, 0]}>
+          <sphereGeometry args={[0.1, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* Mustache - bushier dwarf style */}
+        <mesh position={[-0.08, 0.08, 0.06]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.08, 0.08, 0.06]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, 0.06, 0.08]}>
+          <sphereGeometry args={[0.04, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* Beard texture details - multiple layers for dwarf-like appearance */}
+        <mesh position={[-0.05, -0.12, 0.08]}>
+          <sphereGeometry args={[0.02, 6, 6]} />
+          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+        </mesh>
+        <mesh position={[0.05, -0.12, 0.08]}>
+          <sphereGeometry args={[0.02, 6, 6]} />
+          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+        </mesh>
+        <mesh position={[0, -0.18, 0.06]}>
+          <sphereGeometry args={[0.018, 6, 6]} />
+          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+        </mesh>
+        <mesh position={[-0.08, -0.25, 0.04]}>
           <sphereGeometry args={[0.015, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.9} />
+          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+        </mesh>
+        <mesh position={[0.08, -0.25, 0.04]}>
+          <sphereGeometry args={[0.015, 6, 6]} />
+          <meshStandardMaterial color="#A0674A" roughness={0.95} />
+        </mesh>
+
+        {/* Additional texture for fuller appearance */}
+        <mesh position={[-0.03, -0.35, 0.02]}>
+          <sphereGeometry args={[0.012, 6, 6]} />
+          <meshStandardMaterial color="#9B6347" roughness={0.98} />
+        </mesh>
+        <mesh position={[0.03, -0.35, 0.02]}>
+          <sphereGeometry args={[0.012, 6, 6]} />
+          <meshStandardMaterial color="#9B6347" roughness={0.98} />
         </mesh>
       </group>
 
