@@ -24,6 +24,7 @@ const LiveVideo = () => {
   const [currentAffirmation, setCurrentAffirmation] = useState('');
   const [epicNotification, setEpicNotification] = useState(null);
   const [dedicationFeed, setDedicationFeed] = useState([]);
+  const [displayedMessages, setDisplayedMessages] = useState([]);
 
   // Rotating emojis for each category
   const categoryEmojis = {
@@ -139,6 +140,15 @@ const LiveVideo = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Update displayed messages when donations change
+  useEffect(() => {
+    const allMessages = [...recentDonations, ...fakeDonations, ...dedicationFeed]
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, 3);
+    
+    setDisplayedMessages(allMessages);
+  }, [recentDonations, fakeDonations, dedicationFeed]);
+
   // Generate fake donations every 3-8 seconds
   useEffect(() => {
     const generateFakeDonation = () => {
@@ -157,7 +167,7 @@ const LiveVideo = () => {
         multiplier: randomMultiplier
       };
 
-      setFakeDonations(prev => [fakeDonation, ...prev.slice(0, 3)]);
+      setFakeDonations(prev => [fakeDonation, ...prev.slice(0, 4)]);
       
       const coinId = Date.now() + Math.random();
       const newCoin = {
@@ -173,7 +183,7 @@ const LiveVideo = () => {
       
       setTimeout(() => {
         setFakeDonations(prev => prev.filter(d => d.id !== fakeDonation.id));
-      }, 6000);
+      }, 12000);
       
       setTimeout(() => {
         setFloatingCoins(prev => prev.filter(coin => coin.id !== coinId));
@@ -221,7 +231,7 @@ const LiveVideo = () => {
       
       setTimeout(() => {
         setDedicationFeed(prev => prev.filter(d => d.id !== dedicationDonation.id));
-      }, 12000);
+      }, 15000);
     };
 
     const interval = setInterval(() => {
@@ -349,7 +359,7 @@ const LiveVideo = () => {
       
       setTimeout(() => {
         setRecentDonations(prev => prev.filter(d => d.id !== newDonation.id));
-      }, 8000);
+      }, 12000);
     }
   };
 
@@ -624,33 +634,46 @@ const LiveVideo = () => {
         </div>
       </div>
 
-      {/* Donation Messages Ticker - New section below video */}
-      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 overflow-hidden">
-        <div className="flex animate-scroll-left space-x-6">
-          {[...recentDonations, ...fakeDonations, ...dedicationFeed].slice(0, 8).map((donation, index) => (
-            <div
-              key={donation.id || index}
-              className="flex items-center space-x-2 bg-gradient-to-r from-emerald-500/20 to-green-600/20 text-white px-3 py-2 rounded-lg text-sm font-medium border border-emerald-400/30 backdrop-blur-sm flex-shrink-0 min-w-max"
-            >
-              <span className="text-lg animate-bounce">{donation.emoji}</span>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold">
-                  {donation.user === 'You' ? 'You' : donation.user}
-                </span>
-                <span className="text-emerald-300">helped with</span>
-                <div className="flex items-center bg-white/15 rounded px-2 py-1">
-                  <SimpleGoldCoin size={12} className="mr-1" />
-                  <span className="font-bold">{donation.finalAmount || donation.amount}</span>
+      {/* Donation Messages Display - New smooth section below video */}
+      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[60px] flex items-center">
+        <div className="w-full px-4">
+          <div className="space-y-2">
+            {displayedMessages.map((donation, index) => (
+              <div
+                key={donation.id || index}
+                className="flex items-center justify-between bg-gradient-to-r from-emerald-500/10 to-green-600/10 text-white px-3 py-2 rounded-lg text-sm font-medium border border-emerald-400/20 backdrop-blur-sm animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="flex items-center space-x-2 min-w-0 flex-1">
+                  <span className="text-lg animate-pulse flex-shrink-0">{donation.emoji}</span>
+                  <div className="flex items-center space-x-2 min-w-0">
+                    <span className="font-bold flex-shrink-0">
+                      {donation.user === 'You' ? 'You' : donation.user}
+                    </span>
+                    <span className="text-emerald-300 flex-shrink-0">helped with</span>
+                    <div className="flex items-center bg-white/15 rounded px-2 py-1 flex-shrink-0">
+                      <SimpleGoldCoin size={12} className="mr-1" />
+                      <span className="font-bold">{donation.finalAmount || donation.amount}</span>
+                    </div>
+                    {donation.onBehalfOf && (
+                      <>
+                        <span className="text-purple-300 flex-shrink-0">for</span>
+                        <span className="font-semibold text-purple-200 truncate">{donation.onBehalfOf}</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                {donation.onBehalfOf && (
-                  <>
-                    <span className="text-purple-300">for</span>
-                    <span className="font-semibold text-purple-200">{donation.onBehalfOf}</span>
-                  </>
-                )}
+                <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
+                  {Math.floor((Date.now() - new Date(donation.timestamp).getTime()) / 1000)}s ago
+                </span>
               </div>
-            </div>
-          ))}
+            ))}
+            {displayedMessages.length === 0 && (
+              <div className="text-center text-gray-400 text-sm py-4">
+                Be the first to help! 💝
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -702,19 +725,6 @@ const LiveVideo = () => {
             opacity: 0;
             transform: translateY(-80px) scale(0.8) rotate(360deg);
           }
-        }
-        
-        @keyframes scroll-left {
-          0% {
-            transform: translateX(100%);
-          }
-          100% {
-            transform: translateX(-100%);
-          }
-        }
-        
-        .animate-scroll-left {
-          animation: scroll-left 30s linear infinite;
         }
         
         .scrollbar-hide {
