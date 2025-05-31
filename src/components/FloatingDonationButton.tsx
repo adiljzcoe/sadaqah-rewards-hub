@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X, HandHeart } from 'lucide-react';
@@ -16,6 +15,7 @@ const FloatingDonationButton = () => {
   const [fallingCoins, setFallingCoins] = useState<FallingCoin[]>([]);
   const [showCallToAction, setShowCallToAction] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
+  const [isStickyWidgetActive, setIsStickyWidgetActive] = useState(false);
 
   const impactMessages = [
     "Make a difference today",
@@ -39,6 +39,46 @@ const FloatingDonationButton = () => {
     
     setTimeout(() => setIsActive(false), 1000);
   };
+
+  // Monitor sticky widget state
+  useEffect(() => {
+    const handleScroll = () => {
+      // Find the live feed section by looking for elements with specific classes
+      const liveFeedElement = document.querySelector('[class*="LiveFeed"]') || 
+                             document.querySelector('.space-y-6 .hover-lift:nth-child(3)') ||
+                             document.querySelector('[class*="live-feed"]');
+      
+      if (liveFeedElement) {
+        const liveFeedRect = liveFeedElement.getBoundingClientRect();
+        const liveFeedTop = liveFeedRect.top + window.scrollY;
+        const liveFeedHeight = liveFeedRect.height;
+        const middleOfLiveFeed = liveFeedTop + (liveFeedHeight / 2);
+        
+        // Sticky becomes active when we reach the middle of the live feed section
+        setIsStickyWidgetActive(window.scrollY > middleOfLiveFeed);
+      } else {
+        // Fallback: look for any element that might be the live feed section
+        const fallbackElements = document.querySelectorAll('.hover-lift');
+        if (fallbackElements.length >= 3) {
+          const liveFeedElement = fallbackElements[2]; // Third element (0-indexed)
+          const liveFeedRect = liveFeedElement.getBoundingClientRect();
+          const liveFeedTop = liveFeedRect.top + window.scrollY;
+          const liveFeedHeight = liveFeedRect.height;
+          const middleOfLiveFeed = liveFeedTop + (liveFeedHeight / 2);
+          
+          setIsStickyWidgetActive(window.scrollY > middleOfLiveFeed);
+        } else {
+          // Final fallback to original behavior if we can't find the element
+          const viewportHeight = window.innerHeight;
+          const scrollThreshold = viewportHeight * 0.6;
+          setIsStickyWidgetActive(window.scrollY > scrollThreshold);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Show impact messages every 45 seconds
   useEffect(() => {
@@ -130,7 +170,7 @@ const FloatingDonationButton = () => {
         }
       `}</style>
       
-      <div className="fixed bottom-8 right-8 z-50">
+      <div className={`fixed ${isStickyWidgetActive ? 'bottom-20' : 'bottom-8'} right-8 z-50 transition-all duration-300`}>
         {/* Call to action message */}
         {showCallToAction && (
           <div className="absolute -top-16 -left-32 z-60 animate-[message-appear_0.4s_ease-out]">
