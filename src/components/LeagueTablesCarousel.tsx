@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/components/ui/table';
-import { Building2, MapPin, Utensils, Crown, Trophy, Users, Medal, Star } from 'lucide-react';
+import { Building2, MapPin, Utensils, Crown, Trophy, Users, Medal, Star, Mosque, Globe } from 'lucide-react';
 
 // Business data
 const localBusinesses = [
@@ -30,6 +31,15 @@ const nationalBusinesses = [
   { rank: 5, name: 'Muslim Business Hub', coins: 24800, donations: 145 },
 ];
 
+// Masjids data
+const masjidLeaderboard = [
+  { rank: 1, name: 'Birmingham Central Mosque', location: 'Birmingham', coins: 28900, donations: 156 },
+  { rank: 2, name: 'East London Mosque', location: 'London', coins: 24500, donations: 134 },
+  { rank: 3, name: 'Manchester Islamic Centre', location: 'Manchester', coins: 21200, donations: 118 },
+  { rank: 4, name: 'Bradford Grand Mosque', location: 'Bradford', coins: 18700, donations: 102 },
+  { rank: 5, name: 'Leeds Iqra Centre', location: 'Leeds', coins: 16300, donations: 89 },
+];
+
 // City data
 const cityLeaderboard = [
   { rank: 1, name: 'Birmingham', points: 45680, donors: 1240, icon: '🏆' },
@@ -37,6 +47,15 @@ const cityLeaderboard = [
   { rank: 3, name: 'London', points: 38900, donors: 980, icon: '🥉' },
   { rank: 4, name: 'Leeds', points: 35200, donors: 850, icon: '4️⃣' },
   { rank: 5, name: 'Bradford', points: 32100, donors: 720, icon: '5️⃣' },
+];
+
+// Countries data
+const countryLeaderboard = [
+  { rank: 1, name: 'United Kingdom', points: 185600, donors: 4890, icon: '🇬🇧' },
+  { rank: 2, name: 'United States', points: 142300, donors: 3650, icon: '🇺🇸' },
+  { rank: 3, name: 'Canada', points: 98700, donors: 2890, icon: '🇨🇦' },
+  { rank: 4, name: 'Australia', points: 76500, donors: 2140, icon: '🇦🇺' },
+  { rank: 5, name: 'Germany', points: 64200, donors: 1890, icon: '🇩🇪' },
 ];
 
 // Individual donors
@@ -101,6 +120,16 @@ const LeagueTablesCarousel = () => {
       showLocation: false
     },
     {
+      id: 'masjids',
+      title: 'Masjid Leaders',
+      shortTitle: 'Masjids',
+      icon: <Mosque className="h-4 w-4 text-teal-600" />,
+      badge: 'This Month',
+      badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
+      data: masjidLeaderboard,
+      showLocation: true
+    },
+    {
       id: 'cities',
       title: 'City Rankings',
       shortTitle: 'Cities',
@@ -110,6 +139,17 @@ const LeagueTablesCarousel = () => {
       data: cityLeaderboard,
       showLocation: false,
       isCity: true
+    },
+    {
+      id: 'countries',
+      title: 'Country Rankings',
+      shortTitle: 'Countries',
+      icon: <Globe className="h-4 w-4 text-indigo-600" />,
+      badge: 'Live',
+      badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      data: countryLeaderboard,
+      showLocation: false,
+      isCountry: true
     },
     {
       id: 'top-donors',
@@ -142,8 +182,8 @@ const LeagueTablesCarousel = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-12">Rank</TableHead>
-            <TableHead>{league.isCity ? 'City' : league.isIndividual ? 'Donor' : 'Business'}</TableHead>
-            <TableHead className="text-right">{league.isCity ? 'Points' : league.isIndividual ? 'Points' : 'Coins'}</TableHead>
+            <TableHead>{league.isCity ? 'City' : league.isCountry ? 'Country' : league.isIndividual ? 'Donor' : 'Business'}</TableHead>
+            <TableHead className="text-right">{league.isCity || league.isCountry || league.isIndividual ? 'Points' : 'Coins'}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -169,12 +209,18 @@ const LeagueTablesCarousel = () => {
                       {item.donors} donors
                     </div>
                   )}
+                  {league.isCountry && (
+                    <div className="text-xs text-gray-600 flex items-center">
+                      <Users className="h-3 w-3 mr-1" />
+                      {item.donors} donors
+                    </div>
+                  )}
                   {league.isIndividual && (
                     <div className="text-xs text-gray-600">
                       Level {item.level} • {item.donations} donations
                     </div>
                   )}
-                  {!league.showLocation && !league.isCity && !league.isIndividual && (
+                  {!league.showLocation && !league.isCity && !league.isCountry && !league.isIndividual && (
                     <div className="text-xs text-gray-600">
                       {item.donations} donations sponsored
                     </div>
@@ -183,13 +229,13 @@ const LeagueTablesCarousel = () => {
               </TableCell>
               <TableCell className="text-right">
                 <div className="font-bold text-sm vibrant-text-blue">
-                  {league.isCity || league.isIndividual ? 
+                  {league.isCity || league.isCountry || league.isIndividual ? 
                     item.points?.toLocaleString() || item.coins?.toLocaleString() : 
                     item.coins?.toLocaleString()
                   }
                 </div>
                 <div className="text-xs text-gray-500">
-                  {league.isCity || league.isIndividual ? 'points' : 'coins'}
+                  {league.isCity || league.isCountry || league.isIndividual ? 'points' : 'coins'}
                 </div>
               </TableCell>
             </TableRow>
@@ -209,16 +255,16 @@ const LeagueTablesCarousel = () => {
           <p className="text-gray-600">See how different groups are making an impact</p>
         </div>
 
-        {/* Button Grid - Two Rows */}
+        {/* Button Grid - Three Rows */}
         <div className="mb-8">
+          {/* First row - 3 buttons */}
           <div className="grid grid-cols-3 gap-3 mb-3 max-w-2xl mx-auto">
-            {/* First row - 3 buttons */}
             {leagueTables.slice(0, 3).map((league) => (
               <Button
                 key={league.id}
                 variant={activeTab === league.id ? "default" : "outline"}
                 onClick={() => setActiveTab(league.id)}
-                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 ${
+                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 rounded-xl ${
                   activeTab === league.id 
                     ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg' 
                     : 'bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50'
@@ -230,14 +276,33 @@ const LeagueTablesCarousel = () => {
             ))}
           </div>
           
-          <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
-            {/* Second row - 2 buttons */}
+          {/* Second row - 2 buttons */}
+          <div className="grid grid-cols-2 gap-3 mb-3 max-w-lg mx-auto">
             {leagueTables.slice(3, 5).map((league) => (
               <Button
                 key={league.id}
                 variant={activeTab === league.id ? "default" : "outline"}
                 onClick={() => setActiveTab(league.id)}
-                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 ${
+                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 rounded-xl ${
+                  activeTab === league.id 
+                    ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg' 
+                    : 'bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                <span className="hidden sm:inline">{league.icon}</span>
+                <span className="truncate">{league.shortTitle}</span>
+              </Button>
+            ))}
+          </div>
+          
+          {/* Third row - 2 buttons */}
+          <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+            {leagueTables.slice(5, 7).map((league) => (
+              <Button
+                key={league.id}
+                variant={activeTab === league.id ? "default" : "outline"}
+                onClick={() => setActiveTab(league.id)}
+                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 rounded-xl ${
                   activeTab === league.id 
                     ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg' 
                     : 'bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50'
