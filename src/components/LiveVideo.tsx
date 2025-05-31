@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -392,7 +391,104 @@ const LiveVideo = () => {
 
   return (
     <div className="w-full max-w-full overflow-hidden">
-      <div className="relative w-full aspect-video bg-gray-900 rounded-t-xl overflow-hidden">
+      {/* User Stats Header - Above Video */}
+      <div className="bg-gradient-to-r from-slate-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-xl border border-white/10 rounded-t-xl p-3 md:p-4">
+        <div className="flex items-center justify-between gap-2">
+          {/* Left side - Stats */}
+          <div className="flex items-center space-x-2 md:space-x-3 min-w-0 flex-1">
+            {/* Live Badge */}
+            <Badge className="bg-red-500/30 hover:bg-red-600/40 text-white shadow-lg px-2 py-1 animate-pulse backdrop-blur-xl border border-white/20 flex-shrink-0 text-xs">
+              <div className="w-1.5 h-1.5 bg-white rounded-full mr-1 animate-ping"></div>
+              LIVE
+            </Badge>
+
+            {/* User Stats Row */}
+            <div className="flex items-center space-x-2 bg-black/20 backdrop-blur-xl rounded-lg px-2 py-1.5 border border-white/10 min-w-0 overflow-hidden">
+              {/* Points */}
+              <div className="flex items-center text-purple-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
+                <Star className="h-3 w-3 mr-1 text-purple-400" />
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{userPoints.toLocaleString()}</span>
+              </div>
+              
+              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
+              
+              {/* Coins */}
+              <div className="flex items-center text-amber-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
+                <SimpleGoldCoin size={12} className="mr-1" />
+                <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{userCoins.toLocaleString()}</span>
+              </div>
+              
+              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
+              
+              {/* Level */}
+              <div className="flex items-center text-blue-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-2 py-1 rounded border border-blue-400/20 flex-shrink-0">
+                <Crown className="h-3 w-3 mr-1 text-yellow-400" />
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Lv.{userLevel}</span>
+              </div>
+              
+              {/* Streak */}
+              {streakCount > 0 && (
+                <>
+                  <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
+                  <div className="flex items-center text-orange-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-orange-500/10 to-red-500/10 px-2 py-1 rounded border border-orange-400/20 flex-shrink-0">
+                    <Flame className="h-3 w-3 mr-1 text-orange-400 animate-pulse" />
+                    <span className="bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{streakCount}x{multiplier}</span>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Right side - Top Up Button */}
+          <Button className="bg-gradient-to-r from-amber-500/30 to-yellow-600/30 hover:from-amber-600/40 hover:to-yellow-700/40 text-white shadow-lg px-3 py-2 text-xs font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group backdrop-blur-xl border border-white/20 flex-shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <Gift className="h-3 w-3 mr-1 group-hover:rotate-12 transition-transform" />
+            <span className="hidden sm:inline">Top Up</span>
+            <span className="sm:hidden">+</span>
+            <Sparkles className="h-3 w-3 ml-1 animate-pulse" />
+          </Button>
+        </div>
+
+        {/* Level Progress Bar */}
+        <div className="mt-2">
+          <div className="flex items-center justify-between text-xs text-white/70 mb-1">
+            <span>Level {userLevel}</span>
+            <span>{userPoints % 500}/500 XP</span>
+          </div>
+          <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+            <div 
+              className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full transition-all duration-500 shadow-lg"
+              style={{ width: `${(userPoints % 500) / 500 * 100}%` }}
+            >
+              <div className="w-full h-full bg-gradient-to-r from-white/20 to-transparent rounded-full"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* User Badges */}
+        <div className="flex items-center space-x-1 mt-2">
+          {userBadges.slice(0, 4).map((badgeKey) => {
+            const badge = badges[badgeKey];
+            return (
+              <div
+                key={badgeKey}
+                className={`w-6 h-6 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-xs shadow-lg border-2 border-white/30 hover:scale-110 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0`}
+                title={badge.name}
+              >
+                {badge.icon}
+              </div>
+            );
+          })}
+          {userBadges.length > 4 && (
+            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-gray-400/30 to-gray-600/30 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/30 backdrop-blur-sm flex-shrink-0">
+              +{userBadges.length - 4}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Video Section */}
+      <div className="relative w-full aspect-video bg-gray-900 overflow-hidden">
         {/* Mock Video Background */}
         <div className="absolute inset-0 w-full h-full">
           <img
@@ -402,7 +498,7 @@ const LiveVideo = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-black/5"></div>
           
-          {/* Fake video overlay elements to make it look like a video */}
+          {/* Video overlay elements */}
           <div className="absolute bottom-4 left-4 bg-black/10 backdrop-blur-md rounded px-2 py-1 border border-white/10">
             <div className="flex items-center text-white text-sm">
               <div className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
@@ -410,9 +506,16 @@ const LiveVideo = () => {
             </div>
           </div>
           
-          {/* Video quality indicator */}
           <div className="absolute bottom-4 right-4 bg-black/10 backdrop-blur-md rounded px-2 py-1 text-white text-xs border border-white/10">
             HD 1080p
+          </div>
+        </div>
+
+        {/* Viewers count - top left */}
+        <div className="absolute top-4 left-4 z-10">
+          <div className="flex items-center bg-black/20 backdrop-blur-xl rounded-lg px-3 py-2 shadow-xl border border-white/10">
+            <Users className={`h-4 w-4 mr-2 text-green-400 ${pulseEffect ? 'animate-pulse' : ''}`} />
+            <span className="text-white font-bold">1,247</span>
           </div>
         </div>
 
@@ -438,86 +541,6 @@ const LiveVideo = () => {
           </div>
         )}
 
-        {/* Top overlay with stats - Ultra transparent */}
-        <div className="absolute top-0 left-0 right-0 p-2 md:p-4 z-10">
-          <div className="flex justify-between items-start gap-2">
-            <Badge className="bg-red-500/25 hover:bg-red-600/30 text-white shadow-lg px-2 md:px-3 py-1 md:py-2 animate-pulse backdrop-blur-xl border border-white/10 flex-shrink-0 text-xs md:text-sm">
-              <div className="w-2 h-2 bg-white rounded-full mr-1 md:mr-2 animate-ping"></div>
-              LIVE
-            </Badge>
-
-            <div className="flex items-center space-x-1 md:space-x-2 bg-black/5 backdrop-blur-xl rounded-lg md:rounded-xl p-1 md:p-2 shadow-xl border border-white/10 min-w-0 max-w-xs md:max-w-md overflow-hidden">
-              <div className="flex items-center text-white text-xs font-medium hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
-                <Users className={`h-3 w-3 mr-1 ${pulseEffect ? 'animate-pulse text-green-400' : ''}`} />
-                <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold">1,247</span>
-              </div>
-              
-              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
-              <div className="flex items-center text-purple-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
-                <Star className="h-3 w-3 mr-1 text-purple-400" />
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{userPoints}</span>
-              </div>
-              
-              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
-              <div className="flex items-center text-amber-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
-                <SimpleGoldCoin size={12} className="mr-1" />
-                <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{userCoins}</span>
-              </div>
-              
-              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
-              <div className="flex items-center text-blue-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-blue-500/5 to-purple-500/5 px-1 py-1 rounded-lg border border-blue-400/20 flex-shrink-0">
-                <Crown className="h-3 w-3 mr-1 text-yellow-400" />
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Lv.{userLevel}
-                </span>
-              </div>
-              
-              {streakCount > 0 && (
-                <>
-                  <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
-                  <div className="flex items-center text-purple-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-orange-500/5 to-red-500/5 px-1 py-1 rounded-lg border border-orange-400/20 flex-shrink-0">
-                    <Flame className="h-3 w-3 mr-1 text-orange-400 animate-pulse" />
-                    <span className="bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-                      {streakCount}x{multiplier}
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* User Badges Display */}
-        <div className="absolute top-10 md:top-12 left-2 md:left-4 z-20 flex space-x-1 max-w-[150px] md:max-w-[200px] flex-wrap">
-          {userBadges.slice(0, 3).map((badgeKey) => {
-            const badge = badges[badgeKey];
-            return (
-              <div
-                key={badgeKey}
-                className={`w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-xs shadow-lg border-2 border-white/25 hover:scale-110 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0`}
-                title={badge.name}
-              >
-                {badge.icon}
-              </div>
-            );
-          })}
-          {userBadges.length > 3 && (
-            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-r from-gray-400/25 to-gray-600/25 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/25 backdrop-blur-sm flex-shrink-0">
-              +{userBadges.length - 3}
-            </div>
-          )}
-        </div>
-
-        <div className="absolute top-14 md:top-16 right-2 md:right-4 z-30 max-w-[120px] md:max-w-[200px]">
-          <Button className="bg-gradient-to-r from-amber-500/25 to-yellow-600/25 hover:from-amber-600/30 hover:to-yellow-700/30 text-white shadow-lg px-2 py-1 text-xs font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group backdrop-blur-xl border border-white/10 w-full">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-            <Gift className="h-3 w-3 mr-1 group-hover:rotate-12 transition-transform" />
-            <span className="hidden sm:inline truncate">Top Up Coins</span>
-            <span className="sm:hidden">Top Up</span>
-            <Sparkles className="h-3 w-3 ml-1 animate-pulse" />
-          </Button>
-        </div>
-
         {/* Positive Affirmation - Ultra transparent */}
         {showAffirmation && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce mx-4">
@@ -528,7 +551,7 @@ const LiveVideo = () => {
         )}
 
         {/* Recent donations feed - Left side - Made smaller and with width constraints */}
-        <div className="absolute left-1 md:left-2 top-24 md:top-32 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
+        <div className="absolute left-1 md:left-2 top-16 md:top-20 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
           {[...recentDonations, ...fakeDonations].slice(0, 3).map((donation) => (
             <div
               key={donation.id}
@@ -553,7 +576,7 @@ const LiveVideo = () => {
         </div>
 
         {/* Dedication Feed - Right side - Also made smaller with width constraints */}
-        <div className="absolute right-1 md:right-2 top-24 md:top-32 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
+        <div className="absolute right-1 md:right-2 top-16 md:top-20 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
           {dedicationFeed.slice(0, 2).map((dedication) => (
             <div
               key={dedication.id}
