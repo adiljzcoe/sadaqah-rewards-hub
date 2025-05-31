@@ -45,12 +45,18 @@
   100% { transform: translateX(200%) rotate(45deg); }
 }
 
-/* Charity bin shaking animation - left to right like shaking a donation tin */
+/* Charity bin shaking animation - realistic side-to-side like shaking a donation tin for coins */
 @keyframes charity-shake {
   0%, 100% { transform: translateX(0px) rotate(0deg); }
-  25% { transform: translateX(-3px) rotate(-2deg); }
-  50% { transform: translateX(3px) rotate(1deg); }
-  75% { transform: translateX(-2px) rotate(-1deg); }
+  10% { transform: translateX(-4px) rotate(-3deg); }
+  20% { transform: translateX(4px) rotate(2deg); }
+  30% { transform: translateX(-3px) rotate(-2deg); }
+  40% { transform: translateX(3px) rotate(2deg); }
+  50% { transform: translateX(-2px) rotate(-1deg); }
+  60% { transform: translateX(2px) rotate(1deg); }
+  70% { transform: translateX(-1px) rotate(-0.5deg); }
+  80% { transform: translateX(1px) rotate(0.5deg); }
+  90% { transform: translateX(-0.5px) rotate(-0.25deg); }
 }
 
 /* Custom utility classes */
@@ -87,9 +93,9 @@
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Charity bin shake animation utility */
+/* Charity bin shake animation utility - more realistic timing */
 .animate-charity-shake {
-  animation: charity-shake 1.2s ease-in-out infinite;
+  animation: charity-shake 1.8s ease-in-out infinite;
 }
 
 /* Islamic-themed colors */

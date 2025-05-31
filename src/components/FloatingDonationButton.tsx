@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -54,35 +55,48 @@ const FloatingDonationButton = () => {
         className="relative w-20 h-20 rounded-full border-0 shadow-2xl text-white overflow-hidden group"
         size="lg"
       >
-        {/* Ray of light behind the bin */}
+        {/* Ray of light behind the tin */}
         <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/80 via-yellow-300/60 to-white/80 animate-pulse"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-yellow-200/40 to-transparent animate-shimmer"></div>
         
-        {/* 3D Charity tin with left-right shaking animation */}
+        {/* 3D Charity collection tin with side-to-side shaking animation */}
         <div className="relative z-10 w-full h-full flex items-center justify-center animate-charity-shake">
-          {/* Charity tin base */}
+          {/* Charity tin viewed from the side */}
           <div className="relative">
-            {/* Tin shadow/depth */}
-            <div className="absolute top-1 left-1 w-10 h-12 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full transform rotate-1"></div>
+            {/* Tin shadow/depth - positioned behind and to the right */}
+            <div className="absolute top-1 left-1 w-8 h-16 bg-gradient-to-br from-gray-600 to-gray-800 rounded-lg transform rotate-1"></div>
             
-            {/* Main tin body - cylindrical like the reference image */}
-            <div className="relative w-10 h-12 bg-gradient-to-br from-red-500 via-red-600 to-red-700 rounded-full border-2 border-red-400 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
-              {/* Tin opening/slot - wider at top like real charity tins */}
-              <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full shadow-inner"></div>
+            {/* Main collection tin body - tall cylindrical shape like the reference */}
+            <div className="relative w-8 h-16 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-lg border-2 border-blue-300 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+              {/* Top lid of the tin */}
+              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-9 h-2 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full border border-blue-500"></div>
               
-              {/* Label area on tin */}
-              <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-white/90 rounded-sm flex items-center justify-center">
-                <span className="text-red-600 text-xs font-bold">💝</span>
+              {/* Coin slot on top */}
+              <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-gray-900 rounded-full shadow-inner"></div>
+              
+              {/* White label area with "DONATE" text */}
+              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-7 h-8 bg-white rounded-sm flex items-center justify-center">
+                <div className="text-blue-600 text-[6px] font-bold leading-none transform -rotate-90">
+                  DONATE
+                </div>
               </div>
               
-              {/* Tin rim at top */}
-              <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-gray-300 to-gray-400 rounded-full"></div>
+              {/* Bottom rim */}
+              <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full"></div>
               
               {/* 3D highlight on cylinder */}
-              <div className="absolute top-1 left-1 w-2 h-8 bg-gradient-to-r from-white/60 to-transparent rounded-l-full"></div>
+              <div className="absolute top-0 left-0.5 w-1 h-14 bg-gradient-to-r from-white/60 to-transparent rounded-l-lg"></div>
               
-              {/* Bottom rim */}
-              <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-9 h-1 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full"></div>
+              {/* Handle attachment point */}
+              <div className="absolute top-3 -right-1 w-1 h-1 bg-blue-700 rounded-full"></div>
+            </div>
+            
+            {/* Collection tin handle - curved rope/strap */}
+            <div className="absolute top-4 -right-2 w-3 h-6">
+              {/* Handle strap */}
+              <div className="w-0.5 h-6 bg-gradient-to-b from-blue-800 to-blue-900 rounded-full transform rotate-12"></div>
+              {/* Handle grip */}
+              <div className="absolute bottom-0 -right-1 w-2 h-1 bg-blue-900 rounded-full"></div>
             </div>
           </div>
         </div>
