@@ -211,7 +211,7 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
           <meshStandardMaterial 
             color="#f5d5ae" 
             roughness={0.7}
-            metalness={0.05"
+            metalness={0.05}
           />
         </mesh>
 
@@ -300,7 +300,7 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
             metalness={0.9}
             roughness={0.1}
             emissive="#fbbf24"
-            emissiveIntensity={0.1"
+            emissiveIntensity={0.1}
           />
         </mesh>
 
