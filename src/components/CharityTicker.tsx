@@ -11,10 +11,10 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-blue-50 border-b border-blue-100 py-4 overflow-hidden">
+    <div className="bg-blue-50 border-b border-blue-100 py-2 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center text-sm text-blue-600 mb-3 font-medium">
-          Our fundraising is distributed to our chosen charities below
+        <div className="text-center text-xs text-blue-700 mb-2 font-normal opacity-80">
+          Funds distributed to our trusted charity partners
         </div>
         
         {/* Ticker container */}
