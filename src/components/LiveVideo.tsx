@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -391,7 +392,7 @@ const LiveVideo = () => {
 
   return (
     <div className="w-full max-w-full overflow-hidden">
-      <div className="relative w-full aspect-video bg-gray-900 rounded-t-xl overflow-hidden max-w-full">
+      <div className="relative w-full aspect-video bg-gray-900 rounded-t-xl overflow-hidden">
         {/* Mock Video Background */}
         <div className="absolute inset-0 w-full h-full">
           <img
@@ -418,19 +419,19 @@ const LiveVideo = () => {
         {/* Epic Donation Notification - Ultra transparent */}
         {epicNotification && (
           <div className="absolute inset-0 bg-gradient-to-r from-purple-900/5 to-pink-900/5 backdrop-blur-sm z-60 flex items-center justify-center animate-fade-in">
-            <div className="text-center text-white bg-black/5 backdrop-blur-xl rounded-2xl p-8 border border-white/10">
-              <div className="text-6xl mb-4 animate-bounce">{epicNotification.emoji}</div>
-              <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
+            <div className="text-center text-white bg-black/5 backdrop-blur-xl rounded-2xl p-4 md:p-8 border border-white/10 mx-4 max-w-xs md:max-w-md">
+              <div className="text-4xl md:text-6xl mb-2 md:mb-4 animate-bounce">{epicNotification.emoji}</div>
+              <div className="text-2xl md:text-4xl font-bold mb-1 md:mb-2 bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
                 EPIC DONATION!
               </div>
-              <div className="text-2xl font-bold mb-4">
+              <div className="text-sm md:text-2xl font-bold mb-2 md:mb-4">
                 {epicNotification.user} just air-dropped a massive {epicNotification.title}!
               </div>
-              <div className="flex items-center justify-center text-xl font-semibold">
-                <SimpleGoldCoin size={24} className="mr-2" />
+              <div className="flex items-center justify-center text-lg md:text-xl font-semibold">
+                <SimpleGoldCoin size={20} className="mr-2" />
                 {epicNotification.amount} Sadaqah Coins
               </div>
-              <div className="text-lg mt-2 opacity-90">
+              <div className="text-sm md:text-lg mt-2 opacity-90">
                 Everyone in the community can see this amazing generosity! 🎉
               </div>
             </div>
@@ -438,14 +439,14 @@ const LiveVideo = () => {
         )}
 
         {/* Top overlay with stats - Ultra transparent */}
-        <div className="absolute top-0 left-0 right-0 p-4 z-10 max-w-full">
-          <div className="flex justify-between items-start flex-wrap gap-2">
-            <Badge className="bg-red-500/25 hover:bg-red-600/30 text-white shadow-lg px-3 py-2 animate-pulse backdrop-blur-xl border border-white/10 flex-shrink-0">
-              <div className="w-2 h-2 bg-white rounded-full mr-2 animate-ping"></div>
+        <div className="absolute top-0 left-0 right-0 p-2 md:p-4 z-10">
+          <div className="flex justify-between items-start gap-2">
+            <Badge className="bg-red-500/25 hover:bg-red-600/30 text-white shadow-lg px-2 md:px-3 py-1 md:py-2 animate-pulse backdrop-blur-xl border border-white/10 flex-shrink-0 text-xs md:text-sm">
+              <div className="w-2 h-2 bg-white rounded-full mr-1 md:mr-2 animate-ping"></div>
               LIVE
             </Badge>
 
-            <div className="flex items-center space-x-2 bg-black/5 backdrop-blur-xl rounded-xl p-2 shadow-xl border border-white/10 flex-shrink-0 min-w-0">
+            <div className="flex items-center space-x-1 md:space-x-2 bg-black/5 backdrop-blur-xl rounded-lg md:rounded-xl p-1 md:p-2 shadow-xl border border-white/10 min-w-0 max-w-xs md:max-w-md overflow-hidden">
               <div className="flex items-center text-white text-xs font-medium hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
                 <Users className={`h-3 w-3 mr-1 ${pulseEffect ? 'animate-pulse text-green-400' : ''}`} />
                 <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent font-bold">1,247</span>
@@ -459,7 +460,7 @@ const LiveVideo = () => {
               
               <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
               <div className="flex items-center text-amber-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
-                <SimpleGoldCoin size={14} className="mr-1" />
+                <SimpleGoldCoin size={12} className="mr-1" />
                 <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{userCoins}</span>
               </div>
               
@@ -487,13 +488,13 @@ const LiveVideo = () => {
         </div>
 
         {/* User Badges Display */}
-        <div className="absolute top-12 left-4 z-20 flex space-x-1 max-w-[200px] flex-wrap">
+        <div className="absolute top-10 md:top-12 left-2 md:left-4 z-20 flex space-x-1 max-w-[150px] md:max-w-[200px] flex-wrap">
           {userBadges.slice(0, 3).map((badgeKey) => {
             const badge = badges[badgeKey];
             return (
               <div
                 key={badgeKey}
-                className={`w-6 h-6 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-xs shadow-lg border-2 border-white/25 hover:scale-110 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0`}
+                className={`w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-xs shadow-lg border-2 border-white/25 hover:scale-110 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0`}
                 title={badge.name}
               >
                 {badge.icon}
@@ -501,17 +502,17 @@ const LiveVideo = () => {
             );
           })}
           {userBadges.length > 3 && (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-gray-400/25 to-gray-600/25 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/25 backdrop-blur-sm flex-shrink-0">
+            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-gradient-to-r from-gray-400/25 to-gray-600/25 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/25 backdrop-blur-sm flex-shrink-0">
               +{userBadges.length - 3}
             </div>
           )}
         </div>
 
-        <div className="absolute top-16 right-4 z-30 max-w-[200px]">
-          <Button className="bg-gradient-to-r from-amber-500/25 to-yellow-600/25 hover:from-amber-600/30 hover:to-yellow-700/30 text-white shadow-lg px-2 py-1 text-xs font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group backdrop-blur-xl border border-white/10">
+        <div className="absolute top-14 md:top-16 right-2 md:right-4 z-30 max-w-[120px] md:max-w-[200px]">
+          <Button className="bg-gradient-to-r from-amber-500/25 to-yellow-600/25 hover:from-amber-600/30 hover:to-yellow-700/30 text-white shadow-lg px-2 py-1 text-xs font-bold rounded-xl hover:scale-105 transition-all duration-300 relative overflow-hidden group backdrop-blur-xl border border-white/10 w-full">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             <Gift className="h-3 w-3 mr-1 group-hover:rotate-12 transition-transform" />
-            <span className="hidden sm:inline">Top Up Sadaqah Coins</span>
+            <span className="hidden sm:inline truncate">Top Up Coins</span>
             <span className="sm:hidden">Top Up</span>
             <Sparkles className="h-3 w-3 ml-1 animate-pulse" />
           </Button>
@@ -519,19 +520,19 @@ const LiveVideo = () => {
 
         {/* Positive Affirmation - Ultra transparent */}
         {showAffirmation && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
-            <div className="bg-gradient-to-r from-pink-500/25 to-purple-600/25 text-white px-6 py-3 rounded-2xl text-lg font-bold shadow-xl border-2 border-white/25 backdrop-blur-xl">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce mx-4">
+            <div className="bg-gradient-to-r from-pink-500/25 to-purple-600/25 text-white px-4 md:px-6 py-2 md:py-3 rounded-2xl text-sm md:text-lg font-bold shadow-xl border-2 border-white/25 backdrop-blur-xl max-w-xs text-center">
               {currentAffirmation}
             </div>
           </div>
         )}
 
         {/* Recent donations feed - Left side - Made smaller and with width constraints */}
-        <div className="absolute left-2 top-32 space-y-1 z-20 max-w-[250px] w-auto">
+        <div className="absolute left-1 md:left-2 top-24 md:top-32 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
           {[...recentDonations, ...fakeDonations].slice(0, 3).map((donation) => (
             <div
               key={donation.id}
-              className="bg-gradient-to-r from-emerald-500/30 to-green-600/30 text-white px-2 py-1 rounded-xl text-xs font-medium flex items-center space-x-1 animate-slide-in-left shadow-lg border border-emerald-300/30 hover:scale-105 transition-transform max-w-full backdrop-blur-xl overflow-hidden"
+              className="bg-gradient-to-r from-emerald-500/30 to-green-600/30 text-white px-2 py-1 rounded-xl text-xs font-medium flex items-center space-x-1 animate-slide-in-left shadow-lg border border-emerald-300/30 hover:scale-105 transition-transform backdrop-blur-xl overflow-hidden"
             >
               <span className="text-sm animate-bounce flex-shrink-0">{donation.emoji}</span>
               <div className="flex-1 min-w-0 overflow-hidden">
@@ -552,11 +553,11 @@ const LiveVideo = () => {
         </div>
 
         {/* Dedication Feed - Right side - Also made smaller with width constraints */}
-        <div className="absolute right-2 top-32 space-y-1 z-20 max-w-[250px] w-auto">
+        <div className="absolute right-1 md:right-2 top-24 md:top-32 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
           {dedicationFeed.slice(0, 2).map((dedication) => (
             <div
               key={dedication.id}
-              className="bg-gradient-to-r from-purple-600/40 to-pink-600/40 text-white px-2 py-1.5 rounded-xl text-xs font-medium animate-slide-in-right shadow-lg border border-purple-300/40 hover:scale-105 transition-transform backdrop-blur-xl max-w-full overflow-hidden"
+              className="bg-gradient-to-r from-purple-600/40 to-pink-600/40 text-white px-2 py-1.5 rounded-xl text-xs font-medium animate-slide-in-right shadow-lg border border-purple-300/40 hover:scale-105 transition-transform backdrop-blur-xl overflow-hidden"
             >
               <div className="flex items-center space-x-1 mb-1">
                 <span className="text-sm animate-bounce flex-shrink-0">{dedication.emoji}</span>
@@ -596,30 +597,30 @@ const LiveVideo = () => {
             key={coin.id}
             className="absolute pointer-events-none z-50 animate-bounce"
             style={{
-              left: `${Math.min(Math.max(coin.x, 10), 80)}%`,
+              left: `${Math.min(Math.max(coin.x, 5), 85)}%`,
               top: `${Math.min(Math.max(coin.y, 10), 80)}%`,
               animation: 'floatUp 2s ease-out forwards'
             }}
           >
-            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400/30 to-amber-500/30 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg backdrop-blur-xl border border-white/20">
-              <span className="text-lg">{coin.emoji}</span>
+            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400/30 to-amber-500/30 text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-lg backdrop-blur-xl border border-white/20">
+              <span className="text-sm md:text-lg">{coin.emoji}</span>
               <span>+{coin.coins * coin.multiplier}</span>
               <Sparkles className="h-3 w-3 animate-spin" />
             </div>
           </div>
         ))}
 
-        {/* Donation buttons at bottom - Constrained width */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-60 flex justify-center items-center space-x-2 px-2 py-2 max-w-full overflow-hidden">
-          {/* Regular donation buttons - Smaller and more constrained */}
-          <div className="flex space-x-1 flex-wrap justify-center max-w-full">
+        {/* Donation buttons at bottom - Heavily constrained */}
+        <div className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 z-60 flex justify-center items-center px-2 py-2 max-w-[90%] overflow-hidden">
+          {/* Regular donation buttons - Much smaller and more constrained */}
+          <div className="flex space-x-1 justify-center max-w-full overflow-x-auto scrollbar-hide">
             {quickDonations.map((donation, index) => (
               <button
                 key={donation.key}
                 onClick={() => handleQuickDonate(donation)}
                 disabled={userCoins < donation.coins}
                 className={`
-                  group relative w-12 h-12 rounded-xl shadow-lg
+                  group relative w-10 h-10 md:w-12 md:h-12 rounded-xl shadow-lg
                   bg-gradient-to-br ${donation.color}
                   hover:scale-110 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
                   transition-all duration-300 border-2 border-white/40 flex-shrink-0
@@ -631,11 +632,11 @@ const LiveVideo = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-xl"></div>
                 <div className="relative h-full flex flex-col items-center justify-center text-white z-10">
-                  <div className="text-lg mb-0.5 group-hover:scale-125 transition-transform animate-pulse">
+                  <div className="text-sm md:text-lg mb-0.5 group-hover:scale-125 transition-transform animate-pulse">
                     {currentEmojis[donation.category]}
                   </div>
-                  <div className="flex items-center text-[10px] font-bold">
-                    <SimpleGoldCoin size={8} className="mr-0.5" />
+                  <div className="flex items-center text-[8px] md:text-[10px] font-bold">
+                    <SimpleGoldCoin size={6} className="mr-0.5" />
                     {donation.coins}
                   </div>
                 </div>
@@ -645,40 +646,40 @@ const LiveVideo = () => {
             ))}
           </div>
 
-          {/* Epic donation button - Constrained */}
-          <div className="flex items-center flex-shrink-0">
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-white/40 to-transparent mx-1"></div>
-            <div className="max-w-[100px]">
+          {/* Epic donation button - More constrained */}
+          <div className="flex items-center flex-shrink-0 ml-2">
+            <div className="w-px h-8 md:h-12 bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+            <div className="ml-2 max-w-[80px] md:max-w-[100px]">
               <EpicDonationButton onEpicDonation={handleEpicDonation} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom controls section - Constrained width */}
-      <div className="bg-gradient-to-r from-gray-800/25 via-gray-700/25 to-gray-800/25 py-4 px-4 rounded-b-xl border-t border-gray-600/25 backdrop-blur-xl max-w-full overflow-hidden">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center space-x-4 flex-wrap gap-2">
+      {/* Bottom controls section - Better constrained */}
+      <div className="bg-gradient-to-r from-gray-800/25 via-gray-700/25 to-gray-800/25 py-2 md:py-4 px-2 md:px-4 rounded-b-xl border-t border-gray-600/25 backdrop-blur-xl overflow-hidden">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center space-x-2 md:space-x-4 min-w-0">
             <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2 hover:scale-110 transition-transform flex-shrink-0">
               <Volume2 className="h-4 w-4" />
             </Button>
-            <div className="text-sm text-emerald-400 flex items-center space-x-2 font-medium flex-wrap gap-1">
+            <div className="text-sm text-emerald-400 flex items-center space-x-2 font-medium min-w-0">
               <div className="flex items-center bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-400/20 hover:scale-105 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0">
-                <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">5,850</span>
-                <span className="text-xs ml-1 opacity-80 text-emerald-300 hidden sm:inline">sadaqah coins</span>
+                <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">5,850</span>
+                <span className="text-xs ml-1 opacity-80 text-emerald-300 hidden sm:inline">coins</span>
               </div>
-              <span className="text-gray-300 text-xs">donated in last hour</span>
+              <span className="text-gray-300 text-xs hidden md:inline">donated in last hour</span>
             </div>
           </div>
           
-          <div className="flex items-center space-x-2 flex-wrap gap-1">
-            <Button variant="outline" size="sm" className="bg-gray-700/10 border-gray-500/25 text-white hover:bg-gray-600/25 hover:scale-105 transition-all px-2 py-1 hover:border-blue-400 backdrop-blur-sm text-xs flex-shrink-0">
+          <div className="flex items-center space-x-1 md:space-x-2 flex-shrink-0">
+            <Button variant="outline" size="sm" className="bg-gray-700/10 border-gray-500/25 text-white hover:bg-gray-600/25 hover:scale-105 transition-all px-2 py-1 hover:border-blue-400 backdrop-blur-sm text-xs">
               <Share2 className="h-3 w-3 mr-1" />
-              <span className="hidden sm:inline">Share & Earn 50 Sadaqah Coins</span>
-              <span className="sm:hidden">Share</span>
+              <span className="hidden lg:inline">Share & Earn 50</span>
+              <span className="lg:hidden">Share</span>
             </Button>
             
-            <Button variant="outline" size="sm" className="bg-gray-700/10 border-gray-500/25 text-white hover:bg-gray-600/25 hover:scale-105 transition-all relative px-2 py-1 hover:border-pink-400 backdrop-blur-sm text-xs flex-shrink-0">
+            <Button variant="outline" size="sm" className="bg-gray-700/10 border-gray-500/25 text-white hover:bg-gray-600/25 hover:scale-105 transition-all relative px-2 py-1 hover:border-pink-400 backdrop-blur-sm text-xs">
               <Heart className="h-3 w-3 mr-1" />
               Follow
               <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-[8px] px-1 animate-pulse">
@@ -733,6 +734,15 @@ const LiveVideo = () => {
         
         .animate-slide-in-right {
           animation: slideInRight 0.6s ease-out;
+        }
+        
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </div>
