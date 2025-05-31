@@ -106,9 +106,10 @@ const InMemoryOfWidget = () => {
         <p className="text-sm text-gray-600">Honoring loved ones through charitable giving</p>
       </div>
 
-      <div className="flex">
-        {/* Left Side - Memorial Feed */}
-        <div className="w-2/3 pr-4">
+      {/* Mobile: Single Column Layout */}
+      <div className="block lg:flex">
+        {/* Memorial Feed - Full width on mobile, 2/3 on desktop */}
+        <div className="w-full lg:w-2/3 lg:pr-4">
           <div className="flex items-center mb-3">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
             <h4 className="font-semibold text-gray-800">Live Memorial Feed</h4>
@@ -177,8 +178,8 @@ const InMemoryOfWidget = () => {
           </div>
         </div>
 
-        {/* Right Side - Leaderboard & Ad Space */}
-        <div className="w-1/3 pl-4 border-l border-gray-200">
+        {/* Leaderboard & Ad Space - Full width on mobile, 1/3 on desktop */}
+        <div className="w-full lg:w-1/3 mt-6 lg:mt-0 lg:pl-4 lg:border-l lg:border-gray-200">
           {/* Memorial Leaderboard */}
           <div className="mb-6">
             <div className="flex items-center mb-3">
