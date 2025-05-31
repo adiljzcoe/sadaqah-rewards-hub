@@ -135,7 +135,7 @@ const StickyDonationWidget = () => {
   const donationAmount = Number(customAmount) || selectedAmount;
 
   return (
-    <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 bg-white shadow-lg transition-all duration-300`}>
+    <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 bg-gradient-to-r from-slate-50 via-blue-50/30 to-emerald-50/20 shadow-lg transition-all duration-300 ${isSticky ? 'rounded-t-2xl' : ''}`}>
       <div className={`container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           {/* Enhanced TabsList with beautiful styling */}
