@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -71,10 +70,10 @@ const donationTypeStyles = {
     text: 'text-white',
     icon: '🕌'
   },
-  monthly: {
-    gradient: 'bg-orange-600 hover:bg-orange-700',
+  'in-memory': {
+    gradient: 'bg-rose-600 hover:bg-rose-700',
     text: 'text-white',
-    icon: '📅'
+    icon: '🌹'
   },
   coins: {
     gradient: 'bg-yellow-600 hover:bg-yellow-700',
@@ -210,7 +209,7 @@ const StickyDonationWidget = () => {
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-0 sm:space-y-0 sm:space-x-1">
                     <span className="text-xs">{style.icon}</span>
-                    <span className="font-medium capitalize text-[10px] sm:text-xs">{key}</span>
+                    <span className="font-medium capitalize text-[10px] sm:text-xs">{key === 'in-memory' ? 'In Memory' : key}</span>
                   </div>
                 </button>
               ))}
@@ -254,6 +253,10 @@ const StickyDonationWidget = () => {
                     ) : activeTab === 'coins' ? (
                       <div className="text-xs bg-gray-50 border border-gray-300 rounded-xl px-3 py-1.5 text-gray-700">
                         Sadaqah Coins
+                      </div>
+                    ) : activeTab === 'in-memory' ? (
+                      <div className="text-xs bg-rose-50 border border-rose-300 rounded-xl px-3 py-1.5 text-rose-700">
+                        Memorial Donation
                       </div>
                     ) : (
                       <Select value={selectedCause} onValueChange={setSelectedCause}>
