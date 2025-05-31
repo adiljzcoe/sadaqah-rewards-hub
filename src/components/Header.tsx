@@ -64,7 +64,7 @@ const Header = () => {
 
             {/* User Section with FF styling */}
             <div className="flex items-center space-x-4">
-              {/* User Menu with VIP Crown - FF style */}
+              {/* User Menu with VIP Crown + Guardian Rank - FF style */}
               <div className="flex items-center space-x-3">
                 <Link to="/profile">
                   {isMember ? (
@@ -73,10 +73,14 @@ const Header = () => {
                         <div className="flex items-center">
                           <Crown className="h-4 w-4 mr-2 text-amber-100 drop-shadow-sm" />
                           <span className="hidden sm:inline text-amber-100 drop-shadow-sm">VIP Ahmad M.</span>
+                          <div className="ml-2 flex items-center bg-blue-600/90 backdrop-blur-sm rounded-lg px-2 py-1 border border-cyan-400/40">
+                            <span className="text-xs drop-shadow-sm">{currentRank.icon}</span>
+                            <span className="text-xs font-bold text-cyan-100 drop-shadow-sm ml-1">{currentRank.badge}</span>
+                          </div>
                         </div>
                         <div className="flex items-center ml-6">
                           <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
-                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts (2x)</span>
                         </div>
                       </div>
                       {/* Enhanced magical shine effect */}
@@ -91,36 +95,20 @@ const Header = () => {
                   )}
                 </Link>
                 
-                {/* FF-style member badges */}
+                {/* Level Display - FF style XP bar */}
                 {isMember && (
-                  <div className="flex items-center space-x-2">
-                    {/* Guardian Angel badge - FF blue theme */}
-                    <div className="bg-gradient-to-r from-blue-600/90 to-indigo-700/90 backdrop-blur-sm rounded-xl px-3 py-2 border border-cyan-400/40 shadow-lg hover:shadow-xl transition-all duration-300 ring-1 ring-cyan-300/30">
-                      <div className="flex items-center space-x-1">
-                        <span className="text-sm drop-shadow-sm">{currentRank.icon}</span>
-                        <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">{currentRank.badge}</span>
+                  <div className="bg-gradient-to-r from-slate-700/90 to-slate-800/90 backdrop-blur-sm rounded-xl px-3 py-2 border border-cyan-400/40 shadow-lg hover:shadow-xl transition-all duration-300 ring-1 ring-cyan-300/30">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">LV {userLevel}</span>
+                      <div className="relative w-12 h-1.5 bg-slate-600/60 rounded-full overflow-hidden border border-cyan-400/30">
+                        <div 
+                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-300 shadow-sm shadow-cyan-400/50"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                        {/* FF-style XP bar inner glow */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 to-blue-300/20 rounded-full"></div>
                       </div>
-                    </div>
-                    
-                    {/* X2 Points badge - FF cyan theme */}
-                    <div className="bg-gradient-to-r from-cyan-600/90 to-teal-700/90 backdrop-blur-sm rounded-xl px-3 py-2 border border-cyan-400/40 shadow-lg hover:shadow-xl transition-all duration-300 ring-1 ring-cyan-300/30">
-                      <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">x2 ✨</span>
-                    </div>
-                    
-                    {/* Level Display - FF style XP bar */}
-                    <div className="bg-gradient-to-r from-slate-700/90 to-slate-800/90 backdrop-blur-sm rounded-xl px-3 py-2 border border-cyan-400/40 shadow-lg hover:shadow-xl transition-all duration-300 ring-1 ring-cyan-300/30">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">LV {userLevel}</span>
-                        <div className="relative w-12 h-1.5 bg-slate-600/60 rounded-full overflow-hidden border border-cyan-400/30">
-                          <div 
-                            className="absolute left-0 top-0 h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-300 shadow-sm shadow-cyan-400/50"
-                            style={{ width: `${progress}%` }}
-                          ></div>
-                          {/* FF-style XP bar inner glow */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 to-blue-300/20 rounded-full"></div>
-                        </div>
-                        <span className="text-xs text-cyan-200 font-medium drop-shadow-sm">{pointsToNextLevel}</span>
-                      </div>
+                      <span className="text-xs text-cyan-200 font-medium drop-shadow-sm">{pointsToNextLevel}</span>
                     </div>
                   </div>
                 )}
