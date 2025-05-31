@@ -497,7 +497,7 @@ const LiveVideo = () => {
       </div>
 
       {/* Video Section */}
-      <div className="relative w-full aspect-video bg-gray-900 overflow-hidden">
+      <div className="relative w-full aspect-video bg-gray-900 overflow-hidden rounded-b-xl">
         {/* Mock Video Background */}
         <div className="absolute inset-0 w-full h-full">
           <img
@@ -642,84 +642,6 @@ const LiveVideo = () => {
               <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="absolute inset-0 rounded-xl border-2 border-white/25 opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Donation Messages Display - New smooth section below video */}
-      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[80px] flex items-center rounded-b-xl">
-        <div className="w-full px-4">
-          <div className="grid grid-cols-2 gap-2">
-            {displayedMessages.map((donation, index) => (
-              <div
-                key={donation.id || index}
-                className="flex items-center justify-between bg-gradient-to-r from-emerald-500/10 to-green-600/10 text-white px-2 py-1.5 rounded-lg text-xs font-medium border border-emerald-400/20 backdrop-blur-sm animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex items-center space-x-1.5 min-w-0 flex-1">
-                  <span className="text-sm animate-pulse flex-shrink-0">{donation.emoji}</span>
-                  <div className="flex items-center space-x-1.5 min-w-0 text-xs">
-                    <span className="font-bold flex-shrink-0 text-xs">
-                      {donation.user === 'You' ? 'You' : donation.user}
-                    </span>
-                    <div className="flex items-center bg-white/15 rounded px-1.5 py-0.5 flex-shrink-0">
-                      <SimpleGoldCoin size={10} className="mr-0.5" />
-                      <span className="font-bold text-xs">{donation.finalAmount || donation.amount}</span>
-                    </div>
-                    {donation.onBehalfOf && (
-                      <>
-                        <span className="text-purple-300 flex-shrink-0">for</span>
-                        <span className="font-semibold text-purple-200 truncate text-xs">{donation.onBehalfOf}</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-                {formatTimeAgo(donation.timestamp) && (
-                  <span className="text-xs text-gray-400 flex-shrink-0 ml-1">
-                    {formatTimeAgo(donation.timestamp)}
-                  </span>
-                )}
-              </div>
-            ))}
-            {displayedMessages.length === 0 && (
-              <div className="col-span-full text-center text-gray-400 text-sm py-4">
-                Be the first to help! 💝
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom controls section - Better constrained */}
-      <div className="bg-gradient-to-r from-gray-800/25 via-gray-700/25 to-gray-800/25 py-2 md:py-4 px-2 md:px-4 rounded-b-xl border-t border-gray-600/25 backdrop-blur-xl overflow-hidden">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center space-x-2 md:space-x-4 min-w-0">
-            <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2 hover:scale-110 transition-transform flex-shrink-0">
-              <Volume2 className="h-4 w-4" />
-            </Button>
-            <div className="text-sm text-emerald-400 flex items-center space-x-2 font-medium min-w-0">
-              <div className="flex items-center bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-400/20 hover:scale-105 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0">
-                <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">5,850</span>
-                <span className="text-xs ml-1 opacity-80 text-emerald-300 hidden sm:inline">coins</span>
-              </div>
-              <span className="text-gray-300 text-xs hidden md:inline">donated in last hour</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-1 md:space-x-2 flex-shrink-0">
-            <Button variant="outline" size="sm" className="bg-gray-700/10 border-gray-500/25 text-white hover:bg-gray-600/25 hover:scale-105 transition-all px-2 py-1 hover:border-blue-400 backdrop-blur-sm text-xs">
-              <Share2 className="h-3 w-3 mr-1" />
-              <span className="hidden lg:inline">Share & Earn 50</span>
-              <span className="lg:hidden">Share</span>
-            </Button>
-            
-            <Button variant="outline" size="sm" className="bg-gray-700/10 border-gray-500/25 text-white hover:bg-gray-600/25 hover:scale-105 transition-all relative px-2 py-1 hover:border-pink-400 backdrop-blur-sm text-xs">
-              <Heart className="h-3 w-3 mr-1" />
-              Follow
-              <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-[8px] px-1 animate-pulse">
-                +25
-              </Badge>
-            </Button>
           </div>
         </div>
       </div>
