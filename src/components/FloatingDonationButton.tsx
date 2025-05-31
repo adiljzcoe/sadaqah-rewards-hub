@@ -169,17 +169,17 @@ const FloatingDonationButton = () => {
         }
 
         @keyframes charity-shake {
-          0% { transform: translateX(0) rotate(0deg); }
-          10% { transform: translateX(-2px) rotate(-1deg); }
-          20% { transform: translateX(2px) rotate(1deg); }
-          30% { transform: translateX(-2px) rotate(-1deg); }
-          40% { transform: translateX(2px) rotate(1deg); }
-          50% { transform: translateX(-1px) rotate(-0.5deg); }
-          60% { transform: translateX(1px) rotate(0.5deg); }
-          70% { transform: translateX(-1px) rotate(-0.5deg); }
-          80% { transform: translateX(1px) rotate(0.5deg); }
-          90% { transform: translateX(-0.5px) rotate(-0.25deg); }
-          100% { transform: translateX(0) rotate(0deg); }
+          0% { transform: translateX(0) translateY(0) rotate(0deg); }
+          10% { transform: translateX(-3px) translateY(-2px) rotate(-1deg); }
+          20% { transform: translateX(3px) translateY(2px) rotate(1deg); }
+          30% { transform: translateX(-3px) translateY(-1px) rotate(-1deg); }
+          40% { transform: translateX(3px) translateY(1px) rotate(1deg); }
+          50% { transform: translateX(-2px) translateY(-2px) rotate(-0.5deg); }
+          60% { transform: translateX(2px) translateY(2px) rotate(0.5deg); }
+          70% { transform: translateX(-1px) translateY(-1px) rotate(-0.5deg); }
+          80% { transform: translateX(1px) translateY(1px) rotate(0.5deg); }
+          90% { transform: translateX(-0.5px) translateY(-0.5px) rotate(-0.25deg); }
+          100% { transform: translateX(0) translateY(0) rotate(0deg); }
         }
       `}</style>
       
