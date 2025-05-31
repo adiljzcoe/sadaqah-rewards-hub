@@ -11,18 +11,18 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden">
-      <div className="container mx-auto px-4 overflow-hidden">
-        <div className="text-center text-sm text-gray-400 mb-6 font-light tracking-wide">
+    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden max-w-full">
+      <div className="container mx-auto px-4 overflow-hidden max-w-full">
+        <div className="text-center text-xs text-gray-400 mb-6 font-light tracking-wide">
           Charities we choose to fundraise for
         </div>
         
-        {/* Ticker container - completely contained */}
-        <div className="relative overflow-hidden w-full">
+        {/* Ticker container */}
+        <div className="relative overflow-hidden w-full max-w-full">
           <div 
             className="flex space-x-12 animate-ticker"
             style={{ 
-              width: 'fit-content',
+              width: 'calc(240px * 10)',
               minWidth: '200%'
             }}
           >
@@ -31,7 +31,7 @@ const CharityTicker = () => {
               <div
                 key={`first-${index}`}
                 className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
-                style={{ minWidth: '120px' }}
+                style={{ minWidth: '120px', maxWidth: '120px' }}
               >
                 <img 
                   src={charity.logo} 
@@ -46,7 +46,7 @@ const CharityTicker = () => {
               <div
                 key={`second-${index}`}
                 className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
-                style={{ minWidth: '120px' }}
+                style={{ minWidth: '120px', maxWidth: '120px' }}
               >
                 <img 
                   src={charity.logo} 
