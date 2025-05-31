@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -140,9 +141,9 @@ const FloatingDonationButton = () => {
           />
         )}
 
-        {/* Speech Bubble */}
+        {/* Speech Bubble - positioned above the button */}
         {showSpeechBubble && (
-          <div className="absolute -top-20 -left-32 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
+          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
             <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 p-0.5 rounded-2xl shadow-2xl">
               <div className="bg-white rounded-2xl px-4 py-3 relative">
                 <p className="text-sm font-semibold text-gray-800 whitespace-nowrap">
@@ -340,3 +341,4 @@ const FloatingDonationButton = () => {
 };
 
 export default FloatingDonationButton;
+
