@@ -133,35 +133,36 @@ const StickyDonationWidget = () => {
   return (
     <>
       <div className={`${isSticky ? 'fixed bottom-0' : 'relative'} left-0 right-0 z-50 transition-all duration-300 bg-white border-t border-gray-200 shadow-lg`}>
-        <div className={`relative z-10 container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
+        <div className={`relative z-10 container mx-auto px-2 sm:px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            {/* Simplified TabsList */}
-            <div className={`grid grid-cols-5 gap-2 mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
+            {/* Responsive TabsList - Stack on mobile, grid on larger screens */}
+            <div className={`grid grid-cols-3 sm:grid-cols-5 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className={`rounded-md font-medium text-xs transition-all duration-200 ${isSticky ? 'py-1 px-2' : 'py-1.5 px-3'} ${
+                  className={`rounded-md font-medium text-xs transition-all duration-200 ${isSticky ? 'py-1 px-1 sm:px-2' : 'py-1.5 px-2 sm:px-3'} ${
                     activeTab === key 
                       ? `${style.gradient} ${style.text}` 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
                   }`}
                 >
-                  <div className="flex items-center justify-center space-x-1">
+                  <div className="flex flex-col sm:flex-row items-center justify-center space-y-0 sm:space-y-0 sm:space-x-1">
                     <span className="text-xs">{style.icon}</span>
-                    <span className="font-medium capitalize">{key}</span>
+                    <span className="font-medium capitalize text-[10px] sm:text-xs">{key}</span>
                   </div>
                 </button>
               ))}
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
-              <div className="grid grid-cols-12 gap-2 items-end">
-                {/* Emergency Cause Selection or Islamic Options */}
-                <div className="col-span-2">
+              {/* Mobile-first responsive grid */}
+              <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-12 sm:gap-2 items-end">
+                {/* Emergency Cause Selection - Full width on mobile */}
+                <div className="sm:col-span-2">
                   {activeTab === 'islamic' ? (
                     <Select value={selectedCause} onValueChange={setSelectedCause}>
-                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
+                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full ${isSticky ? 'h-7' : 'h-8'}`}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
@@ -189,7 +190,7 @@ const StickyDonationWidget = () => {
                     </Select>
                   ) : (
                     <Select value={selectedCause} onValueChange={setSelectedCause}>
-                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
+                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full ${isSticky ? 'h-7' : 'h-8'}`}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
@@ -210,86 +211,92 @@ const StickyDonationWidget = () => {
                   )}
                 </div>
 
-                {/* Currency selector */}
-                <div className="col-span-1">
-                  <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-full text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
-                      {currencies.map((curr) => (
-                        <SelectItem 
-                          key={curr.code} 
-                          value={curr.code} 
-                          className="bg-white hover:bg-gray-50 text-gray-700"
-                        >
-                          <div className="flex items-center space-x-1">
-                            <span>{curr.flag}</span>
-                            <span className="font-medium">{curr.symbol}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                {/* Currency and amounts - Better mobile layout */}
+                <div className="flex space-x-2 sm:contents">
+                  {/* Currency selector */}
+                  <div className="w-16 sm:col-span-1">
+                    <Select value={currency} onValueChange={setCurrency}>
+                      <SelectTrigger className={`w-full text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
+                        {currencies.map((curr) => (
+                          <SelectItem 
+                            key={curr.code} 
+                            value={curr.code} 
+                            className="bg-white hover:bg-gray-50 text-gray-700"
+                          >
+                            <div className="flex items-center space-x-1">
+                              <span>{curr.flag}</span>
+                              <span className="font-medium">{curr.symbol}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Quick amounts - Responsive grid */}
+                  <div className="flex-1 grid grid-cols-3 gap-1 sm:col-span-3 sm:gap-1">
+                    {quickAmounts.map((amount) => (
+                      <button
+                        key={amount}
+                        onClick={() => {
+                          setSelectedAmount(amount);
+                          setCustomAmount('');
+                        }}
+                        className={`rounded text-xs font-medium transition-all ${isSticky ? 'py-1.5 px-1' : 'py-2 px-1'} ${
+                          selectedAmount === amount && !customAmount
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
+                        }`}
+                      >
+                        {currentCurrency?.symbol}{amount}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Quick amounts */}
-                <div className="col-span-3 grid grid-cols-3 gap-1">
-                  {quickAmounts.map((amount) => (
-                    <button
-                      key={amount}
-                      onClick={() => {
-                        setSelectedAmount(amount);
-                        setCustomAmount('');
+                {/* Custom amount and donate button - Stack on mobile */}
+                <div className="space-y-2 sm:contents">
+                  {/* Custom amount */}
+                  <div className="sm:col-span-2">
+                    <Input
+                      type="number"
+                      placeholder="Other"
+                      value={customAmount}
+                      onChange={(e) => {
+                        setCustomAmount(e.target.value);
+                        setSelectedAmount(0);
                       }}
-                      className={`rounded text-xs font-medium transition-all ${isSticky ? 'py-1.5 px-1' : 'py-2 px-1'} ${
-                        selectedAmount === amount && !customAmount
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
-                      }`}
+                      className={`text-xs w-full bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}
+                    />
+                  </div>
+
+                  {/* Pay button with gentle glow effect */}
+                  <div className="sm:col-span-4 relative">
+                    <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                      style={{
+                        boxShadow: '0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2)'
+                      }}
                     >
-                      {currentCurrency?.symbol}{amount}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Custom amount */}
-                <div className="col-span-2">
-                  <Input
-                    type="number"
-                    placeholder="Other"
-                    value={customAmount}
-                    onChange={(e) => {
-                      setCustomAmount(e.target.value);
-                      setSelectedAmount(0);
-                    }}
-                    className={`text-xs w-full bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}
-                  />
-                </div>
-
-                {/* Pay button with gentle glow effect */}
-                <div className="col-span-4 relative">
-                  <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
-                    style={{
-                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2)'
-                    }}
-                  >
-                    <span className="relative z-10">
-                      Donate {currentCurrency?.symbol}{donationAmount}
-                    </span>
-                    
-                    {isMember && (
-                      <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20">
-                        2x
-                      </Badge>
-                    )}
-                  </Button>
+                      <span className="relative z-10">
+                        Donate {currentCurrency?.symbol}{donationAmount}
+                      </span>
+                      
+                      {isMember && (
+                        <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20">
+                          2x
+                        </Badge>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
 
-              {/* 100% Donation Policy - simplified and professional */}
+              {/* 100% Donation Policy - Hide on mobile when sticky, show on desktop */}
               {!isSticky && (
-                <div className="flex items-center justify-between mt-3">
+                <div className="hidden sm:flex items-center justify-between mt-3">
                   <div className="text-xs text-gray-600 flex items-center space-x-4">
                     <div className="flex items-center bg-gray-50 border border-gray-200 rounded px-2 py-1">
                       <span className="mr-1">💯</span>
@@ -307,6 +314,16 @@ const StickyDonationWidget = () => {
                       alt="Accepted payment methods: PayPal, Visa, Mastercard, Apple Pay, Google Pay"
                       className="h-4 object-contain opacity-70"
                     />
+                  </div>
+                </div>
+              )}
+
+              {/* Mobile-specific donation policy - show when not sticky */}
+              {!isSticky && (
+                <div className="sm:hidden mt-3 text-center">
+                  <div className="inline-flex items-center bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs">
+                    <span className="mr-1">💯</span>
+                    <span className="font-medium text-gray-700">100% DONATION POLICY</span>
                   </div>
                 </div>
               )}
