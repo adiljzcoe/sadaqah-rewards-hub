@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
@@ -111,7 +110,7 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* ... keep existing code (isExpanded section) */}
+        {/* ... keep existing code (isExpanded section start) */}
         {isExpanded && (
           <div className={`bg-white/98 backdrop-blur-lg rounded-2xl p-3 w-56 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
             isStickyWidgetActive 
@@ -126,7 +125,7 @@ const FloatingDonationButton = () => {
                   🎯 100% FUNDRAISING DONATION
                 </p>
                 <p className="text-xs text-emerald-700 leading-tight">
-                  Every penny goes directly to the cause
+                  Every penny goes directly to help us raise more funds for causes we care about
                 </p>
               </div>
             </div>
