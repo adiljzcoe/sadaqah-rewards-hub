@@ -21,6 +21,7 @@ import FriendsWidget from '@/components/FriendsWidget';
 import SeasonalEvents from '@/components/SeasonalEvents';
 import MatchingPoolWidget from '@/components/MatchingPoolWidget';
 import CharityTicker from '@/components/CharityTicker';
+import BusinessAdvert from '@/components/BusinessAdvert';
 
 const Index = () => {
   // Mock data for campaigns
@@ -125,6 +126,11 @@ const Index = () => {
             {/* Charity Feed Section - Right below charity ticker */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <CharityFeedSection />
+            </div>
+
+            {/* Business Advertisement between feed sections */}
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
+              <BusinessAdvert />
             </div>
             
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
