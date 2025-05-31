@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -86,7 +85,7 @@ const donationTypeStyles = {
     text: 'text-white',
     icon: '🕌'
   },
-  'in-memory': {
+  'honoring': {
     gradient: 'bg-rose-600 hover:bg-rose-700',
     text: 'text-white',
     icon: '🌹'
@@ -106,7 +105,7 @@ const StickyDonationWidget = () => {
   const [selectedCause, setSelectedCause] = useState('palestine');
   const [currency, setCurrency] = useState('GBP');
   
-  // In Memory specific states
+  // Honoring specific states
   const [memoryPerson, setMemoryPerson] = useState('');
   const [customMemoryPerson, setCustomMemoryPerson] = useState('');
   const [memoryNote, setMemoryNote] = useState('');
@@ -234,23 +233,23 @@ const StickyDonationWidget = () => {
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-0 sm:space-y-0 sm:space-x-1">
                     <span className="text-xs">{style.icon}</span>
-                    <span className="font-medium capitalize text-[10px] sm:text-xs">{key === 'in-memory' ? 'In Memory' : key}</span>
+                    <span className="font-medium capitalize text-[10px] sm:text-xs">{key === 'honoring' ? 'Honoring' : key}</span>
                   </div>
                 </button>
               ))}
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
-              {/* In Memory Section - Enhanced for sticky widget */}
-              {activeTab === 'in-memory' && (
+              {/* Honoring Section - Enhanced for sticky widget */}
+              {activeTab === 'honoring' && (
                 <div className="mb-3 p-3 bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-xl">
                   <div className="flex items-center mb-2">
                     <Flower className="h-4 w-4 mr-2 text-rose-600" />
-                    <h4 className="text-sm font-semibold text-rose-900">Memorial Donation</h4>
+                    <h4 className="text-sm font-semibold text-rose-900">Honoring Donation</h4>
                   </div>
                   
                   <div className="space-y-2">
-                    {/* Cause and In Memory Of - Same Row */}
+                    {/* Cause and Honoring - Same Row */}
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="text-xs font-medium text-rose-800 mb-1 block">Select a cause</label>
@@ -272,7 +271,7 @@ const StickyDonationWidget = () => {
                       </div>
 
                       <div>
-                        <label className="text-xs font-medium text-rose-800 mb-1 block">In memory of</label>
+                        <label className="text-xs font-medium text-rose-800 mb-1 block">Honoring</label>
                         <Select value={memoryPerson} onValueChange={setMemoryPerson}>
                           <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-8">
                             <SelectValue placeholder="Select person" />
@@ -379,9 +378,9 @@ const StickyDonationWidget = () => {
                       <div className="text-xs bg-gray-50 border border-gray-300 rounded-xl px-3 py-1.5 text-gray-700">
                         Sadaqah Coins
                       </div>
-                    ) : activeTab === 'in-memory' ? (
+                    ) : activeTab === 'honoring' ? (
                       <div className="text-xs bg-rose-50 border border-rose-300 rounded-xl px-3 py-1.5 text-rose-700">
-                        Memorial Donation
+                        Honoring Donation
                       </div>
                     ) : (
                       <Select value={selectedCause} onValueChange={setSelectedCause}>
@@ -530,7 +529,7 @@ const StickyDonationWidget = () => {
                     >
                       <span className="relative z-10">
                         Donate {currentCurrency?.symbol}{donationAmount}
-                        {activeTab === 'in-memory' && finalMemoryPerson && ` in memory of ${finalMemoryPerson}`}
+                        {activeTab === 'honoring' && finalMemoryPerson && ` honoring ${finalMemoryPerson}`}
                       </span>
                       
                       {isMember && (

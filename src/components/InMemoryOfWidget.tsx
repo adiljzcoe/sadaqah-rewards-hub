@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -47,7 +48,7 @@ const InMemoryOfWidget = () => {
       const memorialDonation = {
         id: Date.now() + Math.random(),
         user: randomUser,
-        inMemoryOf: randomMemorial.person,
+        honoringOf: randomMemorial.person,
         message: randomMessage,
         amount: randomAmount,
         timestamp: new Date()
@@ -101,7 +102,7 @@ const InMemoryOfWidget = () => {
       <div className="mb-6">
         <h3 className="text-xl font-semibold mb-2 flex items-center text-gray-900">
           <Heart className="h-5 w-5 mr-2 text-pink-600" />
-          In Memory Of
+          Honoring
         </h3>
         <p className="text-sm text-gray-600">Honoring loved ones through charitable giving</p>
       </div>
@@ -112,7 +113,7 @@ const InMemoryOfWidget = () => {
         <div className="w-full lg:w-2/3 lg:pr-4">
           <div className="flex items-center mb-3">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
-            <h4 className="font-semibold text-gray-800">Live Memorial Feed</h4>
+            <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
           </div>
           
           <div className="space-y-3">
@@ -124,7 +125,7 @@ const InMemoryOfWidget = () => {
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
                     <div className="text-sm font-medium text-gray-800">
-                      {memorial.user} donated in memory of <span className="font-bold text-purple-700">{memorial.inMemoryOf}</span>
+                      {memorial.user} donated honoring <span className="font-bold text-purple-700">{memorial.honoringOf}</span>
                     </div>
                     <div className="flex items-center mt-1">
                       <SimpleGoldCoin size={14} className="mr-1" />
@@ -148,7 +149,7 @@ const InMemoryOfWidget = () => {
             {memorialFeed.length === 0 && (
               <div className="text-center text-gray-500 py-8">
                 <Heart className="h-8 w-8 mx-auto mb-2 text-gray-300" />
-                <p className="text-sm">Memorial donations will appear here</p>
+                <p className="text-sm">Honoring donations will appear here</p>
               </div>
             )}
           </div>
@@ -160,13 +161,13 @@ const InMemoryOfWidget = () => {
                 <div className="text-2xl font-bold text-purple-700">
                   £{topMemorials.reduce((sum, memorial) => sum + memorial.amount, 0).toLocaleString()}
                 </div>
-                <div className="text-xs text-purple-600">Total Memorial Donations</div>
+                <div className="text-xs text-purple-600">Total Honoring Donations</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-pink-700">
                   {topMemorials.reduce((sum, memorial) => sum + memorial.donations, 0)}
                 </div>
-                <div className="text-xs text-pink-600">Memorial Acts</div>
+                <div className="text-xs text-pink-600">Honoring Acts</div>
               </div>
             </div>
             
@@ -224,10 +225,10 @@ const InMemoryOfWidget = () => {
           <div className="space-y-4">
             <div className="bg-gradient-to-br from-pink-50 to-rose-50 border-2 border-dashed border-pink-200 rounded-lg p-4 text-center">
               <div className="text-pink-600 mb-2">💝</div>
-              <h5 className="font-semibold text-gray-800 text-sm mb-2">Memorial Gifts</h5>
+              <h5 className="font-semibold text-gray-800 text-sm mb-2">Honoring Gifts</h5>
               <p className="text-xs text-gray-600 mb-3">Honor loved ones with a lasting impact</p>
               <button className="bg-pink-600 text-white px-3 py-1 rounded text-xs hover:bg-pink-700 transition-colors">
-                Start Memorial
+                Start Honoring
               </button>
             </div>
 

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,8 +33,8 @@ const donationTypes = [
     ring: 'ring-purple-300'
   },
   { 
-    id: 'in-memory', 
-    name: 'In Memory', 
+    id: 'honoring', 
+    name: 'Honoring', 
     icon: '🌹', 
     description: 'Honor loved ones',
     gradient: 'bg-gradient-to-br from-rose-400 via-rose-500 to-rose-600',
@@ -66,7 +67,7 @@ const DonationWidget = () => {
   const [dedicationNote, setDedicationNote] = useState('');
   const [showDedication, setShowDedication] = useState(false);
   
-  // In Memory specific states
+  // Honoring specific states
   const [memoryPerson, setMemoryPerson] = useState('');
   const [memoryNote, setMemoryNote] = useState('');
   const [selectedCause, setSelectedCause] = useState('clean-water');
@@ -139,12 +140,12 @@ const DonationWidget = () => {
         })}
       </div>
 
-      {/* In Memory Section */}
-      {selectedType === 'in-memory' && (
+      {/* Honoring Section */}
+      {selectedType === 'honoring' && (
         <div className="mb-6 p-5 bg-gradient-to-br from-rose-50 to-pink-50 border-2 border-rose-200 rounded-xl">
           <div className="flex items-center mb-4">
             <Flower className="h-5 w-5 mr-2 text-rose-600" />
-            <h4 className="text-lg font-semibold text-rose-900">Memorial Donation</h4>
+            <h4 className="text-lg font-semibold text-rose-900">Honoring Donation</h4>
           </div>
           
           {/* Cause Selection */}
@@ -170,9 +171,9 @@ const DonationWidget = () => {
             </div>
           </div>
 
-          {/* In Memory Of */}
+          {/* Honoring */}
           <div className="mb-4">
-            <label className="text-sm font-semibold text-rose-800 mb-2 block">In memory of</label>
+            <label className="text-sm font-semibold text-rose-800 mb-2 block">Honoring</label>
             <input
               type="text"
               placeholder="e.g., My Father, My Mother"
@@ -194,7 +195,7 @@ const DonationWidget = () => {
             </div>
           </div>
 
-          {/* Memorial Note */}
+          {/* Honoring Note */}
           <div className="mb-4">
             <label className="text-sm font-semibold text-rose-800 mb-2 block">Personal note</label>
             <textarea
@@ -212,7 +213,7 @@ const DonationWidget = () => {
 
           <div className="flex items-center text-sm text-rose-700 bg-white/50 p-2 rounded-lg">
             <MessageCircle className="h-4 w-4 mr-2" />
-            <span>Your memorial dedication will be shared with respect and honor</span>
+            <span>Your honoring dedication will be shared with respect and honor</span>
           </div>
         </div>
       )}
@@ -259,8 +260,8 @@ const DonationWidget = () => {
         </div>
       </div>
 
-      {/* Dedication Section for non-memory donations */}
-      {selectedType !== 'in-memory' && (
+      {/* Dedication Section for non-honoring donations */}
+      {selectedType !== 'honoring' && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <label className="text-sm font-semibold text-gray-700">Donate on behalf of (Optional)</label>
@@ -340,8 +341,8 @@ const DonationWidget = () => {
         <div className="relative z-10 flex items-center justify-center">
           <Gift className="h-5 w-5 mr-3" />
           Donate {customAmount ? `£${customAmount}` : `£${selectedAmount}`}
-          {selectedType === 'in-memory' && memoryPerson && ` in memory of ${memoryPerson}`}
-          {selectedType !== 'in-memory' && onBehalfOf && ` on behalf of ${onBehalfOf}`}
+          {selectedType === 'honoring' && memoryPerson && ` honoring ${memoryPerson}`}
+          {selectedType !== 'honoring' && onBehalfOf && ` on behalf of ${onBehalfOf}`}
           <ArrowRight className="h-5 w-5 ml-3" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
