@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -348,7 +349,7 @@ const HeavenlyBirdMascot: React.FC<HeavenlyBirdMascotProps> = ({ isActive, class
   return (
     <div className={`${className} w-full h-full`}>
       <Canvas 
-        camera={{ position: [1, 0.5, 1.2], fov: 65 }}
+        camera={{ position: [1, 0.3, 1.5], fov: 70 }}
         style={{ width: '100%', height: '100%' }}
       >
         <ambientLight intensity={0.7} />
