@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Zap, X, HandHeart } from 'lucide-react';
@@ -75,7 +74,6 @@ const FloatingDonationButton = () => {
           ? 'top-28 right-4 md:bottom-20 md:right-8' 
           : 'bottom-8 right-8'
       } z-50 transition-all duration-300`}>
-        {/* Call to action message */}
         {showCallToAction && (
           <div className={`absolute z-60 animate-[message-appear_0.4s_ease-out] ${
             isStickyWidgetActive 
@@ -152,7 +150,7 @@ const FloatingDonationButton = () => {
           />
           <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 text-white text-xs font-bold drop-shadow-sm">
             <Zap className="inline-block h-3 w-3 mr-0.5 -mt-0.5" />
-            Give
+            
           </div>
         </Button>
       </div>
