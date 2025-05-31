@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ import { AlertCircle, Coins } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
-  { code: 'GBP', symbol: '£', flag: '🇬🇧' },
+  { code: 'GBP', symbol: '£', flag: '/lovable-uploads/3ed3cf1b-92db-4933-abeb-6b5d005cf4bf.png' },
   { code: 'USD', symbol: '$', flag: '🇺🇸' },
   { code: 'EUR', symbol: '€', flag: '🇪🇺' }
 ];
@@ -270,7 +269,15 @@ const StickyDonationWidget = () => {
                       <SelectTrigger className={`w-full text-xs bg-white border border-gray-300 text-gray-700 rounded-xl ${isSticky ? 'h-7' : 'h-8'}`}>
                         <SelectValue>
                           <div className="flex items-center justify-center space-x-1">
-                            <span className="text-sm">🇬🇧</span>
+                            {currency === 'GBP' ? (
+                              <img 
+                                src="/lovable-uploads/3ed3cf1b-92db-4933-abeb-6b5d005cf4bf.png" 
+                                alt="UK Flag" 
+                                className="w-4 h-3 object-cover rounded-sm"
+                              />
+                            ) : (
+                              <span className="text-sm">🇬🇧</span>
+                            )}
                             <span className="font-medium">£</span>
                           </div>
                         </SelectValue>
@@ -283,7 +290,15 @@ const StickyDonationWidget = () => {
                             className="bg-white hover:bg-gray-50 text-gray-700 rounded-lg"
                           >
                             <div className="flex items-center space-x-1">
-                              <span>{curr.flag}</span>
+                              {curr.code === 'GBP' ? (
+                                <img 
+                                  src={curr.flag} 
+                                  alt="UK Flag" 
+                                  className="w-4 h-3 object-cover rounded-sm"
+                                />
+                              ) : (
+                                <span>{curr.flag}</span>
+                              )}
                               <span className="font-medium">{curr.symbol}</span>
                             </div>
                           </SelectItem>
