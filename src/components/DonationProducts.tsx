@@ -9,20 +9,35 @@ import ProductCard from './ProductCard';
 const donationProducts = [
   {
     id: '1',
+    title: 'Qurbani - 1 Sheep Share',
+    charity: 'Islamic Relief',
+    description: 'Complete Qurbani sacrifice of one sheep share, meat distributed to needy families',
+    price: 50,
+    currency: '£',
+    beneficiaries: 8,
+    timeframe: 'Immediate',
+    category: 'Qurbani',
+    isPopular: true,
+    isNew: false,
+    charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png',
+    isFixedPrice: true
+  },
+  {
+    id: '2',
     title: 'Orphan Care Package - Gaza',
     charity: 'Islamic Relief',
     description: 'Provide essential care, education, and support for orphaned children in Gaza',
     price: 50,
     currency: '£',
     beneficiaries: 1,
-    timeframe: 'Monthly',
+    timeframe: '3 Months',
     category: 'Orphan Care',
     isPopular: true,
     isNew: false,
     charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png'
   },
   {
-    id: '2',
+    id: '3',
     title: 'Clean Water Well Construction',
     charity: 'Muslim Aid',
     description: 'Build a sustainable water well providing clean water access to rural communities',
@@ -36,7 +51,7 @@ const donationProducts = [
     charityLogo: '/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png'
   },
   {
-    id: '3',
+    id: '4',
     title: 'Emergency Food Parcel',
     charity: 'Human Appeal',
     description: 'Nutritious food supplies for families facing crisis and hunger',
@@ -50,7 +65,22 @@ const donationProducts = [
     charityLogo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png'
   },
   {
-    id: '4',
+    id: '5',
+    title: 'Qurbani - Cow Share (1/7)',
+    charity: 'Penny Appeal',
+    description: 'One share of a cow sacrifice, feeding approximately 14 families',
+    price: 85,
+    currency: '£',
+    beneficiaries: 14,
+    timeframe: 'Immediate',
+    category: 'Qurbani',
+    isPopular: false,
+    isNew: true,
+    charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png',
+    isFixedPrice: true
+  },
+  {
+    id: '6',
     title: 'School Building Project',
     charity: 'Penny Appeal',
     description: 'Construct classrooms and provide educational resources for children',
@@ -60,11 +90,11 @@ const donationProducts = [
     timeframe: 'Permanent',
     category: 'Education',
     isPopular: false,
-    isNew: true,
+    isNew: false,
     charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png'
   },
   {
-    id: '5',
+    id: '7',
     title: 'Medical Aid Package',
     charity: 'Islamic Relief',
     description: 'Essential medical supplies and treatment for those in need',
@@ -78,22 +108,52 @@ const donationProducts = [
     charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png'
   },
   {
-    id: '6',
+    id: '8',
+    title: 'Iftar Meal for 50 People',
+    charity: 'Muslim Hands',
+    description: 'Provide complete iftar meals for 50 fasting individuals during Ramadan',
+    price: 35,
+    currency: '£',
+    beneficiaries: 50,
+    timeframe: 'Immediate',
+    category: 'Seasonal',
+    isPopular: false,
+    isNew: true,
+    charityLogo: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png',
+    isFixedPrice: true
+  },
+  {
+    id: '9',
     title: 'Widow Support Program',
     charity: 'Muslim Hands',
     description: 'Comprehensive support including food, healthcare, and skills training',
     price: 40,
     currency: '£',
     beneficiaries: 1,
-    timeframe: 'Monthly',
+    timeframe: '6 Months',
     category: 'Social Support',
     isPopular: false,
-    isNew: true,
+    isNew: false,
     charityLogo: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png'
+  },
+  {
+    id: '10',
+    title: 'Zakat ul-Fitr per Person',
+    charity: 'Human Appeal',
+    description: 'Obligatory charity paid at the end of Ramadan, feeds one person',
+    price: 5,
+    currency: '£',
+    beneficiaries: 1,
+    timeframe: 'Immediate',
+    category: 'Zakat',
+    isPopular: true,
+    isNew: false,
+    charityLogo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png',
+    isFixedPrice: true
   }
 ];
 
-const categories = ['All', 'Orphan Care', 'Water', 'Emergency Aid', 'Education', 'Healthcare', 'Social Support'];
+const categories = ['All', 'Qurbani', 'Orphan Care', 'Water', 'Emergency Aid', 'Education', 'Healthcare', 'Social Support', 'Seasonal', 'Zakat'];
 
 const DonationProducts: React.FC = () => {
   const [sortBy, setSortBy] = useState('popular');
@@ -125,7 +185,7 @@ const DonationProducts: React.FC = () => {
           Donation Products
         </h2>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-          Choose from our curated donation products, each dedicated to specific charities and causes
+          Choose from our curated donation products - one-off purchases dedicated to specific charities and causes
         </p>
       </div>
 

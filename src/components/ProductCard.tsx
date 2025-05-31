@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, Clock } from 'lucide-react';
+import { Heart, Users, Clock, ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
   id: string;
@@ -18,6 +18,7 @@ interface ProductCardProps {
   isPopular?: boolean;
   isNew?: boolean;
   charityLogo?: string;
+  isFixedPrice?: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -31,7 +32,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   category,
   isPopular,
   isNew,
-  charityLogo
+  charityLogo,
+  isFixedPrice = false
 }) => {
   return (
     <Card className="overflow-hidden hover-lift transition-all duration-300 bg-white border border-gray-200 shadow-sm hover:shadow-lg">
@@ -60,6 +62,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {isPopular && (
               <Badge className="bg-orange-500 text-white text-xs">Popular</Badge>
             )}
+            {isFixedPrice && (
+              <Badge className="bg-purple-500 text-white text-xs">Fixed Price</Badge>
+            )}
           </div>
         </div>
         
@@ -72,7 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <Users className="h-4 w-4 text-blue-500" />
-            <span>{beneficiaries} people</span>
+            <span>{beneficiaries} {beneficiaries === 1 ? 'person' : 'people'}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <Clock className="h-4 w-4 text-green-500" />
@@ -84,11 +89,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <span className="text-2xl font-bold text-gray-900">{currency}{price}</span>
-            <span className="text-sm text-gray-500 ml-1">one-time</span>
+            <span className="text-sm text-gray-500 ml-1">
+              {isFixedPrice ? 'fixed' : 'donation'}
+            </span>
           </div>
           <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6">
-            <Heart className="h-4 w-4 mr-2" />
-            Donate
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            {isFixedPrice ? 'Order' : 'Donate'}
           </Button>
         </div>
       </div>
