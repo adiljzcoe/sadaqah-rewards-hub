@@ -12,11 +12,11 @@ const charityLogos = [
 const CharityTicker = () => {
   return (
     <div className="w-full border-b border-gray-100 overflow-hidden max-w-full relative">
-      {/* Seamless gradient background that matches sticky donation widget final color */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-600 via-slate-400 via-slate-300 to-white"></div>
+      {/* Seamless light blue gradient that matches the donation widget's bottom cloud */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-100 via-blue-50 to-white"></div>
       
-      {/* Additional gradient layer for smoother transition */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-500/60 via-gray-400/40 via-gray-300/30 to-transparent"></div>
+      {/* Additional soft gradient layer for smoother transition */}
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-50/40 via-blue-50/30 to-transparent"></div>
       
       <div className="relative z-10 py-6">
         <div className="container mx-auto px-4 overflow-hidden max-w-full">
@@ -37,7 +37,7 @@ const CharityTicker = () => {
               {charityLogos.map((charity, index) => (
                 <div
                   key={`first-${index}`}
-                  className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-50 hover:opacity-70 transition-opacity duration-300"
+                  className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-60 hover:opacity-80 transition-opacity duration-300"
                   style={{ minWidth: '120px', maxWidth: '120px' }}
                 >
                   <img 
@@ -52,7 +52,7 @@ const CharityTicker = () => {
               {charityLogos.map((charity, index) => (
                 <div
                   key={`second-${index}`}
-                  className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-50 hover:opacity-70 transition-opacity duration-300"
+                  className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-60 hover:opacity-80 transition-opacity duration-300"
                   style={{ minWidth: '120px', maxWidth: '120px' }}
                 >
                   <img 
