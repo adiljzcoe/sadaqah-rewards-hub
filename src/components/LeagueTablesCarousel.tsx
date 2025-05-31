@@ -165,6 +165,18 @@ const LeagueTablesCarousel = () => {
 
   const activeLeague = leagueTables.find(league => league.id === activeTab);
 
+  // Get the #1 performers from each category
+  const getTopPerformers = () => {
+    return leagueTables.map(league => ({
+      category: league.shortTitle,
+      winner: league.data[0],
+      icon: league.icon,
+      isCity: league.isCity,
+      isCountry: league.isCountry,
+      isIndividual: league.isIndividual
+    }));
+  };
+
   const renderLeagueTable = (league: any) => (
     <Card className="w-full max-w-md mx-auto p-6 professional-card hover-lift">
       <div className="flex items-center justify-between mb-6">
@@ -247,11 +259,27 @@ const LeagueTablesCarousel = () => {
   return (
     <div className="w-full bg-gradient-to-r from-slate-50 to-blue-50/30 py-8">
       <div className="container mx-auto px-4">
+        {/* Top Performers Header */}
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-2">
-            Community League Tables
-          </h3>
-          <p className="text-gray-600">See how different groups are making an impact</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 max-w-6xl mx-auto">
+            {getTopPerformers().map((performer, index) => (
+              <div key={index} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                <div className="flex items-center justify-center mb-2">
+                  {performer.icon}
+                </div>
+                <div className="text-xs font-semibold text-gray-600 mb-1">{performer.category}</div>
+                <div className="text-sm font-bold text-gray-900 truncate" title={performer.winner.name}>
+                  {performer.winner.name}
+                </div>
+                <div className="text-xs text-emerald-600 font-semibold">
+                  {performer.isCity || performer.isCountry || performer.isIndividual ? 
+                    performer.winner.points?.toLocaleString() || performer.winner.coins?.toLocaleString() : 
+                    performer.winner.coins?.toLocaleString()
+                  } {performer.isCity || performer.isCountry || performer.isIndividual ? 'pts' : 'coins'}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Button Grid - Three Rows */}
