@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -110,9 +111,6 @@ const Index = () => {
       
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">
-        <div className="max-w-full overflow-x-hidden">
-          <CharityTicker />
-        </div>
         <div className="grid lg:grid-cols-3 gap-8 max-w-full overflow-x-hidden px-4">
           {/* Live Stream - Main Column */}
           <div className="lg:col-span-2 max-w-full overflow-x-hidden">
@@ -120,7 +118,12 @@ const Index = () => {
               <LiveVideo />
             </div>
             
-            {/* Charity Feed Section - Right below video */}
+            {/* CharityTicker moved here - below the video */}
+            <div className="max-w-full overflow-x-hidden mt-6">
+              <CharityTicker />
+            </div>
+            
+            {/* Charity Feed Section - Right below charity ticker */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden">
               <CharityFeedSection />
             </div>
