@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, HandHeart } from 'lucide-react';
@@ -71,8 +72,8 @@ const FloatingDonationButton = () => {
       
       <div className={`fixed ${
         isStickyWidgetActive 
-          ? 'top-28 right-4 md:bottom-20 md:right-8' 
-          : 'bottom-8 right-8'
+          ? 'top-28 right-4 md:bottom-32 md:right-8' 
+          : 'bottom-32 right-8'
       } z-50 transition-all duration-300`}>
         {showCallToAction && (
           <div className={`absolute z-60 animate-[message-appear_0.4s_ease-out] ${
@@ -136,10 +137,10 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot */}
-        <Button
+        {/* Main donation button with donation tin mascot - removed circular styling */}
+        <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-2xl border-4 border-white/80 hover:border-white transition-all duration-300 group overflow-hidden p-0"
+          className="relative w-16 h-16 cursor-pointer transition-all duration-300 group"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
@@ -148,7 +149,7 @@ const FloatingDonationButton = () => {
             isActive={showCallToAction} 
             className="w-full h-full"
           />
-        </Button>
+        </div>
       </div>
     </>
   );
