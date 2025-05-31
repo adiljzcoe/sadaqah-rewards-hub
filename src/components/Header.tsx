@@ -53,7 +53,7 @@ const Header = () => {
             {/* Logo with FF crystal aesthetic */}
             <Link to="/" className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 cursor-pointer ring-2 ring-cyan-400/20 hover:ring-cyan-300/40">
               <img 
-                src="/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png" 
+                src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
                 className="h-8 w-auto object-contain filter drop-shadow-md relative z-10"
               />
@@ -69,11 +69,11 @@ const Header = () => {
               <div className="flex items-center">
                 <Link to="/profile">
                   {isMember ? (
-                    <Button className="relative overflow-hidden rounded-xl px-3 py-2 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
-                      <div className="flex items-center space-x-2">
+                    <Button className="relative overflow-hidden rounded-xl px-2 py-1.5 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
+                      <div className="flex items-center space-x-1.5">
                         {/* Left side - Guardian + User */}
                         <div className="flex items-center">
-                          <span className="text-sm mr-1 drop-shadow-sm">🛡️</span>
+                          <span className="text-xs mr-1 drop-shadow-sm">🛡️</span>
                           <div className="flex flex-col">
                             <span className="text-xs font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
                             <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
@@ -81,14 +81,14 @@ const Header = () => {
                         </div>
                         
                         {/* Divider */}
-                        <div className="w-px h-6 bg-amber-300/40"></div>
+                        <div className="w-px h-5 bg-amber-300/40"></div>
                         
                         {/* Right side - Level + Points */}
                         <div className="flex flex-col space-y-0.5">
                           {/* Level bar */}
                           <div className="flex items-center space-x-1">
                             <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
-                            <div className="relative w-10 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
+                            <div className="relative w-8 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
                               <div 
                                 className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
                                 style={{ width: `${progress}%` }}
@@ -99,7 +99,7 @@ const Header = () => {
                           </div>
                           {/* Points */}
                           <div className="flex items-center">
-                            <Star className="h-2.5 w-2.5 text-yellow-200 mr-0.5 drop-shadow-sm" />
+                            <Star className="h-2 w-2 text-yellow-200 mr-0.5 drop-shadow-sm" />
                             <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
                           </div>
                         </div>
