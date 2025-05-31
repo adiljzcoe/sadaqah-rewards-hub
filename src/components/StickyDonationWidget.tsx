@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -156,59 +155,76 @@ const StickyDonationWidget = () => {
           <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-200 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-200/70"></div>
         </div>
 
-        {/* Enhanced fluffy cloud bottom edge with lighter FF colors */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 overflow-hidden">
+        {/* Enhanced fluffy cloud bottom edge with better blending to grey */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 overflow-hidden">
           <svg 
-            className="absolute bottom-0 w-full h-12" 
-            viewBox="0 0 1200 50" 
+            className="absolute bottom-0 w-full h-16" 
+            viewBox="0 0 1200 60" 
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* FF-style crystalline cloud layers with lighter tones */}
+            {/* FF-style crystalline cloud layers with smooth grey blending */}
             <path 
-              d="M0,25 Q50,5 100,20 Q150,35 200,15 Q250,0 300,25 Q350,40 400,20 Q450,5 500,30 Q550,45 600,25 Q650,10 700,35 Q750,50 800,30 Q850,15 900,40 Q950,25 1000,20 Q1050,35 1100,25 Q1150,15 1200,30 L1200,50 L0,50 Z" 
-              fill="url(#ffCloudGradientLight1)"
+              d="M0,25 Q50,5 100,20 Q150,35 200,15 Q250,0 300,25 Q350,40 400,20 Q450,5 500,30 Q550,45 600,25 Q650,10 700,35 Q750,50 800,30 Q850,15 900,40 Q950,25 1000,20 Q1050,35 1100,25 Q1150,15 1200,30 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend1)"
             />
             
             <path 
-              d="M0,30 Q40,15 80,25 Q120,40 160,20 Q200,5 240,30 Q280,45 320,25 Q360,10 400,35 Q440,50 480,30 Q520,15 560,40 Q600,25 640,20 Q680,35 720,25 Q760,10 800,35 Q840,50 880,30 Q920,15 960,40 Q1000,25 1040,30 Q1080,15 1120,25 Q1160,40 1200,35 L1200,50 L0,50 Z" 
-              fill="url(#ffCloudGradientLight2)"
-              opacity="0.85"
+              d="M0,30 Q40,15 80,25 Q120,40 160,20 Q200,5 240,30 Q280,45 320,25 Q360,10 400,35 Q440,50 480,30 Q520,15 560,40 Q600,25 640,20 Q680,35 720,25 Q760,10 800,35 Q840,50 880,30 Q920,15 960,40 Q1000,25 1040,30 Q1080,15 1120,25 Q1160,40 1200,35 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend2)"
+              opacity="0.9"
             />
             
             <path 
-              d="M0,35 Q60,20 120,30 Q180,45 240,25 Q300,10 360,35 Q420,50 480,30 Q540,15 600,40 Q660,25 720,20 Q780,35 840,25 Q900,10 960,35 Q1020,50 1080,30 Q1140,15 1200,35 L1200,50 L0,50 Z" 
-              fill="url(#ffCloudGradientLight3)"
+              d="M0,35 Q60,20 120,30 Q180,45 240,25 Q300,10 360,35 Q420,50 480,30 Q540,15 600,40 Q660,25 720,20 Q780,35 840,25 Q900,10 960,35 Q1020,50 1080,30 Q1140,15 1200,35 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend3)"
+              opacity="0.8"
+            />
+            
+            <path 
+              d="M0,40 Q30,25 60,35 Q90,50 120,30 Q150,15 180,40 Q210,25 240,20 Q270,35 300,25 Q330,10 360,35 Q390,50 420,30 Q450,15 480,40 Q510,25 540,30 Q570,45 600,25 Q630,10 660,35 Q690,50 720,30 Q750,15 780,40 Q810,25 840,20 Q870,35 900,25 Q930,10 960,35 Q990,50 1020,30 Q1050,15 1080,40 Q1110,25 1140,30 Q1170,45 1200,40 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend4)"
               opacity="0.7"
             />
-            
+
+            {/* Additional subtle grey blending layer */}
             <path 
-              d="M0,40 Q30,25 60,35 Q90,50 120,30 Q150,15 180,40 Q210,25 240,20 Q270,35 300,25 Q330,10 360,35 Q390,50 420,30 Q450,15 480,40 Q510,25 540,30 Q570,45 600,25 Q630,10 660,35 Q690,50 720,30 Q750,15 780,40 Q810,25 840,20 Q870,35 900,25 Q930,10 960,35 Q990,50 1020,30 Q1050,15 1080,40 Q1110,25 1140,30 Q1170,45 1200,40 L1200,50 L0,50 Z" 
-              fill="url(#ffCloudGradientLight4)"
+              d="M0,45 Q25,30 50,40 Q75,55 100,35 Q125,20 150,45 Q175,30 200,25 Q225,40 250,30 Q275,15 300,40 Q325,55 350,35 Q375,20 400,45 Q425,30 450,35 Q475,50 500,30 Q525,15 550,40 Q575,25 600,35 Q625,50 650,30 Q675,15 700,40 Q725,55 750,35 Q775,20 800,45 Q825,30 850,25 Q875,40 900,30 Q925,15 950,40 Q975,55 1000,35 Q1025,20 1050,45 Q1075,30 1100,35 Q1125,50 1150,40 Q1175,25 1200,45 L1200,60 L0,60 Z" 
+              fill="url(#greyBlendGradient)"
               opacity="0.6"
             />
             
-            {/* FF-inspired gradient definitions with lighter tones */}
+            {/* FF-inspired gradient definitions with smooth grey blending */}
             <defs>
-              <linearGradient id="ffCloudGradientLight1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="ffCloudGradientBlend1" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="rgb(59 130 246)" stopOpacity="0.95"/>
                 <stop offset="30%" stopColor="rgb(96 165 250)" stopOpacity="0.9"/>
                 <stop offset="70%" stopColor="rgb(125 211 252)" stopOpacity="0.85"/>
-                <stop offset="100%" stopColor="rgb(165 243 252)" stopOpacity="0.8"/>
+                <stop offset="90%" stopColor="rgb(165 243 252)" stopOpacity="0.7"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.6"/>
               </linearGradient>
-              <linearGradient id="ffCloudGradientLight2" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="ffCloudGradientBlend2" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="rgb(99 102 241)" stopOpacity="0.9"/>
                 <stop offset="50%" stopColor="rgb(129 140 248)" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="rgb(147 197 253)" stopOpacity="0.7"/>
+                <stop offset="80%" stopColor="rgb(147 197 253)" stopOpacity="0.6"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.5"/>
               </linearGradient>
-              <linearGradient id="ffCloudGradientLight3" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="ffCloudGradientBlend3" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="rgb(125 211 252)" stopOpacity="0.8"/>
                 <stop offset="50%" stopColor="rgb(165 243 252)" stopOpacity="0.7"/>
-                <stop offset="100%" stopColor="rgb(207 250 254)" stopOpacity="0.6"/>
+                <stop offset="80%" stopColor="rgb(207 250 254)" stopOpacity="0.5"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.4"/>
               </linearGradient>
-              <linearGradient id="ffCloudGradientLight4" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient id="ffCloudGradientBlend4" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.6"/>
-                <stop offset="100%" stopColor="rgb(240 249 255)" stopOpacity="0.4"/>
+                <stop offset="70%" stopColor="rgb(240 249 255)" stopOpacity="0.4"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.3"/>
+              </linearGradient>
+              <linearGradient id="greyBlendGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.4"/>
+                <stop offset="30%" stopColor="rgb(203 213 225)" stopOpacity="0.5"/>
+                <stop offset="70%" stopColor="rgb(148 163 184)" stopOpacity="0.7"/>
+                <stop offset="100%" stopColor="rgb(100 116 139)" stopOpacity="0.8"/>
               </linearGradient>
             </defs>
           </svg>
@@ -396,21 +412,21 @@ const StickyDonationWidget = () => {
         </div>
       </div>
 
-      {/* Enhanced ray of light effect shining on ticker below - now with lighter FF colors */}
+      {/* Enhanced ray of light effect shining on ticker below - now with better grey blending */}
       <div className="absolute top-full left-1/2 transform -translate-x-1/2 pointer-events-none z-40">
-        {/* Main concentrated light beam with lighter FF blue/cyan colors */}
+        {/* Main concentrated light beam with smooth grey transition */}
         <div className="relative">
-          {/* Central bright beam */}
-          <div className="w-32 h-16 bg-gradient-to-b from-cyan-200/90 via-blue-200/70 to-cyan-100/50 rounded-b-full blur-sm"></div>
+          {/* Central bright beam with grey fade */}
+          <div className="w-32 h-20 bg-gradient-to-b from-cyan-200/90 via-blue-200/70 via-cyan-100/50 to-slate-400/30 rounded-b-full blur-sm"></div>
           
-          {/* Medium spread beam */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-24 bg-gradient-to-b from-blue-200/70 via-cyan-100/50 to-blue-50/30 rounded-b-full blur-md"></div>
+          {/* Medium spread beam with grey blending */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-32 bg-gradient-to-b from-blue-200/70 via-cyan-100/50 via-blue-50/30 to-slate-300/20 rounded-b-full blur-md"></div>
           
-          {/* Wide ambient glow */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-80 h-40 bg-gradient-to-b from-cyan-100/50 via-blue-50/25 to-transparent rounded-b-full blur-xl"></div>
+          {/* Wide ambient glow with seamless grey transition */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-80 h-48 bg-gradient-to-b from-cyan-100/50 via-blue-50/25 via-slate-200/15 to-transparent rounded-b-full blur-xl"></div>
           
           {/* Brightest center core */}
-          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-12 bg-gradient-to-b from-white/80 via-cyan-200/70 to-blue-100/40 rounded-b-full"></div>
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gradient-to-b from-white/80 via-cyan-200/70 via-blue-100/40 to-slate-200/20 rounded-b-full"></div>
           
           {/* Divine sparkle effects with lighter FF colors */}
           <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-cyan-200 rounded-full opacity-90 animate-pulse shadow-lg shadow-cyan-200"></div>
@@ -419,8 +435,8 @@ const StickyDonationWidget = () => {
           <div className="absolute top-12 left-1/2 transform -translate-x-4 w-1 h-1 bg-white rounded-full opacity-70 animate-pulse delay-600"></div>
           <div className="absolute top-12 left-1/2 transform translate-x-2 w-1 h-1 bg-blue-100 rounded-full opacity-70 animate-pulse delay-800"></div>
           
-          {/* Additional light rays for more dramatic effect */}
-          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-64 h-32 bg-gradient-to-b from-cyan-50/40 via-blue-50/20 to-transparent rounded-b-full blur-2xl opacity-60"></div>
+          {/* Additional light rays for more dramatic effect with grey blending */}
+          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-64 h-40 bg-gradient-to-b from-cyan-50/40 via-blue-50/20 via-slate-100/10 to-transparent rounded-b-full blur-2xl opacity-60"></div>
         </div>
       </div>
     </>
