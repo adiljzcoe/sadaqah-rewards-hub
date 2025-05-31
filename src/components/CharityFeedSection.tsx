@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -77,7 +78,7 @@ const CharityFeedSection = () => {
       views: 1120,
       category: 'Medical Aid'
     }
-  ]);
+  ];
 
   const formatTimeAgo = (timestamp: Date) => {
     const hours = Math.floor((Date.now() - timestamp.getTime()) / (1000 * 60 * 60));
@@ -225,7 +226,7 @@ const CharityFeedSection = () => {
 
           {/* Mobile: Horizontal scrolling layout with custom scrollbar */}
           <div className="lg:hidden">
-            <style jsx>{`
+            <style>{`
               .custom-scroll-container {
                 position: relative;
               }
