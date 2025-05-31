@@ -11,9 +11,9 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-blue-100 border-b border-blue-200 py-4 overflow-hidden">
+    <div className="bg-blue-50 border-b border-blue-100 py-4 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center text-sm text-blue-700 mb-3 font-medium">
+        <div className="text-center text-sm text-blue-600 mb-3 font-medium">
           Our fundraising is distributed to our chosen charities below
         </div>
         
@@ -30,10 +30,7 @@ const CharityTicker = () => {
                   <img 
                     src={charity.logo} 
                     alt={charity.name}
-                    className="max-w-full max-h-full object-contain filter brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)"
-                    style={{
-                      filter: 'brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)'
-                    }}
+                    className="max-w-full max-h-full object-contain"
                   />
                 </div>
               </div>
@@ -49,10 +46,7 @@ const CharityTicker = () => {
                   <img 
                     src={charity.logo} 
                     alt={charity.name}
-                    className="max-w-full max-h-full object-contain filter brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)"
-                    style={{
-                      filter: 'brightness(0.7) contrast(1.2) hue-rotate(200deg) saturate(1.3)'
-                    }}
+                    className="max-w-full max-h-full object-contain"
                   />
                 </div>
               </div>
