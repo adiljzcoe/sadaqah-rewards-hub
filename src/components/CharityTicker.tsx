@@ -11,47 +11,26 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-blue-50 border-b border-blue-100 py-1 overflow-hidden w-full">
-      <div className="container mx-auto px-4 max-w-full">
-        <div className="text-center text-xs text-blue-700 mb-1 font-normal opacity-80">
-          Funds distributed to our trusted charity partners
+    <div className="bg-white py-8 w-full">
+      <div className="container mx-auto px-4">
+        <div className="text-center text-sm text-gray-400 mb-8 font-light tracking-wide">
+          Charities we choose to fundraise for
         </div>
         
-        {/* Ticker container */}
-        <div className="relative overflow-hidden max-w-full">
-          <div className="flex animate-ticker space-x-8">
-            {/* First set of logos */}
-            {charityLogos.map((charity, index) => (
-              <div
-                key={`first-${index}`}
-                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 hover:scale-110 transition-all duration-300"
-              >
-                <div className="w-16 h-16 flex items-center justify-center">
-                  <img 
-                    src={charity.logo} 
-                    alt={charity.name}
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
-              </div>
-            ))}
-            
-            {/* Duplicate set for seamless loop */}
-            {charityLogos.map((charity, index) => (
-              <div
-                key={`second-${index}`}
-                className="flex items-center justify-center whitespace-nowrap flex-shrink-0 hover:scale-110 transition-all duration-300"
-              >
-                <div className="w-16 h-16 flex items-center justify-center">
-                  <img 
-                    src={charity.logo} 
-                    alt={charity.name}
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Logo grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 items-center justify-items-center">
+          {charityLogos.map((charity, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300"
+            >
+              <img 
+                src={charity.logo} 
+                alt={charity.name}
+                className="max-w-24 max-h-12 object-contain filter grayscale"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
