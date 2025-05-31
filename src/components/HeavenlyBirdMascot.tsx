@@ -12,6 +12,10 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
   const eyesRef = useRef<THREE.Group>(null);
   const keffiyehRef = useRef<THREE.Group>(null);
   const coinsRef = useRef<THREE.Group>(null);
+  const coin1Ref = useRef<THREE.Mesh>(null);
+  const coin2Ref = useRef<THREE.Mesh>(null);
+  const coin3Ref = useRef<THREE.Mesh>(null);
+  const coin4Ref = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
     if (characterRef.current) {
@@ -38,6 +42,20 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
       const floatSpeed = isActive ? 4 : 2;
       coinsRef.current.position.y = Math.sin(state.clock.elapsedTime * floatSpeed) * 0.05;
       coinsRef.current.rotation.y = state.clock.elapsedTime * 0.5;
+    }
+
+    // Individual coin rotations
+    if (coin1Ref.current) {
+      coin1Ref.current.rotation.y = state.clock.elapsedTime * 2;
+    }
+    if (coin2Ref.current) {
+      coin2Ref.current.rotation.y = state.clock.elapsedTime * -1.5;
+    }
+    if (coin3Ref.current) {
+      coin3Ref.current.rotation.y = state.clock.elapsedTime * 1.8;
+    }
+    if (coin4Ref.current) {
+      coin4Ref.current.rotation.y = state.clock.elapsedTime * -2.2;
     }
   });
 
@@ -204,7 +222,7 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
       {/* Floating Golden Coins around the character */}
       <group ref={coinsRef}>
         {/* Coin 1 */}
-        <mesh position={[-0.4, 0.3, 0.3]} rotation={[0, state.clock?.elapsedTime * 2 || 0, 0]}>
+        <mesh ref={coin1Ref} position={[-0.4, 0.3, 0.3]}>
           <cylinderGeometry args={[0.04, 0.04, 0.01, 12]} />
           <meshStandardMaterial 
             color="#fbbf24" 
@@ -216,7 +234,7 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
         </mesh>
 
         {/* Coin 2 */}
-        <mesh position={[0.4, 0.2, 0.2]} rotation={[0, state.clock?.elapsedTime * -1.5 || 0, 0]}>
+        <mesh ref={coin2Ref} position={[0.4, 0.2, 0.2]}>
           <cylinderGeometry args={[0.04, 0.04, 0.01, 12]} />
           <meshStandardMaterial 
             color="#fbbf24" 
@@ -228,7 +246,7 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
         </mesh>
 
         {/* Coin 3 */}
-        <mesh position={[0.2, -0.3, 0.4]} rotation={[0, state.clock?.elapsedTime * 1.8 || 0, 0]}>
+        <mesh ref={coin3Ref} position={[0.2, -0.3, 0.4]}>
           <cylinderGeometry args={[0.04, 0.04, 0.01, 12]} />
           <meshStandardMaterial 
             color="#fbbf24" 
@@ -240,7 +258,7 @@ function KeffiyehCharacter({ isActive }: KeffiyehCharacterProps) {
         </mesh>
 
         {/* Coin 4 */}
-        <mesh position={[-0.2, -0.2, 0.4]} rotation={[0, state.clock?.elapsedTime * -2.2 || 0, 0]}>
+        <mesh ref={coin4Ref} position={[-0.2, -0.2, 0.4]}>
           <cylinderGeometry args={[0.04, 0.04, 0.01, 12]} />
           <meshStandardMaterial 
             color="#fbbf24" 
