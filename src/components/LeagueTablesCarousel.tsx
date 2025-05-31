@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -165,16 +166,19 @@ const LeagueTablesCarousel = () => {
 
   const activeLeague = leagueTables.find(league => league.id === activeTab);
 
-  // Get the #1 performers from each category
-  const getTopPerformers = () => {
-    return leagueTables.map(league => ({
-      category: league.shortTitle,
-      winner: league.data[0],
-      icon: league.icon,
-      isCity: league.isCity,
-      isCountry: league.isCountry,
-      isIndividual: league.isIndividual
-    }));
+  // Get the #1 performer from the active category
+  const getTopPerformer = () => {
+    if (!activeLeague) return null;
+    
+    const winner = activeLeague.data[0];
+    return {
+      category: activeLeague.shortTitle,
+      winner: winner,
+      icon: activeLeague.icon,
+      isCity: activeLeague.isCity,
+      isCountry: activeLeague.isCountry,
+      isIndividual: activeLeague.isIndividual
+    };
   };
 
   const renderLeagueTable = (league: any) => (
@@ -256,31 +260,47 @@ const LeagueTablesCarousel = () => {
     </Card>
   );
 
+  const topPerformer = getTopPerformer();
+
   return (
     <div className="w-full bg-gradient-to-r from-slate-50 to-blue-50/30 py-8">
       <div className="container mx-auto px-4">
-        {/* Top Performers Header */}
-        <div className="text-center mb-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 max-w-6xl mx-auto">
-            {getTopPerformers().map((performer, index) => (
-              <div key={index} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+        {/* Top Performer Showcase */}
+        {topPerformer && (
+          <div className="text-center mb-8">
+            <div className="max-w-md mx-auto">
+              <div className="bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full p-3 shadow-lg">
+                    <Crown className="h-8 w-8 text-white" />
+                  </div>
+                </div>
                 <div className="flex items-center justify-center mb-2">
-                  {performer.icon}
+                  {topPerformer.icon}
+                  <span className="ml-2 text-sm font-semibold text-gray-600 uppercase tracking-wide">{topPerformer.category} LEADER</span>
                 </div>
-                <div className="text-xs font-semibold text-gray-600 mb-1">{performer.category}</div>
-                <div className="text-sm font-bold text-gray-900 truncate" title={performer.winner.name}>
-                  {performer.winner.name}
+                <div className="text-2xl font-bold text-gray-900 mb-2" title={topPerformer.winner.name}>
+                  {topPerformer.winner.name}
                 </div>
-                <div className="text-xs text-emerald-600 font-semibold">
-                  {performer.isCity || performer.isCountry || performer.isIndividual ? 
-                    performer.winner.points?.toLocaleString() || performer.winner.coins?.toLocaleString() : 
-                    performer.winner.coins?.toLocaleString()
-                  } {performer.isCity || performer.isCountry || performer.isIndividual ? 'pts' : 'coins'}
+                <div className="text-3xl font-black bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                  {topPerformer.isCity || topPerformer.isCountry || topPerformer.isIndividual ? 
+                    (topPerformer.winner as any).points?.toLocaleString() || (topPerformer.winner as any).coins?.toLocaleString() : 
+                    (topPerformer.winner as any).coins?.toLocaleString()
+                  }
                 </div>
+                <div className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                  {topPerformer.isCity || topPerformer.isCountry || topPerformer.isIndividual ? 'POINTS' : 'COINS'}
+                </div>
+                {(topPerformer.winner as any).location && (
+                  <div className="text-sm text-gray-600 mt-2 flex items-center justify-center">
+                    <MapPin className="h-4 w-4 mr-1" />
+                    {(topPerformer.winner as any).location}
+                  </div>
+                )}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Button Grid - Three Rows */}
         <div className="mb-8">
