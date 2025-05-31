@@ -115,24 +115,6 @@ const Header = () => {
                     </Button>
                   )}
                 </Link>
-                
-                {/* Level Display - FF style XP bar */}
-                {isMember && (
-                  <div className="bg-gradient-to-r from-slate-700/90 to-slate-800/90 backdrop-blur-sm rounded-xl px-3 py-2 border border-cyan-400/40 shadow-lg hover:shadow-xl transition-all duration-300 ring-1 ring-cyan-300/30">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">LV {userLevel}</span>
-                      <div className="relative w-12 h-1.5 bg-slate-600/60 rounded-full overflow-hidden border border-cyan-400/30">
-                        <div 
-                          className="absolute left-0 top-0 h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all duration-300 shadow-sm shadow-cyan-400/50"
-                          style={{ width: `${progress}%` }}
-                        ></div>
-                        {/* FF-style XP bar inner glow */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 to-blue-300/20 rounded-full"></div>
-                      </div>
-                      <span className="text-xs text-cyan-200 font-medium drop-shadow-sm">{pointsToNextLevel}</span>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
