@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -9,6 +8,8 @@ interface DonationTinProps {
 
 function DonationTin({ isActive }: DonationTinProps) {
   const tinRef = useRef<THREE.Group>(null);
+  const eyesRef = useRef<THREE.Group>(null);
+  const eyebrowsRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
     if (tinRef.current) {
@@ -17,14 +18,19 @@ function DonationTin({ isActive }: DonationTinProps) {
       // More personality: excited bouncing when active, gentle sway when not
       if (isActive) {
         // Excited bouncing animation
-        const bounceIntensity = 0.08;
-        tinRef.current.position.y = Math.abs(Math.sin(time * 4)) * bounceIntensity;
+        const bounceIntensity = 0.1;
+        tinRef.current.position.y = Math.abs(Math.sin(time * 5)) * bounceIntensity;
         
         // Wiggle side to side with excitement
-        tinRef.current.position.x = Math.sin(time * 6) * 0.04;
+        tinRef.current.position.x = Math.sin(time * 7) * 0.05;
         
         // More pronounced rotation when excited
-        tinRef.current.rotation.z = Math.sin(time * 5) * 0.05;
+        tinRef.current.rotation.z = Math.sin(time * 6) * 0.08;
+        
+        // Eyebrow animation when excited
+        if (eyebrowsRef.current) {
+          eyebrowsRef.current.position.y = Math.sin(time * 8) * 0.01 + 0.25;
+        }
       } else {
         // Gentle swaying when idle
         const swayIntensity = 0.03;
@@ -35,6 +41,18 @@ function DonationTin({ isActive }: DonationTinProps) {
         
         // Gentle tilt
         tinRef.current.rotation.z = Math.sin(time * 1.5) * 0.015;
+        
+        // Subtle eyebrow movement
+        if (eyebrowsRef.current) {
+          eyebrowsRef.current.position.y = Math.sin(time * 3) * 0.005 + 0.25;
+        }
+      }
+      
+      // Blinking animation
+      if (eyesRef.current && time % 4 < 0.1) {
+        eyesRef.current.scale.y = 0.1;
+      } else if (eyesRef.current) {
+        eyesRef.current.scale.y = 1;
       }
     }
   });
@@ -77,38 +95,82 @@ function DonationTin({ isActive }: DonationTinProps) {
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
 
-      {/* Eyes - giving it character */}
-      <mesh position={[-0.12, 0.15, 0.41]}>
-        <sphereGeometry args={[0.04, 8, 8]} />
-        <meshStandardMaterial color="#000000" />
+      {/* Eyes group for blinking */}
+      <group ref={eyesRef}>
+        {/* Left eye */}
+        <mesh position={[-0.12, 0.15, 0.41]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshStandardMaterial color="#000000" />
+        </mesh>
+        {/* Right eye */}
+        <mesh position={[0.12, 0.15, 0.41]}>
+          <sphereGeometry args={[0.05, 8, 8]} />
+          <meshStandardMaterial color="#000000" />
+        </mesh>
+
+        {/* Eye highlights for more life */}
+        <mesh position={[-0.11, 0.17, 0.42]}>
+          <sphereGeometry args={[0.018, 6, 6]} />
+          <meshStandardMaterial color="#FFFFFF" />
+        </mesh>
+        <mesh position={[0.13, 0.17, 0.42]}>
+          <sphereGeometry args={[0.018, 6, 6]} />
+          <meshStandardMaterial color="#FFFFFF" />
+        </mesh>
+
+        {/* Secondary eye highlights for sparkle */}
+        <mesh position={[-0.105, 0.18, 0.425]}>
+          <sphereGeometry args={[0.008, 6, 6]} />
+          <meshStandardMaterial color="#FFFFFF" />
+        </mesh>
+        <mesh position={[0.135, 0.18, 0.425]}>
+          <sphereGeometry args={[0.008, 6, 6]} />
+          <meshStandardMaterial color="#FFFFFF" />
+        </mesh>
+      </group>
+
+      {/* Eyebrows for expression */}
+      <group ref={eyebrowsRef} position={[0, 0.25, 0]}>
+        <mesh position={[-0.12, 0, 0.41]} rotation={[0, 0, -0.2]}>
+          <boxGeometry args={[0.08, 0.015, 0.01]} />
+          <meshStandardMaterial color="#1E40AF" />
+        </mesh>
+        <mesh position={[0.12, 0, 0.41]} rotation={[0, 0, 0.2]}>
+          <boxGeometry args={[0.08, 0.015, 0.01]} />
+          <meshStandardMaterial color="#1E40AF" />
+        </mesh>
+      </group>
+
+      {/* Bigger smile - curved using multiple small spheres */}
+      <mesh position={[-0.08, 0.05, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
       </mesh>
-      <mesh position={[0.12, 0.15, 0.41]}>
-        <sphereGeometry args={[0.04, 8, 8]} />
-        <meshStandardMaterial color="#000000" />
+      <mesh position={[-0.04, 0.02, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0, 0.01, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0.04, 0.02, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0.08, 0.05, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
       </mesh>
 
-      {/* Eye highlights for more life */}
-      <mesh position={[-0.11, 0.17, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
-        <meshStandardMaterial color="#FFFFFF" />
+      {/* Cheek blushes */}
+      <mesh position={[-0.25, 0.08, 0.35]} rotation={[0, 0.3, 0]}>
+        <sphereGeometry args={[0.03, 8, 8]} />
+        <meshStandardMaterial color="#FFB6C1" opacity={0.7} transparent />
       </mesh>
-      <mesh position={[0.13, 0.17, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
-        <meshStandardMaterial color="#FFFFFF" />
-      </mesh>
-
-      {/* Smile - curved using multiple small spheres */}
-      <mesh position={[-0.06, 0.05, 0.42]}>
-        <sphereGeometry args={[0.012, 6, 6]} />
-        <meshStandardMaterial color="#FF6B6B" />
-      </mesh>
-      <mesh position={[0, 0.03, 0.42]}>
-        <sphereGeometry args={[0.012, 6, 6]} />
-        <meshStandardMaterial color="#FF6B6B" />
-      </mesh>
-      <mesh position={[0.06, 0.05, 0.42]}>
-        <sphereGeometry args={[0.012, 6, 6]} />
-        <meshStandardMaterial color="#FF6B6B" />
+      <mesh position={[0.25, 0.08, 0.35]} rotation={[0, -0.3, 0]}>
+        <sphereGeometry args={[0.03, 8, 8]} />
+        <meshStandardMaterial color="#FFB6C1" opacity={0.7} transparent />
       </mesh>
 
       {/* DONATE text area - slightly raised white label */}
@@ -145,7 +207,7 @@ function DonationTin({ isActive }: DonationTinProps) {
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
 
-      {/* Small heart decoration on the side */}
+      {/* Multiple heart decorations on the side */}
       <mesh position={[0.35, 0.1, 0]} rotation={[0, -Math.PI / 4, 0]}>
         <sphereGeometry args={[0.03, 8, 8]} />
         <meshStandardMaterial color="#FF6B6B" />
@@ -157,6 +219,20 @@ function DonationTin({ isActive }: DonationTinProps) {
       <mesh position={[0.37, 0.12, 0]} rotation={[0, -Math.PI / 4, 0]}>
         <sphereGeometry args={[0.02, 8, 8]} />
         <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+
+      {/* Additional small heart */}
+      <mesh position={[0.32, 0.25, 0.1]} rotation={[0, -Math.PI / 6, 0]}>
+        <sphereGeometry args={[0.02, 8, 8]} />
+        <meshStandardMaterial color="#FF69B4" />
+      </mesh>
+      <mesh position={[0.305, 0.265, 0.1]} rotation={[0, -Math.PI / 6, 0]}>
+        <sphereGeometry args={[0.015, 8, 8]} />
+        <meshStandardMaterial color="#FF69B4" />
+      </mesh>
+      <mesh position={[0.335, 0.265, 0.1]} rotation={[0, -Math.PI / 6, 0]}>
+        <sphereGeometry args={[0.015, 8, 8]} />
+        <meshStandardMaterial color="#FF69B4" />
       </mesh>
     </group>
   );
