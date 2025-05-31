@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X, HandHeart } from 'lucide-react';
+import CharityCharacter3D from './CharityCharacter3D';
 
 interface FallingCoin {
   id: number;
@@ -127,24 +127,6 @@ const FloatingDonationButton = () => {
             transform: translateY(0) scale(1);
           }
         }
-        
-        @keyframes charity-character-shake {
-          0%, 100% { transform: translateX(0px) rotate(0deg); }
-          10% { transform: translateX(-3px) rotate(-2deg); }
-          20% { transform: translateX(3px) rotate(1.5deg); }
-          30% { transform: translateX(-2px) rotate(-1deg); }
-          40% { transform: translateX(2px) rotate(1deg); }
-          50% { transform: translateX(-1px) rotate(-0.5deg); }
-          60% { transform: translateX(1px) rotate(0.5deg); }
-          70% { transform: translateX(-0.5px) rotate(-0.25deg); }
-          80% { transform: translateX(0.5px) rotate(0.25deg); }
-          90% { transform: translateX(-0.25px) rotate(-0.1deg); }
-        }
-        
-        @keyframes gentle-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-2px); }
-        }
       `}</style>
       
       <div className="fixed bottom-8 right-8 z-50">
@@ -238,31 +220,24 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* Charity Collection Character */}
-          <div 
-            className={`relative z-10 w-full h-full transition-all duration-300 group-hover:scale-110 ${
-              isActive ? 'animate-[charity-character-shake_1.5s_ease-in-out]' : 'animate-[gentle-float_4s_ease-in-out_infinite]'
-            }`}
-          >
-            <img 
-              src="/lovable-uploads/1a8b9a72-1fd0-4905-8f8f-cd7b8b5e9096.png" 
-              alt="Charity Collection Character"
-              className="w-full h-full object-contain"
-            />
+          {/* 3D Charity Collection Character */}
+          <CharityCharacter3D 
+            isActive={isActive}
+            className="relative z-10 w-full h-full transition-all duration-300 group-hover:scale-110"
+          />
 
-            {/* Donation amount indicator */}
-            <div className="absolute -bottom-2 -right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white">
-              £5+
-            </div>
-
-            {/* Subtle glow effect on hover */}
-            <div className={`absolute inset-0 rounded-lg transition-opacity duration-300 ${
-              isActive ? 'opacity-50' : 'opacity-0 group-hover:opacity-30'
-            }`} style={{
-              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%)',
-              filter: 'blur(8px)'
-            }}></div>
+          {/* Donation amount indicator */}
+          <div className="absolute -bottom-2 -right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white">
+            £5+
           </div>
+
+          {/* Subtle glow effect on hover */}
+          <div className={`absolute inset-0 rounded-lg transition-opacity duration-300 ${
+            isActive ? 'opacity-50' : 'opacity-0 group-hover:opacity-30'
+          }`} style={{
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%)',
+            filter: 'blur(8px)'
+          }}></div>
         </div>
       </div>
     </>
