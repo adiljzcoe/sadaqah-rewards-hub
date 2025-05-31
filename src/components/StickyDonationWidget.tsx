@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -250,7 +251,7 @@ const StickyDonationWidget = () => {
                   
                   <div className="space-y-2">
                     {/* Cause and In Memory Of - Same Row */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="text-xs font-medium text-rose-800 mb-1 block">Select a cause</label>
                         <Select value={selectedMemoryCause} onValueChange={setSelectedMemoryCause}>
@@ -290,35 +291,52 @@ const StickyDonationWidget = () => {
                       </div>
                     </div>
 
-                    {/* Custom Name Input - Only show when "Other" is selected */}
-                    {memoryPerson === 'other' && (
+                    {/* Custom Name and Personal Note - Same Row when custom name is shown */}
+                    {memoryPerson === 'other' ? (
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-xs font-medium text-rose-800 mb-1 block">Custom name</label>
+                          <Input
+                            type="text"
+                            placeholder="Enter custom name..."
+                            value={customMemoryPerson}
+                            onChange={(e) => setCustomMemoryPerson(e.target.value)}
+                            className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-8"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
+                          <Input
+                            type="text"
+                            placeholder="Love you dad, Always in our hearts..."
+                            value={memoryNote}
+                            onChange={(e) => setMemoryNote(e.target.value)}
+                            maxLength={100}
+                            className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-8"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      /* Personal Note - Full width when no custom name */
                       <div>
-                        <label className="text-xs font-medium text-rose-800 mb-1 block">Custom name</label>
+                        <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
                         <Input
                           type="text"
-                          placeholder="Enter custom name..."
-                          value={customMemoryPerson}
-                          onChange={(e) => setCustomMemoryPerson(e.target.value)}
+                          placeholder="e.g., Love you dad, Always in our hearts..."
+                          value={memoryNote}
+                          onChange={(e) => setMemoryNote(e.target.value)}
+                          maxLength={100}
                           className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-8"
                         />
                       </div>
                     )}
 
-                    {/* Memorial Note - Single row */}
-                    <div>
-                      <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
-                      <Input
-                        type="text"
-                        placeholder="e.g., Love you dad, Always in our hearts..."
-                        value={memoryNote}
-                        onChange={(e) => setMemoryNote(e.target.value)}
-                        maxLength={100}
-                        className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-8"
-                      />
-                      <div className="text-[10px] text-rose-600 text-right mt-1">
+                    {/* Character count - only show when there's content */}
+                    {memoryNote && (
+                      <div className="text-[10px] text-rose-600 text-right">
                         {memoryNote.length}/100 characters
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               )}
