@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle } from 'lucide-react';
+import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle, Flower } from 'lucide-react';
 
 const donationTypes = [
   { 
@@ -33,21 +33,30 @@ const donationTypes = [
     ring: 'ring-purple-300'
   },
   { 
-    id: 'monthly', 
-    name: 'Monthly', 
-    icon: '📅', 
-    description: 'Regular giving',
-    gradient: 'bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600',
-    shadow: 'shadow-orange-500/50',
-    ring: 'ring-orange-300'
+    id: 'in-memory', 
+    name: 'In Memory', 
+    icon: '🌹', 
+    description: 'Honor loved ones',
+    gradient: 'bg-gradient-to-br from-rose-400 via-rose-500 to-rose-600',
+    shadow: 'shadow-rose-500/50',
+    ring: 'ring-rose-300'
   }
 ];
 
 const quickAmounts = [10, 25, 50, 100];
 
-const dedicationSuggestions = [
-  'Father', 'Mother', 'Prophet Muhammad (PBUH)', 'Grandmother', 'Grandfather', 
-  'Sister', 'Brother', 'Friend', 'All Muslims', 'Deceased loved one'
+const memoryDedicationSuggestions = [
+  'My Father', 'My Mother', 'My Grandmother', 'My Grandfather', 
+  'My Sister', 'My Brother', 'My Friend', 'My Uncle', 'My Aunt', 'My Spouse'
+];
+
+const memoryCauses = [
+  { id: 'clean-water', name: 'Clean Water Wells', description: 'Provide clean water access' },
+  { id: 'orphan-care', name: 'Orphan Care', description: 'Support orphaned children' },
+  { id: 'emergency-aid', name: 'Emergency Aid', description: 'Disaster relief support' },
+  { id: 'education', name: 'Education', description: 'Build schools and libraries' },
+  { id: 'healthcare', name: 'Healthcare', description: 'Medical aid and clinics' },
+  { id: 'food-aid', name: 'Food Aid', description: 'Feed hungry families' }
 ];
 
 const DonationWidget = () => {
@@ -57,6 +66,11 @@ const DonationWidget = () => {
   const [onBehalfOf, setOnBehalfOf] = useState('');
   const [dedicationNote, setDedicationNote] = useState('');
   const [showDedication, setShowDedication] = useState(false);
+  
+  // In Memory specific states
+  const [memoryPerson, setMemoryPerson] = useState('');
+  const [memoryNote, setMemoryNote] = useState('');
+  const [selectedCause, setSelectedCause] = useState('clean-water');
 
   return (
     <Card className="p-6 bg-white border border-gray-200 shadow-lg">
@@ -117,6 +131,84 @@ const DonationWidget = () => {
         ))}
       </div>
 
+      {/* In Memory Section */}
+      {selectedType === 'in-memory' && (
+        <div className="mb-6 p-5 bg-gradient-to-br from-rose-50 to-pink-50 border-2 border-rose-200 rounded-xl">
+          <div className="flex items-center mb-4">
+            <Flower className="h-5 w-5 mr-2 text-rose-600" />
+            <h4 className="text-lg font-semibold text-rose-900">Memorial Donation</h4>
+          </div>
+          
+          {/* Cause Selection */}
+          <div className="mb-4">
+            <label className="text-sm font-semibold text-rose-800 mb-3 block">Select a cause</label>
+            <div className="grid grid-cols-1 gap-2">
+              {memoryCauses.map((cause) => (
+                <button
+                  key={cause.id}
+                  onClick={() => setSelectedCause(cause.id)}
+                  className={`p-3 rounded-lg text-left transition-all duration-200 ${
+                    selectedCause === cause.id
+                      ? 'bg-rose-600 text-white shadow-md'
+                      : 'bg-white border border-rose-300 text-rose-800 hover:bg-rose-100'
+                  }`}
+                >
+                  <div className="font-medium">{cause.name}</div>
+                  <div className={`text-sm ${selectedCause === cause.id ? 'text-rose-100' : 'text-rose-600'}`}>
+                    {cause.description}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* In Memory Of */}
+          <div className="mb-4">
+            <label className="text-sm font-semibold text-rose-800 mb-2 block">In memory of</label>
+            <input
+              type="text"
+              placeholder="e.g., My Father, My Mother"
+              value={memoryPerson}
+              onChange={(e) => setMemoryPerson(e.target.value)}
+              className="w-full p-3 border border-rose-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 text-gray-900 mb-2"
+            />
+            
+            <div className="flex flex-wrap gap-2">
+              {memoryDedicationSuggestions.map((suggestion) => (
+                <button
+                  key={suggestion}
+                  onClick={() => setMemoryPerson(suggestion)}
+                  className="text-xs px-3 py-1 bg-white border border-rose-300 rounded-full hover:bg-rose-100 hover:border-rose-400 transition-colors text-rose-700"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Memorial Note */}
+          <div className="mb-4">
+            <label className="text-sm font-semibold text-rose-800 mb-2 block">Personal note</label>
+            <textarea
+              placeholder="e.g., Love you dad, Always in our hearts..."
+              value={memoryNote}
+              onChange={(e) => setMemoryNote(e.target.value)}
+              maxLength={100}
+              rows={3}
+              className="w-full p-3 border border-rose-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-rose-500 text-gray-900 resize-none"
+            />
+            <div className="text-xs text-rose-600 text-right mt-1">
+              {memoryNote.length}/100 characters
+            </div>
+          </div>
+
+          <div className="flex items-center text-sm text-rose-700 bg-white/50 p-2 rounded-lg">
+            <MessageCircle className="h-4 w-4 mr-2" />
+            <span>Your memorial dedication will be shared with respect and honor</span>
+          </div>
+        </div>
+      )}
+
       {/* Amount Selection - Enhanced */}
       <div className="mb-6">
         <label className="text-sm font-semibold text-gray-700 mb-4 block">Choose Amount (£)</label>
@@ -159,64 +251,66 @@ const DonationWidget = () => {
         </div>
       </div>
 
-      {/* Dedication Section */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <label className="text-sm font-semibold text-gray-700">Donate on behalf of (Optional)</label>
-          <button
-            onClick={() => setShowDedication(!showDedication)}
-            className="text-emerald-600 text-sm hover:text-emerald-700 flex items-center"
-          >
-            <Users className="h-4 w-4 mr-1" />
-            {showDedication ? 'Hide' : 'Add dedication'}
-          </button>
-        </div>
-
-        {showDedication && (
-          <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div>
-              <input
-                type="text"
-                placeholder="e.g., Father, Mother, Prophet Muhammad (PBUH)"
-                value={onBehalfOf}
-                onChange={(e) => setOnBehalfOf(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
-              />
-              
-              <div className="flex flex-wrap gap-2 mt-2">
-                {dedicationSuggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => setOnBehalfOf(suggestion)}
-                    className="text-xs px-3 py-1 bg-white border border-gray-300 rounded-full hover:bg-blue-100 hover:border-blue-300 transition-colors"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <textarea
-                placeholder="Add a personal note (will be shared in live feed)"
-                value={dedicationNote}
-                onChange={(e) => setDedicationNote(e.target.value)}
-                maxLength={150}
-                rows={3}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 resize-none"
-              />
-              <div className="text-xs text-gray-500 text-right mt-1">
-                {dedicationNote.length}/150 characters
-              </div>
-            </div>
-
-            <div className="flex items-center text-sm text-blue-700">
-              <MessageCircle className="h-4 w-4 mr-2" />
-              <span>Your dedication will appear in the live feed for the community to see</span>
-            </div>
+      {/* Dedication Section for non-memory donations */}
+      {selectedType !== 'in-memory' && (
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <label className="text-sm font-semibold text-gray-700">Donate on behalf of (Optional)</label>
+            <button
+              onClick={() => setShowDedication(!showDedication)}
+              className="text-emerald-600 text-sm hover:text-emerald-700 flex items-center"
+            >
+              <Users className="h-4 w-4 mr-1" />
+              {showDedication ? 'Hide' : 'Add dedication'}
+            </button>
           </div>
-        )}
-      </div>
+
+          {showDedication && (
+            <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div>
+                <input
+                  type="text"
+                  placeholder="e.g., Father, Mother, Prophet Muhammad (PBUH)"
+                  value={onBehalfOf}
+                  onChange={(e) => setOnBehalfOf(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                />
+                
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {['Father', 'Mother', 'Prophet Muhammad (PBUH)', 'Grandmother', 'Grandfather', 'Sister', 'Brother', 'Friend', 'All Muslims', 'Deceased loved one'].map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => setOnBehalfOf(suggestion)}
+                      className="text-xs px-3 py-1 bg-white border border-gray-300 rounded-full hover:bg-blue-100 hover:border-blue-300 transition-colors"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <textarea
+                  placeholder="Add a personal note (will be shared in live feed)"
+                  value={dedicationNote}
+                  onChange={(e) => setDedicationNote(e.target.value)}
+                  maxLength={150}
+                  rows={3}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 resize-none"
+                />
+                <div className="text-xs text-gray-500 text-right mt-1">
+                  {dedicationNote.length}/150 characters
+                </div>
+              </div>
+
+              <div className="flex items-center text-sm text-blue-700">
+                <MessageCircle className="h-4 w-4 mr-2" />
+                <span>Your dedication will appear in the live feed for the community to see</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Impact Preview - Enhanced */}
       <div className="mb-6 p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl">
@@ -238,26 +332,12 @@ const DonationWidget = () => {
         <div className="relative z-10 flex items-center justify-center">
           <Gift className="h-5 w-5 mr-3" />
           Donate {customAmount ? `£${customAmount}` : `£${selectedAmount}`}
-          {onBehalfOf && ` on behalf of ${onBehalfOf}`}
+          {selectedType === 'in-memory' && memoryPerson && ` in memory of ${memoryPerson}`}
+          {selectedType !== 'in-memory' && onBehalfOf && ` on behalf of ${onBehalfOf}`}
           <ArrowRight className="h-5 w-5 ml-3" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </Button>
-
-      {/* Monthly Subscription Option */}
-      {selectedType === 'monthly' && (
-        <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-          <div className="flex items-center mb-3">
-            <div className="bg-gray-600 w-8 h-8 rounded-lg flex items-center justify-center mr-3">
-              <Calendar className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-sm font-semibold text-gray-800">Monthly Subscription</span>
-          </div>
-          <p className="text-xs text-gray-600">
-            Set up automatic monthly donations for consistent support.
-          </p>
-        </div>
-      )}
 
       {/* Security notice */}
       <div className="mt-4 text-center">
