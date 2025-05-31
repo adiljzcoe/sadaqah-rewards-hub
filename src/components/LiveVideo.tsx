@@ -419,7 +419,7 @@ const LiveVideo = () => {
     const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
     const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
     const minutes = Math.floor(seconds / 60);
-    if (minutes < 1) return `now`;
+    if (minutes < 1) return '';
     if (minutes < 60) return `${minutes}m ago`;
     const hours = Math.floor(minutes / 60);
     return `${hours}h ago`;
@@ -688,9 +688,11 @@ const LiveVideo = () => {
                     )}
                   </div>
                 </div>
-                <span className="text-xs text-gray-400 flex-shrink-0 ml-1">
-                  {formatTimeAgo(donation.timestamp)}
-                </span>
+                {formatTimeAgo(donation.timestamp) && (
+                  <span className="text-xs text-gray-400 flex-shrink-0 ml-1">
+                    {formatTimeAgo(donation.timestamp)}
+                  </span>
+                )}
               </div>
             ))}
             {displayedMessages.length === 0 && (
