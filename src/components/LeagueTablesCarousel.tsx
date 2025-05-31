@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Building2, MapPin, Utensils, Crown, Trophy, Users, Medal, Star } from 'lucide-react';
 
 // Business data
@@ -117,6 +117,79 @@ const LeagueTablesCarousel = () => {
     }
   ];
 
+  const renderLeagueTable = (league: any) => (
+    <Card className="w-full max-w-md mx-auto p-6 professional-card hover-lift">
+      <div className="flex items-center justify-between mb-6">
+        <h4 className="text-lg font-semibold flex items-center">
+          {league.icon}
+          <span className="ml-2">{league.title}</span>
+        </h4>
+        <Badge className={league.badgeColor}>
+          {league.badge}
+        </Badge>
+      </div>
+      
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-12">Rank</TableHead>
+            <TableHead>{league.isCity ? 'City' : league.isIndividual ? 'Donor' : 'Business'}</TableHead>
+            <TableHead className="text-right">{league.isCity ? 'Points' : league.isIndividual ? 'Points' : 'Coins'}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {league.data.map((item: any) => (
+            <TableRow key={item.rank}>
+              <TableCell>
+                <div className="flex items-center justify-center w-6 h-6">
+                  {getRankIcon(item.rank)}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div>
+                  <div className="font-medium text-gray-900 text-sm">{item.name}</div>
+                  {league.showLocation && item.location && (
+                    <div className="text-xs text-gray-600 flex items-center">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      {item.location} • {item.donations} donations
+                    </div>
+                  )}
+                  {league.isCity && (
+                    <div className="text-xs text-gray-600 flex items-center">
+                      <Users className="h-3 w-3 mr-1" />
+                      {item.donors} donors
+                    </div>
+                  )}
+                  {league.isIndividual && (
+                    <div className="text-xs text-gray-600">
+                      Level {item.level} • {item.donations} donations
+                    </div>
+                  )}
+                  {!league.showLocation && !league.isCity && !league.isIndividual && (
+                    <div className="text-xs text-gray-600">
+                      {item.donations} donations sponsored
+                    </div>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell className="text-right">
+                <div className="font-bold text-sm vibrant-text-blue">
+                  {league.isCity || league.isIndividual ? 
+                    item.points?.toLocaleString() || item.coins?.toLocaleString() : 
+                    item.coins?.toLocaleString()
+                  }
+                </div>
+                <div className="text-xs text-gray-500">
+                  {league.isCity || league.isIndividual ? 'points' : 'coins'}
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
+  );
+
   return (
     <div className="w-full bg-gradient-to-r from-slate-50 to-blue-50/30 py-8">
       <div className="container mx-auto px-4">
@@ -127,115 +200,31 @@ const LeagueTablesCarousel = () => {
           <p className="text-gray-600">See how different groups are making an impact</p>
         </div>
 
-        {/* Custom scrollbar styles */}
-        <style>{`
-          .league-scroll::-webkit-scrollbar {
-            height: 12px;
-            background: transparent;
-          }
-          
-          .league-scroll::-webkit-scrollbar-track {
-            background: linear-gradient(90deg, #f1f5f9, #e2e8f0);
-            border-radius: 10px;
-            margin: 0 20px;
-            border: 1px solid #e2e8f0;
-          }
-          
-          .league-scroll::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
-            border-radius: 10px;
-            border: 2px solid #f8fafc;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          }
-          
-          .league-scroll::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(90deg, #059669, #2563eb, #7c3aed);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-          }
-        `}</style>
-
-        <div className="league-scroll overflow-x-auto pb-4">
-          <div className="flex space-x-6 w-max">
+        <Tabs defaultValue="local-business" className="w-full">
+          <TabsList className="grid w-full grid-cols-5 mb-8 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm">
             {leagueTables.map((league) => (
-              <Card key={league.id} className="flex-shrink-0 w-80 p-6 professional-card hover-lift">
-                <div className="flex items-center justify-between mb-6">
-                  <h4 className="text-lg font-semibold flex items-center">
-                    {league.icon}
-                    <span className="ml-2">{league.title}</span>
-                  </h4>
-                  <Badge className={league.badgeColor}>
-                    {league.badge}
-                  </Badge>
-                </div>
-                
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-12">Rank</TableHead>
-                      <TableHead>{league.isCity ? 'City' : league.isIndividual ? 'Donor' : 'Business'}</TableHead>
-                      <TableHead className="text-right">{league.isCity ? 'Points' : league.isIndividual ? 'Points' : 'Coins'}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {league.data.map((item) => (
-                      <TableRow key={item.rank}>
-                        <TableCell>
-                          <div className="flex items-center justify-center w-6 h-6">
-                            {getRankIcon(item.rank)}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <div className="font-medium text-gray-900 text-sm">{item.name}</div>
-                            {league.showLocation && item.location && (
-                              <div className="text-xs text-gray-600 flex items-center">
-                                <MapPin className="h-3 w-3 mr-1" />
-                                {item.location} • {item.donations} donations
-                              </div>
-                            )}
-                            {league.isCity && (
-                              <div className="text-xs text-gray-600 flex items-center">
-                                <Users className="h-3 w-3 mr-1" />
-                                {item.donors} donors
-                              </div>
-                            )}
-                            {league.isIndividual && (
-                              <div className="text-xs text-gray-600">
-                                Level {item.level} • {item.donations} donations
-                              </div>
-                            )}
-                            {!league.showLocation && !league.isCity && !league.isIndividual && (
-                              <div className="text-xs text-gray-600">
-                                {item.donations} donations sponsored
-                              </div>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="font-bold text-sm vibrant-text-blue">
-                            {league.isCity || league.isIndividual ? 
-                              item.points?.toLocaleString() || item.coins?.toLocaleString() : 
-                              item.coins?.toLocaleString()
-                            }
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {league.isCity || league.isIndividual ? 'points' : 'coins'}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Card>
+              <TabsTrigger 
+                key={league.id} 
+                value={league.id}
+                className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
+              >
+                <span className="hidden sm:inline">{league.icon}</span>
+                <span className="truncate">
+                  {league.id === 'local-business' ? 'Local' :
+                   league.id === 'halal-restaurants' ? 'Restaurants' :
+                   league.id === 'national-business' ? 'National' :
+                   league.id === 'cities' ? 'Cities' : 'Donors'}
+                </span>
+              </TabsTrigger>
             ))}
-          </div>
-        </div>
+          </TabsList>
 
-        <div className="text-center mt-6">
-          <p className="text-sm text-gray-500">
-            👈 Scroll horizontally to see all league tables
-          </p>
-        </div>
+          {leagueTables.map((league) => (
+            <TabsContent key={league.id} value={league.id} className="mt-0">
+              {renderLeagueTable(league)}
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
     </div>
   );
