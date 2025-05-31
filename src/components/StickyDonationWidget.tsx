@@ -259,12 +259,12 @@ const StickyDonationWidget = () => {
                 {/* Emergency Cause Selection */}
                 <div className="col-span-4">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
-                    <SelectTrigger className={`text-xs transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
                       {emergencyCauses.map((cause) => (
-                        <SelectItem key={cause.id} value={cause.id}>
+                        <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-gray-50">
                           <div className="flex items-center space-x-2">
                             {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
                             <span className={cause.color}>{cause.name}</span>
@@ -298,12 +298,12 @@ const StickyDonationWidget = () => {
                 {/* Custom amount & Currency with flag */}
                 <div className="col-span-2 flex gap-1">
                   <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-14 text-xs transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`w-14 text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
                       {currencies.map((curr) => (
-                        <SelectItem key={curr.code} value={curr.code}>
+                        <SelectItem key={curr.code} value={curr.code} className="bg-white hover:bg-gray-50">
                           <div className="flex items-center space-x-1">
                             <span>{curr.flag}</span>
                             <span>{curr.symbol}</span>
@@ -320,7 +320,7 @@ const StickyDonationWidget = () => {
                       setCustomAmount(e.target.value);
                       setSelectedAmount(0);
                     }}
-                    className={`text-xs flex-1 transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}
+                    className={`text-xs flex-1 transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}
                   />
                 </div>
 
