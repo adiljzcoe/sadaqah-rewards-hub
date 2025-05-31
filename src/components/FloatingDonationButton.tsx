@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, HandHeart, TrendingUp } from 'lucide-react';
@@ -187,9 +186,9 @@ const FloatingDonationButton = () => {
               </div>
             </Button>
 
-            {/* Bottom info */}
+            {/* Bottom info with improved contrast */}
             <div className="text-center mt-3">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-700 font-medium">
                 Fundraising donations help us reach our goals faster
               </p>
             </div>
