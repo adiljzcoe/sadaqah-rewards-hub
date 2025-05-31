@@ -11,6 +11,7 @@ interface FallingCoin {
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isWiggling, setIsWiggling] = useState(false);
+  const [isAttentionShaking, setIsAttentionShaking] = useState(false);
   const [fallingCoins, setFallingCoins] = useState<FallingCoin[]>([]);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
@@ -58,6 +59,18 @@ const FloatingDonationButton = () => {
     }, 30000); // Every 30 seconds
 
     return () => clearInterval(messageInterval);
+  }, []);
+
+  // Periodic attention-grabbing shake every 10 seconds
+  useEffect(() => {
+    const shakeInterval = setInterval(() => {
+      setIsAttentionShaking(true);
+      
+      // Stop shaking after animation completes
+      setTimeout(() => setIsAttentionShaking(false), 1500);
+    }, 10000); // Every 10 seconds
+
+    return () => clearInterval(shakeInterval);
   }, []);
 
   // Generate falling coins periodically
@@ -191,6 +204,20 @@ const FloatingDonationButton = () => {
           95% { transform: translateX(-0.5px) translateY(-0.5px) rotate(-0.1deg); }
           100% { transform: translateX(0) translateY(0) rotate(0deg); }
         }
+
+        @keyframes attention-shake {
+          0% { transform: translateX(0) translateY(0); }
+          10% { transform: translateX(-2px) translateY(-1px); }
+          20% { transform: translateX(2px) translateY(1px); }
+          30% { transform: translateX(-2px) translateY(0px); }
+          40% { transform: translateX(2px) translateY(-1px); }
+          50% { transform: translateX(-1px) translateY(1px); }
+          60% { transform: translateX(1px) translateY(0px); }
+          70% { transform: translateX(-1px) translateY(-1px); }
+          80% { transform: translateX(1px) translateY(1px); }
+          90% { transform: translateX(-0.5px) translateY(0px); }
+          100% { transform: translateX(0) translateY(0); }
+        }
       `}</style>
       
       <div className="fixed bottom-8 right-8 z-50">
@@ -291,6 +318,8 @@ const FloatingDonationButton = () => {
           <div 
             className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
               isWiggling ? 'animate-[charity-shake_2s_ease-in-out]' : ''
+            } ${
+              isAttentionShaking ? 'animate-[attention-shake_1.5s_ease-in-out]' : ''
             }`}
           >
             {/* Enhanced soft shadow for depth */}
