@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -257,7 +258,7 @@ const StickyDonationWidget = () => {
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
                 {/* Emergency Cause Selection */}
-                <div className="col-span-4">
+                <div className="col-span-3">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
                     <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
@@ -275,8 +276,8 @@ const StickyDonationWidget = () => {
                   </Select>
                 </div>
 
-                {/* Quick amounts - now only 3 amounts */}
-                <div className="col-span-4 grid grid-cols-3 gap-1">
+                {/* Quick amounts - now only 3 amounts, narrower */}
+                <div className="col-span-3 grid grid-cols-3 gap-1">
                   {quickAmounts.map((amount) => (
                     <button
                       key={amount}
@@ -284,7 +285,7 @@ const StickyDonationWidget = () => {
                         setSelectedAmount(amount);
                         setCustomAmount('');
                       }}
-                      className={`rounded text-xs font-medium transition-all ${isSticky ? 'py-1 px-1' : 'py-1.5 px-1'} ${
+                      className={`rounded text-xs font-medium transition-all ${isSticky ? 'py-1 px-0.5' : 'py-1.5 px-0.5'} ${
                         selectedAmount === amount && !customAmount
                           ? 'bg-emerald-600 text-white shadow-md'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -295,10 +296,10 @@ const StickyDonationWidget = () => {
                   ))}
                 </div>
 
-                {/* Custom amount & Currency with flag */}
-                <div className="col-span-2 flex gap-1">
+                {/* Currency selector */}
+                <div className="col-span-1">
                   <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-14 text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
@@ -312,15 +313,19 @@ const StickyDonationWidget = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+
+                {/* Custom amount - wider */}
+                <div className="col-span-3">
                   <Input
                     type="number"
-                    placeholder="Other"
+                    placeholder="Other amount"
                     value={customAmount}
                     onChange={(e) => {
                       setCustomAmount(e.target.value);
                       setSelectedAmount(0);
                     }}
-                    className={`text-xs flex-1 transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}
+                    className={`text-xs w-full transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}
                   />
                 </div>
 
