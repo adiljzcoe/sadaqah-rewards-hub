@@ -256,7 +256,26 @@ const StickyDonationWidget = () => {
 
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
-                {/* Currency selector - now first */}
+                {/* Emergency Cause Selection - now first */}
+                <div className="col-span-3">
+                  <Select value={selectedCause} onValueChange={setSelectedCause}>
+                    <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
+                      {emergencyCauses.map((cause) => (
+                        <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-gray-50">
+                          <div className="flex items-center space-x-2">
+                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
+                            <span className={cause.color}>{cause.name}</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Currency selector - now second */}
                 <div className="col-span-1">
                   <Select value={currency} onValueChange={setCurrency}>
                     <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
@@ -293,25 +312,6 @@ const StickyDonationWidget = () => {
                       {currentCurrency?.symbol}{amount}
                     </button>
                   ))}
-                </div>
-
-                {/* Emergency Cause Selection */}
-                <div className="col-span-3">
-                  <Select value={selectedCause} onValueChange={setSelectedCause}>
-                    <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
-                      {emergencyCauses.map((cause) => (
-                        <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-gray-50">
-                          <div className="flex items-center space-x-2">
-                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
-                            <span className={cause.color}>{cause.name}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 {/* Custom amount - wider */}
