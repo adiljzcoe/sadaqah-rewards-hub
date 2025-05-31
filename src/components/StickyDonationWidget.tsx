@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -294,7 +295,7 @@ const StickyDonationWidget = () => {
                 </div>
               </div>
 
-              {/* 100% Donation Policy - Hide on mobile when sticky, show on desktop */}
+              {/* 100% Donation Policy with Payment Methods - Hide on mobile when sticky, show on desktop */}
               {!isSticky && (
                 <div className="hidden sm:flex items-center justify-between mt-3">
                   <div className="text-xs text-gray-600 flex items-center space-x-4">
@@ -318,12 +319,19 @@ const StickyDonationWidget = () => {
                 </div>
               )}
 
-              {/* Mobile-specific donation policy - show when not sticky */}
+              {/* Mobile-specific donation policy with payment methods - show when not sticky */}
               {!isSticky && (
-                <div className="sm:hidden mt-3 text-center">
-                  <div className="inline-flex items-center bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs">
-                    <span className="mr-1">💯</span>
-                    <span className="font-medium text-gray-700">100% DONATION POLICY</span>
+                <div className="sm:hidden mt-3 flex flex-col items-center space-y-2">
+                  <div className="flex items-center justify-center space-x-3">
+                    <div className="inline-flex items-center bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs">
+                      <span className="mr-1">💯</span>
+                      <span className="font-medium text-gray-700">100% DONATION POLICY</span>
+                    </div>
+                    <img 
+                      src="/lovable-uploads/fa941c0a-2492-4fde-8299-aa6d80b65abf.png" 
+                      alt="Accepted payment methods"
+                      className="h-3 object-contain opacity-70"
+                    />
                   </div>
                 </div>
               )}
