@@ -11,15 +11,15 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden">
-      <div className="container mx-auto px-4">
+    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden max-w-full">
+      <div className="container mx-auto px-4 max-w-full overflow-hidden">
         <div className="text-center text-sm text-gray-400 mb-6 font-light tracking-wide">
           Charities we choose to fundraise for
         </div>
         
-        {/* Ticker container */}
-        <div className="relative overflow-hidden w-full">
-          <div className="flex space-x-12 w-max animate-[scroll_20s_linear_infinite]">
+        {/* Ticker container with proper overflow containment */}
+        <div className="relative overflow-hidden w-full max-w-full">
+          <div className="flex space-x-12 animate-[scroll_20s_linear_infinite]" style={{ width: 'calc(200% + 3rem)' }}>
             {/* First set of logos */}
             {charityLogos.map((charity, index) => (
               <div
