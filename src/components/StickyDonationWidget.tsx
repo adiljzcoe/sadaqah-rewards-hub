@@ -20,7 +20,8 @@ const emergencyCauses = [
     urgent: true, 
     impact: 'Save lives now',
     color: 'text-red-600',
-    bgColor: 'bg-red-50 border-red-200'
+    bgColor: 'bg-red-50 border-red-200',
+    flag: '/lovable-uploads/a233a698-3250-4dc4-8b2d-1135b8fa1362.png'
   },
   { 
     id: 'pakistan', 
@@ -253,6 +254,13 @@ const StickyDonationWidget = () => {
                               className="bg-white hover:bg-gray-50 text-gray-700 rounded-lg"
                             >
                               <div className="flex items-center space-x-2">
+                                {cause.flag && (
+                                  <img 
+                                    src={cause.flag} 
+                                    alt={`${cause.name} Flag`} 
+                                    className="w-4 h-3 object-cover rounded-sm"
+                                  />
+                                )}
                                 {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
                                 <span className={`${cause.color} font-medium`}>{cause.name}</span>
                               </div>
