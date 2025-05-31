@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
-import GoldCoin3D from './GoldCoin3D';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -75,8 +74,8 @@ const FloatingDonationButton = () => {
                 </div>
               </div>
               
-              {/* Thin handle area near the bottom */}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-2 bg-gradient-to-r from-blue-700 to-blue-800 rounded-sm border border-blue-600"></div>
+              {/* Thin handle area near the bottom - more prominent */}
+              <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-8 h-3 bg-gradient-to-r from-blue-700 to-blue-800 rounded-sm border border-blue-600 shadow-inner"></div>
               
               {/* Bottom rim */}
               <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full"></div>
@@ -96,13 +95,6 @@ const FloatingDonationButton = () => {
               <div className="absolute bottom-0 -right-1 w-2 h-1 bg-blue-900 rounded-full"></div>
             </div>
           </div>
-        </div>
-        
-        {/* Floating coins animation */}
-        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full shadow-lg animate-bounce" style={{ animationDelay: '0.5s' }}>
-          <GoldCoin3D size={32}>
-            🔥
-          </GoldCoin3D>
         </div>
       </div>
     </div>
