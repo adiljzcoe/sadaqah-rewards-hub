@@ -137,10 +137,10 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot - increased size to prevent clipping */}
+        {/* Main donation button with donation tin mascot - made even bigger to prevent hat clipping */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-20 h-20 cursor-pointer transition-all duration-300 group overflow-visible"
+          className="relative w-24 h-24 cursor-pointer transition-all duration-300 group overflow-visible"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
