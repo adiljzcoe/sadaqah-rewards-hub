@@ -10,6 +10,7 @@ function DonationTin({ isActive }: DonationTinProps) {
   const tinRef = useRef<THREE.Group>(null);
   const eyesRef = useRef<THREE.Group>(null);
   const eyebrowsRef = useRef<THREE.Group>(null);
+  const beardRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
     if (tinRef.current) {
@@ -34,6 +35,11 @@ function DonationTin({ isActive }: DonationTinProps) {
         if (eyebrowsRef.current) {
           eyebrowsRef.current.position.y = Math.sin(time * 8) * 0.01 + 0.25;
         }
+
+        // Gentle beard movement when excited
+        if (beardRef.current) {
+          beardRef.current.rotation.z = Math.sin(time * 6) * 0.02;
+        }
       } else {
         // Gentle swaying when idle
         const swayIntensity = 0.03;
@@ -48,6 +54,11 @@ function DonationTin({ isActive }: DonationTinProps) {
         // Subtle eyebrow movement
         if (eyebrowsRef.current) {
           eyebrowsRef.current.position.y = Math.sin(time * 3) * 0.005 + 0.25;
+        }
+
+        // Subtle beard sway
+        if (beardRef.current) {
+          beardRef.current.rotation.z = Math.sin(time * 2.5) * 0.01;
         }
       }
       
@@ -98,82 +109,121 @@ function DonationTin({ isActive }: DonationTinProps) {
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
 
-      {/* Eyes group for blinking */}
+      {/* Eyes group for blinking - made larger and more friendly */}
       <group ref={eyesRef}>
-        {/* Left eye */}
+        {/* Left eye - larger and rounder */}
         <mesh position={[-0.12, 0.15, 0.41]}>
-          <sphereGeometry args={[0.05, 8, 8]} />
+          <sphereGeometry args={[0.06, 8, 8]} />
           <meshStandardMaterial color="#000000" />
         </mesh>
-        {/* Right eye */}
+        {/* Right eye - larger and rounder */}
         <mesh position={[0.12, 0.15, 0.41]}>
-          <sphereGeometry args={[0.05, 8, 8]} />
+          <sphereGeometry args={[0.06, 8, 8]} />
           <meshStandardMaterial color="#000000" />
         </mesh>
 
-        {/* Eye highlights for more life */}
-        <mesh position={[-0.11, 0.17, 0.42]}>
-          <sphereGeometry args={[0.018, 6, 6]} />
+        {/* Eye highlights for more life - larger */}
+        <mesh position={[-0.11, 0.18, 0.42]}>
+          <sphereGeometry args={[0.022, 6, 6]} />
           <meshStandardMaterial color="#FFFFFF" />
         </mesh>
-        <mesh position={[0.13, 0.17, 0.42]}>
-          <sphereGeometry args={[0.018, 6, 6]} />
+        <mesh position={[0.13, 0.18, 0.42]}>
+          <sphereGeometry args={[0.022, 6, 6]} />
           <meshStandardMaterial color="#FFFFFF" />
         </mesh>
 
         {/* Secondary eye highlights for sparkle */}
-        <mesh position={[-0.105, 0.18, 0.425]}>
-          <sphereGeometry args={[0.008, 6, 6]} />
+        <mesh position={[-0.105, 0.19, 0.425]}>
+          <sphereGeometry args={[0.01, 6, 6]} />
           <meshStandardMaterial color="#FFFFFF" />
         </mesh>
-        <mesh position={[0.135, 0.18, 0.425]}>
-          <sphereGeometry args={[0.008, 6, 6]} />
+        <mesh position={[0.135, 0.19, 0.425]}>
+          <sphereGeometry args={[0.01, 6, 6]} />
           <meshStandardMaterial color="#FFFFFF" />
         </mesh>
       </group>
 
-      {/* Eyebrows for expression */}
+      {/* Friendlier eyebrows - less angular, more curved */}
       <group ref={eyebrowsRef} position={[0, 0.25, 0]}>
-        <mesh position={[-0.12, 0, 0.41]} rotation={[0, 0, -0.2]}>
-          <boxGeometry args={[0.08, 0.015, 0.01]} />
-          <meshStandardMaterial color="#1E40AF" />
+        <mesh position={[-0.12, 0, 0.41]} rotation={[0, 0, -0.1]}>
+          <boxGeometry args={[0.09, 0.018, 0.01]} />
+          <meshStandardMaterial color="#8B5A3C" />
         </mesh>
-        <mesh position={[0.12, 0, 0.41]} rotation={[0, 0, 0.2]}>
-          <boxGeometry args={[0.08, 0.015, 0.01]} />
-          <meshStandardMaterial color="#1E40AF" />
+        <mesh position={[0.12, 0, 0.41]} rotation={[0, 0, 0.1]}>
+          <boxGeometry args={[0.09, 0.018, 0.01]} />
+          <meshStandardMaterial color="#8B5A3C" />
         </mesh>
       </group>
 
-      {/* Bigger smile - curved using multiple small spheres */}
-      <mesh position={[-0.08, 0.05, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
+      {/* Beard group - friendly brown beard */}
+      <group ref={beardRef} position={[0, -0.08, 0.35]}>
+        {/* Main beard body */}
+        <mesh position={[0, -0.1, 0.05]}>
+          <sphereGeometry args={[0.15, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        </mesh>
+        
+        {/* Beard sides for fuller look */}
+        <mesh position={[-0.08, -0.05, 0.03]} rotation={[0, 0.3, 0]}>
+          <sphereGeometry args={[0.08, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        </mesh>
+        <mesh position={[0.08, -0.05, 0.03]} rotation={[0, -0.3, 0]}>
+          <sphereGeometry args={[0.08, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        </mesh>
+
+        {/* Mustache */}
+        <mesh position={[-0.06, 0.08, 0.06]}>
+          <sphereGeometry args={[0.04, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        </mesh>
+        <mesh position={[0.06, 0.08, 0.06]}>
+          <sphereGeometry args={[0.04, 8, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.8} />
+        </mesh>
+
+        {/* Small beard texture details */}
+        <mesh position={[-0.03, -0.08, 0.08]}>
+          <sphereGeometry args={[0.015, 6, 6]} />
+          <meshStandardMaterial color="#A0674A" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.03, -0.08, 0.08]}>
+          <sphereGeometry args={[0.015, 6, 6]} />
+          <meshStandardMaterial color="#A0674A" roughness={0.9} />
+        </mesh>
+      </group>
+
+      {/* Bigger, friendlier smile - curved using multiple small spheres */}
+      <mesh position={[-0.09, 0.05, 0.42]}>
+        <sphereGeometry args={[0.018, 6, 6]} />
         <meshStandardMaterial color="#FF6B6B" />
       </mesh>
-      <mesh position={[-0.04, 0.02, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
+      <mesh position={[-0.045, 0.02, 0.42]}>
+        <sphereGeometry args={[0.018, 6, 6]} />
         <meshStandardMaterial color="#FF6B6B" />
       </mesh>
       <mesh position={[0, 0.01, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
+        <sphereGeometry args={[0.018, 6, 6]} />
         <meshStandardMaterial color="#FF6B6B" />
       </mesh>
-      <mesh position={[0.04, 0.02, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
+      <mesh position={[0.045, 0.02, 0.42]}>
+        <sphereGeometry args={[0.018, 6, 6]} />
         <meshStandardMaterial color="#FF6B6B" />
       </mesh>
-      <mesh position={[0.08, 0.05, 0.42]}>
-        <sphereGeometry args={[0.015, 6, 6]} />
+      <mesh position={[0.09, 0.05, 0.42]}>
+        <sphereGeometry args={[0.018, 6, 6]} />
         <meshStandardMaterial color="#FF6B6B" />
       </mesh>
 
-      {/* Cheek blushes */}
-      <mesh position={[-0.25, 0.08, 0.35]} rotation={[0, 0.3, 0]}>
-        <sphereGeometry args={[0.03, 8, 8]} />
-        <meshStandardMaterial color="#FFB6C1" opacity={0.7} transparent />
+      {/* Enhanced cheek blushes for friendliness */}
+      <mesh position={[-0.25, 0.1, 0.35]} rotation={[0, 0.3, 0]}>
+        <sphereGeometry args={[0.035, 8, 8]} />
+        <meshStandardMaterial color="#FFB6C1" opacity={0.8} transparent />
       </mesh>
-      <mesh position={[0.25, 0.08, 0.35]} rotation={[0, -0.3, 0]}>
-        <sphereGeometry args={[0.03, 8, 8]} />
-        <meshStandardMaterial color="#FFB6C1" opacity={0.7} transparent />
+      <mesh position={[0.25, 0.1, 0.35]} rotation={[0, -0.3, 0]}>
+        <sphereGeometry args={[0.035, 8, 8]} />
+        <meshStandardMaterial color="#FFB6C1" opacity={0.8} transparent />
       </mesh>
 
       {/* DONATE text area - slightly raised white label */}
