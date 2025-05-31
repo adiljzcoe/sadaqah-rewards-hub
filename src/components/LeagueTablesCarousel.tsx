@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/components/ui/table';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Building2, MapPin, Utensils, Crown, Trophy, Users, Medal, Star } from 'lucide-react';
 
 // Business data
@@ -49,6 +49,8 @@ const topDonors = [
 ];
 
 const LeagueTablesCarousel = () => {
+  const [activeTab, setActiveTab] = useState('local-business');
+
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1: return <Crown className="h-4 w-4 text-yellow-500" />;
@@ -71,7 +73,8 @@ const LeagueTablesCarousel = () => {
     {
       id: 'local-business',
       title: 'Local Business Leaders',
-      icon: <MapPin className="h-5 w-5 text-emerald-600" />,
+      shortTitle: 'Local',
+      icon: <MapPin className="h-4 w-4 text-emerald-600" />,
       badge: 'This Month',
       badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
       data: localBusinesses,
@@ -80,7 +83,8 @@ const LeagueTablesCarousel = () => {
     {
       id: 'halal-restaurants',
       title: 'Halal Restaurant Leaders',
-      icon: <Utensils className="h-5 w-5 text-orange-600" />,
+      shortTitle: 'Restaurants',
+      icon: <Utensils className="h-4 w-4 text-orange-600" />,
       badge: 'This Month',
       badgeColor: 'bg-orange-100 text-orange-800 border-orange-200',
       data: halalRestaurants,
@@ -89,7 +93,8 @@ const LeagueTablesCarousel = () => {
     {
       id: 'national-business',
       title: 'National Business Leaders',
-      icon: <Crown className="h-5 w-5 text-blue-600" />,
+      shortTitle: 'National',
+      icon: <Crown className="h-4 w-4 text-blue-600" />,
       badge: 'This Month',
       badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
       data: nationalBusinesses,
@@ -98,7 +103,8 @@ const LeagueTablesCarousel = () => {
     {
       id: 'cities',
       title: 'City Rankings',
-      icon: <Building2 className="h-5 w-5 text-purple-600" />,
+      shortTitle: 'Cities',
+      icon: <Building2 className="h-4 w-4 text-purple-600" />,
       badge: 'Live',
       badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
       data: cityLeaderboard,
@@ -108,7 +114,8 @@ const LeagueTablesCarousel = () => {
     {
       id: 'top-donors',
       title: 'Top Individual Donors',
-      icon: <Star className="h-5 w-5 text-pink-600" />,
+      shortTitle: 'Donors',
+      icon: <Star className="h-4 w-4 text-pink-600" />,
       badge: 'This Week',
       badgeColor: 'bg-pink-100 text-pink-800 border-pink-200',
       data: topDonors,
@@ -116,6 +123,8 @@ const LeagueTablesCarousel = () => {
       isIndividual: true
     }
   ];
+
+  const activeLeague = leagueTables.find(league => league.id === activeTab);
 
   const renderLeagueTable = (league: any) => (
     <Card className="w-full max-w-md mx-auto p-6 professional-card hover-lift">
@@ -200,31 +209,49 @@ const LeagueTablesCarousel = () => {
           <p className="text-gray-600">See how different groups are making an impact</p>
         </div>
 
-        <Tabs defaultValue="local-business" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8 bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm">
-            {leagueTables.map((league) => (
-              <TabsTrigger 
-                key={league.id} 
-                value={league.id}
-                className="flex items-center gap-2 text-xs sm:text-sm data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-blue-500 data-[state=active]:text-white"
+        {/* Button Grid - Two Rows */}
+        <div className="mb-8">
+          <div className="grid grid-cols-3 gap-3 mb-3 max-w-2xl mx-auto">
+            {/* First row - 3 buttons */}
+            {leagueTables.slice(0, 3).map((league) => (
+              <Button
+                key={league.id}
+                variant={activeTab === league.id ? "default" : "outline"}
+                onClick={() => setActiveTab(league.id)}
+                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 ${
+                  activeTab === league.id 
+                    ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg' 
+                    : 'bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50'
+                }`}
               >
                 <span className="hidden sm:inline">{league.icon}</span>
-                <span className="truncate">
-                  {league.id === 'local-business' ? 'Local' :
-                   league.id === 'halal-restaurants' ? 'Restaurants' :
-                   league.id === 'national-business' ? 'National' :
-                   league.id === 'cities' ? 'Cities' : 'Donors'}
-                </span>
-              </TabsTrigger>
+                <span className="truncate">{league.shortTitle}</span>
+              </Button>
             ))}
-          </TabsList>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+            {/* Second row - 2 buttons */}
+            {leagueTables.slice(3, 5).map((league) => (
+              <Button
+                key={league.id}
+                variant={activeTab === league.id ? "default" : "outline"}
+                onClick={() => setActiveTab(league.id)}
+                className={`flex items-center gap-2 text-xs sm:text-sm transition-all duration-200 ${
+                  activeTab === league.id 
+                    ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white shadow-lg' 
+                    : 'bg-white/80 backdrop-blur-sm border border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                <span className="hidden sm:inline">{league.icon}</span>
+                <span className="truncate">{league.shortTitle}</span>
+              </Button>
+            ))}
+          </div>
+        </div>
 
-          {leagueTables.map((league) => (
-            <TabsContent key={league.id} value={league.id} className="mt-0">
-              {renderLeagueTable(league)}
-            </TabsContent>
-          ))}
-        </Tabs>
+        {/* Active League Table */}
+        {activeLeague && renderLeagueTable(activeLeague)}
       </div>
     </div>
   );
