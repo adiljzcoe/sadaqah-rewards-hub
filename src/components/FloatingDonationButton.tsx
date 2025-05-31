@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -54,10 +53,6 @@ const FloatingDonationButton = () => {
         onClick={() => setIsExpanded(!isExpanded)}
         className="relative w-20 h-20 cursor-pointer overflow-hidden group"
       >
-        {/* Ray of light behind the tin */}
-        <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/80 via-yellow-300/60 to-white/80 animate-pulse"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-yellow-200/40 to-transparent animate-shimmer"></div>
-        
         {/* 3D Charity collection tin with side-to-side shaking animation */}
         <div className="relative z-10 w-full h-full flex items-center justify-center animate-charity-shake">
           {/* Charity tin viewed from the side */}
@@ -79,6 +74,9 @@ const FloatingDonationButton = () => {
                   DONATE
                 </div>
               </div>
+              
+              {/* Thin handle area near the bottom */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-2 bg-gradient-to-r from-blue-700 to-blue-800 rounded-sm border border-blue-600"></div>
               
               {/* Bottom rim */}
               <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full"></div>
@@ -106,9 +104,6 @@ const FloatingDonationButton = () => {
             🔥
           </GoldCoin3D>
         </div>
-        
-        {/* Additional light rays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/30 to-transparent animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
     </div>
   );
