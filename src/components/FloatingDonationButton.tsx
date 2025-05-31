@@ -3,12 +3,14 @@ import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import HeavenlyBirdMascot from './HeavenlyBirdMascot';
+import CoinAnimation from './CoinAnimation';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCallToAction, setShowCallToAction] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
   const [isStickyWidgetActive, setIsStickyWidgetActive] = useState(false);
+  const [coinAnimationTrigger, setCoinAnimationTrigger] = useState(false);
 
   useEffect(() => {
     // Simulate a call to action after 5 seconds
@@ -23,6 +25,15 @@ const FloatingDonationButton = () => {
   const handleFundraisingDonate = (amount: number) => {
     const valueReceived = amount * 7;
     console.log(`Fundraising Donation: £${amount} = £${valueReceived} value!`);
+    
+    // Trigger coin animation
+    setCoinAnimationTrigger(true);
+    
+    // Reset the trigger after a short delay
+    setTimeout(() => {
+      setCoinAnimationTrigger(false);
+    }, 100);
+    
     setIsExpanded(false);
     // Here you would typically integrate with your donation processing system
   };
@@ -194,6 +205,12 @@ const FloatingDonationButton = () => {
           <HeavenlyBirdMascot 
             isActive={showCallToAction} 
             className="w-full h-full overflow-visible"
+          />
+          
+          {/* Coin Animation Overlay */}
+          <CoinAnimation 
+            trigger={coinAnimationTrigger}
+            onComplete={() => console.log('Coin animation completed!')}
           />
         </div>
       </div>
