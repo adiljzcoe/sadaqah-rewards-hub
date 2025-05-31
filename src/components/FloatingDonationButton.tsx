@@ -119,6 +119,18 @@ const FloatingDonationButton = () => {
               : 'mb-6'
           }`}>
 
+            {/* 100% Fundraising Donation Policy Plaque */}
+            <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-lg p-2 mb-3">
+              <div className="text-center">
+                <p className="text-xs font-bold text-emerald-800 mb-1">
+                  🎯 100% FUNDRAISING DONATION
+                </p>
+                <p className="text-xs text-emerald-700 leading-tight">
+                  Every penny goes directly to the cause
+                </p>
+              </div>
+            </div>
+
             {/* Compact explanation */}
             <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-2 mb-2">
               <p className="text-xs text-orange-800 font-medium">
