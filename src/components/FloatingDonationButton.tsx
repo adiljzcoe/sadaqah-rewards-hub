@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
@@ -193,7 +194,7 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot - moved coin animation inside */}
+        {/* Main donation button with mascot - Fixed positioning */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
           className="relative w-40 h-40 cursor-pointer transition-all duration-300 group"
@@ -201,17 +202,21 @@ const FloatingDonationButton = () => {
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
-          {/* Mascot */}
-          <HeavenlyBirdMascot 
-            isActive={showCallToAction} 
-            className="w-full h-full"
-          />
+          {/* Mascot - Base layer */}
+          <div className="absolute inset-0 z-10">
+            <HeavenlyBirdMascot 
+              isActive={showCallToAction} 
+              className="w-full h-full"
+            />
+          </div>
           
-          {/* Coin Animation - Now on the same layer as mascot */}
-          <CoinAnimation 
-            trigger={coinAnimationTrigger}
-            onComplete={() => console.log('Coin animation completed!')}
-          />
+          {/* Coin Animation - Overlay layer */}
+          <div className="absolute inset-0 z-20">
+            <CoinAnimation 
+              trigger={coinAnimationTrigger}
+              onComplete={() => console.log('Coin animation completed!')}
+            />
+          </div>
         </div>
       </div>
     </>
