@@ -6,25 +6,41 @@ import { Play, Users, Heart, Share2, Volume2, Sparkles, Zap, Star, Gift, Trophy,
 import SimpleGoldCoin from './SimpleGoldCoin';
 import EpicDonationButton from './EpicDonationButton';
 
+interface DonationActivity {
+  id: string | number;
+  user: string;
+  amount?: number;
+  finalAmount?: number;
+  emoji: string;
+  timestamp: Date | string;
+  onBehalfOf?: string;
+  note?: string;
+  streak?: number;
+  multiplier?: number;
+  category?: string;
+  coins?: number;
+  title?: string;
+}
+
 const LiveVideo = () => {
-  const [recentDonations, setRecentDonations] = useState([]);
+  const [recentDonations, setRecentDonations] = useState<DonationActivity[]>([]);
   const [userCoins, setUserCoins] = useState(1250);
   const [userPoints, setUserPoints] = useState(5632);
   const [userLevel, setUserLevel] = useState(12);
-  const [floatingCoins, setFloatingCoins] = useState([]);
+  const [floatingCoins, setFloatingCoins] = useState<any[]>([]);
   const [celebrationMode, setCelebrationMode] = useState(false);
   const [streakCount, setStreakCount] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
   const [pulseEffect, setPulseEffect] = useState(false);
-  const [fakeDonations, setFakeDonations] = useState([]);
-  const [userBadges, setUserBadges] = useState(['first-donor', 'streak-master']);
+  const [fakeDonations, setFakeDonations] = useState<DonationActivity[]>([]);
+  const [userBadges, setUserBadges] = useState<string[]>(['first-donor', 'streak-master']);
   const [dailyStreak, setDailyStreak] = useState(5);
   const [weeklyStreak, setWeeklyStreak] = useState(2);
   const [showAffirmation, setShowAffirmation] = useState(false);
   const [currentAffirmation, setCurrentAffirmation] = useState('');
-  const [epicNotification, setEpicNotification] = useState(null);
-  const [dedicationFeed, setDedicationFeed] = useState([]);
-  const [displayedMessages, setDisplayedMessages] = useState([]);
+  const [epicNotification, setEpicNotification] = useState<DonationActivity | null>(null);
+  const [dedicationFeed, setDedicationFeed] = useState<DonationActivity[]>([]);
+  const [displayedMessages, setDisplayedMessages] = useState<DonationActivity[]>([]);
 
   // Rotating emojis for each category
   const categoryEmojis = {
@@ -144,7 +160,7 @@ const LiveVideo = () => {
   useEffect(() => {
     const allMessages = [...recentDonations, ...fakeDonations, ...dedicationFeed]
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      .slice(0, 4); // Changed from 3 to 4
+      .slice(0, 4);
     
     setDisplayedMessages(allMessages);
   }, [recentDonations, fakeDonations, dedicationFeed]);
@@ -243,11 +259,11 @@ const LiveVideo = () => {
     return () => clearInterval(interval);
   }, [currentEmojis]);
 
-  const calculateLevel = (points) => {
+  const calculateLevel = (points: number) => {
     return Math.floor(points / 500) + 1;
   };
 
-  const checkForBadges = (newStreak, newLevel, newPoints) => {
+  const checkForBadges = (newStreak: number, newLevel: number, newPoints: number) => {
     const newBadges = [...userBadges];
     
     if (newStreak >= 5 && !newBadges.includes('streak-master')) {
@@ -276,7 +292,7 @@ const LiveVideo = () => {
     }, 3000);
   };
 
-  const createFloatingCoin = (donation) => {
+  const createFloatingCoin = (donation: any) => {
     const coinId = Date.now() + Math.random();
     const newCoin = {
       id: coinId,
@@ -318,7 +334,7 @@ const LiveVideo = () => {
     }, 2500);
   };
 
-  const handleQuickDonate = (donation) => {
+  const handleQuickDonate = (donation: any) => {
     if (userCoins >= donation.coins) {
       const finalAmount = donation.coins * multiplier;
       const pointsGained = finalAmount * 10;
@@ -363,7 +379,7 @@ const LiveVideo = () => {
     }
   };
 
-  const handleEpicDonation = (donation) => {
+  const handleEpicDonation = (donation: DonationActivity) => {
     setEpicNotification(donation);
     
     // Create massive celebration effect
@@ -650,7 +666,6 @@ const LiveVideo = () => {
                     <span className="font-bold flex-shrink-0 text-xs">
                       {donation.user === 'You' ? 'You' : donation.user}
                     </span>
-                    <span className="text-emerald-300 flex-shrink-0">helped</span>
                     <div className="flex items-center bg-white/15 rounded px-1.5 py-0.5 flex-shrink-0">
                       <SimpleGoldCoin size={10} className="mr-0.5" />
                       <span className="font-bold text-xs">{donation.finalAmount || donation.amount}</span>
