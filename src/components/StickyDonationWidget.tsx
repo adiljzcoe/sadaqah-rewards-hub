@@ -154,48 +154,61 @@ const StickyDonationWidget = () => {
         </div>
 
         {/* Enhanced fluffy cloud bottom edge */}
-        <div className="absolute bottom-0 left-0 right-0 h-6 overflow-hidden">
-          {/* Multiple layers of cloud shapes for realistic fluffy effect */}
+        <div className="absolute bottom-0 left-0 right-0 h-8 overflow-hidden">
           <svg 
-            className="absolute bottom-0 w-full h-8" 
-            viewBox="0 0 1200 40" 
+            className="absolute bottom-0 w-full h-12" 
+            viewBox="0 0 1200 50" 
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Base cloud layer */}
+            {/* Base fluffy cloud layer with more realistic curves */}
             <path 
-              d="M0,20 C20,5 40,25 60,15 C80,5 100,30 120,20 C140,10 160,25 180,15 C200,5 220,30 240,20 C260,10 280,25 300,15 C320,5 340,30 360,20 C380,10 400,25 420,15 C440,5 460,30 480,20 C500,10 520,25 540,15 C560,5 580,30 600,20 C620,10 640,25 660,15 C680,5 700,30 720,20 C740,10 760,25 780,15 C800,5 820,30 840,20 C860,10 880,25 900,15 C920,5 940,30 960,20 C980,10 1000,25 1020,15 C1040,5 1060,30 1080,20 C1100,10 1120,25 1140,15 C1160,5 1180,25 1200,20 L1200,40 L0,40 Z" 
+              d="M0,25 Q50,5 100,20 Q150,35 200,15 Q250,0 300,25 Q350,40 400,20 Q450,5 500,30 Q550,45 600,25 Q650,10 700,35 Q750,50 800,30 Q850,15 900,40 Q950,25 1000,20 Q1050,35 1100,25 Q1150,15 1200,30 L1200,50 L0,50 Z" 
               fill="url(#cloudGradient1)"
             />
-            {/* Secondary fluffy layer */}
+            
+            {/* Secondary cloud bumps for depth */}
             <path 
-              d="M0,25 C25,10 45,35 70,20 C95,5 115,35 140,25 C165,10 185,35 210,20 C235,5 255,35 280,25 C305,10 325,35 350,20 C375,5 395,35 420,25 C445,10 465,35 490,20 C515,5 535,35 560,25 C585,10 605,35 630,20 C655,5 675,35 700,25 C725,10 745,35 770,20 C795,5 815,35 840,25 C865,10 885,35 910,20 C935,5 955,35 980,25 C1005,10 1025,35 1050,20 C1075,5 1095,35 1120,25 C1145,10 1165,30 1200,25 L1200,40 L0,40 Z" 
+              d="M0,30 Q40,15 80,25 Q120,40 160,20 Q200,5 240,30 Q280,45 320,25 Q360,10 400,35 Q440,50 480,30 Q520,15 560,40 Q600,25 640,20 Q680,35 720,25 Q760,10 800,35 Q840,50 880,30 Q920,15 960,40 Q1000,25 1040,30 Q1080,15 1120,25 Q1160,40 1200,35 L1200,50 L0,50 Z" 
               fill="url(#cloudGradient2)"
-              opacity="0.8"
+              opacity="0.85"
             />
-            {/* Top highlight layer */}
+            
+            {/* Top highlight wispy clouds */}
             <path 
-              d="M0,30 C30,15 50,40 80,25 C110,10 130,40 160,30 C190,15 210,40 240,25 C270,10 290,40 320,30 C350,15 370,40 400,25 C430,10 450,40 480,30 C510,15 530,40 560,25 C590,10 610,40 640,30 C670,15 690,40 720,25 C750,10 770,40 800,30 C830,15 850,40 880,25 C910,10 930,40 960,30 C990,15 1010,40 1040,25 C1070,10 1090,40 1120,30 C1150,15 1170,35 1200,30 L1200,40 L0,40 Z" 
+              d="M0,35 Q60,20 120,30 Q180,45 240,25 Q300,10 360,35 Q420,50 480,30 Q540,15 600,40 Q660,25 720,20 Q780,35 840,25 Q900,10 960,35 Q1020,50 1080,30 Q1140,15 1200,35 L1200,50 L0,50 Z" 
               fill="url(#cloudGradient3)"
+              opacity="0.7"
+            />
+            
+            {/* Extra wispy layer for more fluffiness */}
+            <path 
+              d="M0,40 Q30,25 60,35 Q90,50 120,30 Q150,15 180,40 Q210,25 240,20 Q270,35 300,25 Q330,10 360,35 Q390,50 420,30 Q450,15 480,40 Q510,25 540,30 Q570,45 600,25 Q630,10 660,35 Q690,50 720,30 Q750,15 780,40 Q810,25 840,20 Q870,35 900,25 Q930,10 960,35 Q990,50 1020,30 Q1050,15 1080,40 Q1110,25 1140,30 Q1170,45 1200,40 L1200,50 L0,50 Z" 
+              fill="url(#cloudGradient4)"
               opacity="0.6"
             />
             
-            {/* Gradient definitions */}
+            {/* Gradient definitions for realistic cloud coloring */}
             <defs>
               <linearGradient id="cloudGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.9"/>
-                <stop offset="50%" stopColor="rgb(147 197 253)" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="rgb(165 180 252)" stopOpacity="0.7"/>
+                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.95"/>
+                <stop offset="30%" stopColor="rgb(147 197 253)" stopOpacity="0.9"/>
+                <stop offset="70%" stopColor="rgb(165 180 252)" stopOpacity="0.85"/>
+                <stop offset="100%" stopColor="rgb(129 140 248)" stopOpacity="0.8"/>
               </linearGradient>
               <linearGradient id="cloudGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(219 234 254)" stopOpacity="0.8"/>
-                <stop offset="50%" stopColor="rgb(196 181 253)" stopOpacity="0.7"/>
-                <stop offset="100%" stopColor="rgb(186 230 253)" stopOpacity="0.6"/>
+                <stop offset="0%" stopColor="rgb(219 234 254)" stopOpacity="0.9"/>
+                <stop offset="50%" stopColor="rgb(196 181 253)" stopOpacity="0.8"/>
+                <stop offset="100%" stopColor="rgb(186 230 253)" stopOpacity="0.7"/>
               </linearGradient>
               <linearGradient id="cloudGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.8"/>
+                <stop offset="50%" stopColor="rgb(240 249 255)" stopOpacity="0.7"/>
+                <stop offset="100%" stopColor="rgb(219 234 254)" stopOpacity="0.6"/>
+              </linearGradient>
+              <linearGradient id="cloudGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.6"/>
-                <stop offset="50%" stopColor="rgb(240 249 255)" stopOpacity="0.5"/>
-                <stop offset="100%" stopColor="rgb(219 234 254)" stopOpacity="0.4"/>
+                <stop offset="100%" stopColor="rgb(240 249 255)" stopOpacity="0.4"/>
               </linearGradient>
             </defs>
           </svg>
@@ -378,19 +391,29 @@ const StickyDonationWidget = () => {
 
       {/* Enhanced ray of light effect shining on ticker below */}
       <div className="absolute top-full left-1/2 transform -translate-x-1/2 pointer-events-none z-40">
-        {/* Primary light beam */}
+        {/* Main concentrated light beam */}
         <div className="relative">
-          <div className="w-48 h-20 bg-gradient-to-b from-yellow-200/80 via-yellow-100/60 to-transparent rounded-b-full blur-sm"></div>
-          {/* Side beams for wider coverage */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-72 h-28 bg-gradient-to-b from-amber-100/50 via-yellow-50/30 to-transparent rounded-b-full blur-md"></div>
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-36 bg-gradient-to-b from-yellow-50/30 via-amber-50/15 to-transparent rounded-b-full blur-lg"></div>
+          {/* Central bright beam */}
+          <div className="w-32 h-16 bg-gradient-to-b from-yellow-300/90 via-yellow-200/70 to-yellow-100/50 rounded-b-full blur-sm"></div>
           
-          {/* Sparkle effects */}
-          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-yellow-300 rounded-full opacity-80 animate-pulse"></div>
-          <div className="absolute top-12 left-1/2 transform -translate-x-12 w-2 h-2 bg-amber-300 rounded-full opacity-60 animate-pulse delay-300"></div>
-          <div className="absolute top-12 left-1/2 transform translate-x-8 w-2 h-2 bg-yellow-400 rounded-full opacity-60 animate-pulse delay-500"></div>
-          <div className="absolute top-8 left-1/2 transform -translate-x-6 w-1 h-1 bg-white rounded-full opacity-90 animate-pulse delay-200"></div>
-          <div className="absolute top-8 left-1/2 transform translate-x-4 w-1 h-1 bg-white rounded-full opacity-90 animate-pulse delay-700"></div>
+          {/* Medium spread beam */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-24 bg-gradient-to-b from-amber-200/70 via-yellow-100/50 to-yellow-50/30 rounded-b-full blur-md"></div>
+          
+          {/* Wide ambient glow */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-80 h-40 bg-gradient-to-b from-yellow-100/50 via-amber-50/25 to-transparent rounded-b-full blur-xl"></div>
+          
+          {/* Brightest center core */}
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-12 bg-gradient-to-b from-white/80 via-yellow-200/70 to-yellow-100/40 rounded-b-full"></div>
+          
+          {/* Divine sparkle effects */}
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full opacity-90 animate-pulse shadow-lg shadow-yellow-300"></div>
+          <div className="absolute top-8 left-1/2 transform -translate-x-8 w-1.5 h-1.5 bg-yellow-200 rounded-full opacity-80 animate-pulse delay-200 shadow-md shadow-yellow-400"></div>
+          <div className="absolute top-8 left-1/2 transform translate-x-6 w-1.5 h-1.5 bg-amber-200 rounded-full opacity-80 animate-pulse delay-400 shadow-md shadow-amber-400"></div>
+          <div className="absolute top-12 left-1/2 transform -translate-x-4 w-1 h-1 bg-white rounded-full opacity-70 animate-pulse delay-600"></div>
+          <div className="absolute top-12 left-1/2 transform translate-x-2 w-1 h-1 bg-yellow-100 rounded-full opacity-70 animate-pulse delay-800"></div>
+          
+          {/* Additional light rays for more dramatic effect */}
+          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-64 h-32 bg-gradient-to-b from-yellow-50/40 via-amber-50/20 to-transparent rounded-b-full blur-2xl opacity-60"></div>
         </div>
       </div>
     </>
