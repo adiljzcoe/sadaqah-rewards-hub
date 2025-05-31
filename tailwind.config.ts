@@ -171,6 +171,15 @@ export default {
 						height: '0'
 					}
 				},
+				// Add scroll animation for CharityTicker
+				'scroll': {
+					'0%': {
+						transform: 'translateX(0)'
+					},
+					'100%': {
+						transform: 'translateX(-50%)'
+					}
+				},
 				// Vibrant animations
 				'bounce-in': {
 					'0%': {
