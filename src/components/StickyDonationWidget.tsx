@@ -139,7 +139,7 @@ const StickyDonationWidget = () => {
   const donationAmount = Number(customAmount) || selectedAmount;
 
   return (
-    <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 transition-all duration-300 rounded-t-2xl rounded-b-2xl overflow-hidden shadow-2xl drop-shadow-2xl`}>
+    <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 transition-all duration-300 rounded-b-2xl overflow-hidden shadow-2xl drop-shadow-2xl`}>
       {/* Header-matching background with cloud effects */}
       <div className="absolute inset-0 bg-gradient-to-r from-sky-200 via-blue-100 to-indigo-200 backdrop-blur-md shadow-2xl"></div>
       <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-sky-100/30 to-blue-200/40"></div>
