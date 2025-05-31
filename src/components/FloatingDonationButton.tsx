@@ -29,17 +29,25 @@ const FloatingDonationButton = () => {
   ];
 
   const handleTinClick = () => {
-    setIsExpanded(!isExpanded);
-    setIsWiggling(true);
-    
-    // Show emotional speech bubble on every click
+    // Always show emotional speech bubble on click
     const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
     setCurrentMessage(randomMessage);
     setShowSpeechBubble(true);
     
+    // Start wiggling/shaking animation
+    setIsWiggling(true);
+    
+    // If not expanded, expand the donation panel
+    if (!isExpanded) {
+      setIsExpanded(true);
+    } else {
+      setIsExpanded(false);
+    }
+    
     // Hide speech bubble after 4 seconds
     setTimeout(() => setShowSpeechBubble(false), 4000);
-    setTimeout(() => setIsWiggling(false), 600);
+    // Stop wiggling after animation completes
+    setTimeout(() => setIsWiggling(false), 1800);
   };
 
   // Generate falling coins periodically
@@ -164,14 +172,14 @@ const FloatingDonationButton = () => {
 
         {/* Speech Bubble - positioned near the mouth */}
         {showSpeechBubble && (
-          <div className="absolute -top-8 -left-20 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
+          <div className="absolute -top-12 -left-24 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
             <div className="relative bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 p-0.5 rounded-2xl shadow-2xl">
               <div className="bg-white rounded-2xl px-3 py-2 relative">
                 <p className="text-xs font-bold text-gray-800 whitespace-nowrap">
                   {currentMessage}
                 </p>
                 {/* Speech bubble tail pointing to mouth */}
-                <div className="absolute top-1/2 -right-2 transform -translate-y-1/2">
+                <div className="absolute top-3/4 -right-2 transform -translate-y-1/2">
                   <div className="w-0 h-0 border-l-8 border-t-4 border-b-4 border-transparent border-l-white"></div>
                   <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-0 h-0 border-l-[9px] border-t-[5px] border-b-[5px] border-transparent border-l-pink-400"></div>
                 </div>
