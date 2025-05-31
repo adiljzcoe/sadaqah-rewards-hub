@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -7,11 +6,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { AlertCircle, Heart } from 'lucide-react';
 
-const quickAmounts = [10, 25, 50, 100];
+const quickAmounts = [25, 50, 100];
 const currencies = [
-  { code: 'GBP', symbol: '£' },
-  { code: 'USD', symbol: '$' },
-  { code: 'EUR', symbol: '€' }
+  { code: 'GBP', symbol: '£', flag: '🇬🇧' },
+  { code: 'USD', symbol: '$', flag: '🇺🇸' },
+  { code: 'EUR', symbol: '€', flag: '🇪🇺' }
 ];
 
 const emergencyCauses = [
@@ -276,8 +275,8 @@ const StickyDonationWidget = () => {
                   </Select>
                 </div>
 
-                {/* Quick amounts */}
-                <div className="col-span-4 grid grid-cols-4 gap-1">
+                {/* Quick amounts - now only 3 amounts */}
+                <div className="col-span-4 grid grid-cols-3 gap-1">
                   {quickAmounts.map((amount) => (
                     <button
                       key={amount}
@@ -296,16 +295,19 @@ const StickyDonationWidget = () => {
                   ))}
                 </div>
 
-                {/* Custom amount & Currency */}
+                {/* Custom amount & Currency with flag */}
                 <div className="col-span-2 flex gap-1">
                   <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-12 text-xs transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`w-14 text-xs transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {currencies.map((curr) => (
                         <SelectItem key={curr.code} value={curr.code}>
-                          {curr.symbol}
+                          <div className="flex items-center space-x-1">
+                            <span>{curr.flag}</span>
+                            <span>{curr.symbol}</span>
+                          </div>
                         </SelectItem>
                       ))}
                     </SelectContent>
