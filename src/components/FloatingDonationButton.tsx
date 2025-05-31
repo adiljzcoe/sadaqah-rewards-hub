@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, HandHeart, TrendingUp } from 'lucide-react';
@@ -102,6 +103,16 @@ const FloatingDonationButton = () => {
               ? 'mt-6 md:mb-6 md:mt-0' 
               : 'mb-6'
           }`}>
+            {/* 100% Fundraising Donation Plaque */}
+            <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-2 rounded-lg mb-3 text-center shadow-lg">
+              <div className="text-xs font-bold uppercase tracking-wider">
+                ✅ 100% FUNDRAISING DONATION
+              </div>
+              <div className="text-xs opacity-90 mt-1">
+                Every penny goes to the cause
+              </div>
+            </div>
+
             {/* Header with special fundraising badge */}
             <div className="flex items-center justify-between mb-3">
               <div>
@@ -215,3 +226,4 @@ const FloatingDonationButton = () => {
 };
 
 export default FloatingDonationButton;
+
