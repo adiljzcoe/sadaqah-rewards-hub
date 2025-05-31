@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -18,33 +16,29 @@ const FloatingDonationButton = () => {
   const [currentMessage, setCurrentMessage] = useState('');
 
   const prayerMessages = [
-    "JazakAllahu Khair! 🤲",
-    "May Allah bless you abundantly! ✨",
-    "Barakallahu feeki! 💝",
-    "Your kindness is a blessing! 🌟",
-    "May this sadaqah bring you barakah! 💚",
-    "Allah sees your generous heart! 👁️",
-    "May Allah multiply your reward! 📈",
-    "Your donation is a light in darkness! 💡",
-    "SubhanAllah, such generosity! 🙏",
-    "May Allah grant you Jannah! 🏞️"
+    "Please help us! 🥺",
+    "Your donation saves lives! ❤️",
+    "Every penny counts! 🙏",
+    "Be someone's hero today! ⭐",
+    "Don't let them suffer alone! 💔",
+    "Your heart is so generous! 💖",
+    "They're counting on you! 🤲",
+    "Make a difference right now! ✨",
+    "You're their only hope! 🌟",
+    "Show them you care! 💝"
   ];
 
   const handleTinClick = () => {
-    const wasExpanded = isExpanded;
     setIsExpanded(!isExpanded);
     setIsWiggling(true);
     
-    // Only show speech bubble when opening the popup (not when closing)
-    if (!wasExpanded) {
-      const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
-      setCurrentMessage(randomMessage);
-      setShowSpeechBubble(true);
-      
-      // Hide speech bubble after 3 seconds
-      setTimeout(() => setShowSpeechBubble(false), 3000);
-    }
+    // Show emotional speech bubble on every click
+    const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
+    setCurrentMessage(randomMessage);
+    setShowSpeechBubble(true);
     
+    // Hide speech bubble after 4 seconds
+    setTimeout(() => setShowSpeechBubble(false), 4000);
     setTimeout(() => setIsWiggling(false), 600);
   };
 
@@ -93,17 +87,17 @@ const FloatingDonationButton = () => {
           0% {
             opacity: 0;
             transform: scale(0.8);
-            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.2) 0%, rgba(59, 130, 246, 0.15) 30%, rgba(16, 185, 129, 0.1) 60%, transparent 80%);
+            background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.08) 30%, rgba(16, 185, 129, 0.05) 60%, transparent 80%);
           }
           50% {
             opacity: 1;
-            transform: scale(1.2);
-            background: radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.25) 0%, rgba(16, 185, 129, 0.2) 30%, rgba(251, 191, 36, 0.15) 60%, rgba(168, 85, 247, 0.1) 80%);
+            transform: scale(1.1);
+            background: radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.15) 0%, rgba(16, 185, 129, 0.1) 30%, rgba(251, 191, 36, 0.08) 60%, rgba(168, 85, 247, 0.05) 80%);
           }
           100% {
             opacity: 0;
-            transform: scale(1.5);
-            background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.3) 0%, rgba(236, 72, 153, 0.2) 30%, rgba(59, 130, 246, 0.15) 60%, transparent 80%);
+            transform: scale(1.3);
+            background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.2) 0%, rgba(236, 72, 153, 0.1) 30%, rgba(59, 130, 246, 0.08) 60%, transparent 80%);
           }
         }
         
@@ -128,31 +122,58 @@ const FloatingDonationButton = () => {
             transform: translateY(0);
           }
         }
+
+        @keyframes big-eyes {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.3);
+          }
+          100% {
+            transform: scale(1.2);
+          }
+        }
+
+        @keyframes floating-hearts {
+          0% {
+            opacity: 0;
+            transform: translateY(0) scale(0.5);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(-10px) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.8);
+          }
+        }
       `}</style>
       
       <div className="fixed bottom-8 right-8 z-50">
-        {/* Enhanced Magical Background Effect */}
+        {/* Subtle Magical Background Effect */}
         {isWiggling && (
           <div 
-            className="absolute -inset-24 pointer-events-none rounded-full"
+            className="absolute -inset-16 pointer-events-none rounded-full"
             style={{
-              animation: 'magical-background 1.5s ease-out forwards'
+              animation: 'magical-background 1.2s ease-out forwards'
             }}
           />
         )}
 
-        {/* Speech Bubble - positioned above the button */}
+        {/* Speech Bubble - positioned near the mouth */}
         {showSpeechBubble && (
-          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
-            <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 p-0.5 rounded-2xl shadow-2xl">
-              <div className="bg-white rounded-2xl px-4 py-3 relative">
-                <p className="text-sm font-semibold text-gray-800 whitespace-nowrap">
+          <div className="absolute -top-8 -left-20 z-60 animate-[speech-bubble-appear_0.3s_ease-out]">
+            <div className="relative bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 p-0.5 rounded-2xl shadow-2xl">
+              <div className="bg-white rounded-2xl px-3 py-2 relative">
+                <p className="text-xs font-bold text-gray-800 whitespace-nowrap">
                   {currentMessage}
                 </p>
-                {/* Speech bubble tail */}
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                  <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white"></div>
-                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[9px] border-r-[9px] border-t-[9px] border-transparent border-t-purple-400"></div>
+                {/* Speech bubble tail pointing to mouth */}
+                <div className="absolute top-1/2 -right-2 transform -translate-y-1/2">
+                  <div className="w-0 h-0 border-l-8 border-t-4 border-b-4 border-transparent border-l-white"></div>
+                  <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-0 h-0 border-l-[9px] border-t-[5px] border-b-[5px] border-transparent border-l-pink-400"></div>
                 </div>
               </div>
             </div>
@@ -224,14 +245,14 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* Adorable charity collection tin with cat-like features */}
+          {/* Adorable charity collection tin with enhanced emotional features */}
           <div className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ${
             isWiggling ? 'animate-charity-shake' : ''
           } group-hover:scale-110`}>
             {/* Enhanced soft shadow for depth */}
             <div className="absolute top-1 left-1 w-9 h-14 bg-gradient-to-br from-pink-300/50 to-purple-400/50 rounded-2xl transform rotate-1 blur-md"></div>
             
-            {/* Main collection tin body - enhanced with better gradients */}
+            {/* Main collection tin body */}
             <div className="relative w-9 h-14 bg-gradient-to-br from-pink-300 via-pink-400 to-rose-400 rounded-2xl border-2 border-pink-200 shadow-2xl transform transition-all duration-300">
               {/* Soft top lid - more rounded */}
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-10 h-2 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full border border-pink-300"></div>
@@ -239,12 +260,16 @@ const FloatingDonationButton = () => {
               {/* Coin slot - smaller and cuter */}
               <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-gray-800 rounded-full shadow-inner"></div>
               
-              {/* Big adorable eyes - much larger and more expressive */}
+              {/* BIGGER adorable eyes when wiggling - enhanced emotional appeal */}
               <div className="absolute top-1.5 left-1/2 transform -translate-x-1/2 flex space-x-1">
-                {/* Left eye */}
-                <div className="relative w-2 h-2 bg-white rounded-full border border-pink-300 shadow-sm">
+                {/* Left eye - bigger when wiggling */}
+                <div className={`relative bg-white rounded-full border border-pink-300 shadow-sm transition-all duration-300 ${
+                  isWiggling ? 'w-3 h-3 animate-[big-eyes_0.6s_ease-out_forwards]' : 'w-2 h-2'
+                }`}>
                   {/* Pupil */}
-                  <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-gray-800 rounded-full">
+                  <div className={`absolute bg-gray-800 rounded-full transition-all duration-300 ${
+                    isWiggling ? 'top-0.5 left-0.5 w-1.5 h-1.5' : 'top-0.5 left-0.5 w-1 h-1'
+                  }`}>
                     {/* Light reflection */}
                     <div className="absolute top-0 left-0 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
                   </div>
@@ -252,10 +277,14 @@ const FloatingDonationButton = () => {
                   <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-pink-600 rounded-full"></div>
                 </div>
                 
-                {/* Right eye */}
-                <div className="relative w-2 h-2 bg-white rounded-full border border-pink-300 shadow-sm">
+                {/* Right eye - bigger when wiggling */}
+                <div className={`relative bg-white rounded-full border border-pink-300 shadow-sm transition-all duration-300 ${
+                  isWiggling ? 'w-3 h-3 animate-[big-eyes_0.6s_ease-out_forwards]' : 'w-2 h-2'
+                }`}>
                   {/* Pupil */}
-                  <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-gray-800 rounded-full">
+                  <div className={`absolute bg-gray-800 rounded-full transition-all duration-300 ${
+                    isWiggling ? 'top-0.5 left-0.5 w-1.5 h-1.5' : 'top-0.5 left-0.5 w-1 h-1'
+                  }`}>
                     {/* Light reflection */}
                     <div className="absolute top-0 left-0 w-0.5 h-0.5 bg-white rounded-full opacity-90"></div>
                   </div>
@@ -316,20 +345,27 @@ const FloatingDonationButton = () => {
               <div className="absolute bottom-0 -right-1 w-2 h-1 bg-rose-700 rounded-full"></div>
             </div>
             
-            {/* Adorable floating hearts and expressions when clicked */}
+            {/* Enhanced floating hearts around the face when clicked */}
             {isWiggling && (
               <>
-                <div className="absolute -top-4 left-0 text-pink-400 animate-bounce opacity-90 text-sm">
+                {/* Hearts floating around the face */}
+                <div className="absolute -top-2 -left-2 text-red-400 text-lg animate-[floating-hearts_2s_ease-out]">
                   💕
                 </div>
-                <div className="absolute -top-3 right-0 text-rose-400 animate-bounce opacity-90 text-sm" style={{ animationDelay: '0.2s' }}>
-                  🥰
+                <div className="absolute -top-3 -right-1 text-pink-400 text-sm animate-[floating-hearts_2s_ease-out]" style={{ animationDelay: '0.3s' }}>
+                  ❤️
                 </div>
-                <div className="absolute top-0 -right-4 text-yellow-400 animate-bounce opacity-90 text-sm" style={{ animationDelay: '0.4s' }}>
-                  ✨
-                </div>
-                <div className="absolute -bottom-2 -left-3 text-purple-400 animate-bounce opacity-90 text-sm" style={{ animationDelay: '0.6s' }}>
+                <div className="absolute top-2 -left-3 text-rose-400 text-sm animate-[floating-hearts_2s_ease-out]" style={{ animationDelay: '0.6s' }}>
                   💖
+                </div>
+                <div className="absolute top-3 -right-2 text-red-300 text-lg animate-[floating-hearts_2s_ease-out]" style={{ animationDelay: '0.9s' }}>
+                  💗
+                </div>
+                <div className="absolute -bottom-1 -left-2 text-pink-500 text-sm animate-[floating-hearts_2s_ease-out]" style={{ animationDelay: '1.2s' }}>
+                  💝
+                </div>
+                <div className="absolute -bottom-2 -right-1 text-rose-500 text-sm animate-[floating-hearts_2s_ease-out]" style={{ animationDelay: '1.5s' }}>
+                  💘
                 </div>
               </>
             )}
@@ -341,4 +377,3 @@ const FloatingDonationButton = () => {
 };
 
 export default FloatingDonationButton;
-
