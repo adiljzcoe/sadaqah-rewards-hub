@@ -70,7 +70,7 @@ const FloatingDonationButton = () => {
       
       <div className={`fixed ${
         isStickyWidgetActive 
-          ? 'top-[4.5rem] right-4 md:bottom-20 md:right-8' 
+          ? 'top-[6.5rem] right-4 md:bottom-20 md:right-8' 
           : 'bottom-8 right-8'
       } z-50 transition-all duration-300`}>
         {/* Call to action message */}
