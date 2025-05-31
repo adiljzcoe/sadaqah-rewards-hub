@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -78,17 +77,17 @@ const CharityFeedSection = () => {
       views: 1120,
       category: 'Medical Aid'
     }
-  ];
+  ]);
 
-  const formatTimeAgo = (timestamp: Date) => {
+  function formatTimeAgo(timestamp: Date) {
     const hours = Math.floor((Date.now() - timestamp.getTime()) / (1000 * 60 * 60));
     if (hours < 1) return 'Just now';
     if (hours < 24) return `${hours}h ago`;
     const days = Math.floor(hours / 24);
     return `${days}d ago`;
-  };
+  }
 
-  const getCategoryColor = (category: string) => {
+  function getCategoryColor(category: string) {
     switch (category) {
       case 'Water Relief': return 'bg-blue-500';
       case 'Food Relief': return 'bg-orange-500';
@@ -96,7 +95,7 @@ const CharityFeedSection = () => {
       case 'Community Update': return 'bg-emerald-500';
       default: return 'bg-gray-500';
     }
-  };
+  }
 
   return (
     <Card className="professional-card">
