@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -143,7 +142,6 @@ const DonationWidget = () => {
       {/* In Memory Section */}
       {selectedType === 'in-memory' && (
         <div className="mb-6 p-5 bg-gradient-to-br from-rose-50 to-pink-50 border-2 border-rose-200 rounded-xl">
-          {console.log('Rendering In Memory section')}
           <div className="flex items-center mb-4">
             <Flower className="h-5 w-5 mr-2 text-rose-600" />
             <h4 className="text-lg font-semibold text-rose-900">Memorial Donation</h4>
