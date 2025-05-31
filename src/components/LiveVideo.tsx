@@ -637,7 +637,7 @@ const LiveVideo = () => {
       {/* Donation Messages Display - New smooth section below video */}
       <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[80px] flex items-center">
         <div className="w-full px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {displayedMessages.map((donation, index) => (
               <div
                 key={donation.id || index}
