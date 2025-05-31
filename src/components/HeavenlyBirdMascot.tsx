@@ -34,9 +34,9 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
 
   return (
     <group ref={birdRef} position={[0, 0.2, 0]}>
-      {/* Bird Body - Main body with heavenly green */}
-      <mesh position={[0, 0, 0]}>
-        <ellipsoidGeometry args={[0.4, 0.5, 0.3]} />
+      {/* Bird Body - Main body with heavenly green, scaled to be ellipsoid */}
+      <mesh position={[0, 0, 0]} scale={[0.8, 1, 0.6]}>
+        <sphereGeometry args={[0.5, 16, 16]} />
         <meshStandardMaterial 
           color="#22c55e" 
           transparent 
