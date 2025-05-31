@@ -144,7 +144,7 @@ const LiveVideo = () => {
   useEffect(() => {
     const allMessages = [...recentDonations, ...fakeDonations, ...dedicationFeed]
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      .slice(0, 3);
+      .slice(0, 4); // Changed from 3 to 4
     
     setDisplayedMessages(allMessages);
   }, [recentDonations, fakeDonations, dedicationFeed]);
@@ -635,41 +635,41 @@ const LiveVideo = () => {
       </div>
 
       {/* Donation Messages Display - New smooth section below video */}
-      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[60px] flex items-center">
+      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 min-h-[80px] flex items-center">
         <div className="w-full px-4">
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {displayedMessages.map((donation, index) => (
               <div
                 key={donation.id || index}
-                className="flex items-center justify-between bg-gradient-to-r from-emerald-500/10 to-green-600/10 text-white px-3 py-2 rounded-lg text-sm font-medium border border-emerald-400/20 backdrop-blur-sm animate-fade-in"
+                className="flex items-center justify-between bg-gradient-to-r from-emerald-500/10 to-green-600/10 text-white px-2 py-1.5 rounded-lg text-xs font-medium border border-emerald-400/20 backdrop-blur-sm animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="flex items-center space-x-2 min-w-0 flex-1">
-                  <span className="text-lg animate-pulse flex-shrink-0">{donation.emoji}</span>
-                  <div className="flex items-center space-x-2 min-w-0">
-                    <span className="font-bold flex-shrink-0">
+                <div className="flex items-center space-x-1.5 min-w-0 flex-1">
+                  <span className="text-sm animate-pulse flex-shrink-0">{donation.emoji}</span>
+                  <div className="flex items-center space-x-1.5 min-w-0 text-xs">
+                    <span className="font-bold flex-shrink-0 text-xs">
                       {donation.user === 'You' ? 'You' : donation.user}
                     </span>
-                    <span className="text-emerald-300 flex-shrink-0">helped with</span>
-                    <div className="flex items-center bg-white/15 rounded px-2 py-1 flex-shrink-0">
-                      <SimpleGoldCoin size={12} className="mr-1" />
-                      <span className="font-bold">{donation.finalAmount || donation.amount}</span>
+                    <span className="text-emerald-300 flex-shrink-0">helped</span>
+                    <div className="flex items-center bg-white/15 rounded px-1.5 py-0.5 flex-shrink-0">
+                      <SimpleGoldCoin size={10} className="mr-0.5" />
+                      <span className="font-bold text-xs">{donation.finalAmount || donation.amount}</span>
                     </div>
                     {donation.onBehalfOf && (
                       <>
                         <span className="text-purple-300 flex-shrink-0">for</span>
-                        <span className="font-semibold text-purple-200 truncate">{donation.onBehalfOf}</span>
+                        <span className="font-semibold text-purple-200 truncate text-xs">{donation.onBehalfOf}</span>
                       </>
                     )}
                   </div>
                 </div>
-                <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
-                  {Math.floor((Date.now() - new Date(donation.timestamp).getTime()) / 1000)}s ago
+                <span className="text-xs text-gray-400 flex-shrink-0 ml-1">
+                  {Math.floor((Date.now() - new Date(donation.timestamp).getTime()) / 1000)}s
                 </span>
               </div>
             ))}
             {displayedMessages.length === 0 && (
-              <div className="text-center text-gray-400 text-sm py-4">
+              <div className="col-span-full text-center text-gray-400 text-sm py-4">
                 Be the first to help! 💝
               </div>
             )}
