@@ -34,119 +34,127 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
 
   return (
     <group ref={birdRef} position={[0, 0.2, 0]}>
-      {/* Parakeet Body - More elongated and vibrant green */}
-      <mesh position={[0, 0, 0]} scale={[0.7, 1.2, 0.6]}>
-        <sphereGeometry args={[0.4, 16, 16]} />
-        <meshStandardMaterial 
-          color="#10b981" 
-          metalness={0.1} 
-          roughness={0.2}
-        />
-      </mesh>
-
-      {/* Parakeet Head - Smaller and more rounded */}
-      <mesh position={[0, 0.6, 0.1]}>
-        <sphereGeometry args={[0.22, 16, 16]} />
+      {/* Cute Parakeet Body - More rounded and plump */}
+      <mesh position={[0, 0, 0]} scale={[0.8, 1.1, 0.7]}>
+        <sphereGeometry args={[0.35, 20, 20]} />
         <meshStandardMaterial 
           color="#22c55e" 
-          metalness={0.1} 
-          roughness={0.2}
+          metalness={0.05} 
+          roughness={0.4}
         />
       </mesh>
 
-      {/* Distinctive Parakeet Curved Beak */}
-      <mesh position={[0, 0.62, 0.32]} rotation={[0.4, 0, 0]}>
-        <sphereGeometry args={[0.06, 8, 8]} />
-        <meshStandardMaterial color="#f59e0b" metalness={0.4} roughness={0.3} />
+      {/* Adorable rounded head - Bigger and more proportional */}
+      <mesh position={[0, 0.55, 0.05]}>
+        <sphereGeometry args={[0.25, 20, 20]} />
+        <meshStandardMaterial 
+          color="#34d399" 
+          metalness={0.05} 
+          roughness={0.3}
+        />
       </mesh>
-      <mesh position={[0, 0.58, 0.36]} rotation={[0.6, 0, 0]}>
+
+      {/* Cute small curved beak - More realistic and petite */}
+      <mesh position={[0, 0.58, 0.28]} rotation={[0.3, 0, 0]}>
+        <sphereGeometry args={[0.04, 12, 12]} />
+        <meshStandardMaterial color="#f59e0b" metalness={0.2} roughness={0.4} />
+      </mesh>
+      
+      {/* Beak tip - smaller and more natural */}
+      <mesh position={[0, 0.55, 0.31]} rotation={[0.5, 0, 0]}>
+        <sphereGeometry args={[0.025, 8, 8]} />
+        <meshStandardMaterial color="#d97706" metalness={0.3} roughness={0.3} />
+      </mesh>
+
+      {/* Large expressive eyes - Bigger and more appealing */}
+      <mesh position={[-0.12, 0.65, 0.22]}>
+        <sphereGeometry args={[0.08, 12, 12]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.1} />
+      </mesh>
+      <mesh position={[0.12, 0.65, 0.22]}>
+        <sphereGeometry args={[0.08, 12, 12]} />
+        <meshStandardMaterial color="#ffffff" metalness={0.1} roughness={0.1} />
+      </mesh>
+
+      {/* Cute pupils with friendly look */}
+      <mesh position={[-0.1, 0.67, 0.28]}>
         <sphereGeometry args={[0.04, 8, 8]} />
-        <meshStandardMaterial color="#d97706" metalness={0.4} roughness={0.3} />
+        <meshStandardMaterial color="#1f2937" />
+      </mesh>
+      <mesh position={[0.1, 0.67, 0.28]}>
+        <sphereGeometry args={[0.04, 8, 8]} />
+        <meshStandardMaterial color="#1f2937" />
       </mesh>
 
-      {/* Large Parakeet Eyes */}
-      <mesh position={[-0.1, 0.7, 0.26]}>
-        <sphereGeometry args={[0.07, 8, 8]} />
+      {/* Tiny eye highlights for sparkle */}
+      <mesh position={[-0.09, 0.69, 0.3]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
-      <mesh position={[0.1, 0.7, 0.26]}>
-        <sphereGeometry args={[0.07, 8, 8]} />
+      <mesh position={[0.09, 0.69, 0.3]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Eye pupils with parakeet-like dark centers */}
-      <mesh position={[-0.08, 0.72, 0.31]}>
-        <sphereGeometry args={[0.035, 8, 8]} />
-        <meshStandardMaterial color="#000000" />
-      </mesh>
-      <mesh position={[0.08, 0.72, 0.31]}>
-        <sphereGeometry args={[0.035, 8, 8]} />
-        <meshStandardMaterial color="#000000" />
-      </mesh>
-
-      {/* Parakeet Wing Markings - Darker green stripes */}
-      <mesh position={[-0.35, 0.15, 0]} rotation={[0, 0, -0.2]}>
-        <boxGeometry args={[0.5, 0.08, 0.35]} />
+      {/* Soft wing markings - More subtle and natural */}
+      <mesh position={[-0.32, 0.1, 0]} rotation={[0, 0, -0.15]}>
+        <sphereGeometry args={[0.35, 16, 16]} />
         <meshStandardMaterial 
-          color="#065f46" 
-          metalness={0.2} 
-          roughness={0.3}
+          color="#16a34a" 
+          metalness={0.1} 
+          roughness={0.5}
         />
       </mesh>
-      <mesh position={[0.35, 0.15, 0]} rotation={[0, 0, 0.2]}>
-        <boxGeometry args={[0.5, 0.08, 0.35]} />
+      <mesh position={[0.32, 0.1, 0]} rotation={[0, 0, 0.15]}>
+        <sphereGeometry args={[0.35, 16, 16]} />
         <meshStandardMaterial 
-          color="#065f46" 
-          metalness={0.2} 
-          roughness={0.3}
+          color="#16a34a" 
+          metalness={0.1} 
+          roughness={0.5}
         />
       </mesh>
 
-      {/* Wings Group - Longer parakeet wings */}
+      {/* Wings Group - More natural wing shape */}
       <group ref={wingsRef}>
-        {/* Left Wing */}
-        <mesh position={[-0.4, 0.1, 0]} rotation={[0, 0, -0.3]}>
-          <boxGeometry args={[0.7, 0.12, 0.4]} />
+        {/* Left Wing - More rounded and natural */}
+        <mesh position={[-0.35, 0.05, 0]} rotation={[0, 0, -0.25]} scale={[1, 0.8, 1]}>
+          <sphereGeometry args={[0.4, 16, 16]} />
           <meshStandardMaterial 
-            color="#16a34a" 
-            metalness={0.2} 
-            roughness={0.3}
+            color="#10b981" 
+            metalness={0.1} 
+            roughness={0.4}
           />
         </mesh>
 
         {/* Right Wing */}
-        <mesh position={[0.4, 0.1, 0]} rotation={[0, 0, 0.3]}>
-          <boxGeometry args={[0.7, 0.12, 0.4]} />
+        <mesh position={[0.35, 0.05, 0]} rotation={[0, 0, 0.25]} scale={[1, 0.8, 1]}>
+          <sphereGeometry args={[0.4, 16, 16]} />
           <meshStandardMaterial 
-            color="#16a34a" 
-            metalness={0.2} 
-            roughness={0.3}
+            color="#10b981" 
+            metalness={0.1} 
+            roughness={0.4}
           />
         </mesh>
       </group>
 
-      {/* Parakeet tail feathers - Longer and more pointed */}
-      <mesh position={[0, -0.4, -0.3]} rotation={[0.2, 0, 0]}>
-        <boxGeometry args={[0.2, 0.8, 0.08]} />
+      {/* Elegant tail feathers - More graceful and curved */}
+      <mesh position={[0, -0.35, -0.25]} rotation={[0.15, 0, 0]} scale={[0.8, 1.2, 1]}>
+        <sphereGeometry args={[0.15, 12, 12]} />
         <meshStandardMaterial 
           color="#059669" 
           metalness={0.1} 
-          roughness={0.2}
+          roughness={0.3}
         />
       </mesh>
 
-      {/* Additional tail feathers for parakeet look */}
-      <mesh position={[-0.08, -0.45, -0.32]} rotation={[0.25, -0.1, 0]}>
-        <boxGeometry args={[0.12, 0.7, 0.06]} />
-        <meshStandardMaterial 
-          color="#10b981" 
-        />
+      {/* Side tail feathers for fuller look */}
+      <mesh position={[-0.06, -0.4, -0.28]} rotation={[0.2, -0.08, 0]} scale={[0.6, 1, 1]}>
+        <sphereGeometry args={[0.12, 10, 10]} />
+        <meshStandardMaterial color="#10b981" />
       </mesh>
-      <mesh position={[0.08, -0.45, -0.32]} rotation={[0.25, 0.1, 0]}>
-        <boxGeometry args={[0.12, 0.7, 0.06]} />
-        <meshStandardMaterial 
-          color="#10b981" 
-        />
+      <mesh position={[0.06, -0.4, -0.28]} rotation={[0.2, 0.08, 0]} scale={[0.6, 1, 1]}>
+        <sphereGeometry args={[0.12, 10, 10]} />
+        <meshStandardMaterial color="#10b981" />
       </mesh>
 
       {/* Donation Tin held in bird's claws */}
@@ -194,14 +202,14 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         </mesh>
       </group>
 
-      {/* Parakeet claws - More detailed */}
-      <mesh position={[-0.12, -0.4, 0.1]}>
-        <cylinderGeometry args={[0.015, 0.025, 0.2, 6]} />
-        <meshStandardMaterial color="#d97706" />
+      {/* Cute little feet - More proportional */}
+      <mesh position={[-0.1, -0.38, 0.08]}>
+        <sphereGeometry args={[0.02, 8, 8]} />
+        <meshStandardMaterial color="#f59e0b" />
       </mesh>
-      <mesh position={[0.12, -0.4, 0.1]}>
-        <cylinderGeometry args={[0.015, 0.025, 0.2, 6]} />
-        <meshStandardMaterial color="#d97706" />
+      <mesh position={[0.1, -0.38, 0.08]}>
+        <sphereGeometry args={[0.02, 8, 8]} />
+        <meshStandardMaterial color="#f59e0b" />
       </mesh>
     </group>
   );
@@ -216,22 +224,22 @@ const HeavenlyBirdMascot: React.FC<HeavenlyBirdMascotProps> = ({ isActive, class
   return (
     <div className={className}>
       <Canvas camera={{ position: [1, 1, 2.5], fov: 50 }}>
-        {/* Lighting setup */}
-        <ambientLight intensity={0.8} color="#f0f9ff" />
+        {/* Soft lighting setup for cute appearance */}
+        <ambientLight intensity={0.9} color="#f8fafc" />
         <directionalLight 
           position={[5, 10, 5]} 
-          intensity={1.2} 
+          intensity={1} 
           color="#ffffff"
           castShadow
         />
         <pointLight 
           position={[-5, 5, 5]} 
-          intensity={0.6} 
-          color="#22c55e"
+          intensity={0.5} 
+          color="#34d399"
         />
         <pointLight 
           position={[0, -5, 5]} 
-          intensity={0.4} 
+          intensity={0.3} 
           color="#86efac"
         />
         <HeavenlyBird isActive={isActive} />
