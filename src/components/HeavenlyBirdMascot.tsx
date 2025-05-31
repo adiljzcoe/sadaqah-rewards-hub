@@ -11,6 +11,7 @@ function DonationTin({ isActive }: DonationTinProps) {
   const eyesRef = useRef<THREE.Group>(null);
   const eyebrowsRef = useRef<THREE.Group>(null);
   const beardRef = useRef<THREE.Group>(null);
+  const hatRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
     if (tinRef.current) {
@@ -40,6 +41,11 @@ function DonationTin({ isActive }: DonationTinProps) {
         if (beardRef.current) {
           beardRef.current.rotation.z = Math.sin(time * 6) * 0.02;
         }
+
+        // Gentle hat movement when excited
+        if (hatRef.current) {
+          hatRef.current.rotation.z = Math.sin(time * 5) * 0.015;
+        }
       } else {
         // Gentle swaying when idle
         const swayIntensity = 0.03;
@@ -59,6 +65,11 @@ function DonationTin({ isActive }: DonationTinProps) {
         // Subtle beard sway
         if (beardRef.current) {
           beardRef.current.rotation.z = Math.sin(time * 2.5) * 0.01;
+        }
+
+        // Subtle hat movement
+        if (hatRef.current) {
+          hatRef.current.rotation.z = Math.sin(time * 2) * 0.008;
         }
       }
       
@@ -108,6 +119,43 @@ function DonationTin({ isActive }: DonationTinProps) {
         <boxGeometry args={[0.2, 0.02, 0.06]} />
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
+
+      {/* Muslim Hat (Taqiyah/Kufi) - positioned on top */}
+      <group ref={hatRef} position={[0, 0.65, 0]}>
+        {/* Main hat body - white/cream color like traditional taqiyah */}
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[0.22, 12, 8]} />
+          <meshStandardMaterial 
+            color="#F5F5F5" 
+            roughness={0.6}
+            metalness={0.05}
+          />
+        </mesh>
+        
+        {/* Hat brim - slightly flattened bottom */}
+        <mesh position={[0, -0.08, 0]}>
+          <cylinderGeometry args={[0.24, 0.22, 0.04, 16]} />
+          <meshStandardMaterial 
+            color="#EEEEEE" 
+            roughness={0.7}
+            metalness={0.05}
+          />
+        </mesh>
+
+        {/* Small decorative pattern on hat - subtle geometric design */}
+        <mesh position={[0, 0.05, 0.21]}>
+          <boxGeometry args={[0.08, 0.02, 0.01]} />
+          <meshStandardMaterial color="#E0E0E0" />
+        </mesh>
+        <mesh position={[-0.06, 0.05, 0.18]} rotation={[0, 0.5, 0]}>
+          <boxGeometry args={[0.06, 0.02, 0.01]} />
+          <meshStandardMaterial color="#E0E0E0" />
+        </mesh>
+        <mesh position={[0.06, 0.05, 0.18]} rotation={[0, -0.5, 0]}>
+          <boxGeometry args={[0.06, 0.02, 0.01]} />
+          <meshStandardMaterial color="#E0E0E0" />
+        </mesh>
+      </group>
 
       {/* Eyes group for blinking - made larger and more friendly */}
       <group ref={eyesRef}>
