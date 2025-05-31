@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { AlertCircle, Coins, Flower, MessageCircle } from 'lucide-react';
+import { AlertCircle, Coins, Flower } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -305,25 +304,20 @@ const StickyDonationWidget = () => {
                       </div>
                     )}
 
-                    {/* Memorial Note */}
+                    {/* Memorial Note - Single row */}
                     <div>
                       <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
-                      <Textarea
+                      <Input
+                        type="text"
                         placeholder="e.g., Love you dad, Always in our hearts..."
                         value={memoryNote}
                         onChange={(e) => setMemoryNote(e.target.value)}
                         maxLength={100}
-                        rows={2}
-                        className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 resize-none"
+                        className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-8"
                       />
                       <div className="text-[10px] text-rose-600 text-right mt-1">
                         {memoryNote.length}/100 characters
                       </div>
-                    </div>
-
-                    <div className="flex items-center text-xs text-rose-700 bg-white/50 p-2 rounded-lg">
-                      <MessageCircle className="h-3 w-3 mr-1" />
-                      <span>Your memorial dedication will be shared with respect</span>
                     </div>
                   </div>
                 </div>
