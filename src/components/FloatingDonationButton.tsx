@@ -58,28 +58,31 @@ const FloatingDonationButton = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/80 via-yellow-300/60 to-white/80 animate-pulse"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-yellow-200/40 to-transparent animate-shimmer"></div>
         
-        {/* 3D Charity bin with shaking animation */}
-        <div className="relative z-10 w-full h-full flex items-center justify-center animate-bounce">
-          {/* Charity bin base */}
+        {/* 3D Charity tin with left-right shaking animation */}
+        <div className="relative z-10 w-full h-full flex items-center justify-center animate-charity-shake">
+          {/* Charity tin base */}
           <div className="relative">
-            {/* Bin shadow/depth */}
-            <div className="absolute top-1 left-1 w-12 h-14 bg-gradient-to-br from-gray-600 to-gray-800 rounded-lg transform rotate-1"></div>
+            {/* Tin shadow/depth */}
+            <div className="absolute top-1 left-1 w-10 h-12 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full transform rotate-1"></div>
             
-            {/* Main bin body */}
-            <div className="relative w-12 h-14 bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-700 rounded-lg border-2 border-emerald-300 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
-              {/* Bin opening/slot */}
-              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-1.5 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full shadow-inner"></div>
+            {/* Main tin body - cylindrical like the reference image */}
+            <div className="relative w-10 h-12 bg-gradient-to-br from-red-500 via-red-600 to-red-700 rounded-full border-2 border-red-400 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+              {/* Tin opening/slot - wider at top like real charity tins */}
+              <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gradient-to-b from-gray-800 to-gray-900 rounded-full shadow-inner"></div>
               
-              {/* Charity symbol on bin */}
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-lg">
-                💝
+              {/* Label area on tin */}
+              <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-white/90 rounded-sm flex items-center justify-center">
+                <span className="text-red-600 text-xs font-bold">💝</span>
               </div>
               
-              {/* Bin handle */}
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-4 h-2 border-2 border-emerald-300 rounded-full bg-transparent"></div>
+              {/* Tin rim at top */}
+              <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-gray-300 to-gray-400 rounded-full"></div>
               
-              {/* 3D highlight */}
-              <div className="absolute top-1 left-1 w-3 h-4 bg-gradient-to-br from-white/60 to-transparent rounded-tl-lg"></div>
+              {/* 3D highlight on cylinder */}
+              <div className="absolute top-1 left-1 w-2 h-8 bg-gradient-to-r from-white/60 to-transparent rounded-l-full"></div>
+              
+              {/* Bottom rim */}
+              <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-9 h-1 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full"></div>
             </div>
           </div>
         </div>

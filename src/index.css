@@ -1,4 +1,3 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
@@ -46,12 +45,12 @@
   100% { transform: translateX(200%) rotate(45deg); }
 }
 
-/* Charity bin shaking animation */
-@keyframes shake {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-2px) rotate(1deg); }
-  50% { transform: translateY(-1px) rotate(0deg); }
-  75% { transform: translateY(-3px) rotate(-1deg); }
+/* Charity bin shaking animation - left to right like shaking a donation tin */
+@keyframes charity-shake {
+  0%, 100% { transform: translateX(0px) rotate(0deg); }
+  25% { transform: translateX(-3px) rotate(-2deg); }
+  50% { transform: translateX(3px) rotate(1deg); }
+  75% { transform: translateX(-2px) rotate(-1deg); }
 }
 
 /* Custom utility classes */
@@ -90,7 +89,7 @@
 
 /* Charity bin shake animation utility */
 .animate-charity-shake {
-  animation: shake 1.5s ease-in-out infinite;
+  animation: charity-shake 1.2s ease-in-out infinite;
 }
 
 /* Islamic-themed colors */
