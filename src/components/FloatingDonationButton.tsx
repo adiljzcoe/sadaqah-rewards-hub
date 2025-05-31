@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Zap, X, HandHeart } from 'lucide-react';
+import { X, HandHeart } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
-import Custom3DCharacter from './Custom3DCharacter';
+import HeavenlyBirdMascot from './HeavenlyBirdMascot';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -136,7 +136,7 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with 3D Character */}
+        {/* Main donation button with Heavenly Bird Mascot */}
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
           className="relative w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-2xl border-4 border-white/80 hover:border-white transition-all duration-300 group overflow-hidden p-0"
@@ -144,7 +144,7 @@ const FloatingDonationButton = () => {
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
-          <Custom3DCharacter 
+          <HeavenlyBirdMascot 
             isActive={showCallToAction} 
             className="w-full h-full"
           />
