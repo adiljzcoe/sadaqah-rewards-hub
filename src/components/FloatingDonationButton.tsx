@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, HandHeart, TrendingUp } from 'lucide-react';
@@ -98,110 +97,101 @@ const FloatingDonationButton = () => {
         )}
 
         {isExpanded && (
-          <div className={`bg-white/98 backdrop-blur-lg rounded-2xl p-4 w-64 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
+          <div className={`bg-white/98 backdrop-blur-lg rounded-2xl p-3 w-56 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
             isStickyWidgetActive 
               ? 'mt-6 md:mb-6 md:mt-0' 
               : 'mb-6'
           }`}>
-            {/* 100% Fundraising Donation Plaque */}
-            <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-2 rounded-lg mb-3 text-center shadow-lg">
-              <div className="text-xs font-bold uppercase tracking-wider">
-                ✅ 100% FUNDRAISING DONATION
-              </div>
-              <div className="text-xs opacity-90 mt-1">
-                Every penny goes to the cause
+            {/* Compact 100% Fundraising Donation Header */}
+            <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-2 py-1.5 rounded-lg mb-2 text-center shadow-md">
+              <div className="text-xs font-bold uppercase tracking-wide">
+                ✅ 100% FUNDRAISING
               </div>
             </div>
 
-            {/* Header with special fundraising badge */}
-            <div className="flex items-center justify-between mb-3">
+            {/* Header with close button */}
+            <div className="flex items-center justify-between mb-2">
               <div>
-                <h3 className="text-base font-semibold text-gray-900">Fundraising Donation</h3>
-                <div className="flex items-center space-x-2 mt-1">
-                  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full text-xs font-bold animate-pulse">
-                    🚀 7X VALUE!
-                  </div>
-                  <span className="text-xs text-gray-600">Help us raise more funds</span>
+                <h3 className="text-sm font-semibold text-gray-900">Fundraising Donation</h3>
+                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-1.5 py-0.5 rounded-full text-xs font-bold inline-block">
+                  🚀 7X VALUE!
                 </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={() => setIsExpanded(false)}>
-                <X className="h-4 w-4 text-gray-600" />
+              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setIsExpanded(false)}>
+                <X className="h-3 w-3 text-gray-600" />
               </Button>
             </div>
 
-            {/* Explanation */}
-            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-2 mb-3">
+            {/* Compact explanation */}
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-2 mb-2">
               <p className="text-xs text-orange-800 font-medium">
-                ✨ Special Fundraising Donation: Every £1 you donate = £7 worth of value!
-              </p>
-              <p className="text-xs text-orange-700 mt-1">
-                This helps us raise more funds and gives you incredible rewards.
+                ✨ Every £1 = £7 worth of value!
               </p>
             </div>
 
-            {/* Donation amounts with value display */}
-            <div className="grid grid-cols-2 gap-2 mb-3">
+            {/* Compact donation amounts grid */}
+            <div className="grid grid-cols-2 gap-1.5 mb-2">
               <Button 
                 variant="outline" 
-                className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 p-3 h-auto flex-col text-xs"
+                className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 p-2 h-auto flex-col text-xs"
                 onClick={() => handleFundraisingDonate(5)}
               >
-                <div className="flex items-center mb-1">
-                  <SimpleGoldCoin size={12} className="mr-1" />
+                <div className="flex items-center">
+                  <SimpleGoldCoin size={10} className="mr-1" />
                   <span className="font-bold">£5</span>
                 </div>
-                <div className="text-xs text-green-600 font-semibold">= £35 value!</div>
+                <div className="text-xs text-green-600 font-semibold">£35 value</div>
               </Button>
               
               <Button 
                 variant="outline" 
-                className="bg-green-50 hover:bg-green-100 text-green-700 border-2 border-green-200 p-3 h-auto flex-col text-xs"
+                className="bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 p-2 h-auto flex-col text-xs"
                 onClick={() => handleFundraisingDonate(10)}
               >
-                <div className="flex items-center mb-1">
-                  <SimpleGoldCoin size={12} className="mr-1" />
+                <div className="flex items-center">
+                  <SimpleGoldCoin size={10} className="mr-1" />
                   <span className="font-bold">£10</span>
                 </div>
-                <div className="text-xs text-green-600 font-semibold">= £70 value!</div>
+                <div className="text-xs text-green-600 font-semibold">£70 value</div>
               </Button>
               
               <Button 
                 variant="outline" 
-                className="bg-purple-50 hover:bg-purple-100 text-purple-700 border-2 border-purple-200 p-3 h-auto flex-col text-xs"
+                className="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 p-2 h-auto flex-col text-xs"
                 onClick={() => handleFundraisingDonate(25)}
               >
-                <div className="flex items-center mb-1">
-                  <SimpleGoldCoin size={12} className="mr-1" />
+                <div className="flex items-center">
+                  <SimpleGoldCoin size={10} className="mr-1" />
                   <span className="font-bold">£25</span>
                 </div>
-                <div className="text-xs text-green-600 font-semibold">= £175 value!</div>
+                <div className="text-xs text-green-600 font-semibold">£175 value</div>
               </Button>
               
               <Button 
                 variant="outline" 
-                className="bg-amber-50 hover:bg-amber-100 text-amber-700 border-2 border-amber-200 p-3 h-auto flex-col text-xs"
+                className="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 p-2 h-auto flex-col text-xs"
                 onClick={() => handleFundraisingDonate(50)}
               >
-                <div className="flex items-center mb-1">
-                  <SimpleGoldCoin size={12} className="mr-1" />
+                <div className="flex items-center">
+                  <SimpleGoldCoin size={10} className="mr-1" />
                   <span className="font-bold">£50</span>
                 </div>
-                <div className="text-xs text-green-600 font-semibold">= £350 value!</div>
+                <div className="text-xs text-green-600 font-semibold">£350 value</div>
               </Button>
             </div>
 
-            {/* Featured donation button */}
-            <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:from-orange-600 hover:to-red-600 py-2 text-sm shadow-lg" onClick={() => handleFundraisingDonate(100)}>
+            {/* Featured donation button - more compact */}
+            <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:from-orange-600 hover:to-red-600 py-1.5 text-xs shadow-lg" onClick={() => handleFundraisingDonate(100)}>
               <div className="flex items-center justify-center">
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Donate £100 = £700 Value! 🎯
+                <TrendingUp className="h-3 w-3 mr-1" />
+                £100 = £700 Value! 🎯
               </div>
             </Button>
 
-            {/* Bottom info with improved contrast */}
-            <div className="text-center mt-3">
-              <p className="text-xs text-gray-700 font-medium">
-                Fundraising donations help us reach our goals faster
+            {/* Bottom info with better contrast */}
+            <div className="text-center mt-2">
+              <p className="text-xs text-gray-800 font-medium">
+                Help us reach our goals faster
               </p>
             </div>
           </div>
@@ -226,4 +216,3 @@ const FloatingDonationButton = () => {
 };
 
 export default FloatingDonationButton;
-
