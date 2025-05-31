@@ -415,6 +415,15 @@ const LiveVideo = () => {
     return () => clearTimeout(timer);
   }, [streakCount]);
 
+  const formatTimeAgo = (timestamp: Date) => {
+    const seconds = Math.floor((Date.now() - timestamp.getTime()) / 1000);
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    return `${hours}h ago`;
+  };
+
   return (
     <div className="w-full max-w-full overflow-hidden">
       {/* User Stats Header - Above Video */}
@@ -679,7 +688,7 @@ const LiveVideo = () => {
                   </div>
                 </div>
                 <span className="text-xs text-gray-400 flex-shrink-0 ml-1">
-                  {Math.floor((Date.now() - new Date(donation.timestamp).getTime()) / 1000)}s
+                  {formatTimeAgo(donation.timestamp)}
                 </span>
               </div>
             ))}
