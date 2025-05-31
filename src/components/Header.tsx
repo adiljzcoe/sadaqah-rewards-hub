@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -50,17 +49,13 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User */}
           <div className="flex items-center space-x-3">
-            {/* Logo with FF crystal aesthetic */}
-            <Link to="/" className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 cursor-pointer ring-2 ring-cyan-400/20 hover:ring-cyan-300/40">
+            {/* Clean standalone logo */}
+            <Link to="/" className="transition-all duration-300 hover:scale-105">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
-                className="h-8 w-auto object-contain filter drop-shadow-md relative z-10"
+                className="h-8 w-auto object-contain"
               />
-              {/* Crystal shine effects */}
-              <div className="absolute top-1 left-2 w-6 h-3 bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent rounded-full animate-shimmer"></div>
-              <div className="absolute bottom-1 right-2 w-4 h-2 bg-gradient-to-r from-transparent via-blue-300/50 to-transparent rounded-full animate-shimmer delay-500"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-cyan-300/20 rounded-full"></div>
             </Link>
 
             {/* User Section with FF styling */}
