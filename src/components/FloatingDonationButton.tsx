@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X, HandHeart } from 'lucide-react';
@@ -170,22 +171,38 @@ const FloatingDonationButton = () => {
         }
       `}</style>
       
-      <div className={`fixed ${isStickyWidgetActive ? 'bottom-20' : 'bottom-8'} right-8 z-50 transition-all duration-300`}>
+      <div className={`fixed ${
+        isStickyWidgetActive 
+          ? 'top-20 right-4 md:bottom-20 md:right-8' 
+          : 'bottom-8 right-8'
+      } z-50 transition-all duration-300`}>
         {/* Call to action message */}
         {showCallToAction && (
-          <div className="absolute -top-16 -left-32 z-60 animate-[message-appear_0.4s_ease-out]">
+          <div className={`absolute z-60 animate-[message-appear_0.4s_ease-out] ${
+            isStickyWidgetActive 
+              ? 'top-16 -left-32 md:-top-16 md:-left-32' 
+              : '-top-16 -left-32'
+          }`}>
             <div className="relative bg-white border border-gray-200 rounded-xl shadow-xl px-4 py-3">
               <p className="text-sm font-medium text-gray-800 whitespace-nowrap">
                 {currentMessage}
               </p>
               {/* Message pointer */}
-              <div className="absolute bottom-0 right-8 transform translate-y-1/2 rotate-45 w-3 h-3 bg-white border-r border-b border-gray-200"></div>
+              <div className={`absolute transform rotate-45 w-3 h-3 bg-white border-r border-b border-gray-200 ${
+                isStickyWidgetActive 
+                  ? '-bottom-1.5 right-8 md:bottom-0 md:right-8 md:translate-y-1/2' 
+                  : 'bottom-0 right-8 translate-y-1/2'
+              }`}></div>
             </div>
           </div>
         )}
 
         {isExpanded && (
-          <div className="mb-6 bg-white/98 backdrop-blur-lg rounded-2xl p-6 w-80 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out]">
+          <div className={`bg-white/98 backdrop-blur-lg rounded-2xl p-6 w-80 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
+            isStickyWidgetActive 
+              ? 'mt-6 md:mb-6 md:mt-0' 
+              : 'mb-6'
+          }`}>
             <div className="flex items-center justify-between mb-5">
               <h4 className="font-semibold text-lg text-gray-900 flex items-center">
                 <HandHeart className="h-5 w-5 mr-2 text-emerald-600" />
