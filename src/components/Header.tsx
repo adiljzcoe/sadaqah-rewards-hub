@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Cloud, ArrowUp, ChevronDown } from 'lucide-react';
+import { Star, User, Menu, ArrowUp, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   NavigationMenu,
@@ -248,7 +248,7 @@ const Header = () => {
 
           {/* Mobile Menu - FF crystal style with better spacing */}
           <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0 ml-2">
-            <Cloud className="h-5 w-5 drop-shadow-sm" />
+            <Menu className="h-5 w-5 drop-shadow-sm" />
             {/* Crystal sparkle effects */}
             <div className="absolute top-1 left-1 w-3 h-1.5 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent rounded-full animate-shimmer"></div>
             <div className="absolute bottom-1 right-1 w-2 h-1 bg-gradient-to-r from-transparent via-blue-300/40 to-transparent rounded-full animate-shimmer delay-500"></div>
