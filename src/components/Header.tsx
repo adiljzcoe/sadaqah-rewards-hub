@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -72,15 +73,15 @@ const Header = () => {
                       <div className="flex flex-col items-start">
                         <div className="flex items-center">
                           <Crown className="h-4 w-4 mr-2 text-amber-100 drop-shadow-sm" />
-                          <span className="hidden sm:inline text-amber-100 drop-shadow-sm">VIP Ahmad M.</span>
-                          <div className="ml-2 flex items-center bg-blue-600/90 backdrop-blur-sm rounded-lg px-2 py-1 border border-cyan-400/40">
-                            <span className="text-xs drop-shadow-sm">{currentRank.icon}</span>
-                            <span className="text-xs font-bold text-cyan-100 drop-shadow-sm ml-1">{currentRank.badge}</span>
+                          <span className="hidden sm:inline text-amber-100 drop-shadow-sm mr-3">VIP Ahmad M.</span>
+                          <div className="flex items-center bg-gradient-to-r from-blue-600/90 to-cyan-600/90 backdrop-blur-sm rounded-lg px-2 py-1 border border-cyan-400/40 shadow-inner">
+                            <span className="text-xs drop-shadow-sm mr-1">{currentRank.icon}</span>
+                            <span className="text-xs font-bold text-cyan-100 drop-shadow-sm">{currentRank.badge}</span>
                           </div>
                         </div>
-                        <div className="flex items-center ml-6">
+                        <div className="flex items-center ml-6 mt-1">
                           <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
-                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts (2x)</span>
+                          <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
                         </div>
                       </div>
                       {/* Enhanced magical shine effect */}
