@@ -256,8 +256,8 @@ const StickyDonationWidget = () => {
 
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
-                {/* Emergency Cause Selection - now first */}
-                <div className="col-span-3">
+                {/* Emergency Cause Selection - now first and wider */}
+                <div className="col-span-4">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
                     <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
@@ -314,8 +314,8 @@ const StickyDonationWidget = () => {
                   ))}
                 </div>
 
-                {/* Custom amount - wider */}
-                <div className="col-span-3">
+                {/* Custom amount - smaller */}
+                <div className="col-span-2">
                   <Input
                     type="number"
                     placeholder="Other amount"
