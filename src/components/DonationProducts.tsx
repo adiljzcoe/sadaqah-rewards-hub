@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,9 @@ const donationProducts = [
     isPopular: true,
     isNew: false,
     charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png',
-    isFixedPrice: true
+    isFixedPrice: true,
+    image: 'https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=500&h=300&fit=crop',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
   },
   {
     id: '2',
@@ -38,7 +41,8 @@ const donationProducts = [
       { amount: 50, description: 'Standard care package' },
       { amount: 75, description: 'Premium care package' },
       { amount: 100, description: 'Full support package' }
-    ]
+    ],
+    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&h=300&fit=crop'
   },
   {
     id: '3',
@@ -53,7 +57,9 @@ const donationProducts = [
     isNew: true,
     charityLogo: '/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png',
     isAnyAmount: true,
-    suggestedAmounts: [50, 100, 250, 500, 1000]
+    suggestedAmounts: [50, 100, 250, 500, 1000],
+    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500&h=300&fit=crop',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
   },
   {
     id: '4',
@@ -72,7 +78,8 @@ const donationProducts = [
       { amount: 50, description: '1 family for 2 weeks' },
       { amount: 75, description: '1 family for 3 weeks' },
       { amount: 100, description: '1 family for 1 month' }
-    ]
+    ],
+    image: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?w=500&h=300&fit=crop'
   },
   {
     id: '5',
@@ -87,7 +94,8 @@ const donationProducts = [
     isPopular: false,
     isNew: true,
     charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png',
-    isFixedPrice: true
+    isFixedPrice: true,
+    image: 'https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=500&h=300&fit=crop'
   },
   {
     id: '6',
@@ -102,7 +110,8 @@ const donationProducts = [
     isNew: false,
     charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png',
     isAnyAmount: true,
-    suggestedAmounts: [25, 50, 100, 200, 500]
+    suggestedAmounts: [25, 50, 100, 200, 500],
+    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=300&fit=crop'
   },
   {
     id: '7',
@@ -120,7 +129,8 @@ const donationProducts = [
       { amount: 35, description: 'Basic medical kit' },
       { amount: 75, description: 'Advanced medical kit' },
       { amount: 150, description: 'Complete treatment package' }
-    ]
+    ],
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=300&fit=crop'
   },
   {
     id: '8',
@@ -135,7 +145,8 @@ const donationProducts = [
     isPopular: false,
     isNew: true,
     charityLogo: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png',
-    isFixedPrice: true
+    isFixedPrice: true,
+    image: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=500&h=300&fit=crop'
   },
   {
     id: '9',
@@ -150,7 +161,8 @@ const donationProducts = [
     isNew: false,
     charityLogo: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png',
     isAnyAmount: true,
-    suggestedAmounts: [20, 40, 60, 80, 120]
+    suggestedAmounts: [20, 40, 60, 80, 120],
+    image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=500&h=300&fit=crop'
   },
   {
     id: '10',
@@ -165,7 +177,8 @@ const donationProducts = [
     isPopular: true,
     isNew: false,
     charityLogo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png',
-    isFixedPrice: true
+    isFixedPrice: true,
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=300&fit=crop'
   },
   {
     id: '11',
@@ -180,7 +193,9 @@ const donationProducts = [
     isNew: true,
     charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png',
     isAnyAmount: true,
-    suggestedAmounts: [10, 25, 50, 100, 250]
+    suggestedAmounts: [10, 25, 50, 100, 250],
+    image: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?w=500&h=300&fit=crop',
+    video: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
   },
   {
     id: '12',
@@ -198,7 +213,8 @@ const donationProducts = [
       { amount: 120, description: 'Primary education (per year)' },
       { amount: 180, description: 'Secondary education (per year)' },
       { amount: 240, description: 'Higher education (per year)' }
-    ]
+    ],
+    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=300&fit=crop'
   }
 ];
 

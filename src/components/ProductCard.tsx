@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Heart, Users, Clock, ShoppingCart } from 'lucide-react';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Heart, Users, Clock, ShoppingCart, Play } from 'lucide-react';
 
 interface ProductCardProps {
   id: string;
@@ -25,6 +26,8 @@ interface ProductCardProps {
   priceOptions?: { amount: number; description: string }[];
   isAnyAmount?: boolean;
   suggestedAmounts?: number[];
+  image?: string;
+  video?: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -42,13 +45,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
   isFixedPrice = false,
   priceOptions,
   isAnyAmount = false,
-  suggestedAmounts
+  suggestedAmounts,
+  image,
+  video
 }) => {
   const [selectedPrice, setSelectedPrice] = useState<number>(
     price || priceOptions?.[0]?.amount || suggestedAmounts?.[0] || 0
   );
   const [customAmount, setCustomAmount] = useState<string>('');
   const [useCustomAmount, setUseCustomAmount] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   const handlePriceSelection = (amount: number) => {
     setSelectedPrice(amount);
@@ -75,6 +81,52 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <Card className="overflow-hidden hover-lift transition-all duration-300 bg-white border border-gray-200 shadow-sm hover:shadow-lg">
+      {/* Image/Video Section */}
+      {(image || video) && (
+        <div className="relative">
+          <AspectRatio ratio={16 / 9}>
+            {!showVideo && image ? (
+              <div className="relative w-full h-full">
+                <img 
+                  src={image} 
+                  alt={title}
+                  className="w-full h-full object-cover"
+                />
+                {video && (
+                  <button
+                    onClick={() => setShowVideo(true)}
+                    className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group"
+                  >
+                    <div className="bg-white rounded-full p-3 group-hover:scale-110 transition-transform">
+                      <Play className="h-6 w-6 text-gray-900 ml-1" />
+                    </div>
+                  </button>
+                )}
+              </div>
+            ) : video && showVideo ? (
+              <iframe
+                src={video}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                <span className="text-gray-400">No image available</span>
+              </div>
+            )}
+          </AspectRatio>
+          {video && showVideo && (
+            <button
+              onClick={() => setShowVideo(false)}
+              className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm hover:bg-black/70"
+            >
+              Show Image
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Header with badges */}
       <div className="relative p-4 pb-2">
         <div className="flex justify-between items-start mb-2">
