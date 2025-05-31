@@ -35,7 +35,7 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({ trigger, onComplete }) =>
       {coins.map((coin) => (
         <div
           key={coin.id}
-          className="absolute animate-coin-to-mascot"
+          className="absolute animate-coin-to-top"
           style={{
             left: `calc(50% + ${coin.x}px)`,
             bottom: `${coin.y}px`,
@@ -50,31 +50,32 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({ trigger, onComplete }) =>
       ))}
 
       <style>{`
-        @keyframes coin-to-mascot {
+        @keyframes coin-to-top {
           0% {
-            transform: translateY(0) scale(1) rotate(0deg);
+            transform: translateY(0) translateX(0) scale(1) rotate(0deg);
             opacity: 1;
           }
           30% {
-            transform: translateY(-30px) scale(1.1) rotate(90deg);
+            transform: translateY(-40px) translateX(0) scale(1.1) rotate(90deg);
             opacity: 1;
           }
           60% {
-            transform: translateY(-60px) scale(0.9) rotate(180deg);
+            transform: translateY(-80px) translateX(calc(var(--target-x, 0px))) scale(0.9) rotate(180deg);
             opacity: 0.9;
           }
           85% {
-            transform: translateY(-90px) scale(0.6) rotate(270deg);
+            transform: translateY(-120px) translateX(calc(var(--target-x, 0px) * 2)) scale(0.6) rotate(270deg);
             opacity: 0.6;
           }
           100% {
-            transform: translateY(-110px) scale(0.2) rotate(360deg);
+            transform: translateY(-140px) translateX(calc(var(--target-x, 0px) * 2)) scale(0.2) rotate(360deg);
             opacity: 0;
           }
         }
         
-        .animate-coin-to-mascot {
-          animation-name: coin-to-mascot;
+        .animate-coin-to-top {
+          animation-name: coin-to-top;
+          --target-x: calc(-1 * var(--start-x, 0px));
         }
       `}</style>
     </div>
