@@ -120,11 +120,11 @@ function DonationTin({ isActive }: DonationTinProps) {
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
 
-      {/* Muslim Hat (Taqiyah/Kufi) - positioned on top */}
-      <group ref={hatRef} position={[0, 0.65, 0]}>
-        {/* Main hat body - white/cream color like traditional taqiyah */}
+      {/* Muslim Hat (Taqiyah/Kufi) - positioned on top and made bigger */}
+      <group ref={hatRef} position={[0, 0.58, 0]}>
+        {/* Main hat body - larger and positioned to sit around the rim */}
         <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.22, 12, 8]} />
+          <sphereGeometry args={[0.35, 12, 8]} />
           <meshStandardMaterial 
             color="#F5F5F5" 
             roughness={0.6}
@@ -132,9 +132,9 @@ function DonationTin({ isActive }: DonationTinProps) {
           />
         </mesh>
         
-        {/* Hat brim - slightly flattened bottom */}
-        <mesh position={[0, -0.08, 0]}>
-          <cylinderGeometry args={[0.24, 0.22, 0.04, 16]} />
+        {/* Hat brim - larger to fit around the tin rim */}
+        <mesh position={[0, -0.12, 0]}>
+          <cylinderGeometry args={[0.38, 0.35, 0.06, 16]} />
           <meshStandardMaterial 
             color="#EEEEEE" 
             roughness={0.7}
@@ -142,17 +142,17 @@ function DonationTin({ isActive }: DonationTinProps) {
           />
         </mesh>
 
-        {/* Small decorative pattern on hat - subtle geometric design */}
-        <mesh position={[0, 0.05, 0.21]}>
-          <boxGeometry args={[0.08, 0.02, 0.01]} />
+        {/* Small decorative pattern on hat - adjusted for larger size */}
+        <mesh position={[0, 0.08, 0.33]}>
+          <boxGeometry args={[0.12, 0.03, 0.015]} />
           <meshStandardMaterial color="#E0E0E0" />
         </mesh>
-        <mesh position={[-0.06, 0.05, 0.18]} rotation={[0, 0.5, 0]}>
-          <boxGeometry args={[0.06, 0.02, 0.01]} />
+        <mesh position={[-0.09, 0.08, 0.28]} rotation={[0, 0.5, 0]}>
+          <boxGeometry args={[0.09, 0.03, 0.015]} />
           <meshStandardMaterial color="#E0E0E0" />
         </mesh>
-        <mesh position={[0.06, 0.05, 0.18]} rotation={[0, -0.5, 0]}>
-          <boxGeometry args={[0.06, 0.02, 0.01]} />
+        <mesh position={[0.09, 0.08, 0.28]} rotation={[0, -0.5, 0]}>
+          <boxGeometry args={[0.09, 0.03, 0.015]} />
           <meshStandardMaterial color="#E0E0E0" />
         </mesh>
       </group>
@@ -348,7 +348,7 @@ const HeavenlyBirdMascot: React.FC<HeavenlyBirdMascotProps> = ({ isActive, class
   return (
     <div className={`${className} w-full h-full`}>
       <Canvas 
-        camera={{ position: [1, 0.3, 1.2], fov: 60 }}
+        camera={{ position: [1, 0.5, 1.2], fov: 65 }}
         style={{ width: '100%', height: '100%' }}
       >
         <ambientLight intensity={0.7} />
