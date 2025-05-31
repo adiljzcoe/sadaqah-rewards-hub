@@ -128,22 +128,22 @@ const FloatingDonationButton = () => {
           }
         }
         
-        @keyframes subtle-pulse {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-          100% {
-            transform: scale(1);
-          }
+        @keyframes charity-bin-shake {
+          0%, 100% { transform: translateX(0px) rotate(0deg); }
+          10% { transform: translateX(-3px) rotate(-2deg); }
+          20% { transform: translateX(3px) rotate(1.5deg); }
+          30% { transform: translateX(-2px) rotate(-1deg); }
+          40% { transform: translateX(2px) rotate(1deg); }
+          50% { transform: translateX(-1px) rotate(-0.5deg); }
+          60% { transform: translateX(1px) rotate(0.5deg); }
+          70% { transform: translateX(-0.5px) rotate(-0.25deg); }
+          80% { transform: translateX(0.5px) rotate(0.25deg); }
+          90% { transform: translateX(-0.25px) rotate(-0.1deg); }
         }
-
-        @keyframes gentle-bounce {
-          0% { transform: translateY(0); }
-          50% { transform: translateY(-3px); }
-          100% { transform: translateY(0); }
+        
+        @keyframes gentle-float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-2px); }
         }
       `}</style>
       
@@ -213,7 +213,7 @@ const FloatingDonationButton = () => {
 
         <div
           onClick={handleDonateClick}
-          className="relative w-16 h-16 cursor-pointer group"
+          className="relative w-20 h-24 cursor-pointer group"
         >
           {/* Falling coins animation */}
           {fallingCoins.map((coin) => (
@@ -238,42 +238,52 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* Professional donation button - elegant circular design */}
+          {/* Professional charity collection tin */}
           <div 
-            className={`relative z-10 w-full h-full flex items-center justify-center transition-all duration-500 group-hover:scale-110 rounded-full bg-gradient-to-br from-emerald-500 via-emerald-600 to-green-600 shadow-2xl border-2 border-white/20 ${
-              isActive ? 'animate-[subtle-pulse_0.6s_ease-out] animate-[elegant-glow_1s_ease-out]' : 'animate-[gentle-bounce_3s_ease-in-out_infinite]'
+            className={`relative z-10 w-full h-full transition-all duration-300 group-hover:scale-110 ${
+              isActive ? 'animate-[charity-bin-shake_1.5s_ease-in-out]' : 'animate-[gentle-float_4s_ease-in-out_infinite]'
             }`}
-            style={{
-              boxShadow: '0 8px 32px rgba(16, 185, 129, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)'
-            }}
           >
-            {/* Main heart icon */}
-            <div className="relative flex items-center justify-center">
-              <HandHeart 
-                className={`h-7 w-7 text-white transition-all duration-300 ${
-                  isActive ? 'scale-125' : 'group-hover:scale-110'
-                }`}
-                strokeWidth={2}
-              />
+            {/* Main charity tin body */}
+            <div className="relative w-full h-full">
+              {/* Tin container - metallic silver/grey look */}
+              <div className="w-full h-16 bg-gradient-to-b from-gray-300 via-gray-400 to-gray-500 rounded-lg shadow-xl border-2 border-gray-200 relative overflow-hidden">
+                {/* Metallic shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform skew-x-12 animate-[shimmer_3s_ease-in-out_infinite]"></div>
+                
+                {/* Label on the tin */}
+                <div className="absolute inset-2 bg-white rounded-md shadow-inner flex flex-col items-center justify-center">
+                  <div className="text-xs font-bold text-gray-800 leading-tight text-center">
+                    DONATE
+                  </div>
+                  <div className="text-[8px] text-emerald-600 font-semibold">
+                    CHARITY
+                  </div>
+                </div>
+                
+                {/* Coin slot at top */}
+                <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gray-800 rounded-full shadow-inner"></div>
+              </div>
               
-              {/* Subtle inner glow */}
-              <div className="absolute inset-0 rounded-full bg-white/10 blur-sm"></div>
+              {/* Handle */}
+              <div className="absolute -right-1 top-2 w-3 h-8 border-2 border-gray-400 rounded-full bg-transparent"></div>
+              
+              {/* Collection can base */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-2 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full shadow-lg"></div>
             </div>
 
             {/* Donation amount indicator */}
-            <div className="absolute -bottom-1 -right-1 bg-white text-emerald-600 text-xs font-bold px-1.5 py-0.5 rounded-full shadow-lg border border-emerald-100">
+            <div className="absolute -bottom-2 -right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg border-2 border-white">
               £5+
             </div>
 
-            {/* Elegant sparkle effects on hover */}
-            <div className="absolute -top-1 -left-1 w-2 h-2 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping"></div>
-            <div className="absolute -top-2 -right-2 w-1.5 h-1.5 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping" style={{ animationDelay: '0.2s' }}></div>
-            <div className="absolute -bottom-2 -left-2 w-1 h-1 bg-emerald-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping" style={{ animationDelay: '0.4s' }}></div>
-            
-            {/* Professional ripple effect */}
-            {isActive && (
-              <div className="absolute inset-0 rounded-full border-2 border-emerald-400 animate-ping opacity-75"></div>
-            )}
+            {/* Subtle glow effect on hover */}
+            <div className={`absolute inset-0 rounded-lg transition-opacity duration-300 ${
+              isActive ? 'opacity-50' : 'opacity-0 group-hover:opacity-30'
+            }`} style={{
+              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%)',
+              filter: 'blur(8px)'
+            }}></div>
           </div>
         </div>
       </div>
