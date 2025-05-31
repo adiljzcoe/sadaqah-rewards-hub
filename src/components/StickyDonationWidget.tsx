@@ -51,32 +51,36 @@ const emergencyCauses = [
 
 const donationTypeStyles = {
   sadaqah: {
-    gradient: 'bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700',
-    shadow: 'shadow-blue-500/30',
-    border: 'border-blue-400/50',
+    gradient: 'bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600',
+    shadow: 'shadow-blue-500/40',
+    border: 'border-blue-300/60',
     text: 'text-white',
-    icon: '💝'
+    icon: '💝',
+    glow: 'shadow-blue-400/50'
   },
   zakat: {
-    gradient: 'bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700',
-    shadow: 'shadow-emerald-500/30',
-    border: 'border-emerald-400/50',
+    gradient: 'bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600',
+    shadow: 'shadow-emerald-500/40',
+    border: 'border-emerald-300/60',
     text: 'text-white',
-    icon: '☪️'
+    icon: '☪️',
+    glow: 'shadow-emerald-400/50'
   },
   lillah: {
-    gradient: 'bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700',
-    shadow: 'shadow-purple-500/30',
-    border: 'border-purple-400/50',
+    gradient: 'bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600',
+    shadow: 'shadow-purple-500/40',
+    border: 'border-purple-300/60',
     text: 'text-white',
-    icon: '🤲'
+    icon: '🤲',
+    glow: 'shadow-purple-400/50'
   },
   monthly: {
-    gradient: 'bg-gradient-to-r from-orange-500 via-orange-600 to-orange-700',
-    shadow: 'shadow-orange-500/30',
-    border: 'border-orange-400/50',
+    gradient: 'bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600',
+    shadow: 'shadow-orange-500/40',
+    border: 'border-orange-300/60',
     text: 'text-white',
-    icon: '📅'
+    icon: '📅',
+    glow: 'shadow-orange-400/50'
   }
 };
 
@@ -135,35 +139,55 @@ const StickyDonationWidget = () => {
   const donationAmount = Number(customAmount) || selectedAmount;
 
   return (
-    <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 bg-white shadow-lg transition-all duration-300 rounded-t-2xl`}>
-      <div className={`container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
+    <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 transition-all duration-300 rounded-t-2xl overflow-hidden`}>
+      {/* Header-matching background with cloud effects */}
+      <div className="absolute inset-0 bg-gradient-to-r from-sky-200 via-blue-100 to-indigo-200 backdrop-blur-md shadow-2xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-sky-100/30 to-blue-200/40"></div>
+      
+      {/* Cloud-like background effects */}
+      <div className="absolute inset-0">
+        <div className="absolute top-2 left-10 w-20 h-8 bg-white/30 rounded-full blur-sm animate-pulse"></div>
+        <div className="absolute top-4 right-32 w-16 h-6 bg-white/25 rounded-full blur-sm animate-pulse delay-300"></div>
+        <div className="absolute top-1 left-1/3 w-24 h-10 bg-white/20 rounded-full blur-sm animate-pulse delay-500"></div>
+        <div className="absolute top-3 right-1/4 w-18 h-7 bg-white/35 rounded-full blur-sm animate-pulse delay-700"></div>
+      </div>
+
+      <div className={`relative z-10 container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          {/* Enhanced TabsList with beautiful styling */}
+          {/* Enhanced TabsList with beautiful styling matching header aesthetic */}
           <div className={`grid grid-cols-4 gap-2 mb-2 transition-all duration-300 ${isSticky ? 'mb-1' : 'mb-2'}`}>
             {Object.entries(donationTypeStyles).map(([key, style]) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`relative overflow-hidden rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 border-2 ${isSticky ? 'py-1 px-2' : 'py-2 px-3'} ${
+                className={`relative overflow-hidden rounded-2xl font-bold text-sm transition-all duration-500 transform hover:scale-105 border-2 backdrop-blur-sm ${isSticky ? 'py-1.5 px-2' : 'py-3 px-3'} ${
                   activeTab === key 
-                    ? `${style.gradient} ${style.shadow} shadow-lg ${style.border} scale-105` 
-                    : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-gray-200 hover:to-gray-300 border-gray-300 shadow-sm hover:shadow-md'
+                    ? `${style.gradient} ${style.shadow} shadow-xl ${style.border} scale-105 ring-2 ring-white/50 ${style.glow}` 
+                    : 'bg-gradient-to-br from-white/80 via-sky-100/80 to-blue-200/80 text-slate-700 hover:from-white/90 hover:via-sky-50/90 hover:to-blue-100/90 border-white/40 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-white/60'
                 }`}
               >
-                {/* Animated background shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                {/* Enhanced background shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 
-                {/* Content */}
-                <div className="relative z-10 flex items-center justify-center space-x-1">
-                  <span className="text-sm">{style.icon}</span>
-                  <span className={`${activeTab === key ? style.text : 'text-gray-700'} font-bold capitalize`}>
+                {/* Content with better spacing */}
+                <div className="relative z-10 flex items-center justify-center space-x-1.5">
+                  <span className="text-lg drop-shadow-sm">{style.icon}</span>
+                  <span className={`${activeTab === key ? `${style.text} drop-shadow-sm` : 'text-slate-700'} font-bold capitalize tracking-wide`}>
                     {key}
                   </span>
                 </div>
                 
-                {/* Inner glow effect for active state */}
+                {/* Enhanced glow effects for active state */}
                 {activeTab === key && (
-                  <div className="absolute top-1 left-2 w-8 h-3 bg-white/30 rounded-full blur-sm"></div>
+                  <>
+                    <div className="absolute top-1 left-3 w-10 h-4 bg-white/40 rounded-full blur-sm"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-2xl"></div>
+                  </>
+                )}
+                
+                {/* Border highlight for inactive buttons */}
+                {activeTab !== key && (
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/30"></div>
                 )}
               </button>
             ))}
