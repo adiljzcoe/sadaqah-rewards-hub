@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -59,7 +60,7 @@ const memoryCauses = [
   { id: 'food-aid', name: 'Food Aid', description: 'Feed hungry families' }
 ];
 
-const memoryDedicationSuggestions = [
+const memoryDedicationOptions = [
   'My Father', 'My Mother', 'My Grandmother', 'My Grandfather', 
   'My Sister', 'My Brother', 'My Friend', 'My Uncle', 'My Aunt', 'My Spouse'
 ];
@@ -107,6 +108,7 @@ const StickyDonationWidget = () => {
   
   // In Memory specific states
   const [memoryPerson, setMemoryPerson] = useState('');
+  const [customMemoryPerson, setCustomMemoryPerson] = useState('');
   const [memoryNote, setMemoryNote] = useState('');
   const [selectedMemoryCause, setSelectedMemoryCause] = useState('clean-water');
 
@@ -156,6 +158,9 @@ const StickyDonationWidget = () => {
   const currentCurrency = currencies.find(c => c.code === currency);
   const donationAmount = Number(customAmount) || selectedAmount;
   const isPalestineSelected = selectedCause === 'palestine';
+
+  // Get the final memory person name
+  const finalMemoryPerson = memoryPerson === 'other' ? customMemoryPerson : memoryPerson;
 
   return (
     <>
@@ -244,51 +249,61 @@ const StickyDonationWidget = () => {
                     <h4 className="text-sm font-semibold text-rose-900">Memorial Donation</h4>
                   </div>
                   
-                  {/* Compact layout for sticky widget */}
                   <div className="space-y-2">
-                    {/* Cause Selection */}
-                    <div>
-                      <label className="text-xs font-medium text-rose-800 mb-1 block">Select a cause</label>
-                      <Select value={selectedMemoryCause} onValueChange={setSelectedMemoryCause}>
-                        <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-7">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border border-rose-300 shadow-lg z-[100] rounded-lg">
-                          {memoryCauses.map((cause) => (
-                            <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-rose-50 text-rose-800 rounded-lg">
-                              <div>
-                                <div className="font-medium">{cause.name}</div>
-                                <div className="text-xs text-rose-600">{cause.description}</div>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    {/* Cause and In Memory Of - Same Row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-xs font-medium text-rose-800 mb-1 block">Select a cause</label>
+                        <Select value={selectedMemoryCause} onValueChange={setSelectedMemoryCause}>
+                          <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-rose-300 shadow-lg z-[100] rounded-lg">
+                            {memoryCauses.map((cause) => (
+                              <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-rose-50 text-rose-800 rounded-lg">
+                                <div>
+                                  <div className="font-medium">{cause.name}</div>
+                                  <div className="text-xs text-rose-600">{cause.description}</div>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
 
-                    {/* In Memory Of */}
-                    <div>
-                      <label className="text-xs font-medium text-rose-800 mb-1 block">In memory of</label>
-                      <Input
-                        type="text"
-                        placeholder="e.g., My Father, My Mother"
-                        value={memoryPerson}
-                        onChange={(e) => setMemoryPerson(e.target.value)}
-                        className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-7"
-                      />
-                      
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {memoryDedicationSuggestions.slice(0, 6).map((suggestion) => (
-                          <button
-                            key={suggestion}
-                            onClick={() => setMemoryPerson(suggestion)}
-                            className="text-[10px] px-2 py-0.5 bg-white border border-rose-300 rounded-full hover:bg-rose-100 hover:border-rose-400 transition-colors text-rose-700"
-                          >
-                            {suggestion}
-                          </button>
-                        ))}
+                      <div>
+                        <label className="text-xs font-medium text-rose-800 mb-1 block">In memory of</label>
+                        <Select value={memoryPerson} onValueChange={setMemoryPerson}>
+                          <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-8">
+                            <SelectValue placeholder="Select person" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-rose-300 shadow-lg z-[100] rounded-lg">
+                            {memoryDedicationOptions.map((person) => (
+                              <SelectItem key={person} value={person} className="bg-white hover:bg-rose-50 text-rose-800 rounded-lg">
+                                {person}
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="other" className="bg-white hover:bg-rose-50 text-rose-800 rounded-lg font-medium">
+                              Other: Type my own
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
+
+                    {/* Custom Name Input - Only show when "Other" is selected */}
+                    {memoryPerson === 'other' && (
+                      <div>
+                        <label className="text-xs font-medium text-rose-800 mb-1 block">Custom name</label>
+                        <Input
+                          type="text"
+                          placeholder="Enter custom name..."
+                          value={customMemoryPerson}
+                          onChange={(e) => setCustomMemoryPerson(e.target.value)}
+                          className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-8"
+                        />
+                      </div>
+                    )}
 
                     {/* Memorial Note */}
                     <div>
@@ -503,7 +518,7 @@ const StickyDonationWidget = () => {
                     >
                       <span className="relative z-10">
                         Donate {currentCurrency?.symbol}{donationAmount}
-                        {activeTab === 'in-memory' && memoryPerson && ` in memory of ${memoryPerson}`}
+                        {activeTab === 'in-memory' && finalMemoryPerson && ` in memory of ${finalMemoryPerson}`}
                       </span>
                       
                       {isMember && (
