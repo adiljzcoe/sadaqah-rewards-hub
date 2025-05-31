@@ -46,6 +46,7 @@ const FloatingDonationButton = () => {
 
   return (
     <>
+      {/* ... keep existing code (style definitions) */}
       <style>{`
         @keyframes message-appear {
           from {
@@ -88,6 +89,7 @@ const FloatingDonationButton = () => {
           ? 'top-28 right-4 md:bottom-6 md:right-8' 
           : 'bottom-6 right-8'
       } z-50 transition-all duration-300`}>
+        {/* ... keep existing code (showCallToAction section) */}
         {showCallToAction && (
           <div className={`absolute z-60 animate-[message-appear_0.4s_ease-out] ${
             isStickyWidgetActive 
@@ -108,6 +110,7 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
+        {/* ... keep existing code (isExpanded section) */}
         {isExpanded && (
           <div className={`bg-white/98 backdrop-blur-lg rounded-2xl p-3 w-56 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
             isStickyWidgetActive 
@@ -190,29 +193,25 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot - made bigger and positioned for coin animation */}
+        {/* Main donation button with donation tin mascot - moved coin animation inside */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-32 h-32 cursor-pointer transition-all duration-300 group"
+          className="relative w-40 h-40 cursor-pointer transition-all duration-300 group"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
           {/* Mascot */}
-          <div className="relative w-full h-full overflow-visible">
-            <HeavenlyBirdMascot 
-              isActive={showCallToAction} 
-              className="w-full h-full"
-            />
-          </div>
+          <HeavenlyBirdMascot 
+            isActive={showCallToAction} 
+            className="w-full h-full"
+          />
           
-          {/* Coin Animation Overlay - positioned to cover the mascot area */}
-          <div className="absolute inset-0 pointer-events-none overflow-visible">
-            <CoinAnimation 
-              trigger={coinAnimationTrigger}
-              onComplete={() => console.log('Coin animation completed!')}
-            />
-          </div>
+          {/* Coin Animation - Now on the same layer as mascot */}
+          <CoinAnimation 
+            trigger={coinAnimationTrigger}
+            onComplete={() => console.log('Coin animation completed!')}
+          />
         </div>
       </div>
     </>
