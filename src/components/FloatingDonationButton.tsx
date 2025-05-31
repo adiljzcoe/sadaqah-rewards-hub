@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { X, HandHeart, TrendingUp } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import HeavenlyBirdMascot from './HeavenlyBirdMascot';
 
@@ -107,19 +106,6 @@ const FloatingDonationButton = () => {
               <div className="text-xs font-bold uppercase tracking-wide">
                 ✅ 100% FUNDRAISING
               </div>
-            </div>
-
-            {/* Header with close button */}
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900">Fundraising Donation</h3>
-                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-1.5 py-0.5 rounded-full text-xs font-bold inline-block">
-                  🚀 7X VALUE!
-                </div>
-              </div>
-              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setIsExpanded(false)}>
-                <X className="h-3 w-3 text-gray-600" />
-              </Button>
             </div>
 
             {/* Compact explanation */}
