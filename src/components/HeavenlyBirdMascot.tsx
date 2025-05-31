@@ -14,15 +14,28 @@ function DonationTin({ isActive }: DonationTinProps) {
     if (tinRef.current) {
       const time = state.clock.elapsedTime;
       
-      // Gentle up and down shaking animation
-      const shakeIntensity = 0.05;
-      tinRef.current.position.y = Math.sin(time * 3) * shakeIntensity;
-      
-      // Very subtle side to side movement
-      tinRef.current.position.x = Math.sin(time * 2.5) * (shakeIntensity * 0.3);
-      
-      // Slight rotation for more natural movement
-      tinRef.current.rotation.z = Math.sin(time * 2.8) * 0.02;
+      // More personality: excited bouncing when active, gentle sway when not
+      if (isActive) {
+        // Excited bouncing animation
+        const bounceIntensity = 0.08;
+        tinRef.current.position.y = Math.abs(Math.sin(time * 4)) * bounceIntensity;
+        
+        // Wiggle side to side with excitement
+        tinRef.current.position.x = Math.sin(time * 6) * 0.04;
+        
+        // More pronounced rotation when excited
+        tinRef.current.rotation.z = Math.sin(time * 5) * 0.05;
+      } else {
+        // Gentle swaying when idle
+        const swayIntensity = 0.03;
+        tinRef.current.position.y = Math.sin(time * 2) * swayIntensity;
+        
+        // Very subtle side movement
+        tinRef.current.position.x = Math.sin(time * 1.8) * (swayIntensity * 0.5);
+        
+        // Gentle tilt
+        tinRef.current.rotation.z = Math.sin(time * 1.5) * 0.015;
+      }
     }
   });
 
@@ -64,9 +77,43 @@ function DonationTin({ isActive }: DonationTinProps) {
         <meshStandardMaterial color="#1E40AF" />
       </mesh>
 
+      {/* Eyes - giving it character */}
+      <mesh position={[-0.12, 0.15, 0.41]}>
+        <sphereGeometry args={[0.04, 8, 8]} />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+      <mesh position={[0.12, 0.15, 0.41]}>
+        <sphereGeometry args={[0.04, 8, 8]} />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+
+      {/* Eye highlights for more life */}
+      <mesh position={[-0.11, 0.17, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FFFFFF" />
+      </mesh>
+      <mesh position={[0.13, 0.17, 0.42]}>
+        <sphereGeometry args={[0.015, 6, 6]} />
+        <meshStandardMaterial color="#FFFFFF" />
+      </mesh>
+
+      {/* Smile - curved using multiple small spheres */}
+      <mesh position={[-0.06, 0.05, 0.42]}>
+        <sphereGeometry args={[0.012, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0, 0.03, 0.42]}>
+        <sphereGeometry args={[0.012, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0.06, 0.05, 0.42]}>
+        <sphereGeometry args={[0.012, 6, 6]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+
       {/* DONATE text area - slightly raised white label */}
-      <mesh position={[0, 0.05, 0.41]}>
-        <boxGeometry args={[0.6, 0.25, 0.02]} />
+      <mesh position={[0, -0.05, 0.41]}>
+        <boxGeometry args={[0.6, 0.15, 0.02]} />
         <meshStandardMaterial color="#FFFFFF" />
       </mesh>
 
@@ -96,6 +143,20 @@ function DonationTin({ isActive }: DonationTinProps) {
       <mesh position={[0.55, -0.4, 0]}>
         <sphereGeometry args={[0.025, 8, 8]} />
         <meshStandardMaterial color="#1E40AF" />
+      </mesh>
+
+      {/* Small heart decoration on the side */}
+      <mesh position={[0.35, 0.1, 0]} rotation={[0, -Math.PI / 4, 0]}>
+        <sphereGeometry args={[0.03, 8, 8]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0.33, 0.12, 0]} rotation={[0, -Math.PI / 4, 0]}>
+        <sphereGeometry args={[0.02, 8, 8]} />
+        <meshStandardMaterial color="#FF6B6B" />
+      </mesh>
+      <mesh position={[0.37, 0.12, 0]} rotation={[0, -Math.PI / 4, 0]}>
+        <sphereGeometry args={[0.02, 8, 8]} />
+        <meshStandardMaterial color="#FF6B6B" />
       </mesh>
     </group>
   );
