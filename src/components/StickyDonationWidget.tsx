@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -266,7 +264,6 @@ const StickyDonationWidget = () => {
                     <Badge className="bg-emerald-500 text-white font-medium text-xs px-2 py-1">
                       100% Donation Policy
                     </Badge>
-                    <span className="ml-2">5,234 lives impacted</span>
                   </div>
                   <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded px-2 py-1">
                     <span className="font-medium text-amber-700">Your donation = {donationAmount * 10} Sadaqah points</span>
@@ -295,4 +292,3 @@ const StickyDonationWidget = () => {
 };
 
 export default StickyDonationWidget;
-
