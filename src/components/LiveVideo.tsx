@@ -431,43 +431,37 @@ const LiveVideo = () => {
       <div className="bg-gradient-to-r from-slate-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-xl border border-white/10 rounded-t-xl p-3 md:p-4">
         <div className="flex items-center justify-between gap-2">
           {/* Left side - Stats */}
-          <div className="flex items-center space-x-2 md:space-x-3 min-w-0 flex-1">
-            {/* Live Badge */}
-            <Badge className="bg-red-500/30 hover:bg-red-600/40 text-white shadow-lg px-2 py-1 animate-pulse backdrop-blur-xl border border-white/20 flex-shrink-0 text-xs">
-              <div className="w-1.5 h-1.5 bg-white rounded-full mr-1 animate-ping"></div>
-              LIVE
-            </Badge>
-
+          <div className="flex items-center space-x-2 md:space-x-4 min-w-0 flex-1">
             {/* User Stats Row */}
-            <div className="flex items-center space-x-2 bg-black/20 backdrop-blur-xl rounded-lg px-2 py-1.5 border border-white/10 min-w-0 overflow-hidden">
+            <div className="flex items-center space-x-3 bg-black/20 backdrop-blur-xl rounded-lg px-3 py-2 border border-white/10 min-w-0 overflow-hidden flex-1">
               {/* Points */}
-              <div className="flex items-center text-purple-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
-                <Star className="h-3 w-3 mr-1 text-purple-400" />
+              <div className="flex items-center text-purple-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
+                <Star className="h-4 w-4 mr-1 text-purple-400" />
                 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{userPoints.toLocaleString()}</span>
               </div>
               
-              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
+              <div className="w-px h-4 bg-white/30 flex-shrink-0"></div>
               
               {/* Coins */}
-              <div className="flex items-center text-amber-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
-                <SimpleGoldCoin size={12} className="mr-1" />
+              <div className="flex items-center text-amber-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer flex-shrink-0">
+                <SimpleGoldCoin size={14} className="mr-1" />
                 <span className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">{userCoins.toLocaleString()}</span>
               </div>
               
-              <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
+              <div className="w-px h-4 bg-white/30 flex-shrink-0"></div>
               
               {/* Level */}
-              <div className="flex items-center text-blue-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-2 py-1 rounded border border-blue-400/20 flex-shrink-0">
-                <Crown className="h-3 w-3 mr-1 text-yellow-400" />
+              <div className="flex items-center text-blue-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-blue-500/10 to-purple-500/10 px-3 py-1.5 rounded border border-blue-400/20 flex-shrink-0">
+                <Crown className="h-4 w-4 mr-1 text-yellow-400" />
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Lv.{userLevel}</span>
               </div>
               
               {/* Streak */}
               {streakCount > 0 && (
                 <>
-                  <div className="w-px h-3 bg-white/30 flex-shrink-0"></div>
-                  <div className="flex items-center text-orange-300 text-xs font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-orange-500/10 to-red-500/10 px-2 py-1 rounded border border-orange-400/20 flex-shrink-0">
-                    <Flame className="h-3 w-3 mr-1 text-orange-400 animate-pulse" />
+                  <div className="w-px h-4 bg-white/30 flex-shrink-0"></div>
+                  <div className="flex items-center text-orange-300 text-sm font-bold hover:scale-110 transition-transform cursor-pointer bg-gradient-to-r from-orange-500/10 to-red-500/10 px-3 py-1.5 rounded border border-orange-400/20 flex-shrink-0">
+                    <Flame className="h-4 w-4 mr-1 text-orange-400 animate-pulse" />
                     <span className="bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">{streakCount}x{multiplier}</span>
                   </div>
                 </>
@@ -485,13 +479,13 @@ const LiveVideo = () => {
           </Button>
         </div>
 
-        {/* Level Progress Bar */}
+        {/* Compact Level Progress Bar */}
         <div className="mt-2">
           <div className="flex items-center justify-between text-xs text-white/70 mb-1">
             <span>Level {userLevel}</span>
             <span>{userPoints % 500}/500 XP</span>
           </div>
-          <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
+          <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
             <div 
               className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full transition-all duration-500 shadow-lg"
               style={{ width: `${(userPoints % 500) / 500 * 100}%` }}
@@ -499,27 +493,6 @@ const LiveVideo = () => {
               <div className="w-full h-full bg-gradient-to-r from-white/20 to-transparent rounded-full"></div>
             </div>
           </div>
-        </div>
-
-        {/* User Badges */}
-        <div className="flex items-center space-x-1 mt-2">
-          {userBadges.slice(0, 4).map((badgeKey) => {
-            const badge = badges[badgeKey];
-            return (
-              <div
-                key={badgeKey}
-                className={`w-6 h-6 rounded-full bg-gradient-to-r ${badge.color} flex items-center justify-center text-xs shadow-lg border-2 border-white/30 hover:scale-110 transition-transform cursor-pointer backdrop-blur-sm flex-shrink-0`}
-                title={badge.name}
-              >
-                {badge.icon}
-              </div>
-            );
-          })}
-          {userBadges.length > 4 && (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-gray-400/30 to-gray-600/30 flex items-center justify-center text-xs text-white font-bold shadow-lg border-2 border-white/30 backdrop-blur-sm flex-shrink-0">
-              +{userBadges.length - 4}
-            </div>
-          )}
         </div>
       </div>
 
