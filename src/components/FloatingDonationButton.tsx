@@ -137,17 +137,17 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot - removed circular styling */}
+        {/* Main donation button with donation tin mascot - increased size to prevent clipping */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-16 h-16 cursor-pointer transition-all duration-300 group"
+          className="relative w-20 h-20 cursor-pointer transition-all duration-300 group overflow-visible"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
           <HeavenlyBirdMascot 
             isActive={showCallToAction} 
-            className="w-full h-full"
+            className="w-full h-full overflow-visible"
           />
         </div>
       </div>
