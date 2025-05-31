@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
@@ -11,16 +12,92 @@ const FloatingDonationButton = () => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [isStickyWidgetActive, setIsStickyWidgetActive] = useState(false);
   const [coinAnimationTrigger, setCoinAnimationTrigger] = useState(false);
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  // 50+ encouraging donation messages
+  const encouragingMessages = [
+    'Support Gaza Relief! 🇵🇸',
+    'Be someone\'s hope today! ✨',
+    'Your kindness saves lives! 💝',
+    'Together we can help! 🤝',
+    'Every penny counts! 💰',
+    'Spread love, not hate! ❤️',
+    'Make a difference now! 🌟',
+    'Gaza needs your help! 🙏',
+    'Children are counting on you! 👶',
+    'Be their guardian angel! 😇',
+    'Your donation = their hope! 🌈',
+    'Feed a hungry family! 🍽️',
+    'Provide clean water! 💧',
+    'Give them shelter! 🏠',
+    'Education for all! 📚',
+    'Medical aid saves lives! 🏥',
+    'Emergency relief needed! 🚨',
+    'Winter is coming, help now! ❄️',
+    'Rebuild their dreams! 🔨',
+    'Support orphaned children! 👨‍👩‍👧‍👦',
+    'Your charity = their dignity! 👑',
+    'Be the change you wish to see! 🌍',
+    'Small acts, big impact! 💪',
+    'Compassion in action! 🤲',
+    'Help heal their wounds! 🩹',
+    'Restore their faith! ☪️',
+    'Your zakat can save lives! 🕌',
+    'Sadaqah brings blessings! ✨',
+    'Allah loves the generous! 🤲',
+    'Share your rizq today! 🍞',
+    'Be a source of mercy! 💝',
+    'Your dua + donation = miracle! 🤲',
+    'Break their fast! 🌙',
+    'Warm their hearts! 💖',
+    'Light up their darkness! 💡',
+    'Give them reason to smile! 😊',
+    'Your help = their prayers! 🤲',
+    'Stand with Gaza! 🇵🇸',
+    'Humanity needs you! 🌎',
+    'Be their lifeline! 🛟',
+    'Rush to do good! 🏃‍♂️',
+    'Time is precious, act now! ⏰',
+    'Your wealth can heal! 💎',
+    'Invest in the hereafter! 🌅',
+    'Every child deserves safety! 🛡️',
+    'Mothers need your support! 👩‍👧‍👦',
+    'Fathers working to rebuild! 👨‍🔧',
+    'Elderly need care! 👴👵',
+    'Disabled need assistance! ♿',
+    'Refugees need homes! 🏕️',
+    'Students need books! 📖',
+    'Patients need medicine! 💊',
+    'Babies need milk! 🍼',
+    'Trauma healing needed! 🩺',
+    'Hope must not die! 🕊️'
+  ];
+
+  // Rotate through messages every 3 seconds
+  useEffect(() => {
+    if (showCallToAction) {
+      const interval = setInterval(() => {
+        setMessageIndex((prevIndex) => (prevIndex + 1) % encouragingMessages.length);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [showCallToAction, encouragingMessages.length]);
+
+  // Update current message when index changes
+  useEffect(() => {
+    setCurrentMessage(encouragingMessages[messageIndex]);
+  }, [messageIndex, encouragingMessages]);
 
   useEffect(() => {
     // Simulate a call to action after 5 seconds
     const timer = setTimeout(() => {
       setShowCallToAction(true);
-      setCurrentMessage('Support Gaza Relief!');
+      setCurrentMessage(encouragingMessages[0]);
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [encouragingMessages]);
 
   const handleFundraisingDonate = (amount: number) => {
     const valueReceived = amount * 7;
@@ -82,6 +159,17 @@ const FloatingDonationButton = () => {
             transform: rotate(0deg);
           }
         }
+
+        @keyframes slide-in-left {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
       `}</style>
       
       <div className={`fixed ${
@@ -89,22 +177,22 @@ const FloatingDonationButton = () => {
           ? 'top-28 right-4 md:bottom-6 md:right-8' 
           : 'bottom-6 right-8'
       } z-50 transition-all duration-300`}>
-        {/* ... keep existing code (showCallToAction section) */}
+        {/* Message positioned much closer to mascot */}
         {showCallToAction && (
-          <div className={`absolute z-60 animate-[message-appear_0.4s_ease-out] ${
+          <div className={`absolute z-60 ${
             isStickyWidgetActive 
-              ? 'top-20 -left-32 md:-top-20 md:-left-32' 
-              : '-top-20 -left-32'
+              ? 'top-12 -left-16 md:-top-8 md:-left-20' 
+              : '-top-8 -left-20'
           }`}>
-            <div className="relative bg-white border border-gray-200 rounded-xl shadow-xl px-4 py-3">
-              <p className="text-sm font-medium text-gray-800 whitespace-nowrap">
+            <div className="relative bg-gradient-to-r from-green-500 to-emerald-600 text-white border-2 border-white rounded-2xl shadow-2xl px-4 py-2 animate-[slide-in-left_0.5s_ease-out]">
+              <p className="text-sm font-bold whitespace-nowrap">
                 {currentMessage}
               </p>
-              {/* Message pointer */}
-              <div className={`absolute transform rotate-45 w-3 h-3 bg-white border-r border-b border-gray-200 ${
+              {/* Message pointer - positioned to point to mascot */}
+              <div className={`absolute transform rotate-45 w-3 h-3 bg-green-500 border-r-2 border-b-2 border-white ${
                 isStickyWidgetActive 
-                  ? '-bottom-1.5 right-8 md:bottom-0 md:right-8 md:translate-y-1/2' 
-                  : 'bottom-0 right-8 translate-y-1/2'
+                  ? '-right-1.5 top-1/2 -translate-y-1/2 md:bottom-0 md:right-4 md:translate-y-1/2 md:top-auto' 
+                  : 'bottom-0 right-4 translate-y-1/2'
               }`}></div>
             </div>
           </div>
