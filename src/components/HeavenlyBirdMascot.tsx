@@ -169,7 +169,7 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
             <meshStandardMaterial 
               color="#047857" 
               metalness={0.15} 
-              roughness={0.6"
+              roughness={0.6}
             />
           </mesh>
           
