@@ -217,12 +217,10 @@ const StickyDonationWidget = () => {
                   <div className="w-20 sm:col-span-1">
                     <Select value={currency} onValueChange={setCurrency}>
                       <SelectTrigger className={`w-full text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
-                        <SelectValue>
-                          <div className="flex items-center space-x-1">
-                            <span>{currentCurrency?.flag}</span>
-                            <span className="font-medium">{currentCurrency?.symbol}</span>
-                          </div>
-                        </SelectValue>
+                        <div className="flex items-center space-x-1">
+                          <span>{currentCurrency?.flag}</span>
+                          <span className="font-medium">{currentCurrency?.symbol}</span>
+                        </div>
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
                         {currencies.map((curr) => (
