@@ -29,11 +29,6 @@ const FloatingDonationButton = () => {
   ];
 
   const handleTinClick = () => {
-    // Always show emotional speech bubble on click
-    const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
-    setCurrentMessage(randomMessage);
-    setShowSpeechBubble(true);
-    
     // Start wiggling/shaking animation
     setIsWiggling(true);
     
@@ -44,11 +39,26 @@ const FloatingDonationButton = () => {
       setIsExpanded(false);
     }
     
-    // Hide speech bubble after 4 seconds
-    setTimeout(() => setShowSpeechBubble(false), 4000);
     // Stop wiggling after animation completes
     setTimeout(() => setIsWiggling(false), 1800);
   };
+
+  // Show encouraging messages every 30 seconds
+  useEffect(() => {
+    const messageInterval = setInterval(() => {
+      const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
+      setCurrentMessage(randomMessage);
+      setShowSpeechBubble(true);
+      setIsWiggling(true);
+      
+      // Hide speech bubble after 4 seconds
+      setTimeout(() => setShowSpeechBubble(false), 4000);
+      // Stop wiggling after animation completes
+      setTimeout(() => setIsWiggling(false), 1800);
+    }, 30000); // Every 30 seconds
+
+    return () => clearInterval(messageInterval);
+  }, []);
 
   // Generate falling coins periodically
   useEffect(() => {
@@ -157,6 +167,20 @@ const FloatingDonationButton = () => {
             transform: translateY(-20px) scale(0.8);
           }
         }
+
+        @keyframes charity-shake {
+          0% { transform: translateX(0) rotate(0deg); }
+          10% { transform: translateX(-2px) rotate(-1deg); }
+          20% { transform: translateX(2px) rotate(1deg); }
+          30% { transform: translateX(-2px) rotate(-1deg); }
+          40% { transform: translateX(2px) rotate(1deg); }
+          50% { transform: translateX(-1px) rotate(-0.5deg); }
+          60% { transform: translateX(1px) rotate(0.5deg); }
+          70% { transform: translateX(-1px) rotate(-0.5deg); }
+          80% { transform: translateX(1px) rotate(0.5deg); }
+          90% { transform: translateX(-0.5px) rotate(-0.25deg); }
+          100% { transform: translateX(0) rotate(0deg); }
+        }
       `}</style>
       
       <div className="fixed bottom-8 right-8 z-50">
@@ -255,7 +279,7 @@ const FloatingDonationButton = () => {
 
           {/* Adorable charity collection tin with enhanced emotional features */}
           <div className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ${
-            isWiggling ? 'animate-charity-shake' : ''
+            isWiggling ? 'animate-[charity-shake_1.8s_ease-in-out]' : ''
           } group-hover:scale-110`}>
             {/* Enhanced soft shadow for depth */}
             <div className="absolute top-1 left-1 w-9 h-14 bg-gradient-to-br from-pink-300/50 to-purple-400/50 rounded-2xl transform rotate-1 blur-md"></div>
