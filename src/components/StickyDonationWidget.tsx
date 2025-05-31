@@ -268,12 +268,22 @@ const StickyDonationWidget = () => {
                   />
                 </div>
 
-                {/* Pay button */}
-                <div className="col-span-4">
-                  <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-200 ${isSticky ? 'h-7' : 'h-8'}`}>
-                    Donate {currentCurrency?.symbol}{donationAmount}
+                {/* Pay button with glow effect */}
+                <div className="col-span-4 relative">
+                  <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-200 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden shadow-lg hover:shadow-emerald-500/50 animate-pulse`}
+                    style={{
+                      boxShadow: '0 0 20px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.4), 0 0 60px rgba(16, 185, 129, 0.2)'
+                    }}
+                  >
+                    {/* Animated glow overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[slide-in-right_2s_ease-in-out_infinite]"></div>
+                    
+                    <span className="relative z-10">
+                      Donate {currentCurrency?.symbol}{donationAmount}
+                    </span>
+                    
                     {isMember && (
-                      <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0">
+                      <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20">
                         2x
                       </Badge>
                     )}
