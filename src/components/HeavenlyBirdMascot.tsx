@@ -39,12 +39,8 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <sphereGeometry args={[0.4, 16, 16]} />
         <meshStandardMaterial 
           color="#10b981" 
-          transparent 
-          opacity={0.9}
           metalness={0.1} 
           roughness={0.2}
-          emissive="#059669"
-          emissiveIntensity={0.3}
         />
       </mesh>
 
@@ -53,12 +49,8 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <sphereGeometry args={[0.22, 16, 16]} />
         <meshStandardMaterial 
           color="#22c55e" 
-          transparent 
-          opacity={0.9}
           metalness={0.1} 
           roughness={0.2}
-          emissive="#16a34a"
-          emissiveIntensity={0.25}
         />
       </mesh>
 
@@ -97,8 +89,6 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <boxGeometry args={[0.5, 0.08, 0.35]} />
         <meshStandardMaterial 
           color="#065f46" 
-          transparent 
-          opacity={0.8}
           metalness={0.2} 
           roughness={0.3}
         />
@@ -107,8 +97,6 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <boxGeometry args={[0.5, 0.08, 0.35]} />
         <meshStandardMaterial 
           color="#065f46" 
-          transparent 
-          opacity={0.8}
           metalness={0.2} 
           roughness={0.3}
         />
@@ -121,12 +109,8 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
           <boxGeometry args={[0.7, 0.12, 0.4]} />
           <meshStandardMaterial 
             color="#16a34a" 
-            transparent 
-            opacity={0.85}
             metalness={0.2} 
             roughness={0.3}
-            emissive="#15803d"
-            emissiveIntensity={0.15}
           />
         </mesh>
 
@@ -135,12 +119,8 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
           <boxGeometry args={[0.7, 0.12, 0.4]} />
           <meshStandardMaterial 
             color="#16a34a" 
-            transparent 
-            opacity={0.85}
             metalness={0.2} 
             roughness={0.3}
-            emissive="#15803d"
-            emissiveIntensity={0.15}
           />
         </mesh>
       </group>
@@ -150,12 +130,8 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <boxGeometry args={[0.2, 0.8, 0.08]} />
         <meshStandardMaterial 
           color="#059669" 
-          transparent 
-          opacity={0.9}
           metalness={0.1} 
           roughness={0.2}
-          emissive="#047857"
-          emissiveIntensity={0.2}
         />
       </mesh>
 
@@ -164,20 +140,12 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <boxGeometry args={[0.12, 0.7, 0.06]} />
         <meshStandardMaterial 
           color="#10b981" 
-          transparent 
-          opacity={0.85}
-          emissive="#059669"
-          emissiveIntensity={0.15}
         />
       </mesh>
       <mesh position={[0.08, -0.45, -0.32]} rotation={[0.25, 0.1, 0]}>
         <boxGeometry args={[0.12, 0.7, 0.06]} />
         <meshStandardMaterial 
           color="#10b981" 
-          transparent 
-          opacity={0.85}
-          emissive="#059669"
-          emissiveIntensity={0.15}
         />
       </mesh>
 
@@ -235,18 +203,6 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <cylinderGeometry args={[0.015, 0.025, 0.2, 6]} />
         <meshStandardMaterial color="#d97706" />
       </mesh>
-
-      {/* Heavenly glow effect around the parakeet */}
-      <mesh position={[0, 0, 0]} scale={[1.8, 1.8, 1.8]}>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshStandardMaterial 
-          color="#10b981" 
-          transparent 
-          opacity={0.12}
-          emissive="#10b981"
-          emissiveIntensity={0.4}
-        />
-      </mesh>
     </group>
   );
 }
@@ -260,7 +216,7 @@ const HeavenlyBirdMascot: React.FC<HeavenlyBirdMascotProps> = ({ isActive, class
   return (
     <div className={className}>
       <Canvas camera={{ position: [1, 1, 2.5], fov: 50 }}>
-        {/* Heavenly lighting setup */}
+        {/* Lighting setup */}
         <ambientLight intensity={0.8} color="#f0f9ff" />
         <directionalLight 
           position={[5, 10, 5]} 
