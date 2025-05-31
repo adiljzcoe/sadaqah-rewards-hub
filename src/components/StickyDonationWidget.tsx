@@ -257,18 +257,18 @@ const StickyDonationWidget = () => {
 
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
-                {/* Emergency Cause Selection */}
-                <div className="col-span-3">
-                  <Select value={selectedCause} onValueChange={setSelectedCause}>
-                    <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
+                {/* Currency selector - now first */}
+                <div className="col-span-1">
+                  <Select value={currency} onValueChange={setCurrency}>
+                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
-                      {emergencyCauses.map((cause) => (
-                        <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-gray-50">
-                          <div className="flex items-center space-x-2">
-                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
-                            <span className={cause.color}>{cause.name}</span>
+                      {currencies.map((curr) => (
+                        <SelectItem key={curr.code} value={curr.code} className="bg-white hover:bg-gray-50">
+                          <div className="flex items-center space-x-1">
+                            <span>{curr.flag}</span>
+                            <span>{curr.symbol}</span>
                           </div>
                         </SelectItem>
                       ))}
@@ -276,7 +276,7 @@ const StickyDonationWidget = () => {
                   </Select>
                 </div>
 
-                {/* Quick amounts - now only 3 amounts, narrower */}
+                {/* Quick amounts - now after currency */}
                 <div className="col-span-3 grid grid-cols-3 gap-1">
                   {quickAmounts.map((amount) => (
                     <button
@@ -296,18 +296,18 @@ const StickyDonationWidget = () => {
                   ))}
                 </div>
 
-                {/* Currency selector */}
-                <div className="col-span-1">
-                  <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
+                {/* Emergency Cause Selection */}
+                <div className="col-span-3">
+                  <Select value={selectedCause} onValueChange={setSelectedCause}>
+                    <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
-                      {currencies.map((curr) => (
-                        <SelectItem key={curr.code} value={curr.code} className="bg-white hover:bg-gray-50">
-                          <div className="flex items-center space-x-1">
-                            <span>{curr.flag}</span>
-                            <span>{curr.symbol}</span>
+                      {emergencyCauses.map((cause) => (
+                        <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-gray-50">
+                          <div className="flex items-center space-x-2">
+                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
+                            <span className={cause.color}>{cause.name}</span>
                           </div>
                         </SelectItem>
                       ))}
