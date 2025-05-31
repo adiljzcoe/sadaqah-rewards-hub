@@ -550,61 +550,6 @@ const LiveVideo = () => {
           </div>
         )}
 
-        {/* Recent donations feed - Left side - Made smaller and with width constraints */}
-        <div className="absolute left-1 md:left-2 top-16 md:top-20 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
-          {[...recentDonations, ...fakeDonations].slice(0, 3).map((donation) => (
-            <div
-              key={donation.id}
-              className="bg-gradient-to-r from-emerald-500/30 to-green-600/30 text-white px-2 py-1 rounded-xl text-xs font-medium flex items-center space-x-1 animate-slide-in-left shadow-lg border border-emerald-300/30 hover:scale-105 transition-transform backdrop-blur-xl overflow-hidden"
-            >
-              <span className="text-sm animate-bounce flex-shrink-0">{donation.emoji}</span>
-              <div className="flex-1 min-w-0 overflow-hidden">
-                <div className="font-bold truncate text-xs">
-                  {donation.user === 'You' ? 'You helped' : `${donation.user} helped`}
-                </div>
-                <div className="text-[10px] opacity-90 flex items-center space-x-1">
-                  <span className="truncate">{donation.finalAmount} coins</span>
-                  {donation.multiplier > 1 && <Star className="h-2 w-2 text-yellow-300 animate-pulse flex-shrink-0" />}
-                </div>
-              </div>
-              <div className="flex items-center bg-white/15 rounded-md px-1 py-0.5 flex-shrink-0">
-                <SimpleGoldCoin size={8} className="mr-1" />
-                <span className="text-[9px] font-bold">{donation.coins}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Dedication Feed - Right side - Also made smaller with width constraints */}
-        <div className="absolute right-1 md:right-2 top-16 md:top-20 space-y-1 z-20 max-w-[200px] md:max-w-[250px] w-auto">
-          {dedicationFeed.slice(0, 2).map((dedication) => (
-            <div
-              key={dedication.id}
-              className="bg-gradient-to-r from-purple-600/40 to-pink-600/40 text-white px-2 py-1.5 rounded-xl text-xs font-medium animate-slide-in-right shadow-lg border border-purple-300/40 hover:scale-105 transition-transform backdrop-blur-xl overflow-hidden"
-            >
-              <div className="flex items-center space-x-1 mb-1">
-                <span className="text-sm animate-bounce flex-shrink-0">{dedication.emoji}</span>
-                <div className="flex-1 min-w-0 overflow-hidden">
-                  <div className="font-bold text-[10px] truncate opacity-90">
-                    {dedication.user} for
-                  </div>
-                  <div className="font-bold text-purple-200 truncate text-xs">
-                    {dedication.onBehalfOf}
-                  </div>
-                </div>
-                <div className="flex items-center bg-white/15 rounded-md px-1 py-0.5 flex-shrink-0">
-                  <SimpleGoldCoin size={8} className="mr-1" />
-                  <span className="text-[9px] font-bold">{dedication.amount}</span>
-                </div>
-              </div>
-              
-              <div className="text-[10px] italic opacity-85 leading-relaxed bg-white/10 rounded-md px-1 py-0.5 border border-white/15 line-clamp-2 overflow-hidden">
-                "{dedication.note}"
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Celebration overlay - Ultra transparent */}
         {celebrationMode && (
           <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/5 to-amber-500/5 animate-pulse z-40 pointer-events-none">
@@ -679,6 +624,36 @@ const LiveVideo = () => {
         </div>
       </div>
 
+      {/* Donation Messages Ticker - New section below video */}
+      <div className="bg-gradient-to-r from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl border-x border-white/10 py-3 overflow-hidden">
+        <div className="flex animate-scroll-left space-x-6">
+          {[...recentDonations, ...fakeDonations, ...dedicationFeed].slice(0, 8).map((donation, index) => (
+            <div
+              key={donation.id || index}
+              className="flex items-center space-x-2 bg-gradient-to-r from-emerald-500/20 to-green-600/20 text-white px-3 py-2 rounded-lg text-sm font-medium border border-emerald-400/30 backdrop-blur-sm flex-shrink-0 min-w-max"
+            >
+              <span className="text-lg animate-bounce">{donation.emoji}</span>
+              <div className="flex items-center space-x-2">
+                <span className="font-bold">
+                  {donation.user === 'You' ? 'You' : donation.user}
+                </span>
+                <span className="text-emerald-300">helped with</span>
+                <div className="flex items-center bg-white/15 rounded px-2 py-1">
+                  <SimpleGoldCoin size={12} className="mr-1" />
+                  <span className="font-bold">{donation.finalAmount || donation.amount}</span>
+                </div>
+                {donation.onBehalfOf && (
+                  <>
+                    <span className="text-purple-300">for</span>
+                    <span className="font-semibold text-purple-200">{donation.onBehalfOf}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Bottom controls section - Better constrained */}
       <div className="bg-gradient-to-r from-gray-800/25 via-gray-700/25 to-gray-800/25 py-2 md:py-4 px-2 md:px-4 rounded-b-xl border-t border-gray-600/25 backdrop-blur-xl overflow-hidden">
         <div className="flex items-center justify-between gap-2">
@@ -729,34 +704,17 @@ const LiveVideo = () => {
           }
         }
         
-        @keyframes slideInLeft {
+        @keyframes scroll-left {
           0% {
-            opacity: 0;
-            transform: translateX(-100%) scale(0.8);
+            transform: translateX(100%);
           }
           100% {
-            opacity: 1;
-            transform: translateX(0) scale(1);
+            transform: translateX(-100%);
           }
         }
         
-        @keyframes slideInRight {
-          0% {
-            opacity: 0;
-            transform: translateX(100%) scale(0.8);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-          }
-        }
-        
-        .animate-slide-in-left {
-          animation: slideInLeft 0.6s ease-out;
-        }
-        
-        .animate-slide-in-right {
-          animation: slideInRight 0.6s ease-out;
+        .animate-scroll-left {
+          animation: scroll-left 30s linear infinite;
         }
         
         .scrollbar-hide {
