@@ -34,100 +34,150 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
 
   return (
     <group ref={birdRef} position={[0, 0.2, 0]}>
-      {/* Bird Body - Main body with heavenly green, scaled to be ellipsoid */}
-      <mesh position={[0, 0, 0]} scale={[0.8, 1, 0.6]}>
-        <sphereGeometry args={[0.5, 16, 16]} />
+      {/* Parakeet Body - More elongated and vibrant green */}
+      <mesh position={[0, 0, 0]} scale={[0.7, 1.2, 0.6]}>
+        <sphereGeometry args={[0.4, 16, 16]} />
+        <meshStandardMaterial 
+          color="#10b981" 
+          transparent 
+          opacity={0.9}
+          metalness={0.1} 
+          roughness={0.2}
+          emissive="#059669"
+          emissiveIntensity={0.3}
+        />
+      </mesh>
+
+      {/* Parakeet Head - Smaller and more rounded */}
+      <mesh position={[0, 0.6, 0.1]}>
+        <sphereGeometry args={[0.22, 16, 16]} />
         <meshStandardMaterial 
           color="#22c55e" 
           transparent 
           opacity={0.9}
           metalness={0.1} 
-          roughness={0.3}
+          roughness={0.2}
           emissive="#16a34a"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.25}
         />
       </mesh>
 
-      {/* Bird Head */}
-      <mesh position={[0, 0.6, 0.1]}>
-        <sphereGeometry args={[0.25, 16, 16]} />
+      {/* Distinctive Parakeet Curved Beak */}
+      <mesh position={[0, 0.62, 0.32]} rotation={[0.4, 0, 0]}>
+        <sphereGeometry args={[0.06, 8, 8]} />
+        <meshStandardMaterial color="#f59e0b" metalness={0.4} roughness={0.3} />
+      </mesh>
+      <mesh position={[0, 0.58, 0.36]} rotation={[0.6, 0, 0]}>
+        <sphereGeometry args={[0.04, 8, 8]} />
+        <meshStandardMaterial color="#d97706" metalness={0.4} roughness={0.3} />
+      </mesh>
+
+      {/* Large Parakeet Eyes */}
+      <mesh position={[-0.1, 0.7, 0.26]}>
+        <sphereGeometry args={[0.07, 8, 8]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+      <mesh position={[0.1, 0.7, 0.26]}>
+        <sphereGeometry args={[0.07, 8, 8]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Eye pupils with parakeet-like dark centers */}
+      <mesh position={[-0.08, 0.72, 0.31]}>
+        <sphereGeometry args={[0.035, 8, 8]} />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+      <mesh position={[0.08, 0.72, 0.31]}>
+        <sphereGeometry args={[0.035, 8, 8]} />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+
+      {/* Parakeet Wing Markings - Darker green stripes */}
+      <mesh position={[-0.35, 0.15, 0]} rotation={[0, 0, -0.2]}>
+        <boxGeometry args={[0.5, 0.08, 0.35]} />
         <meshStandardMaterial 
-          color="#16a34a" 
+          color="#065f46" 
           transparent 
-          opacity={0.9}
-          metalness={0.1} 
+          opacity={0.8}
+          metalness={0.2} 
           roughness={0.3}
-          emissive="#15803d"
-          emissiveIntensity={0.15}
+        />
+      </mesh>
+      <mesh position={[0.35, 0.15, 0]} rotation={[0, 0, 0.2]}>
+        <boxGeometry args={[0.5, 0.08, 0.35]} />
+        <meshStandardMaterial 
+          color="#065f46" 
+          transparent 
+          opacity={0.8}
+          metalness={0.2} 
+          roughness={0.3}
         />
       </mesh>
 
-      {/* Beak */}
-      <mesh position={[0, 0.65, 0.35]} rotation={[0.2, 0, 0]}>
-        <coneGeometry args={[0.08, 0.2, 8]} />
-        <meshStandardMaterial color="#fbbf24" metalness={0.3} roughness={0.4} />
-      </mesh>
-
-      {/* Eyes */}
-      <mesh position={[-0.12, 0.7, 0.25]}>
-        <sphereGeometry args={[0.06, 8, 8]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
-      <mesh position={[0.12, 0.7, 0.25]}>
-        <sphereGeometry args={[0.06, 8, 8]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
-
-      {/* Eye pupils */}
-      <mesh position={[-0.1, 0.72, 0.3]}>
-        <sphereGeometry args={[0.03, 8, 8]} />
-        <meshStandardMaterial color="#000000" />
-      </mesh>
-      <mesh position={[0.1, 0.72, 0.3]}>
-        <sphereGeometry args={[0.03, 8, 8]} />
-        <meshStandardMaterial color="#000000" />
-      </mesh>
-
-      {/* Wings Group */}
+      {/* Wings Group - Longer parakeet wings */}
       <group ref={wingsRef}>
         {/* Left Wing */}
-        <mesh position={[-0.45, 0.1, 0]} rotation={[0, 0, -0.3]}>
-          <boxGeometry args={[0.6, 0.1, 0.4]} />
+        <mesh position={[-0.4, 0.1, 0]} rotation={[0, 0, -0.3]}>
+          <boxGeometry args={[0.7, 0.12, 0.4]} />
           <meshStandardMaterial 
-            color="#15803d" 
+            color="#16a34a" 
             transparent 
-            opacity={0.8}
+            opacity={0.85}
             metalness={0.2} 
-            roughness={0.4}
-            emissive="#166534"
-            emissiveIntensity={0.1}
+            roughness={0.3}
+            emissive="#15803d"
+            emissiveIntensity={0.15}
           />
         </mesh>
 
         {/* Right Wing */}
-        <mesh position={[0.45, 0.1, 0]} rotation={[0, 0, 0.3]}>
-          <boxGeometry args={[0.6, 0.1, 0.4]} />
+        <mesh position={[0.4, 0.1, 0]} rotation={[0, 0, 0.3]}>
+          <boxGeometry args={[0.7, 0.12, 0.4]} />
           <meshStandardMaterial 
-            color="#15803d" 
+            color="#16a34a" 
             transparent 
-            opacity={0.8}
+            opacity={0.85}
             metalness={0.2} 
-            roughness={0.4}
-            emissive="#166534"
-            emissiveIntensity={0.1}
+            roughness={0.3}
+            emissive="#15803d"
+            emissiveIntensity={0.15}
           />
         </mesh>
       </group>
 
-      {/* Tail feathers */}
-      <mesh position={[0, -0.3, -0.4]} rotation={[0.3, 0, 0]}>
-        <boxGeometry args={[0.3, 0.6, 0.1]} />
+      {/* Parakeet tail feathers - Longer and more pointed */}
+      <mesh position={[0, -0.4, -0.3]} rotation={[0.2, 0, 0]}>
+        <boxGeometry args={[0.2, 0.8, 0.08]} />
         <meshStandardMaterial 
-          color="#166534" 
+          color="#059669" 
+          transparent 
+          opacity={0.9}
+          metalness={0.1} 
+          roughness={0.2}
+          emissive="#047857"
+          emissiveIntensity={0.2}
+        />
+      </mesh>
+
+      {/* Additional tail feathers for parakeet look */}
+      <mesh position={[-0.08, -0.45, -0.32]} rotation={[0.25, -0.1, 0]}>
+        <boxGeometry args={[0.12, 0.7, 0.06]} />
+        <meshStandardMaterial 
+          color="#10b981" 
           transparent 
           opacity={0.85}
-          metalness={0.1} 
-          roughness={0.3}
+          emissive="#059669"
+          emissiveIntensity={0.15}
+        />
+      </mesh>
+      <mesh position={[0.08, -0.45, -0.32]} rotation={[0.25, 0.1, 0]}>
+        <boxGeometry args={[0.12, 0.7, 0.06]} />
+        <meshStandardMaterial 
+          color="#10b981" 
+          transparent 
+          opacity={0.85}
+          emissive="#059669"
+          emissiveIntensity={0.15}
         />
       </mesh>
 
@@ -176,25 +226,25 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         </mesh>
       </group>
 
-      {/* Bird's claws holding the tin */}
-      <mesh position={[-0.1, -0.4, 0.1]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.2, 6]} />
-        <meshStandardMaterial color="#fbbf24" />
+      {/* Parakeet claws - More detailed */}
+      <mesh position={[-0.12, -0.4, 0.1]}>
+        <cylinderGeometry args={[0.015, 0.025, 0.2, 6]} />
+        <meshStandardMaterial color="#d97706" />
       </mesh>
-      <mesh position={[0.1, -0.4, 0.1]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.2, 6]} />
-        <meshStandardMaterial color="#fbbf24" />
+      <mesh position={[0.12, -0.4, 0.1]}>
+        <cylinderGeometry args={[0.015, 0.025, 0.2, 6]} />
+        <meshStandardMaterial color="#d97706" />
       </mesh>
 
-      {/* Heavenly glow effect around the bird */}
+      {/* Heavenly glow effect around the parakeet */}
       <mesh position={[0, 0, 0]} scale={[1.8, 1.8, 1.8]}>
         <sphereGeometry args={[0.5, 16, 16]} />
         <meshStandardMaterial 
-          color="#22c55e" 
+          color="#10b981" 
           transparent 
-          opacity={0.1}
-          emissive="#22c55e"
-          emissiveIntensity={0.3}
+          opacity={0.12}
+          emissive="#10b981"
+          emissiveIntensity={0.4}
         />
       </mesh>
     </group>
