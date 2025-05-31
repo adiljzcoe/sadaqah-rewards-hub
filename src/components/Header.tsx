@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -45,49 +46,49 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
       
-      <div className="relative z-10 container mx-auto px-4 py-4">
+      <div className="relative z-10 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User */}
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-3">
             {/* Logo with FF crystal aesthetic */}
-            <Link to="/" className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-3 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 cursor-pointer ring-2 ring-cyan-400/20 hover:ring-cyan-300/40">
+            <Link to="/" className="relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 cursor-pointer ring-2 ring-cyan-400/20 hover:ring-cyan-300/40">
               <img 
                 src="/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png" 
                 alt="Your Jannah Logo" 
-                className="h-10 w-auto object-contain filter drop-shadow-md relative z-10"
+                className="h-8 w-auto object-contain filter drop-shadow-md relative z-10"
               />
               {/* Crystal shine effects */}
-              <div className="absolute top-1 left-2 w-8 h-4 bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent rounded-full animate-shimmer"></div>
-              <div className="absolute bottom-1 right-2 w-6 h-3 bg-gradient-to-r from-transparent via-blue-300/50 to-transparent rounded-full animate-shimmer delay-500"></div>
+              <div className="absolute top-1 left-2 w-6 h-3 bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent rounded-full animate-shimmer"></div>
+              <div className="absolute bottom-1 right-2 w-4 h-2 bg-gradient-to-r from-transparent via-blue-300/50 to-transparent rounded-full animate-shimmer delay-500"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-cyan-300/20 rounded-full"></div>
             </Link>
 
             {/* User Section with FF styling */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center">
               {/* Unified Guardian User Button */}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center">
                 <Link to="/profile">
                   {isMember ? (
-                    <Button className="relative overflow-hidden rounded-2xl px-5 py-3 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
-                      <div className="flex items-center space-x-4">
+                    <Button className="relative overflow-hidden rounded-xl px-3 py-2 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
+                      <div className="flex items-center space-x-2">
                         {/* Left side - Guardian + User */}
                         <div className="flex items-center">
-                          <span className="text-lg mr-2 drop-shadow-sm">🛡️</span>
+                          <span className="text-sm mr-1 drop-shadow-sm">🛡️</span>
                           <div className="flex flex-col">
-                            <span className="text-sm font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
+                            <span className="text-xs font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
                             <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
                           </div>
                         </div>
                         
                         {/* Divider */}
-                        <div className="w-px h-8 bg-amber-300/40"></div>
+                        <div className="w-px h-6 bg-amber-300/40"></div>
                         
                         {/* Right side - Level + Points */}
-                        <div className="flex flex-col space-y-1">
+                        <div className="flex flex-col space-y-0.5">
                           {/* Level bar */}
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-1">
                             <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
-                            <div className="relative w-12 h-1.5 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
+                            <div className="relative w-10 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
                               <div 
                                 className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
                                 style={{ width: `${progress}%` }}
@@ -98,15 +99,15 @@ const Header = () => {
                           </div>
                           {/* Points */}
                           <div className="flex items-center">
-                            <Star className="h-3 w-3 text-yellow-200 mr-1 drop-shadow-sm" />
+                            <Star className="h-2.5 w-2.5 text-yellow-200 mr-0.5 drop-shadow-sm" />
                             <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
                           </div>
                         </div>
                       </div>
                       
                       {/* Enhanced magical shine effect */}
-                      <div className="absolute top-1 left-2 w-12 h-4 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-2xl"></div>
+                      <div className="absolute top-1 left-2 w-8 h-3 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
                     </Button>
                   ) : (
                     <Button className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 text-white border-0 font-bold shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 rounded-2xl ring-2 ring-cyan-400/30">
@@ -251,11 +252,11 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu - FF crystal style */}
-          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-3 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20">
-            <Cloud className="h-6 w-6 drop-shadow-sm" />
+          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20">
+            <Cloud className="h-5 w-5 drop-shadow-sm" />
             {/* Crystal sparkle effects */}
-            <div className="absolute top-1 left-2 w-4 h-2 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent rounded-full animate-shimmer"></div>
-            <div className="absolute bottom-1 right-2 w-3 h-1.5 bg-gradient-to-r from-transparent via-blue-300/40 to-transparent rounded-full animate-shimmer delay-500"></div>
+            <div className="absolute top-1 left-1 w-3 h-1.5 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent rounded-full animate-shimmer"></div>
+            <div className="absolute bottom-1 right-1 w-2 h-1 bg-gradient-to-r from-transparent via-blue-300/40 to-transparent rounded-full animate-shimmer delay-500"></div>
           </Button>
         </div>
       </div>
