@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Coins } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { AlertCircle, Coins, Flower, MessageCircle } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -49,6 +50,20 @@ const emergencyCauses = [
   }
 ];
 
+const memoryCauses = [
+  { id: 'clean-water', name: 'Clean Water Wells', description: 'Provide clean water access' },
+  { id: 'orphan-care', name: 'Orphan Care', description: 'Support orphaned children' },
+  { id: 'emergency-aid', name: 'Emergency Aid', description: 'Disaster relief support' },
+  { id: 'education', name: 'Education', description: 'Build schools and libraries' },
+  { id: 'healthcare', name: 'Healthcare', description: 'Medical aid and clinics' },
+  { id: 'food-aid', name: 'Food Aid', description: 'Feed hungry families' }
+];
+
+const memoryDedicationSuggestions = [
+  'My Father', 'My Mother', 'My Grandmother', 'My Grandfather', 
+  'My Sister', 'My Brother', 'My Friend', 'My Uncle', 'My Aunt', 'My Spouse'
+];
+
 const donationTypeStyles = {
   sadaqah: {
     gradient: 'bg-blue-600 hover:bg-blue-700',
@@ -89,6 +104,11 @@ const StickyDonationWidget = () => {
   const [activeTab, setActiveTab] = useState('sadaqah');
   const [selectedCause, setSelectedCause] = useState('palestine');
   const [currency, setCurrency] = useState('GBP');
+  
+  // In Memory specific states
+  const [memoryPerson, setMemoryPerson] = useState('');
+  const [memoryNote, setMemoryNote] = useState('');
+  const [selectedMemoryCause, setSelectedMemoryCause] = useState('clean-water');
 
   // Mock user membership status - in real app this would come from auth/database
   const isMember = true;
@@ -216,6 +236,84 @@ const StickyDonationWidget = () => {
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
+              {/* In Memory Section - Enhanced for sticky widget */}
+              {activeTab === 'in-memory' && (
+                <div className="mb-3 p-3 bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-xl">
+                  <div className="flex items-center mb-2">
+                    <Flower className="h-4 w-4 mr-2 text-rose-600" />
+                    <h4 className="text-sm font-semibold text-rose-900">Memorial Donation</h4>
+                  </div>
+                  
+                  {/* Compact layout for sticky widget */}
+                  <div className="space-y-2">
+                    {/* Cause Selection */}
+                    <div>
+                      <label className="text-xs font-medium text-rose-800 mb-1 block">Select a cause</label>
+                      <Select value={selectedMemoryCause} onValueChange={setSelectedMemoryCause}>
+                        <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-7">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-rose-300 shadow-lg z-[100] rounded-lg">
+                          {memoryCauses.map((cause) => (
+                            <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-rose-50 text-rose-800 rounded-lg">
+                              <div>
+                                <div className="font-medium">{cause.name}</div>
+                                <div className="text-xs text-rose-600">{cause.description}</div>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* In Memory Of */}
+                    <div>
+                      <label className="text-xs font-medium text-rose-800 mb-1 block">In memory of</label>
+                      <Input
+                        type="text"
+                        placeholder="e.g., My Father, My Mother"
+                        value={memoryPerson}
+                        onChange={(e) => setMemoryPerson(e.target.value)}
+                        className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 h-7"
+                      />
+                      
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {memoryDedicationSuggestions.slice(0, 6).map((suggestion) => (
+                          <button
+                            key={suggestion}
+                            onClick={() => setMemoryPerson(suggestion)}
+                            className="text-[10px] px-2 py-0.5 bg-white border border-rose-300 rounded-full hover:bg-rose-100 hover:border-rose-400 transition-colors text-rose-700"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Memorial Note */}
+                    <div>
+                      <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
+                      <Textarea
+                        placeholder="e.g., Love you dad, Always in our hearts..."
+                        value={memoryNote}
+                        onChange={(e) => setMemoryNote(e.target.value)}
+                        maxLength={100}
+                        rows={2}
+                        className="w-full text-xs border border-rose-300 rounded-lg focus:ring-1 focus:ring-rose-500 focus:border-rose-500 text-gray-900 resize-none"
+                      />
+                      <div className="text-[10px] text-rose-600 text-right mt-1">
+                        {memoryNote.length}/100 characters
+                      </div>
+                    </div>
+
+                    <div className="flex items-center text-xs text-rose-700 bg-white/50 p-2 rounded-lg">
+                      <MessageCircle className="h-3 w-3 mr-1" />
+                      <span>Your memorial dedication will be shared with respect</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Mobile-first responsive grid */}
               <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-12 sm:gap-2 items-end">
                 {/* Emergency Cause Selection and Currency - Full width on mobile */}
@@ -405,6 +503,7 @@ const StickyDonationWidget = () => {
                     >
                       <span className="relative z-10">
                         Donate {currentCurrency?.symbol}{donationAmount}
+                        {activeTab === 'in-memory' && memoryPerson && ` in memory of ${memoryPerson}`}
                       </span>
                       
                       {isMember && (
