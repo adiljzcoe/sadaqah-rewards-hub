@@ -12,11 +12,11 @@ const charityLogos = [
 const CharityTicker = () => {
   return (
     <div className="w-full border-b border-gray-100 overflow-hidden max-w-full relative">
-      {/* Seamless gradient background that matches sticky donation widget final color */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-600 via-slate-400 via-slate-300 to-white"></div>
+      {/* Seamless gradient background that matches sticky donation widget cloud colors */}
+      <div className="absolute inset-0 bg-gradient-to-b from-cyan-100/50 via-blue-50/40 via-slate-100/30 to-white"></div>
       
-      {/* Additional gradient layer for smoother transition */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-500/60 via-gray-400/40 via-gray-300/30 to-transparent"></div>
+      {/* Additional gradient layer for smoother blending with donation widget */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-200/30 via-cyan-50/20 to-transparent"></div>
       
       <div className="relative z-10 py-6">
         <div className="container mx-auto px-4 overflow-hidden max-w-full">
