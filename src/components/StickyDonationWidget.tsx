@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -156,97 +155,76 @@ const StickyDonationWidget = () => {
           <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-200 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-200/70"></div>
         </div>
 
-        {/* Enhanced fluffy cloud bottom edge with seamless grey blending */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 overflow-hidden">
+        {/* Enhanced fluffy cloud bottom edge with better blending to grey */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 overflow-hidden">
           <svg 
-            className="absolute bottom-0 w-full h-24" 
-            viewBox="0 0 1200 80" 
+            className="absolute bottom-0 w-full h-16" 
+            viewBox="0 0 1200 60" 
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Multiple layered clouds with perfect grey blending */}
+            {/* FF-style crystalline cloud layers with smooth grey blending */}
             <path 
-              d="M0,20 Q30,5 60,15 Q90,30 120,10 Q150,0 180,20 Q210,35 240,15 Q270,0 300,25 Q330,40 360,20 Q390,5 420,30 Q450,45 480,25 Q510,10 540,35 Q570,50 600,30 Q630,15 660,40 Q690,55 720,35 Q750,20 780,45 Q810,30 840,25 Q870,40 900,30 Q930,15 960,40 Q990,55 1020,35 Q1050,20 1080,45 Q1110,30 1140,30 Q1170,15 1200,25 L1200,80 L0,80 Z" 
-              fill="url(#seamlessGradient1)"
+              d="M0,25 Q50,5 100,20 Q150,35 200,15 Q250,0 300,25 Q350,40 400,20 Q450,5 500,30 Q550,45 600,25 Q650,10 700,35 Q750,50 800,30 Q850,15 900,40 Q950,25 1000,20 Q1050,35 1100,25 Q1150,15 1200,30 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend1)"
             />
             
             <path 
-              d="M0,25 Q40,10 80,20 Q120,35 160,15 Q200,0 240,25 Q280,40 320,20 Q360,5 400,30 Q440,45 480,25 Q520,10 560,35 Q600,50 640,30 Q680,15 720,40 Q760,25 800,20 Q840,35 880,25 Q920,10 960,35 Q1000,50 1040,30 Q1080,15 1120,35 Q1160,20 1200,30 L1200,80 L0,80 Z" 
-              fill="url(#seamlessGradient2)"
-              opacity="0.85"
-            />
-            
-            <path 
-              d="M0,30 Q50,15 100,25 Q150,40 200,20 Q250,5 300,30 Q350,45 400,25 Q450,10 500,35 Q550,50 600,30 Q650,15 700,40 Q750,25 800,30 Q850,15 900,25 Q950,40 1000,20 Q1050,35 1100,25 Q1150,10 1200,35 L1200,80 L0,80 Z" 
-              fill="url(#seamlessGradient3)"
-              opacity="0.7"
-            />
-            
-            <path 
-              d="M0,35 Q25,20 50,30 Q75,45 100,25 Q125,10 150,35 Q175,50 200,30 Q225,15 250,40 Q275,25 300,20 Q325,35 350,25 Q375,10 400,35 Q425,50 450,30 Q475,15 500,40 Q525,55 550,35 Q575,20 600,45 Q625,30 650,25 Q675,40 700,30 Q725,15 750,40 Q775,55 800,35 Q825,20 850,45 Q875,30 900,35 Q925,20 950,30 Q975,45 1000,25 Q1025,40 1050,30 Q1075,15 1100,40 Q1125,25 1150,35 Q1175,20 1200,40 L1200,80 L0,80 Z" 
-              fill="url(#seamlessGradient4)"
-              opacity="0.6"
-            />
-
-            {/* Perfect transition layer to grey background */}
-            <path 
-              d="M0,40 Q20,25 40,35 Q60,50 80,30 Q100,15 120,40 Q140,55 160,35 Q180,20 200,45 Q220,30 240,25 Q260,40 280,30 Q300,15 320,40 Q340,55 360,35 Q380,20 400,45 Q420,60 440,40 Q460,25 480,50 Q500,35 520,30 Q540,45 560,35 Q580,20 600,45 Q620,60 640,40 Q660,25 680,50 Q700,35 720,30 Q740,45 760,35 Q780,20 800,45 Q820,60 840,40 Q860,25 880,50 Q900,35 920,30 Q940,45 960,35 Q980,20 1000,45 Q1020,60 1040,40 Q1060,25 1080,50 Q1100,35 1120,40 Q1140,25 1160,35 Q1180,50 1200,45 L1200,80 L0,80 Z" 
-              fill="url(#perfectGreyBlend)"
+              d="M0,30 Q40,15 80,25 Q120,40 160,20 Q200,5 240,30 Q280,45 320,25 Q360,10 400,35 Q440,50 480,30 Q520,15 560,40 Q600,25 640,20 Q680,35 720,25 Q760,10 800,35 Q840,50 880,30 Q920,15 960,40 Q1000,25 1040,30 Q1080,15 1120,25 Q1160,40 1200,35 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend2)"
               opacity="0.9"
             />
-
-            {/* Final seamless blend layer */}
+            
             <path 
-              d="M0,50 Q15,35 30,45 Q45,60 60,40 Q75,25 90,50 Q105,35 120,30 Q135,45 150,35 Q165,20 180,45 Q195,60 210,40 Q225,25 240,50 Q255,65 270,45 Q285,30 300,55 Q315,40 330,35 Q345,50 360,40 Q375,25 390,50 Q405,65 420,45 Q435,30 450,55 Q465,40 480,35 Q495,50 510,40 Q525,25 540,50 Q555,65 570,45 Q585,30 600,55 Q615,40 630,35 Q645,50 660,40 Q675,25 690,50 Q705,65 720,45 Q735,30 750,55 Q765,40 780,35 Q795,50 810,40 Q825,25 840,50 Q855,65 870,45 Q885,30 900,55 Q915,40 930,35 Q945,50 960,40 Q975,25 990,50 Q1005,65 1020,45 Q1035,30 1050,55 Q1065,40 1080,45 Q1095,30 1110,40 Q1125,55 1140,35 Q1155,50 1170,45 Q1185,30 1200,50 L1200,80 L0,80 Z" 
-              fill="url(#finalGreyBlend)"
+              d="M0,35 Q60,20 120,30 Q180,45 240,25 Q300,10 360,35 Q420,50 480,30 Q540,15 600,40 Q660,25 720,20 Q780,35 840,25 Q900,10 960,35 Q1020,50 1080,30 Q1140,15 1200,35 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend3)"
+              opacity="0.8"
             />
             
-            {/* Gradient definitions with perfect grey transitions */}
+            <path 
+              d="M0,40 Q30,25 60,35 Q90,50 120,30 Q150,15 180,40 Q210,25 240,20 Q270,35 300,25 Q330,10 360,35 Q390,50 420,30 Q450,15 480,40 Q510,25 540,30 Q570,45 600,25 Q630,10 660,35 Q690,50 720,30 Q750,15 780,40 Q810,25 840,20 Q870,35 900,25 Q930,10 960,35 Q990,50 1020,30 Q1050,15 1080,40 Q1110,25 1140,30 Q1170,45 1200,40 L1200,60 L0,60 Z" 
+              fill="url(#ffCloudGradientBlend4)"
+              opacity="0.7"
+            />
+
+            {/* Additional subtle grey blending layer */}
+            <path 
+              d="M0,45 Q25,30 50,40 Q75,55 100,35 Q125,20 150,45 Q175,30 200,25 Q225,40 250,30 Q275,15 300,40 Q325,55 350,35 Q375,20 400,45 Q425,30 450,35 Q475,50 500,30 Q525,15 550,40 Q575,25 600,35 Q625,50 650,30 Q675,15 700,40 Q725,55 750,35 Q775,20 800,45 Q825,30 850,25 Q875,40 900,30 Q925,15 950,40 Q975,55 1000,35 Q1025,20 1050,45 Q1075,30 1100,35 Q1125,50 1150,40 Q1175,25 1200,45 L1200,60 L0,60 Z" 
+              fill="url(#greyBlendGradient)"
+              opacity="0.6"
+            />
+            
+            {/* FF-inspired gradient definitions with smooth grey blending */}
             <defs>
-              <linearGradient id="seamlessGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(59 130 246)" stopOpacity="0.9"/>
-                <stop offset="20%" stopColor="rgb(96 165 250)" stopOpacity="0.85"/>
-                <stop offset="50%" stopColor="rgb(125 211 252)" stopOpacity="0.7"/>
-                <stop offset="75%" stopColor="rgb(165 243 252)" stopOpacity="0.5"/>
-                <stop offset="90%" stopColor="rgb(148 163 184)" stopOpacity="0.7"/>
-                <stop offset="100%" stopColor="rgb(100 116 139)" stopOpacity="0.9"/>
+              <linearGradient id="ffCloudGradientBlend1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(59 130 246)" stopOpacity="0.95"/>
+                <stop offset="30%" stopColor="rgb(96 165 250)" stopOpacity="0.9"/>
+                <stop offset="70%" stopColor="rgb(125 211 252)" stopOpacity="0.85"/>
+                <stop offset="90%" stopColor="rgb(165 243 252)" stopOpacity="0.7"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.6"/>
               </linearGradient>
-              
-              <linearGradient id="seamlessGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(99 102 241)" stopOpacity="0.8"/>
-                <stop offset="30%" stopColor="rgb(129 140 248)" stopOpacity="0.7"/>
-                <stop offset="60%" stopColor="rgb(147 197 253)" stopOpacity="0.5"/>
-                <stop offset="85%" stopColor="rgb(148 163 184)" stopOpacity="0.6"/>
+              <linearGradient id="ffCloudGradientBlend2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(99 102 241)" stopOpacity="0.9"/>
+                <stop offset="50%" stopColor="rgb(129 140 248)" stopOpacity="0.8"/>
+                <stop offset="80%" stopColor="rgb(147 197 253)" stopOpacity="0.6"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.5"/>
+              </linearGradient>
+              <linearGradient id="ffCloudGradientBlend3" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(125 211 252)" stopOpacity="0.8"/>
+                <stop offset="50%" stopColor="rgb(165 243 252)" stopOpacity="0.7"/>
+                <stop offset="80%" stopColor="rgb(207 250 254)" stopOpacity="0.5"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.4"/>
+              </linearGradient>
+              <linearGradient id="ffCloudGradientBlend4" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.6"/>
+                <stop offset="70%" stopColor="rgb(240 249 255)" stopOpacity="0.4"/>
+                <stop offset="100%" stopColor="rgb(148 163 184)" stopOpacity="0.3"/>
+              </linearGradient>
+              <linearGradient id="greyBlendGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.4"/>
+                <stop offset="30%" stopColor="rgb(203 213 225)" stopOpacity="0.5"/>
+                <stop offset="70%" stopColor="rgb(148 163 184)" stopOpacity="0.7"/>
                 <stop offset="100%" stopColor="rgb(100 116 139)" stopOpacity="0.8"/>
-              </linearGradient>
-              
-              <linearGradient id="seamlessGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(125 211 252)" stopOpacity="0.7"/>
-                <stop offset="40%" stopColor="rgb(165 243 252)" stopOpacity="0.6"/>
-                <stop offset="70%" stopColor="rgb(203 213 225)" stopOpacity="0.5"/>
-                <stop offset="90%" stopColor="rgb(148 163 184)" stopOpacity="0.7"/>
-                <stop offset="100%" stopColor="rgb(100 116 139)" stopOpacity="0.85"/>
-              </linearGradient>
-              
-              <linearGradient id="seamlessGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.5"/>
-                <stop offset="50%" stopColor="rgb(203 213 225)" stopOpacity="0.6"/>
-                <stop offset="80%" stopColor="rgb(148 163 184)" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="rgb(100 116 139)" stopOpacity="0.9"/>
-              </linearGradient>
-              
-              <linearGradient id="perfectGreyBlend" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(203 213 225)" stopOpacity="0.4"/>
-                <stop offset="30%" stopColor="rgb(148 163 184)" stopOpacity="0.7"/>
-                <stop offset="60%" stopColor="rgb(100 116 139)" stopOpacity="0.9"/>
-                <stop offset="100%" stopColor="rgb(71 85 105)" stopOpacity="1"/>
-              </linearGradient>
-              
-              <linearGradient id="finalGreyBlend" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(148 163 184)" stopOpacity="0.3"/>
-                <stop offset="40%" stopColor="rgb(100 116 139)" stopOpacity="0.8"/>
-                <stop offset="70%" stopColor="rgb(71 85 105)" stopOpacity="0.95"/>
-                <stop offset="100%" stopColor="rgb(51 65 85)" stopOpacity="1"/>
               </linearGradient>
             </defs>
           </svg>
