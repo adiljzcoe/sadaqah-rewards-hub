@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, coins } from 'lucide-react';
+import { AlertCircle, Coins } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -73,6 +74,11 @@ const donationTypeStyles = {
     gradient: 'bg-orange-600 hover:bg-orange-700',
     text: 'text-white',
     icon: '📅'
+  },
+  coins: {
+    gradient: 'bg-yellow-600 hover:bg-yellow-700',
+    text: 'text-white',
+    icon: '🪙'
   }
 };
 
@@ -177,7 +183,7 @@ const StickyDonationWidget = () => {
         <div className={`relative z-10 container mx-auto px-2 sm:px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Responsive TabsList - Stack on mobile, grid on larger screens */}
-            <div className={`grid grid-cols-3 sm:grid-cols-5 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
+            <div className={`grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
                   key={key}
@@ -231,6 +237,10 @@ const StickyDonationWidget = () => {
                           </SelectItem>
                         </SelectContent>
                       </Select>
+                    ) : activeTab === 'coins' ? (
+                      <div className="text-xs bg-gray-50 border border-gray-300 rounded-xl px-3 py-1.5 text-gray-700">
+                        Sadaqah Coins
+                      </div>
                     ) : (
                       <Select value={selectedCause} onValueChange={setSelectedCause}>
                         <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full rounded-xl ${isSticky ? 'h-7' : 'h-8'}`}>
@@ -322,34 +332,36 @@ const StickyDonationWidget = () => {
 
                 {/* Buttons - Main Donate and Sadaqah Coins */}
                 <div className="sm:col-span-4 flex space-x-2">
-                  {/* Main Donate Button with gentle pulse animation and green glow */}
-                  <Button className={`flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
-                    style={{
-                      animation: 'gentle-pulse 3s ease-in-out infinite, green-glow-resonate 2.5s ease-in-out infinite'
-                    }}
-                  >
-                    <span className="relative z-10">
-                      Donate {currentCurrency?.symbol}{donationAmount}
-                    </span>
-                    
-                    {isMember && (
-                      <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20 rounded-lg">
-                        2x
-                      </Badge>
-                    )}
-                  </Button>
-
-                  {/* Sadaqah Coins Button */}
-                  <Button className={`bg-yellow-600 hover:bg-yellow-700 text-white text-xs font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7 px-2' : 'h-8 px-3'} relative overflow-hidden whitespace-nowrap`}
-                    style={{
-                      animation: 'golden-glow 2.8s ease-in-out infinite'
-                    }}
-                  >
-                    <span className="relative z-10 flex items-center space-x-1">
-                      <coins className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'}`} />
-                      <span>Coins</span>
-                    </span>
-                  </Button>
+                  {activeTab === 'coins' ? (
+                    /* Coins Top-up Button */
+                    <Button className={`flex-1 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                      style={{
+                        animation: 'golden-glow 2.8s ease-in-out infinite'
+                      }}
+                    >
+                      <span className="relative z-10 flex items-center justify-center">
+                        <Coins className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
+                        Top-up {currentCurrency?.symbol}{donationAmount}
+                      </span>
+                    </Button>
+                  ) : (
+                    /* Main Donate Button with gentle pulse animation and green glow */
+                    <Button className={`flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                      style={{
+                        animation: 'gentle-pulse 3s ease-in-out infinite, green-glow-resonate 2.5s ease-in-out infinite'
+                      }}
+                    >
+                      <span className="relative z-10">
+                        Donate {currentCurrency?.symbol}{donationAmount}
+                      </span>
+                      
+                      {isMember && (
+                        <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20 rounded-lg">
+                          2x
+                        </Badge>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
 
