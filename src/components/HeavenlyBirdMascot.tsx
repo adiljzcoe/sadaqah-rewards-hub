@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -16,8 +15,8 @@ function DonationTin({ isActive }: DonationTinProps) {
     if (tinRef.current) {
       const time = state.clock.elapsedTime;
       
-      // Add slow rotation to show different angles
-      tinRef.current.rotation.y = Math.sin(time * 0.2) * 0.3 + time * 0.05;
+      // Add slow rotation to show different angles - limited to front, left, and right (no back)
+      tinRef.current.rotation.y = Math.sin(time * 0.2) * 0.6; // Oscillates between -0.6 and +0.6 radians (~±34 degrees)
       
       // More personality: excited bouncing when active, gentle sway when not
       if (isActive) {
