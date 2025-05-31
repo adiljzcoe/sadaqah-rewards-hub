@@ -22,6 +22,7 @@ import SeasonalEvents from '@/components/SeasonalEvents';
 import MatchingPoolWidget from '@/components/MatchingPoolWidget';
 import CharityTicker from '@/components/CharityTicker';
 import BusinessAdvert from '@/components/BusinessAdvert';
+import LeagueTablesCarousel from '@/components/LeagueTablesCarousel';
 
 const Index = () => {
   // Mock data for campaigns
@@ -123,7 +124,12 @@ const Index = () => {
               <CharityTicker />
             </div>
             
-            {/* Charity Feed Section - Right below charity ticker */}
+            {/* League Tables Carousel - Right below charity ticker */}
+            <div className="max-w-full overflow-x-hidden">
+              <LeagueTablesCarousel />
+            </div>
+            
+            {/* Charity Feed Section - Right below league tables */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <CharityFeedSection />
             </div>
