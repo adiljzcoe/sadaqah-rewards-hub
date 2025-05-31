@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X, HandHeart } from 'lucide-react';
-import CharityCharacter3D from './CharityCharacter3D';
+import Custom3DCharacter from './Custom3DCharacter';
 
 interface FallingCoin {
   id: number;
@@ -220,8 +221,8 @@ const FloatingDonationButton = () => {
             </div>
           ))}
 
-          {/* 3D Charity Collection Character */}
-          <CharityCharacter3D 
+          {/* Custom 3D Charity Character */}
+          <Custom3DCharacter 
             isActive={isActive}
             className="relative z-10 w-full h-full transition-all duration-300 group-hover:scale-110"
           />
