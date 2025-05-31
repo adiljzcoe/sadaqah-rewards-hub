@@ -239,7 +239,7 @@ const StickyDonationWidget = () => {
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className={`relative overflow-hidden rounded-2xl font-bold text-xs transition-all duration-500 transform hover:scale-105 border-2 backdrop-blur-sm ${isSticky ? 'py-1 px-2' : 'py-2 px-3'} ${
+                  className={`relative overflow-hidden rounded-2xl font-bold text-xs transition-all duration-500 transform hover:scale-105 border-2 backdrop-blur-sm ${isSticky ? 'py-1 px-2' : 'py-1.5 px-3'} ${
                     activeTab === key 
                       ? `${style.gradient} ${style.shadow} shadow-xl ${style.border} scale-105 ring-2 ring-white/50 ${style.glow}` 
                       : 'bg-gradient-to-br from-slate-700/80 via-blue-700/70 to-indigo-700/80 text-cyan-50 hover:from-slate-600/90 hover:via-blue-600/80 hover:to-indigo-600/90 border-cyan-300/30 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-cyan-300/40'
@@ -275,7 +275,7 @@ const StickyDonationWidget = () => {
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
                 {/* Emergency Cause Selection - made narrower */}
-                <div className="col-span-3">
+                <div className="col-span-2">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
                     <SelectTrigger className={`text-xs transition-all duration-300 bg-gradient-to-br from-white/95 via-blue-50/90 to-cyan-50/85 border-2 border-white/60 text-slate-700 backdrop-blur-md shadow-lg shadow-white/40 ring-2 ring-white/30 hover:ring-white/50 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
@@ -334,7 +334,7 @@ const StickyDonationWidget = () => {
                 </div>
 
                 {/* Quick amounts - slightly wider */}
-                <div className="col-span-4 grid grid-cols-3 gap-1">
+                <div className="col-span-3 grid grid-cols-3 gap-1">
                   {quickAmounts.map((amount) => (
                     <button
                       key={amount}
@@ -368,7 +368,7 @@ const StickyDonationWidget = () => {
                 </div>
 
                 {/* Enhanced Pay button - made bigger with increased column span */}
-                <div className="col-span-3">
+                <div className="col-span-5">
                   <Button className={`w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-bold relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
                     shadow-lg shadow-cyan-400/50 
                     hover:shadow-xl hover:shadow-cyan-400/60
@@ -387,28 +387,39 @@ const StickyDonationWidget = () => {
                 </div>
               </div>
 
-              {/* Total impact with Sadaqah & Jannah points & Payment icons - Hide only when sticky */}
+              {/* VIP Plaque styled 100% Donation Policy & Sadaqah & Jannah points & Payment icons - Hide only when sticky */}
               {!isSticky && (
                 <div className="flex items-center justify-between mt-2">
-                  {/* Total impact section with points calculation - lighter FF styled */}
+                  {/* VIP Plaque styled 100% donation policy with points calculation */}
                   <div className="text-xs text-cyan-50 flex items-center space-x-3">
                     <div>
-                      <div className="relative inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-700/80 via-cyan-700/70 to-blue-700/80 border-2 border-cyan-300/60 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
-                        {/* FF-style plaque background effect with lighter tones */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 via-transparent to-cyan-300/20 rounded-lg"></div>
+                      <div className="relative inline-flex items-center px-4 py-2 bg-gradient-to-br from-amber-300 via-yellow-300 to-amber-400 border-4 border-amber-500/80 rounded-lg shadow-2xl transform hover:scale-105 transition-all duration-300 ring-4 ring-amber-200/50">
+                        {/* VIP plaque background effect with gold gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-amber-200/30 via-yellow-100/40 to-amber-200/30 rounded-lg"></div>
                         
-                        {/* Inner shadow for depth */}
-                        <div className="absolute inset-1 bg-gradient-to-r from-blue-800/60 to-cyan-800/60 rounded border border-cyan-200/30 shadow-inner"></div>
+                        {/* Inner shadow for depth - darker for VIP effect */}
+                        <div className="absolute inset-1 bg-gradient-to-r from-amber-400/80 to-yellow-400/80 rounded border-2 border-amber-600/60 shadow-inner"></div>
+                        
+                        {/* Ornate corner decorations */}
+                        <div className="absolute top-0 left-0 w-3 h-3 bg-amber-600 rounded-br-lg transform rotate-45 -translate-x-1 -translate-y-1"></div>
+                        <div className="absolute top-0 right-0 w-3 h-3 bg-amber-600 rounded-bl-lg transform rotate-45 translate-x-1 -translate-y-1"></div>
+                        <div className="absolute bottom-0 left-0 w-3 h-3 bg-amber-600 rounded-tr-lg transform rotate-45 -translate-x-1 translate-y-1"></div>
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-amber-600 rounded-tl-lg transform rotate-45 translate-x-1 translate-y-1"></div>
                         
                         {/* Content */}
-                        <div className="relative z-10 flex items-center space-x-1">
-                          <div className="w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-sm"></div>
-                          <span className="font-bold text-cyan-50 text-xs tracking-wide drop-shadow-sm">100% DONATION POLICY</span>
-                          <div className="w-1.5 h-1.5 bg-cyan-300 rounded-full shadow-sm"></div>
+                        <div className="relative z-20 flex items-center space-x-2">
+                          <span className="text-2xl drop-shadow-lg">💯</span>
+                          <span className="font-black text-amber-900 text-sm tracking-wider drop-shadow-lg">100% DONATION POLICY</span>
+                          <span className="text-2xl drop-shadow-lg">💯</span>
                         </div>
                         
-                        {/* Shine effect */}
-                        <div className="absolute top-0 left-2 w-6 h-1 bg-white/40 rounded-full blur-sm"></div>
+                        {/* Multiple shine effects for luxury VIP look */}
+                        <div className="absolute top-1 left-3 w-8 h-2 bg-white/70 rounded-full blur-sm"></div>
+                        <div className="absolute top-2 right-4 w-6 h-1.5 bg-yellow-100/80 rounded-full blur-sm"></div>
+                        <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-amber-100/60 rounded-full blur-sm"></div>
+                        
+                        {/* Outer glow */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-amber-300/40 via-yellow-200/30 to-amber-300/40 rounded-lg blur-md -z-10"></div>
                       </div>
                     </div>
                     <div className="bg-gradient-to-r from-blue-700/60 to-cyan-700/60 border border-cyan-300/40 rounded px-2 py-1">
