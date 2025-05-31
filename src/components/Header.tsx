@@ -56,7 +56,7 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
-                className="w-[250px] h-auto object-contain"
+                className="w-[200px] h-auto object-contain"
               />
               {/* Gloss effect overlay */}
               <div className="absolute top-0 left-0 w-full h-full">
