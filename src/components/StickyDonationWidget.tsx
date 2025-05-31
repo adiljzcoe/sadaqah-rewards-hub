@@ -233,13 +233,13 @@ const StickyDonationWidget = () => {
 
         <div className={`relative z-10 container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            {/* Enhanced TabsList with lighter FF styling */}
+            {/* Enhanced TabsList with lighter FF styling - reduced height */}
             <div className={`grid grid-cols-4 gap-2 mb-2 transition-all duration-300 ${isSticky ? 'mb-1' : 'mb-2'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className={`relative overflow-hidden rounded-2xl font-bold text-sm transition-all duration-500 transform hover:scale-105 border-2 backdrop-blur-sm ${isSticky ? 'py-1.5 px-2' : 'py-3 px-3'} ${
+                  className={`relative overflow-hidden rounded-2xl font-bold text-xs transition-all duration-500 transform hover:scale-105 border-2 backdrop-blur-sm ${isSticky ? 'py-1 px-2' : 'py-2 px-3'} ${
                     activeTab === key 
                       ? `${style.gradient} ${style.shadow} shadow-xl ${style.border} scale-105 ring-2 ring-white/50 ${style.glow}` 
                       : 'bg-gradient-to-br from-slate-700/80 via-blue-700/70 to-indigo-700/80 text-cyan-50 hover:from-slate-600/90 hover:via-blue-600/80 hover:to-indigo-600/90 border-cyan-300/30 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-cyan-300/40'
@@ -249,8 +249,8 @@ const StickyDonationWidget = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   
                   {/* Content with better spacing */}
-                  <div className="relative z-10 flex items-center justify-center space-x-1.5">
-                    <span className="text-lg drop-shadow-sm">{style.icon}</span>
+                  <div className="relative z-10 flex items-center justify-center space-x-1">
+                    <span className="text-sm drop-shadow-sm">{style.icon}</span>
                     <span className={`${activeTab === key ? `${style.text} drop-shadow-sm` : 'text-cyan-50'} font-bold capitalize tracking-wide`}>
                       {key}
                     </span>
@@ -274,8 +274,8 @@ const StickyDonationWidget = () => {
 
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
-                {/* Emergency Cause Selection - now first and wider */}
-                <div className="col-span-5">
+                {/* Emergency Cause Selection - made narrower */}
+                <div className="col-span-3">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
                     <SelectTrigger className={`text-xs transition-all duration-300 bg-gradient-to-br from-white/95 via-blue-50/90 to-cyan-50/85 border-2 border-white/60 text-slate-700 backdrop-blur-md shadow-lg shadow-white/40 ring-2 ring-white/30 hover:ring-white/50 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
@@ -304,7 +304,7 @@ const StickyDonationWidget = () => {
                   </Select>
                 </div>
 
-                {/* Currency selector - now second */}
+                {/* Currency selector */}
                 <div className="col-span-1">
                   <Select value={currency} onValueChange={setCurrency}>
                     <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-gradient-to-br from-white/95 via-blue-50/90 to-cyan-50/85 border-2 border-white/60 text-slate-700 backdrop-blur-md shadow-lg shadow-white/40 ring-2 ring-white/30 hover:ring-white/50 ${isSticky ? 'h-6' : 'h-8'}`}>
@@ -333,7 +333,7 @@ const StickyDonationWidget = () => {
                   </Select>
                 </div>
 
-                {/* Quick amounts - now after currency */}
+                {/* Quick amounts - slightly wider */}
                 <div className="col-span-4 grid grid-cols-3 gap-1">
                   {quickAmounts.map((amount) => (
                     <button
@@ -353,7 +353,7 @@ const StickyDonationWidget = () => {
                   ))}
                 </div>
 
-                {/* Custom amount - smaller */}
+                {/* Custom amount */}
                 <div className="col-span-1">
                   <Input
                     type="number"
@@ -367,9 +367,9 @@ const StickyDonationWidget = () => {
                   />
                 </div>
 
-                {/* Enhanced Pay button with lighter FF styling and glow */}
-                <div className="col-span-1">
-                  <Button className={`w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
+                {/* Enhanced Pay button - made bigger with increased column span */}
+                <div className="col-span-3">
+                  <Button className={`w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-bold relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
                     shadow-lg shadow-cyan-400/50 
                     hover:shadow-xl hover:shadow-cyan-400/60
                     animate-[glow_2s_ease-in-out_infinite_alternate,wiggle_3s_ease-in-out_infinite]
