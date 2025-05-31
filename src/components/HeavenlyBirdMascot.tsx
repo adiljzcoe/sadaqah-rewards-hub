@@ -96,45 +96,93 @@ function HeavenlyBird({ isActive }: HeavenlyBirdProps) {
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Soft wing markings - More subtle and natural */}
-      <mesh position={[-0.32, 0.1, 0]} rotation={[0, 0, -0.15]}>
-        <sphereGeometry args={[0.35, 16, 16]} />
-        <meshStandardMaterial 
-          color="#16a34a" 
-          metalness={0.1} 
-          roughness={0.5}
-        />
-      </mesh>
-      <mesh position={[0.32, 0.1, 0]} rotation={[0, 0, 0.15]}>
-        <sphereGeometry args={[0.35, 16, 16]} />
-        <meshStandardMaterial 
-          color="#16a34a" 
-          metalness={0.1} 
-          roughness={0.5}
-        />
-      </mesh>
-
-      {/* Wings Group - More natural wing shape */}
+      {/* Wings Group - Completely redesigned with feather-like appearance */}
       <group ref={wingsRef}>
-        {/* Left Wing - More rounded and natural */}
-        <mesh position={[-0.35, 0.05, 0]} rotation={[0, 0, -0.25]} scale={[1, 0.8, 1]}>
-          <sphereGeometry args={[0.4, 16, 16]} />
-          <meshStandardMaterial 
-            color="#10b981" 
-            metalness={0.1} 
-            roughness={0.4}
-          />
-        </mesh>
+        {/* Left Wing - Main wing structure */}
+        <group position={[-0.35, 0.05, 0]} rotation={[0, 0, -0.2]}>
+          {/* Primary wing section */}
+          <mesh position={[0, 0, 0]} rotation={[0, 0, -0.1]} scale={[1.2, 0.8, 0.3]}>
+            <sphereGeometry args={[0.38, 16, 16]} />
+            <meshStandardMaterial 
+              color="#10b981" 
+              metalness={0.1} 
+              roughness={0.4}
+            />
+          </mesh>
+          
+          {/* Secondary wing feathers */}
+          <mesh position={[-0.15, -0.05, 0]} rotation={[0, 0, -0.15]} scale={[0.8, 0.6, 0.25]}>
+            <sphereGeometry args={[0.32, 14, 14]} />
+            <meshStandardMaterial 
+              color="#059669" 
+              metalness={0.1} 
+              roughness={0.5}
+            />
+          </mesh>
+          
+          {/* Wing tip feathers */}
+          <mesh position={[-0.25, -0.1, 0]} rotation={[0, 0, -0.2]} scale={[0.6, 0.4, 0.2]}>
+            <sphereGeometry args={[0.25, 12, 12]} />
+            <meshStandardMaterial 
+              color="#047857" 
+              metalness={0.15} 
+              roughness={0.6}
+            />
+          </mesh>
+          
+          {/* Wing edge highlight */}
+          <mesh position={[-0.1, 0.1, 0.05]} rotation={[0, 0, -0.05]} scale={[0.9, 0.3, 0.15]}>
+            <sphereGeometry args={[0.3, 12, 12]} />
+            <meshStandardMaterial 
+              color="#34d399" 
+              metalness={0.05} 
+              roughness={0.3}
+            />
+          </mesh>
+        </group>
 
-        {/* Right Wing */}
-        <mesh position={[0.35, 0.05, 0]} rotation={[0, 0, 0.25]} scale={[1, 0.8, 1]}>
-          <sphereGeometry args={[0.4, 16, 16]} />
-          <meshStandardMaterial 
-            color="#10b981" 
-            metalness={0.1} 
-            roughness={0.4}
-          />
-        </mesh>
+        {/* Right Wing - Mirror of left wing */}
+        <group position={[0.35, 0.05, 0]} rotation={[0, 0, 0.2]}>
+          {/* Primary wing section */}
+          <mesh position={[0, 0, 0]} rotation={[0, 0, 0.1]} scale={[1.2, 0.8, 0.3]}>
+            <sphereGeometry args={[0.38, 16, 16]} />
+            <meshStandardMaterial 
+              color="#10b981" 
+              metalness={0.1} 
+              roughness={0.4}
+            />
+          </mesh>
+          
+          {/* Secondary wing feathers */}
+          <mesh position={[0.15, -0.05, 0]} rotation={[0, 0, 0.15]} scale={[0.8, 0.6, 0.25]}>
+            <sphereGeometry args={[0.32, 14, 14]} />
+            <meshStandardMaterial 
+              color="#059669" 
+              metalness={0.1} 
+              roughness={0.5}
+            />
+          </mesh>
+          
+          {/* Wing tip feathers */}
+          <mesh position={[0.25, -0.1, 0]} rotation={[0, 0, 0.2]} scale={[0.6, 0.4, 0.2]}>
+            <sphereGeometry args={[0.25, 12, 12]} />
+            <meshStandardMaterial 
+              color="#047857" 
+              metalness={0.15} 
+              roughness={0.6"
+            />
+          </mesh>
+          
+          {/* Wing edge highlight */}
+          <mesh position={[0.1, 0.1, 0.05]} rotation={[0, 0, 0.05]} scale={[0.9, 0.3, 0.15]}>
+            <sphereGeometry args={[0.3, 12, 12]} />
+            <meshStandardMaterial 
+              color="#34d399" 
+              metalness={0.05} 
+              roughness={0.3}
+            />
+          </mesh>
+        </group>
       </group>
 
       {/* Elegant tail feathers - More graceful and curved */}
