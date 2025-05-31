@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -273,20 +272,14 @@ const StickyDonationWidget = () => {
                   </div>
                 </div>
                 
-                {/* Payment icons */}
+                {/* Payment methods image */}
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs text-gray-500">Pay:</span>
-                  <div className="flex space-x-1">
-                    <div className="w-5 h-3 bg-blue-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
-                      PP
-                    </div>
-                    <div className="w-5 h-3 bg-blue-800 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
-                      V
-                    </div>
-                    <div className="w-5 h-3 bg-red-600 rounded text-white text-[7px] flex items-center justify-center font-bold hover-scale">
-                      MC
-                    </div>
-                  </div>
+                  <span className="text-xs text-gray-500">Secure payments:</span>
+                  <img 
+                    src="/lovable-uploads/fa941c0a-2492-4fde-8299-aa6d80b65abf.png" 
+                    alt="Accepted payment methods: PayPal, Visa, Mastercard, Apple Pay, Google Pay"
+                    className="h-5 object-contain opacity-80 hover:opacity-100 transition-opacity"
+                  />
                 </div>
               </div>
             )}
