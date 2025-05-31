@@ -1,9 +1,17 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isWiggling, setIsWiggling] = useState(false);
+
+  const handleTinClick = () => {
+    setIsExpanded(!isExpanded);
+    setIsWiggling(true);
+    setTimeout(() => setIsWiggling(false), 600);
+  };
 
   return (
     <div className="fixed bottom-8 right-8 z-50">
@@ -49,33 +57,47 @@ const FloatingDonationButton = () => {
       )}
 
       <div
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleTinClick}
         className="relative w-20 h-20 cursor-pointer overflow-hidden group"
       >
-        {/* 3D Charity collection tin with side-to-side shaking animation */}
-        <div className="relative z-10 w-full h-full flex items-center justify-center animate-charity-shake">
-          {/* Charity tin viewed from the side */}
+        {/* Charity collection tin with personality */}
+        <div className={`relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 ${
+          isWiggling ? 'animate-charity-shake' : 'animate-charity-shake'
+        } group-hover:scale-110`}>
           <div className="relative">
-            {/* Tin shadow/depth - positioned behind and to the right */}
+            {/* Tin shadow/depth */}
             <div className="absolute top-1 left-1 w-8 h-16 bg-gradient-to-br from-gray-600 to-gray-800 rounded-lg transform rotate-1"></div>
             
-            {/* Main collection tin body - tall cylindrical shape like the reference */}
-            <div className="relative w-8 h-16 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-lg border-2 border-blue-300 shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+            {/* Main collection tin body */}
+            <div className="relative w-8 h-16 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-lg border-2 border-blue-300 shadow-xl transform transition-all duration-300">
               {/* Top lid of the tin */}
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-9 h-2 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full border border-blue-500"></div>
               
-              {/* Coin slot on top */}
-              <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-gray-900 rounded-full shadow-inner"></div>
+              {/* Coin slot on top - wider for personality */}
+              <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-6 h-0.5 bg-gray-900 rounded-full shadow-inner"></div>
+              
+              {/* Cute eyes on the tin */}
+              <div className="absolute top-1 left-1 flex space-x-1">
+                <div className="w-1 h-1 bg-white rounded-full animate-pulse"></div>
+                <div className="w-1 h-1 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              </div>
+              
+              {/* Happy smile */}
+              <div className="absolute top-2.5 left-1/2 transform -translate-x-1/2 w-3 h-1 border-b-2 border-white rounded-full opacity-80"></div>
               
               {/* White label area with "DONATE" text */}
-              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-7 h-8 bg-white rounded-sm flex items-center justify-center">
-                <div className="text-blue-600 text-[6px] font-bold leading-none transform -rotate-90">
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-7 h-6 bg-white rounded-sm flex items-center justify-center border border-blue-200">
+                <div className="text-blue-600 text-[5px] font-bold leading-none transform -rotate-90">
                   DONATE
                 </div>
               </div>
               
               {/* Thin handle area near the bottom - more prominent */}
               <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-8 h-3 bg-gradient-to-r from-blue-700 to-blue-800 rounded-sm border border-blue-600 shadow-inner"></div>
+              
+              {/* Decorative bands for character */}
+              <div className="absolute bottom-6 left-0 right-0 h-0.5 bg-blue-300 opacity-60"></div>
+              <div className="absolute bottom-7 left-0 right-0 h-0.5 bg-blue-300 opacity-40"></div>
               
               {/* Bottom rim */}
               <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full"></div>
@@ -85,6 +107,14 @@ const FloatingDonationButton = () => {
               
               {/* Handle attachment point */}
               <div className="absolute top-3 -right-1 w-1 h-1 bg-blue-700 rounded-full"></div>
+              
+              {/* Personality sparkles that appear on hover */}
+              <div className="absolute -top-1 -left-1 text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping">
+                ✨
+              </div>
+              <div className="absolute -bottom-1 -right-1 text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping" style={{ animationDelay: '0.3s' }}>
+                ✨
+              </div>
             </div>
             
             {/* Collection tin handle - curved rope/strap */}
@@ -94,6 +124,21 @@ const FloatingDonationButton = () => {
               {/* Handle grip */}
               <div className="absolute bottom-0 -right-1 w-2 h-1 bg-blue-900 rounded-full"></div>
             </div>
+            
+            {/* Floating hearts when clicked */}
+            {isWiggling && (
+              <>
+                <div className="absolute -top-3 left-0 text-red-500 animate-bounce opacity-80">
+                  💖
+                </div>
+                <div className="absolute -top-2 right-0 text-pink-500 animate-bounce opacity-80" style={{ animationDelay: '0.2s' }}>
+                  💝
+                </div>
+                <div className="absolute top-0 -right-3 text-yellow-500 animate-bounce opacity-80" style={{ animationDelay: '0.4s' }}>
+                  ⭐
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
