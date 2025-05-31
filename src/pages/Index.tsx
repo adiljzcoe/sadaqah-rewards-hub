@@ -107,7 +107,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <Header />
-      <CharityTicker />
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
@@ -115,6 +114,7 @@ const Index = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Live Stream - Main Column */}
           <div className="lg:col-span-2 space-y-6">
+            <CharityTicker />
             <div className="hover-lift">
               <LiveVideo />
             </div>
