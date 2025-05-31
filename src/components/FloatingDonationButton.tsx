@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, Zap, X, HandHeart } from 'lucide-react';
+import { Zap, X, HandHeart } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
+import Custom3DCharacter from './Custom3DCharacter';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -71,7 +72,7 @@ const FloatingDonationButton = () => {
       
       <div className={`fixed ${
         isStickyWidgetActive 
-          ? 'top-20 right-4 md:bottom-20 md:right-8' 
+          ? 'top-28 right-4 md:bottom-20 md:right-8' 
           : 'bottom-8 right-8'
       } z-50 transition-all duration-300`}>
         {/* Call to action message */}
@@ -137,16 +138,18 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button */}
+        {/* Main donation button with 3D Character */}
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-2xl border-4 border-white/80 hover:border-white transition-all duration-300 group overflow-hidden"
+          className="relative w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-2xl border-4 border-white/80 hover:border-white transition-all duration-300 group overflow-hidden p-0"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
-          <div className="absolute z-10 inset-0 bg-gradient-to-br from-white/90 via-white/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          <Heart className="h-7 w-7 text-white animate-[rotate-heart_4s_linear_infinite] drop-shadow-md" />
+          <Custom3DCharacter 
+            isActive={showCallToAction} 
+            className="w-full h-full"
+          />
           <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 text-white text-xs font-bold drop-shadow-sm">
             <Zap className="inline-block h-3 w-3 mr-0.5 -mt-0.5" />
             Give
