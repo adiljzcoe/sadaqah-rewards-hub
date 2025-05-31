@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -58,28 +59,28 @@ const donationTypeStyles = {
     glow: 'shadow-blue-400/50'
   },
   zakat: {
-    gradient: 'bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600',
-    shadow: 'shadow-emerald-500/40',
-    border: 'border-emerald-300/60',
+    gradient: 'bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600',
+    shadow: 'shadow-cyan-500/40',
+    border: 'border-cyan-300/60',
     text: 'text-white',
     icon: '☪️',
-    glow: 'shadow-emerald-400/50'
+    glow: 'shadow-cyan-400/50'
   },
   lillah: {
-    gradient: 'bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600',
-    shadow: 'shadow-purple-500/40',
-    border: 'border-purple-300/60',
+    gradient: 'bg-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-600',
+    shadow: 'shadow-indigo-500/40',
+    border: 'border-indigo-300/60',
     text: 'text-white',
     icon: '🤲',
-    glow: 'shadow-purple-400/50'
+    glow: 'shadow-indigo-400/50'
   },
   monthly: {
-    gradient: 'bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600',
-    shadow: 'shadow-orange-500/40',
-    border: 'border-orange-300/60',
+    gradient: 'bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600',
+    shadow: 'shadow-teal-500/40',
+    border: 'border-teal-300/60',
     text: 'text-white',
     icon: '📅',
-    glow: 'shadow-orange-400/50'
+    glow: 'shadow-teal-400/50'
   }
 };
 
@@ -140,19 +141,22 @@ const StickyDonationWidget = () => {
   return (
     <>
       <div className={`${isSticky ? 'fixed bottom-0 -mt-2' : 'relative'} left-0 right-0 z-50 transition-all duration-300 overflow-hidden shadow-2xl drop-shadow-2xl`}>
-        {/* Header-matching background with cloud effects */}
-        <div className="absolute inset-0 bg-gradient-to-r from-sky-200 via-blue-100 to-indigo-200 backdrop-blur-md shadow-2xl"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-sky-100/30 to-blue-200/40"></div>
+        {/* FF-inspired background with crystalline effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
         
-        {/* Cloud-like background effects */}
+        {/* Crystal-like background effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-2 left-10 w-20 h-8 bg-white/30 rounded-full blur-sm animate-pulse"></div>
-          <div className="absolute top-4 right-32 w-16 h-6 bg-white/25 rounded-full blur-sm animate-pulse delay-300"></div>
-          <div className="absolute top-1 left-1/3 w-24 h-10 bg-white/20 rounded-full blur-sm animate-pulse delay-500"></div>
-          <div className="absolute top-3 right-1/4 w-18 h-7 bg-white/35 rounded-full blur-sm animate-pulse delay-700"></div>
+          <div className="absolute top-2 left-10 w-20 h-8 bg-cyan-300/20 rounded-full blur-sm animate-pulse"></div>
+          <div className="absolute top-4 right-32 w-16 h-6 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300"></div>
+          <div className="absolute top-1 left-1/3 w-24 h-10 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500"></div>
+          <div className="absolute top-3 right-1/4 w-18 h-7 bg-cyan-400/25 rounded-full blur-sm animate-pulse delay-700"></div>
+          {/* Magical sparkles */}
+          <div className="absolute top-6 left-20 w-2 h-2 bg-cyan-300 rounded-full animate-pulse shadow-lg shadow-cyan-300/80"></div>
+          <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
         </div>
 
-        {/* Enhanced fluffy cloud bottom edge */}
+        {/* Enhanced fluffy cloud bottom edge with FF colors */}
         <div className="absolute bottom-0 left-0 right-0 h-8 overflow-hidden">
           <svg 
             className="absolute bottom-0 w-full h-12" 
@@ -160,54 +164,51 @@ const StickyDonationWidget = () => {
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            {/* Base fluffy cloud layer with more realistic curves */}
+            {/* FF-style crystalline cloud layers */}
             <path 
               d="M0,25 Q50,5 100,20 Q150,35 200,15 Q250,0 300,25 Q350,40 400,20 Q450,5 500,30 Q550,45 600,25 Q650,10 700,35 Q750,50 800,30 Q850,15 900,40 Q950,25 1000,20 Q1050,35 1100,25 Q1150,15 1200,30 L1200,50 L0,50 Z" 
-              fill="url(#cloudGradient1)"
+              fill="url(#ffCloudGradient1)"
             />
             
-            {/* Secondary cloud bumps for depth */}
             <path 
               d="M0,30 Q40,15 80,25 Q120,40 160,20 Q200,5 240,30 Q280,45 320,25 Q360,10 400,35 Q440,50 480,30 Q520,15 560,40 Q600,25 640,20 Q680,35 720,25 Q760,10 800,35 Q840,50 880,30 Q920,15 960,40 Q1000,25 1040,30 Q1080,15 1120,25 Q1160,40 1200,35 L1200,50 L0,50 Z" 
-              fill="url(#cloudGradient2)"
+              fill="url(#ffCloudGradient2)"
               opacity="0.85"
             />
             
-            {/* Top highlight wispy clouds */}
             <path 
               d="M0,35 Q60,20 120,30 Q180,45 240,25 Q300,10 360,35 Q420,50 480,30 Q540,15 600,40 Q660,25 720,20 Q780,35 840,25 Q900,10 960,35 Q1020,50 1080,30 Q1140,15 1200,35 L1200,50 L0,50 Z" 
-              fill="url(#cloudGradient3)"
+              fill="url(#ffCloudGradient3)"
               opacity="0.7"
             />
             
-            {/* Extra wispy layer for more fluffiness */}
             <path 
               d="M0,40 Q30,25 60,35 Q90,50 120,30 Q150,15 180,40 Q210,25 240,20 Q270,35 300,25 Q330,10 360,35 Q390,50 420,30 Q450,15 480,40 Q510,25 540,30 Q570,45 600,25 Q630,10 660,35 Q690,50 720,30 Q750,15 780,40 Q810,25 840,20 Q870,35 900,25 Q930,10 960,35 Q990,50 1020,30 Q1050,15 1080,40 Q1110,25 1140,30 Q1170,45 1200,40 L1200,50 L0,50 Z" 
-              fill="url(#cloudGradient4)"
+              fill="url(#ffCloudGradient4)"
               opacity="0.6"
             />
             
-            {/* Gradient definitions for realistic cloud coloring */}
+            {/* FF-inspired gradient definitions */}
             <defs>
-              <linearGradient id="cloudGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(186 230 253)" stopOpacity="0.95"/>
-                <stop offset="30%" stopColor="rgb(147 197 253)" stopOpacity="0.9"/>
-                <stop offset="70%" stopColor="rgb(165 180 252)" stopOpacity="0.85"/>
-                <stop offset="100%" stopColor="rgb(129 140 248)" stopOpacity="0.8"/>
+              <linearGradient id="ffCloudGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(30 58 138)" stopOpacity="0.95"/>
+                <stop offset="30%" stopColor="rgb(59 130 246)" stopOpacity="0.9"/>
+                <stop offset="70%" stopColor="rgb(34 211 238)" stopOpacity="0.85"/>
+                <stop offset="100%" stopColor="rgb(6 182 212)" stopOpacity="0.8"/>
               </linearGradient>
-              <linearGradient id="cloudGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(219 234 254)" stopOpacity="0.9"/>
-                <stop offset="50%" stopColor="rgb(196 181 253)" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="rgb(186 230 253)" stopOpacity="0.7"/>
+              <linearGradient id="ffCloudGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(67 56 202)" stopOpacity="0.9"/>
+                <stop offset="50%" stopColor="rgb(99 102 241)" stopOpacity="0.8"/>
+                <stop offset="100%" stopColor="rgb(59 130 246)" stopOpacity="0.7"/>
               </linearGradient>
-              <linearGradient id="cloudGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.8"/>
-                <stop offset="50%" stopColor="rgb(240 249 255)" stopOpacity="0.7"/>
-                <stop offset="100%" stopColor="rgb(219 234 254)" stopOpacity="0.6"/>
+              <linearGradient id="ffCloudGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(34 211 238)" stopOpacity="0.8"/>
+                <stop offset="50%" stopColor="rgb(125 211 252)" stopOpacity="0.7"/>
+                <stop offset="100%" stopColor="rgb(186 230 253)" stopOpacity="0.6"/>
               </linearGradient>
-              <linearGradient id="cloudGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.6"/>
-                <stop offset="100%" stopColor="rgb(240 249 255)" stopOpacity="0.4"/>
+              <linearGradient id="ffCloudGradient4" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(165 243 252)" stopOpacity="0.6"/>
+                <stop offset="100%" stopColor="rgb(224 242 254)" stopOpacity="0.4"/>
               </linearGradient>
             </defs>
           </svg>
@@ -215,7 +216,7 @@ const StickyDonationWidget = () => {
 
         <div className={`relative z-10 container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-1' : 'py-2'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            {/* Enhanced TabsList with beautiful styling matching header aesthetic */}
+            {/* Enhanced TabsList with FF styling */}
             <div className={`grid grid-cols-4 gap-2 mb-2 transition-all duration-300 ${isSticky ? 'mb-1' : 'mb-2'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
@@ -224,7 +225,7 @@ const StickyDonationWidget = () => {
                   className={`relative overflow-hidden rounded-2xl font-bold text-sm transition-all duration-500 transform hover:scale-105 border-2 backdrop-blur-sm ${isSticky ? 'py-1.5 px-2' : 'py-3 px-3'} ${
                     activeTab === key 
                       ? `${style.gradient} ${style.shadow} shadow-xl ${style.border} scale-105 ring-2 ring-white/50 ${style.glow}` 
-                      : 'bg-gradient-to-br from-white/80 via-sky-100/80 to-blue-200/80 text-slate-700 hover:from-white/90 hover:via-sky-50/90 hover:to-blue-100/90 border-white/40 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-white/60'
+                      : 'bg-gradient-to-br from-slate-800/80 via-blue-800/70 to-indigo-800/80 text-cyan-100 hover:from-slate-700/90 hover:via-blue-700/80 hover:to-indigo-700/90 border-cyan-400/30 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-cyan-400/40'
                   }`}
                 >
                   {/* Enhanced background shine effect */}
@@ -233,7 +234,7 @@ const StickyDonationWidget = () => {
                   {/* Content with better spacing */}
                   <div className="relative z-10 flex items-center justify-center space-x-1.5">
                     <span className="text-lg drop-shadow-sm">{style.icon}</span>
-                    <span className={`${activeTab === key ? `${style.text} drop-shadow-sm` : 'text-slate-700'} font-bold capitalize tracking-wide`}>
+                    <span className={`${activeTab === key ? `${style.text} drop-shadow-sm` : 'text-cyan-100'} font-bold capitalize tracking-wide`}>
                       {key}
                     </span>
                   </div>
@@ -248,7 +249,7 @@ const StickyDonationWidget = () => {
                   
                   {/* Border highlight for inactive buttons */}
                   {activeTab !== key && (
-                    <div className="absolute inset-0 rounded-2xl border-2 border-white/30"></div>
+                    <div className="absolute inset-0 rounded-2xl border-2 border-cyan-400/20"></div>
                   )}
                 </button>
               ))}
@@ -257,16 +258,16 @@ const StickyDonationWidget = () => {
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
                 {/* Emergency Cause Selection - now first and wider */}
-                <div className="col-span-4">
+                <div className="col-span-5">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
-                    <SelectTrigger className={`text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`text-xs transition-all duration-300 bg-slate-800/90 border-cyan-400/40 text-cyan-100 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
+                    <SelectContent className="bg-slate-800/95 border border-cyan-400/40 shadow-lg z-[100] backdrop-blur-md">
                       {emergencyCauses.map((cause) => (
-                        <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-gray-50">
+                        <SelectItem key={cause.id} value={cause.id} className="bg-slate-800/95 hover:bg-slate-700/95 text-cyan-100">
                           <div className="flex items-center space-x-2">
-                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
+                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-400" />}
                             <span className={cause.color}>{cause.name}</span>
                           </div>
                         </SelectItem>
@@ -278,12 +279,12 @@ const StickyDonationWidget = () => {
                 {/* Currency selector - now second */}
                 <div className="col-span-1">
                   <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-slate-800/90 border-cyan-400/40 text-cyan-100 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-200 shadow-lg z-[100]">
+                    <SelectContent className="bg-slate-800/95 border border-cyan-400/40 shadow-lg z-[100] backdrop-blur-md">
                       {currencies.map((curr) => (
-                        <SelectItem key={curr.code} value={curr.code} className="bg-white hover:bg-gray-50">
+                        <SelectItem key={curr.code} value={curr.code} className="bg-slate-800/95 hover:bg-slate-700/95 text-cyan-100">
                           <div className="flex items-center space-x-1">
                             <span>{curr.flag}</span>
                             <span>{curr.symbol}</span>
@@ -305,8 +306,8 @@ const StickyDonationWidget = () => {
                       }}
                       className={`rounded text-xs font-medium transition-all ${isSticky ? 'py-1 px-0.5' : 'py-1.5 px-0.5'} ${
                         selectedAmount === amount && !customAmount
-                          ? 'bg-emerald-600 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          ? 'bg-cyan-600 text-white shadow-md shadow-cyan-500/50'
+                          : 'bg-slate-700/80 text-cyan-100 hover:bg-slate-600/80 border border-cyan-400/30'
                       }`}
                     >
                       {currentCurrency?.symbol}{amount}
@@ -315,7 +316,7 @@ const StickyDonationWidget = () => {
                 </div>
 
                 {/* Custom amount - smaller */}
-                <div className="col-span-2">
+                <div className="col-span-1">
                   <Input
                     type="number"
                     placeholder="Other amount"
@@ -324,18 +325,19 @@ const StickyDonationWidget = () => {
                       setCustomAmount(e.target.value);
                       setSelectedAmount(0);
                     }}
-                    className={`text-xs w-full transition-all duration-300 bg-white border-gray-200 ${isSticky ? 'h-6' : 'h-8'}`}
+                    className={`text-xs w-full transition-all duration-300 bg-slate-800/90 border-cyan-400/40 text-cyan-100 placeholder:text-cyan-200/60 ${isSticky ? 'h-6' : 'h-8'}`}
                   />
                 </div>
 
-                {/* Enhanced Pay button with glow and shake */}
+                {/* Enhanced Pay button with FF styling and glow */}
                 <div className="col-span-2">
-                  <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
-                    shadow-lg shadow-emerald-500/50 
-                    hover:shadow-xl hover:shadow-emerald-500/60
+                  <Button className={`w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white text-xs font-medium relative transition-all duration-300 ${isSticky ? 'h-6' : 'h-8'} 
+                    shadow-lg shadow-cyan-500/50 
+                    hover:shadow-xl hover:shadow-cyan-500/60
                     animate-[glow_2s_ease-in-out_infinite_alternate,wiggle_3s_ease-in-out_infinite]
-                    ring-2 ring-emerald-400/30
-                    hover:ring-emerald-400/50`}
+                    ring-2 ring-cyan-400/30
+                    hover:ring-cyan-400/50
+                    border-0`}
                   >
                     Pay {currentCurrency?.symbol}{donationAmount}
                     {isMember && (
@@ -350,32 +352,32 @@ const StickyDonationWidget = () => {
               {/* Total impact with Sadaqah & Jannah points & Payment icons - Hide only when sticky */}
               {!isSticky && (
                 <div className="flex items-center justify-between mt-2">
-                  {/* Total impact section with points calculation */}
-                  <div className="text-xs text-gray-600 flex items-center space-x-3">
+                  {/* Total impact section with points calculation - FF styled */}
+                  <div className="text-xs text-cyan-100 flex items-center space-x-3">
                     <div>
-                      <div className="relative inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-amber-100 via-yellow-50 to-amber-100 border-2 border-amber-300 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
-                        {/* Plaque background effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-amber-200/30 via-transparent to-amber-200/30 rounded-lg"></div>
+                      <div className="relative inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-800/80 via-cyan-800/70 to-blue-800/80 border-2 border-cyan-400/60 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
+                        {/* FF-style plaque background effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-transparent to-cyan-400/20 rounded-lg"></div>
                         
                         {/* Inner shadow for depth */}
-                        <div className="absolute inset-1 bg-gradient-to-r from-yellow-100 to-amber-50 rounded border border-amber-200/50 shadow-inner"></div>
+                        <div className="absolute inset-1 bg-gradient-to-r from-blue-900/60 to-cyan-900/60 rounded border border-cyan-300/30 shadow-inner"></div>
                         
                         {/* Content */}
                         <div className="relative z-10 flex items-center space-x-1">
-                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-sm"></div>
-                          <span className="font-bold text-amber-800 text-xs tracking-wide">100% DONATION POLICY</span>
-                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-sm"></div>
+                          <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-sm"></div>
+                          <span className="font-bold text-cyan-100 text-xs tracking-wide drop-shadow-sm">100% DONATION POLICY</span>
+                          <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-sm"></div>
                         </div>
                         
                         {/* Shine effect */}
                         <div className="absolute top-0 left-2 w-6 h-1 bg-white/40 rounded-full blur-sm"></div>
                       </div>
                     </div>
-                    <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded px-2 py-1">
-                      <span className="font-medium text-amber-700">Your donation = {donationAmount * 10} Sadaqah points</span>
+                    <div className="bg-gradient-to-r from-blue-800/60 to-cyan-800/60 border border-cyan-400/40 rounded px-2 py-1">
+                      <span className="font-medium text-cyan-100 drop-shadow-sm">Your donation = {donationAmount * 10} Sadaqah points</span>
                     </div>
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded px-2 py-1">
-                      <span className="font-medium text-purple-700">+ {donationAmount * 5} Jannah points</span>
+                    <div className="bg-gradient-to-r from-indigo-800/60 to-purple-800/60 border border-indigo-400/40 rounded px-2 py-1">
+                      <span className="font-medium text-indigo-100 drop-shadow-sm">+ {donationAmount * 5} Jannah points</span>
                     </div>
                   </div>
                   
@@ -394,31 +396,31 @@ const StickyDonationWidget = () => {
         </div>
       </div>
 
-      {/* Enhanced ray of light effect shining on ticker below */}
+      {/* Enhanced ray of light effect shining on ticker below - now with FF colors */}
       <div className="absolute top-full left-1/2 transform -translate-x-1/2 pointer-events-none z-40">
-        {/* Main concentrated light beam */}
+        {/* Main concentrated light beam with FF blue/cyan colors */}
         <div className="relative">
           {/* Central bright beam */}
-          <div className="w-32 h-16 bg-gradient-to-b from-yellow-300/90 via-yellow-200/70 to-yellow-100/50 rounded-b-full blur-sm"></div>
+          <div className="w-32 h-16 bg-gradient-to-b from-cyan-300/90 via-blue-300/70 to-cyan-200/50 rounded-b-full blur-sm"></div>
           
           {/* Medium spread beam */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-24 bg-gradient-to-b from-amber-200/70 via-yellow-100/50 to-yellow-50/30 rounded-b-full blur-md"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-48 h-24 bg-gradient-to-b from-blue-300/70 via-cyan-200/50 to-blue-100/30 rounded-b-full blur-md"></div>
           
           {/* Wide ambient glow */}
-          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-80 h-40 bg-gradient-to-b from-yellow-100/50 via-amber-50/25 to-transparent rounded-b-full blur-xl"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-80 h-40 bg-gradient-to-b from-cyan-200/50 via-blue-100/25 to-transparent rounded-b-full blur-xl"></div>
           
           {/* Brightest center core */}
-          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-12 bg-gradient-to-b from-white/80 via-yellow-200/70 to-yellow-100/40 rounded-b-full"></div>
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-12 bg-gradient-to-b from-white/80 via-cyan-300/70 to-blue-200/40 rounded-b-full"></div>
           
-          {/* Divine sparkle effects */}
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full opacity-90 animate-pulse shadow-lg shadow-yellow-300"></div>
-          <div className="absolute top-8 left-1/2 transform -translate-x-8 w-1.5 h-1.5 bg-yellow-200 rounded-full opacity-80 animate-pulse delay-200 shadow-md shadow-yellow-400"></div>
-          <div className="absolute top-8 left-1/2 transform translate-x-6 w-1.5 h-1.5 bg-amber-200 rounded-full opacity-80 animate-pulse delay-400 shadow-md shadow-amber-400"></div>
+          {/* Divine sparkle effects with FF colors */}
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-cyan-300 rounded-full opacity-90 animate-pulse shadow-lg shadow-cyan-300"></div>
+          <div className="absolute top-8 left-1/2 transform -translate-x-8 w-1.5 h-1.5 bg-blue-300 rounded-full opacity-80 animate-pulse delay-200 shadow-md shadow-blue-400"></div>
+          <div className="absolute top-8 left-1/2 transform translate-x-6 w-1.5 h-1.5 bg-cyan-400 rounded-full opacity-80 animate-pulse delay-400 shadow-md shadow-cyan-400"></div>
           <div className="absolute top-12 left-1/2 transform -translate-x-4 w-1 h-1 bg-white rounded-full opacity-70 animate-pulse delay-600"></div>
-          <div className="absolute top-12 left-1/2 transform translate-x-2 w-1 h-1 bg-yellow-100 rounded-full opacity-70 animate-pulse delay-800"></div>
+          <div className="absolute top-12 left-1/2 transform translate-x-2 w-1 h-1 bg-blue-200 rounded-full opacity-70 animate-pulse delay-800"></div>
           
           {/* Additional light rays for more dramatic effect */}
-          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-64 h-32 bg-gradient-to-b from-yellow-50/40 via-amber-50/20 to-transparent rounded-b-full blur-2xl opacity-60"></div>
+          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 w-64 h-32 bg-gradient-to-b from-cyan-100/40 via-blue-100/20 to-transparent rounded-b-full blur-2xl opacity-60"></div>
         </div>
       </div>
     </>
