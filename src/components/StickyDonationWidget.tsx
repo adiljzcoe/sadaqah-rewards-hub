@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -135,6 +136,7 @@ const StickyDonationWidget = () => {
 
   const currentCurrency = currencies.find(c => c.code === currency);
   const donationAmount = Number(customAmount) || selectedAmount;
+  const isPalestineSelected = selectedCause === 'palestine';
 
   return (
     <>
@@ -175,6 +177,18 @@ const StickyDonationWidget = () => {
           }
           100% {
             box-shadow: 0 0 5px rgba(234, 179, 8, 0.4), 0 0 10px rgba(234, 179, 8, 0.3), 0 0 15px rgba(234, 179, 8, 0.2);
+          }
+        }
+
+        @keyframes emergency-pulse {
+          0% {
+            box-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 0 10px rgba(239, 68, 68, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.6), 0 0 20px rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 0 10px rgba(239, 68, 68, 0.3);
           }
         }
       `}</style>
@@ -243,7 +257,15 @@ const StickyDonationWidget = () => {
                       </div>
                     ) : (
                       <Select value={selectedCause} onValueChange={setSelectedCause}>
-                        <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full rounded-xl ${isSticky ? 'h-7' : 'h-8'}`}>
+                        <SelectTrigger className={`text-xs w-full rounded-xl ${isSticky ? 'h-7' : 'h-8'} ${
+                          isPalestineSelected 
+                            ? 'bg-red-50 border border-red-400 text-red-700 shadow-md' 
+                            : 'bg-white border border-gray-300 text-gray-700'
+                        }`}
+                        style={isPalestineSelected ? {
+                          animation: 'emergency-pulse 2s ease-in-out infinite'
+                        } : {}}
+                        >
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100] rounded-xl">
@@ -251,7 +273,11 @@ const StickyDonationWidget = () => {
                             <SelectItem 
                               key={cause.id} 
                               value={cause.id} 
-                              className="bg-white hover:bg-gray-50 text-gray-700 rounded-lg"
+                              className={`rounded-lg ${
+                                cause.id === 'palestine' 
+                                  ? 'bg-red-50 hover:bg-red-100 border border-red-200' 
+                                  : 'bg-white hover:bg-gray-50'
+                              } text-gray-700`}
                             >
                               <div className="flex items-center space-x-2">
                                 {cause.flag && (
@@ -261,7 +287,7 @@ const StickyDonationWidget = () => {
                                     className="w-4 h-3 object-cover rounded-sm"
                                   />
                                 )}
-                                {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
+                                {cause.urgent && <AlertCircle className={`h-3 w-3 ${cause.id === 'palestine' ? 'text-red-600' : 'text-red-500'}`} />}
                                 <span className={`${cause.color} font-medium`}>{cause.name}</span>
                               </div>
                             </SelectItem>
