@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -224,10 +223,62 @@ const CharityFeedSection = () => {
             </div>
           </div>
 
-          {/* Mobile: Horizontal scrolling layout */}
+          {/* Mobile: Horizontal scrolling layout with custom scrollbar */}
           <div className="lg:hidden">
-            <ScrollArea className="w-full">
-              <div className="flex space-x-4 pb-4">
+            <style jsx>{`
+              .custom-scroll-container {
+                position: relative;
+              }
+              
+              .custom-scroll-container::-webkit-scrollbar {
+                height: 12px;
+                background: transparent;
+              }
+              
+              .custom-scroll-container::-webkit-scrollbar-track {
+                background: linear-gradient(90deg, #f1f5f9, #e2e8f0);
+                border-radius: 10px;
+                margin: 0 20px;
+                border: 1px solid #e2e8f0;
+              }
+              
+              .custom-scroll-container::-webkit-scrollbar-thumb {
+                background: linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6);
+                border-radius: 10px;
+                border: 2px solid #f8fafc;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+              }
+              
+              .custom-scroll-container::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(90deg, #059669, #2563eb, #7c3aed);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                transform: scale(1.1);
+              }
+              
+              .custom-scroll-container::-webkit-scrollbar-thumb:active {
+                background: linear-gradient(90deg, #047857, #1d4ed8, #6d28d9);
+              }
+              
+              /* For Firefox */
+              .custom-scroll-container {
+                scrollbar-width: thick;
+                scrollbar-color: #10b981 #f1f5f9;
+              }
+            `}</style>
+            
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-gray-600">Swipe to see more updates</p>
+                <div className="flex items-center space-x-1 text-xs text-gray-400">
+                  <div className="w-6 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full"></div>
+                  <span>Scroll</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="custom-scroll-container overflow-x-auto pb-4">
+              <div className="flex space-x-4" style={{ width: 'max-content' }}>
                 {feedPosts.map((post, index) => (
                   <Card 
                     key={post.id}
@@ -322,8 +373,7 @@ const CharityFeedSection = () => {
                   </Card>
                 ))}
               </div>
-              <ScrollBar orientation="horizontal" className="mt-2" />
-            </ScrollArea>
+            </div>
 
             {/* Mobile Load More Button */}
             <div className="pt-4">
@@ -338,7 +388,6 @@ const CharityFeedSection = () => {
         {/* Right Sidebar - Only on Desktop */}
         <div className="hidden lg:block w-1/3 p-6 border-l border-gray-100">
           <div className="space-y-4">
-            {/* Banner Ad Placeholder */}
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-dashed border-blue-200 rounded-lg p-6 text-center">
               <div className="text-blue-600 mb-2">📢</div>
               <h4 className="font-semibold text-gray-800 mb-2">Featured Charity</h4>
@@ -348,7 +397,6 @@ const CharityFeedSection = () => {
               </button>
             </div>
 
-            {/* Another Ad Space */}
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-dashed border-emerald-200 rounded-lg p-6 text-center">
               <div className="text-emerald-600 mb-2">🌟</div>
               <h4 className="font-semibold text-gray-800 mb-2">Quick Impact</h4>
@@ -358,7 +406,6 @@ const CharityFeedSection = () => {
               </button>
             </div>
 
-            {/* Stats Box */}
             <div className="bg-gray-50 rounded-lg p-4">
               <h5 className="font-semibold text-gray-800 mb-3">Today's Impact</h5>
               <div className="space-y-2 text-sm">
