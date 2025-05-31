@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -159,66 +160,71 @@ const StickyDonationWidget = () => {
             <TabsContent value={activeTab} className="mt-0">
               {/* Mobile-first responsive grid */}
               <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-12 sm:gap-2 items-end">
-                {/* Emergency Cause Selection - Full width on mobile */}
-                <div className="sm:col-span-2">
-                  {activeTab === 'islamic' ? (
-                    <Select value={selectedCause} onValueChange={setSelectedCause}>
-                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full ${isSticky ? 'h-7' : 'h-8'}`}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
-                        <SelectItem value="aqiqah" className="bg-white hover:bg-gray-50 text-gray-700">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-teal-600 font-medium">Aqiqah</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="fidyah" className="bg-white hover:bg-gray-50 text-gray-700">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-teal-600 font-medium">Fidyah</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="kaffarah" className="bg-white hover:bg-gray-50 text-gray-700">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-teal-600 font-medium">Kaffarah</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="sadaqah-jariyah" className="bg-white hover:bg-gray-50 text-gray-700">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-teal-600 font-medium">Sadaqah Jariyah</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <Select value={selectedCause} onValueChange={setSelectedCause}>
-                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full ${isSticky ? 'h-7' : 'h-8'}`}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
-                        {emergencyCauses.map((cause) => (
-                          <SelectItem 
-                            key={cause.id} 
-                            value={cause.id} 
-                            className="bg-white hover:bg-gray-50 text-gray-700"
-                          >
+                {/* Emergency Cause Selection and Currency - Full width on mobile */}
+                <div className="flex space-x-2 sm:contents">
+                  {/* Cause Selection */}
+                  <div className="flex-1 sm:col-span-2">
+                    {activeTab === 'islamic' ? (
+                      <Select value={selectedCause} onValueChange={setSelectedCause}>
+                        <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full ${isSticky ? 'h-7' : 'h-8'}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
+                          <SelectItem value="aqiqah" className="bg-white hover:bg-gray-50 text-gray-700">
                             <div className="flex items-center space-x-2">
-                              {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
-                              <span className={`${cause.color} font-medium`}>{cause.name}</span>
+                              <span className="text-teal-600 font-medium">Aqiqah</span>
                             </div>
                           </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                </div>
+                          <SelectItem value="fidyah" className="bg-white hover:bg-gray-50 text-gray-700">
+                            <div className="flex items-center space-x-2">
+                              <span className="text-teal-600 font-medium">Fidyah</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="kaffarah" className="bg-white hover:bg-gray-50 text-gray-700">
+                            <div className="flex items-center space-x-2">
+                              <span className="text-teal-600 font-medium">Kaffarah</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="sadaqah-jariyah" className="bg-white hover:bg-gray-50 text-gray-700">
+                            <div className="flex items-center space-x-2">
+                              <span className="text-teal-600 font-medium">Sadaqah Jariyah</span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Select value={selectedCause} onValueChange={setSelectedCause}>
+                        <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 w-full ${isSticky ? 'h-7' : 'h-8'}`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
+                          {emergencyCauses.map((cause) => (
+                            <SelectItem 
+                              key={cause.id} 
+                              value={cause.id} 
+                              className="bg-white hover:bg-gray-50 text-gray-700"
+                            >
+                              <div className="flex items-center space-x-2">
+                                {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
+                                <span className={`${cause.color} font-medium`}>{cause.name}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </div>
 
-                {/* Currency and amounts - Better mobile layout */}
-                <div className="flex space-x-2 sm:contents">
-                  {/* Currency selector */}
-                  <div className="w-16 sm:col-span-1">
+                  {/* Currency selector with flag */}
+                  <div className="w-20 sm:col-span-1">
                     <Select value={currency} onValueChange={setCurrency}>
                       <SelectTrigger className={`w-full text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
-                        <SelectValue />
+                        <SelectValue>
+                          <div className="flex items-center space-x-1">
+                            <span>{currentCurrency?.flag}</span>
+                            <span className="font-medium">{currentCurrency?.symbol}</span>
+                          </div>
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
                         {currencies.map((curr) => (
@@ -230,13 +236,17 @@ const StickyDonationWidget = () => {
                             <div className="flex items-center space-x-1">
                               <span>{curr.flag}</span>
                               <span className="font-medium">{curr.symbol}</span>
+                              <span className="text-gray-500">{curr.code}</span>
                             </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
 
+                {/* Quick amounts and custom amount - Better mobile layout */}
+                <div className="flex space-x-2 sm:contents">
                   {/* Quick amounts - Responsive grid */}
                   <div className="flex-1 grid grid-cols-3 gap-1 sm:col-span-3 sm:gap-1">
                     {quickAmounts.map((amount) => (
@@ -256,12 +266,9 @@ const StickyDonationWidget = () => {
                       </button>
                     ))}
                   </div>
-                </div>
 
-                {/* Custom amount and donate button - Stack on mobile */}
-                <div className="space-y-2 sm:contents">
-                  {/* Custom amount */}
-                  <div className="sm:col-span-2">
+                  {/* Custom amount - Now on same row */}
+                  <div className="w-20 sm:col-span-2">
                     <Input
                       type="number"
                       placeholder="Other"
@@ -273,25 +280,25 @@ const StickyDonationWidget = () => {
                       className={`text-xs w-full bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}
                     />
                   </div>
+                </div>
 
-                  {/* Pay button with gentle glow effect */}
-                  <div className="sm:col-span-4 relative">
-                    <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
-                      style={{
-                        boxShadow: '0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2)'
-                      }}
-                    >
-                      <span className="relative z-10">
-                        Donate {currentCurrency?.symbol}{donationAmount}
-                      </span>
-                      
-                      {isMember && (
-                        <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20">
-                          2x
-                        </Badge>
-                      )}
-                    </Button>
-                  </div>
+                {/* Pay button with gentle glow effect */}
+                <div className="sm:col-span-4 relative">
+                  <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                    style={{
+                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2)'
+                    }}
+                  >
+                    <span className="relative z-10">
+                      Donate {currentCurrency?.symbol}{donationAmount}
+                    </span>
+                    
+                    {isMember && (
+                      <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20">
+                        2x
+                      </Badge>
+                    )}
+                  </Button>
                 </div>
               </div>
 
@@ -344,3 +351,4 @@ const StickyDonationWidget = () => {
 };
 
 export default StickyDonationWidget;
+
