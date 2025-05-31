@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -27,42 +26,53 @@ const donationProducts = [
     title: 'Orphan Care Package - Gaza',
     charity: 'Islamic Relief',
     description: 'Provide essential care, education, and support for orphaned children in Gaza',
-    price: 50,
     currency: '£',
     beneficiaries: 1,
     timeframe: '3 Months',
     category: 'Orphan Care',
     isPopular: true,
     isNew: false,
-    charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png'
+    charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png',
+    priceOptions: [
+      { amount: 30, description: 'Basic care package' },
+      { amount: 50, description: 'Standard care package' },
+      { amount: 75, description: 'Premium care package' },
+      { amount: 100, description: 'Full support package' }
+    ]
   },
   {
     id: '3',
     title: 'Clean Water Well Construction',
     charity: 'Muslim Aid',
     description: 'Build a sustainable water well providing clean water access to rural communities',
-    price: 300,
     currency: '£',
     beneficiaries: 200,
     timeframe: 'Permanent',
     category: 'Water',
     isPopular: false,
     isNew: true,
-    charityLogo: '/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png'
+    charityLogo: '/lovable-uploads/58535c26-0f91-49b5-8e89-2efe9af55d06.png',
+    isAnyAmount: true,
+    suggestedAmounts: [50, 100, 250, 500, 1000]
   },
   {
     id: '4',
     title: 'Emergency Food Parcel',
     charity: 'Human Appeal',
     description: 'Nutritious food supplies for families facing crisis and hunger',
-    price: 25,
     currency: '£',
     beneficiaries: 5,
     timeframe: '1 Month',
     category: 'Emergency Aid',
     isPopular: true,
     isNew: false,
-    charityLogo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png'
+    charityLogo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png',
+    priceOptions: [
+      { amount: 25, description: '1 family for 1 week' },
+      { amount: 50, description: '1 family for 2 weeks' },
+      { amount: 75, description: '1 family for 3 weeks' },
+      { amount: 100, description: '1 family for 1 month' }
+    ]
   },
   {
     id: '5',
@@ -84,28 +94,33 @@ const donationProducts = [
     title: 'School Building Project',
     charity: 'Penny Appeal',
     description: 'Construct classrooms and provide educational resources for children',
-    price: 150,
     currency: '£',
     beneficiaries: 100,
     timeframe: 'Permanent',
     category: 'Education',
     isPopular: false,
     isNew: false,
-    charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png'
+    charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png',
+    isAnyAmount: true,
+    suggestedAmounts: [25, 50, 100, 200, 500]
   },
   {
     id: '7',
     title: 'Medical Aid Package',
     charity: 'Islamic Relief',
     description: 'Essential medical supplies and treatment for those in need',
-    price: 75,
     currency: '£',
     beneficiaries: 10,
     timeframe: '3 Months',
     category: 'Healthcare',
     isPopular: true,
     isNew: false,
-    charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png'
+    charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png',
+    priceOptions: [
+      { amount: 35, description: 'Basic medical kit' },
+      { amount: 75, description: 'Advanced medical kit' },
+      { amount: 150, description: 'Complete treatment package' }
+    ]
   },
   {
     id: '8',
@@ -127,14 +142,15 @@ const donationProducts = [
     title: 'Widow Support Program',
     charity: 'Muslim Hands',
     description: 'Comprehensive support including food, healthcare, and skills training',
-    price: 40,
     currency: '£',
     beneficiaries: 1,
     timeframe: '6 Months',
     category: 'Social Support',
     isPopular: false,
     isNew: false,
-    charityLogo: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png'
+    charityLogo: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png',
+    isAnyAmount: true,
+    suggestedAmounts: [20, 40, 60, 80, 120]
   },
   {
     id: '10',
@@ -150,6 +166,39 @@ const donationProducts = [
     isNew: false,
     charityLogo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png',
     isFixedPrice: true
+  },
+  {
+    id: '11',
+    title: 'Palestine Emergency Relief',
+    charity: 'Islamic Relief',
+    description: 'Urgent humanitarian aid for families affected by the crisis in Palestine',
+    currency: '£',
+    beneficiaries: 5,
+    timeframe: 'Immediate',
+    category: 'Emergency Aid',
+    isPopular: true,
+    isNew: true,
+    charityLogo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png',
+    isAnyAmount: true,
+    suggestedAmounts: [10, 25, 50, 100, 250]
+  },
+  {
+    id: '12',
+    title: 'Educational Sponsorship',
+    charity: 'Penny Appeal',
+    description: 'Sponsor a child\'s education including books, uniform, and school fees',
+    currency: '£',
+    beneficiaries: 1,
+    timeframe: '1 Year',
+    category: 'Education',
+    isPopular: false,
+    isNew: false,
+    charityLogo: '/lovable-uploads/c0de76a9-1b20-40f0-9742-4f2f011193af.png',
+    priceOptions: [
+      { amount: 120, description: 'Primary education (per year)' },
+      { amount: 180, description: 'Secondary education (per year)' },
+      { amount: 240, description: 'Higher education (per year)' }
+    ]
   }
 ];
 
@@ -169,9 +218,13 @@ const DonationProducts: React.FC = () => {
         case 'popular':
           return Number(b.isPopular) - Number(a.isPopular);
         case 'price-low':
-          return a.price - b.price;
+          const aPrice = a.price || (a.priceOptions?.[0]?.amount) || (a.suggestedAmounts?.[0]) || 0;
+          const bPrice = b.price || (b.priceOptions?.[0]?.amount) || (b.suggestedAmounts?.[0]) || 0;
+          return aPrice - bPrice;
         case 'price-high':
-          return b.price - a.price;
+          const aPriceHigh = a.price || (a.priceOptions?.[0]?.amount) || (a.suggestedAmounts?.[0]) || 0;
+          const bPriceHigh = b.price || (b.priceOptions?.[0]?.amount) || (b.suggestedAmounts?.[0]) || 0;
+          return bPriceHigh - aPriceHigh;
         default:
           return 0;
       }

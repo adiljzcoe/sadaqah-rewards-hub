@@ -1,8 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { Heart, Users, Clock, ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
@@ -10,7 +13,7 @@ interface ProductCardProps {
   title: string;
   charity: string;
   description: string;
-  price: number;
+  price?: number;
   currency: string;
   beneficiaries: number;
   timeframe: string;
@@ -19,6 +22,9 @@ interface ProductCardProps {
   isNew?: boolean;
   charityLogo?: string;
   isFixedPrice?: boolean;
+  priceOptions?: { amount: number; description: string }[];
+  isAnyAmount?: boolean;
+  suggestedAmounts?: number[];
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -33,8 +39,40 @@ const ProductCard: React.FC<ProductCardProps> = ({
   isPopular,
   isNew,
   charityLogo,
-  isFixedPrice = false
+  isFixedPrice = false,
+  priceOptions,
+  isAnyAmount = false,
+  suggestedAmounts
 }) => {
+  const [selectedPrice, setSelectedPrice] = useState<number>(
+    price || priceOptions?.[0]?.amount || suggestedAmounts?.[0] || 0
+  );
+  const [customAmount, setCustomAmount] = useState<string>('');
+  const [useCustomAmount, setUseCustomAmount] = useState(false);
+
+  const handlePriceSelection = (amount: number) => {
+    setSelectedPrice(amount);
+    setUseCustomAmount(false);
+    setCustomAmount('');
+  };
+
+  const handleCustomAmountChange = (value: string) => {
+    setCustomAmount(value);
+    setUseCustomAmount(true);
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      setSelectedPrice(numValue);
+    }
+  };
+
+  const getFinalAmount = () => {
+    if (useCustomAmount && customAmount) {
+      const numValue = parseFloat(customAmount);
+      return !isNaN(numValue) ? numValue : 0;
+    }
+    return selectedPrice;
+  };
+
   return (
     <Card className="overflow-hidden hover-lift transition-all duration-300 bg-white border border-gray-200 shadow-sm hover:shadow-lg">
       {/* Header with badges */}
@@ -65,6 +103,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {isFixedPrice && (
               <Badge className="bg-purple-500 text-white text-xs">Fixed Price</Badge>
             )}
+            {isAnyAmount && (
+              <Badge className="bg-blue-500 text-white text-xs">Any Amount</Badge>
+            )}
+            {priceOptions && (
+              <Badge className="bg-teal-500 text-white text-xs">Multiple Options</Badge>
+            )}
           </div>
         </div>
         
@@ -85,15 +129,69 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </div>
 
+        {/* Price Options */}
+        {priceOptions && (
+          <div className="mb-4">
+            <h5 className="text-sm font-medium text-gray-700 mb-2">Choose an option:</h5>
+            <RadioGroup value={selectedPrice.toString()} onValueChange={(value) => handlePriceSelection(parseFloat(value))}>
+              {priceOptions.map((option) => (
+                <div key={option.amount} className="flex items-center space-x-2">
+                  <RadioGroupItem value={option.amount.toString()} id={`option-${option.amount}`} />
+                  <Label htmlFor={`option-${option.amount}`} className="text-sm cursor-pointer">
+                    {currency}{option.amount} - {option.description}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        )}
+
+        {/* Suggested Amounts for Any Amount products */}
+        {isAnyAmount && suggestedAmounts && (
+          <div className="mb-4">
+            <h5 className="text-sm font-medium text-gray-700 mb-2">Suggested amounts:</h5>
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              {suggestedAmounts.map((amount) => (
+                <Button
+                  key={amount}
+                  variant={selectedPrice === amount && !useCustomAmount ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handlePriceSelection(amount)}
+                  className="text-xs"
+                >
+                  {currency}{amount}
+                </Button>
+              ))}
+            </div>
+            <div>
+              <Label htmlFor="custom-amount" className="text-sm text-gray-700">Or enter your own amount:</Label>
+              <Input
+                id="custom-amount"
+                type="number"
+                placeholder="Enter amount"
+                value={customAmount}
+                onChange={(e) => handleCustomAmountChange(e.target.value)}
+                className="mt-1"
+                min="1"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Price and Action */}
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-2xl font-bold text-gray-900">{currency}{price}</span>
+            <span className="text-2xl font-bold text-gray-900">
+              {currency}{getFinalAmount()}
+            </span>
             <span className="text-sm text-gray-500 ml-1">
               {isFixedPrice ? 'fixed' : 'donation'}
             </span>
           </div>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6">
+          <Button 
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6"
+            disabled={getFinalAmount() <= 0}
+          >
             <ShoppingCart className="h-4 w-4 mr-2" />
             {isFixedPrice ? 'Order' : 'Donate'}
           </Button>
