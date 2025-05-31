@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -261,9 +262,23 @@ const StickyDonationWidget = () => {
                 {/* Total impact section with points calculation */}
                 <div className="text-xs text-gray-600 flex items-center space-x-3">
                   <div>
-                    <Badge className="bg-emerald-500 text-white font-medium text-xs px-2 py-1">
-                      100% Donation Policy
-                    </Badge>
+                    <div className="relative inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-amber-100 via-yellow-50 to-amber-100 border-2 border-amber-300 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
+                      {/* Plaque background effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-amber-200/30 via-transparent to-amber-200/30 rounded-lg"></div>
+                      
+                      {/* Inner shadow for depth */}
+                      <div className="absolute inset-1 bg-gradient-to-r from-yellow-100 to-amber-50 rounded border border-amber-200/50 shadow-inner"></div>
+                      
+                      {/* Content */}
+                      <div className="relative z-10 flex items-center space-x-1">
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-sm"></div>
+                        <span className="font-bold text-amber-800 text-xs tracking-wide">100% DONATION POLICY</span>
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-sm"></div>
+                      </div>
+                      
+                      {/* Shine effect */}
+                      <div className="absolute top-0 left-2 w-6 h-1 bg-white/40 rounded-full blur-sm"></div>
+                    </div>
                   </div>
                   <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded px-2 py-1">
                     <span className="font-medium text-amber-700">Your donation = {donationAmount * 10} Sadaqah points</span>
