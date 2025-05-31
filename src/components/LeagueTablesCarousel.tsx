@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/components/ui/table';
-import { Building2, MapPin, Utensils, Crown, Trophy, Users, Medal, Star, Mosque, Globe } from 'lucide-react';
+import { Building2, MapPin, Utensils, Crown, Trophy, Users, Medal, Star, Building, Globe } from 'lucide-react';
 
 // Business data
 const localBusinesses = [
@@ -123,7 +122,7 @@ const LeagueTablesCarousel = () => {
       id: 'masjids',
       title: 'Masjid Leaders',
       shortTitle: 'Masjids',
-      icon: <Mosque className="h-4 w-4 text-teal-600" />,
+      icon: <Building className="h-4 w-4 text-teal-600" />,
       badge: 'This Month',
       badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
       data: masjidLeaderboard,
