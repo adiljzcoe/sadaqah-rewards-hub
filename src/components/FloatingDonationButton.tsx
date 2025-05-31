@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, HandHeart } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
+import HeavenlyBirdMascot from './HeavenlyBirdMascot';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -136,19 +136,17 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with simple heart icon */}
+        {/* Main donation button with donation tin mascot */}
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-2xl border-4 border-white/80 hover:border-white transition-all duration-300 group overflow-hidden"
+          className="relative w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-2xl border-4 border-white/80 hover:border-white transition-all duration-300 group overflow-hidden p-0"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
-          <HandHeart 
-            className="h-8 w-8 text-white" 
-            style={{
-              animation: showCallToAction ? 'rotate-heart 2s ease-in-out infinite' : 'none'
-            }}
+          <HeavenlyBirdMascot 
+            isActive={showCallToAction} 
+            className="w-full h-full"
           />
         </Button>
       </div>
