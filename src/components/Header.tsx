@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -50,24 +48,24 @@ const Header = () => {
       <div className="relative z-10 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User */}
-          <div className="flex items-center space-x-3">
-            {/* Logo with gloss effect */}
-            <Link to="/" className="relative transition-all duration-300 hover:scale-105">
+          <div className="flex items-center space-x-4">
+            {/* Logo with constrained width and gloss effect */}
+            <Link to="/" className="relative transition-all duration-300 hover:scale-105 flex-shrink-0 w-[140px]">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
-                className="w-[200px] h-auto object-contain"
+                className="w-full h-auto object-contain max-w-[140px]"
               />
               {/* Gloss effect overlay */}
               <div className="absolute top-0 left-0 w-full h-full">
-                <div className="absolute top-2 left-8 w-24 h-6 bg-gradient-to-r from-transparent via-white/60 to-transparent rounded-full animate-shimmer transform -rotate-12"></div>
-                <div className="absolute top-4 right-8 w-16 h-4 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full animate-shimmer delay-500 transform rotate-12"></div>
+                <div className="absolute top-2 left-4 w-16 h-4 bg-gradient-to-r from-transparent via-white/60 to-transparent rounded-full animate-shimmer transform -rotate-12"></div>
+                <div className="absolute top-3 right-4 w-12 h-3 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full animate-shimmer delay-500 transform rotate-12"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 rounded-lg"></div>
               </div>
             </Link>
 
             {/* User Section with FF styling */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               {/* Unified Guardian User Button */}
               <div className="flex items-center">
                 <Link to="/profile">
@@ -124,7 +122,7 @@ const Header = () => {
           </div>
 
           {/* Navigation with FF styling */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
@@ -255,7 +253,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu - FF crystal style */}
-          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20">
+          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0">
             <Cloud className="h-5 w-5 drop-shadow-sm" />
             {/* Crystal sparkle effects */}
             <div className="absolute top-1 left-1 w-3 h-1.5 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent rounded-full animate-shimmer"></div>
@@ -268,4 +266,3 @@ const Header = () => {
 };
 
 export default Header;
-
