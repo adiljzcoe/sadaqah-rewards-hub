@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
@@ -89,8 +90,8 @@ const FloatingDonationButton = () => {
         {showCallToAction && (
           <div className={`absolute z-60 animate-[message-appear_0.4s_ease-out] ${
             isStickyWidgetActive 
-              ? 'top-16 -left-32 md:-top-16 md:-left-32' 
-              : '-top-16 -left-32'
+              ? 'top-20 -left-32 md:-top-20 md:-left-32' 
+              : '-top-20 -left-32'
           }`}>
             <div className="relative bg-white border border-gray-200 rounded-xl shadow-xl px-4 py-3">
               <p className="text-sm font-medium text-gray-800 whitespace-nowrap">
@@ -112,12 +113,6 @@ const FloatingDonationButton = () => {
               ? 'mt-6 md:mb-6 md:mt-0' 
               : 'mb-6'
           }`}>
-            {/* Compact 100% Fundraising Donation Header */}
-            <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-2 py-1.5 rounded-lg mb-2 text-center shadow-md">
-              <div className="text-xs font-bold uppercase tracking-wide">
-                ✅ 100% FUNDRAISING
-              </div>
-            </div>
 
             {/* Compact explanation */}
             <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-2 mb-2">
@@ -194,10 +189,10 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with donation tin mascot - made smaller */}
+        {/* Main donation button with donation tin mascot - made bigger */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-20 h-20 cursor-pointer transition-all duration-300 group overflow-visible"
+          className="relative w-32 h-32 cursor-pointer transition-all duration-300 group overflow-visible"
           style={{
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}

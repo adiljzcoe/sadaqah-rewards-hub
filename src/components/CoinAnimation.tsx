@@ -12,12 +12,12 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({ trigger, onComplete }) =>
 
   useEffect(() => {
     if (trigger) {
-      // Generate 3-5 coins with random positions
-      const newCoins = Array.from({ length: Math.floor(Math.random() * 3) + 3 }, (_, i) => ({
+      // Generate 4-6 coins with random positions
+      const newCoins = Array.from({ length: Math.floor(Math.random() * 3) + 4 }, (_, i) => ({
         id: Date.now() + i,
-        x: Math.random() * 60 - 30, // Random x offset
-        y: Math.random() * 20 + 10, // Random starting y position
-        delay: i * 100, // Stagger the coins
+        x: Math.random() * 80 - 40, // Wider spread for bigger mascot
+        y: Math.random() * 30 + 15, // Random starting y position
+        delay: i * 120, // Stagger the coins
       }));
 
       setCoins(newCoins);
@@ -26,7 +26,7 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({ trigger, onComplete }) =>
       setTimeout(() => {
         setCoins([]);
         onComplete?.();
-      }, 1500);
+      }, 2000);
     }
   }, [trigger, onComplete]);
 
@@ -40,12 +40,12 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({ trigger, onComplete }) =>
             left: `calc(50% + ${coin.x}px)`,
             bottom: `${coin.y}px`,
             animationDelay: `${coin.delay}ms`,
-            animationDuration: '1.2s',
+            animationDuration: '1.5s',
             animationTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             animationFillMode: 'forwards',
           }}
         >
-          <SimpleGoldCoin size={16} />
+          <SimpleGoldCoin size={20} />
         </div>
       ))}
 
@@ -55,16 +55,20 @@ const CoinAnimation: React.FC<CoinAnimationProps> = ({ trigger, onComplete }) =>
             transform: translateY(0) scale(1) rotate(0deg);
             opacity: 1;
           }
-          50% {
-            transform: translateY(-40px) scale(0.8) rotate(180deg);
+          30% {
+            transform: translateY(-30px) scale(1.1) rotate(90deg);
+            opacity: 1;
+          }
+          60% {
+            transform: translateY(-60px) scale(0.9) rotate(180deg);
             opacity: 0.9;
           }
-          80% {
-            transform: translateY(-60px) scale(0.6) rotate(270deg);
-            opacity: 0.7;
+          85% {
+            transform: translateY(-90px) scale(0.6) rotate(270deg);
+            opacity: 0.6;
           }
           100% {
-            transform: translateY(-80px) scale(0.3) rotate(360deg);
+            transform: translateY(-110px) scale(0.2) rotate(360deg);
             opacity: 0;
           }
         }
