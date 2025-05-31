@@ -11,14 +11,14 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-blue-50 border-b border-blue-100 py-2 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="text-center text-xs text-blue-700 mb-2 font-normal opacity-80">
+    <div className="bg-blue-50 border-b border-blue-100 py-1 overflow-hidden w-full">
+      <div className="container mx-auto px-4 max-w-full">
+        <div className="text-center text-xs text-blue-700 mb-1 font-normal opacity-80">
           Funds distributed to our trusted charity partners
         </div>
         
         {/* Ticker container */}
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden max-w-full">
           <div className="flex animate-ticker space-x-8">
             {/* First set of logos */}
             {charityLogos.map((charity, index) => (
