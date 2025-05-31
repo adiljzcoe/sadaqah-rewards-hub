@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, coins } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -160,6 +159,18 @@ const StickyDonationWidget = () => {
             box-shadow: 0 0 5px rgba(34, 197, 94, 0.4), 0 0 10px rgba(34, 197, 94, 0.3), 0 0 15px rgba(34, 197, 94, 0.2);
           }
         }
+
+        @keyframes golden-glow {
+          0% {
+            box-shadow: 0 0 5px rgba(234, 179, 8, 0.4), 0 0 10px rgba(234, 179, 8, 0.3), 0 0 15px rgba(234, 179, 8, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.6), 0 0 20px rgba(234, 179, 8, 0.4), 0 0 30px rgba(234, 179, 8, 0.3), 0 0 40px rgba(234, 179, 8, 0.1);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(234, 179, 8, 0.4), 0 0 10px rgba(234, 179, 8, 0.3), 0 0 15px rgba(234, 179, 8, 0.2);
+          }
+        }
       `}</style>
       
       <div className={`${isSticky ? 'fixed bottom-0' : 'relative'} left-0 right-0 z-50 transition-all duration-300 bg-white border-t border-gray-200 shadow-lg`}>
@@ -309,9 +320,10 @@ const StickyDonationWidget = () => {
                   </div>
                 </div>
 
-                {/* Pay button with gentle pulse animation and green glow */}
-                <div className="sm:col-span-4 relative">
-                  <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                {/* Buttons - Main Donate and Sadaqah Coins */}
+                <div className="sm:col-span-4 flex space-x-2">
+                  {/* Main Donate Button with gentle pulse animation and green glow */}
+                  <Button className={`flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                     style={{
                       animation: 'gentle-pulse 3s ease-in-out infinite, green-glow-resonate 2.5s ease-in-out infinite'
                     }}
@@ -325,6 +337,18 @@ const StickyDonationWidget = () => {
                         2x
                       </Badge>
                     )}
+                  </Button>
+
+                  {/* Sadaqah Coins Button */}
+                  <Button className={`bg-yellow-600 hover:bg-yellow-700 text-white text-xs font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7 px-2' : 'h-8 px-3'} relative overflow-hidden whitespace-nowrap`}
+                    style={{
+                      animation: 'golden-glow 2.8s ease-in-out infinite'
+                    }}
+                  >
+                    <span className="relative z-10 flex items-center space-x-1">
+                      <coins className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'}`} />
+                      <span>Coins</span>
+                    </span>
                   </Button>
                 </div>
               </div>
