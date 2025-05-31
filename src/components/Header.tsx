@@ -1,9 +1,10 @@
 
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Cloud, Crown, ArrowUp, ChevronDown } from 'lucide-react';
+import { Star, User, Cloud, ArrowUp, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   NavigationMenu,
@@ -71,12 +72,12 @@ const Header = () => {
                   {isMember ? (
                     <Button className="relative overflow-hidden rounded-2xl px-5 py-3 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
                       <div className="flex items-center space-x-4">
-                        {/* Left side - VIP Crown + User */}
+                        {/* Left side - Guardian + User */}
                         <div className="flex items-center">
-                          <Crown className="h-5 w-5 mr-2 text-amber-100 drop-shadow-sm" />
+                          <span className="text-lg mr-2 drop-shadow-sm">🛡️</span>
                           <div className="flex flex-col">
                             <span className="text-sm font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
-                            <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">VIP Member</span>
+                            <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
                           </div>
                         </div>
                         
@@ -274,3 +275,4 @@ const Header = () => {
 };
 
 export default Header;
+
