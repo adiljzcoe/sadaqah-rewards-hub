@@ -65,6 +65,11 @@ const donationTypeStyles = {
     text: 'text-white',
     icon: '🤲'
   },
+  islamic: {
+    gradient: 'bg-teal-600 hover:bg-teal-700',
+    text: 'text-white',
+    icon: '🕌'
+  },
   monthly: {
     gradient: 'bg-orange-600 hover:bg-orange-700',
     text: 'text-white',
@@ -132,12 +137,12 @@ const StickyDonationWidget = () => {
         <div className={`relative z-10 container mx-auto px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Simplified TabsList */}
-            <div className={`grid grid-cols-4 gap-2 mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
+            <div className={`grid grid-cols-5 gap-2 mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
-                  className={`rounded-md font-medium text-xs transition-all duration-200 ${isSticky ? 'py-1.5 px-2' : 'py-2 px-3'} ${
+                  className={`rounded-md font-medium text-xs transition-all duration-200 ${isSticky ? 'py-1 px-2' : 'py-1.5 px-3'} ${
                     activeTab === key 
                       ? `${style.gradient} ${style.text}` 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
@@ -153,27 +158,57 @@ const StickyDonationWidget = () => {
 
             <TabsContent value={activeTab} className="mt-0">
               <div className="grid grid-cols-12 gap-2 items-end">
-                {/* Emergency Cause Selection */}
+                {/* Emergency Cause Selection or Islamic Options */}
                 <div className="col-span-2">
-                  <Select value={selectedCause} onValueChange={setSelectedCause}>
-                    <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
-                      {emergencyCauses.map((cause) => (
-                        <SelectItem 
-                          key={cause.id} 
-                          value={cause.id} 
-                          className="bg-white hover:bg-gray-50 text-gray-700"
-                        >
+                  {activeTab === 'islamic' ? (
+                    <Select value={selectedCause} onValueChange={setSelectedCause}>
+                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
+                        <SelectItem value="aqiqah" className="bg-white hover:bg-gray-50 text-gray-700">
                           <div className="flex items-center space-x-2">
-                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
-                            <span className={`${cause.color} font-medium`}>{cause.name}</span>
+                            <span className="text-teal-600 font-medium">Aqiqah</span>
                           </div>
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                        <SelectItem value="fidyah" className="bg-white hover:bg-gray-50 text-gray-700">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-teal-600 font-medium">Fidyah</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="kaffarah" className="bg-white hover:bg-gray-50 text-gray-700">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-teal-600 font-medium">Kaffarah</span>
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="sadaqah-jariyah" className="bg-white hover:bg-gray-50 text-gray-700">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-teal-600 font-medium">Sadaqah Jariyah</span>
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <Select value={selectedCause} onValueChange={setSelectedCause}>
+                      <SelectTrigger className={`text-xs bg-white border border-gray-300 text-gray-700 ${isSticky ? 'h-7' : 'h-8'}`}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-300 shadow-lg z-[100]">
+                        {emergencyCauses.map((cause) => (
+                          <SelectItem 
+                            key={cause.id} 
+                            value={cause.id} 
+                            className="bg-white hover:bg-gray-50 text-gray-700"
+                          >
+                            <div className="flex items-center space-x-2">
+                              {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500" />}
+                              <span className={`${cause.color} font-medium`}>{cause.name}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                 </div>
 
                 {/* Currency selector */}
@@ -250,9 +285,9 @@ const StickyDonationWidget = () => {
               {!isSticky && (
                 <div className="flex items-center justify-between mt-3">
                   <div className="text-xs text-gray-600 flex items-center space-x-4">
-                    <div className="flex items-center bg-gray-100 border border-gray-300 rounded px-3 py-1">
-                      <span className="mr-2">💯</span>
-                      <span className="font-semibold text-gray-800">100% DONATION POLICY</span>
+                    <div className="flex items-center bg-gray-50 border border-gray-200 rounded px-2 py-1">
+                      <span className="mr-1">💯</span>
+                      <span className="font-medium text-gray-700 text-xs">100% DONATION POLICY</span>
                     </div>
                     <div className="text-gray-600">
                       <span className="font-medium">Your donation = {donationAmount * 10} Sadaqah points</span>
