@@ -148,10 +148,6 @@ const FloatingDonationButton = () => {
             isActive={showCallToAction} 
             className="w-full h-full"
           />
-          <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 text-white text-xs font-bold drop-shadow-sm">
-            <Zap className="inline-block h-3 w-3 mr-0.5 -mt-0.5" />
-            
-          </div>
         </Button>
       </div>
     </>
