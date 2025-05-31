@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Zap, X } from 'lucide-react';
@@ -29,16 +30,20 @@ const FloatingDonationButton = () => {
   ];
 
   const handleTinClick = () => {
+    const wasExpanded = isExpanded;
     setIsExpanded(!isExpanded);
     setIsWiggling(true);
     
-    // Show speech bubble with random prayer message
-    const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
-    setCurrentMessage(randomMessage);
-    setShowSpeechBubble(true);
+    // Only show speech bubble when opening the popup (not when closing)
+    if (!wasExpanded) {
+      const randomMessage = prayerMessages[Math.floor(Math.random() * prayerMessages.length)];
+      setCurrentMessage(randomMessage);
+      setShowSpeechBubble(true);
+      
+      // Hide speech bubble after 3 seconds
+      setTimeout(() => setShowSpeechBubble(false), 3000);
+    }
     
-    // Hide speech bubble after 3 seconds
-    setTimeout(() => setShowSpeechBubble(false), 3000);
     setTimeout(() => setIsWiggling(false), 600);
   };
 
