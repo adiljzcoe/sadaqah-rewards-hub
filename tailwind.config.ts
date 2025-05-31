@@ -171,8 +171,8 @@ export default {
 						height: '0'
 					}
 				},
-				// Add scroll animation for CharityTicker
-				'scroll': {
+				// Fixed ticker animation
+				'ticker': {
 					'0%': {
 						transform: 'translateX(0)'
 					},
@@ -239,6 +239,7 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				'ticker': 'ticker 30s linear infinite',
 				'bounce-in': 'bounce-in 0.6s ease-out',
 				'wiggle': 'wiggle 1s ease-in-out infinite',
 				'float': 'float 3s ease-in-out infinite',

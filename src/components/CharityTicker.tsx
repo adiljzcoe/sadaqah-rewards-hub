@@ -11,25 +11,32 @@ const charityLogos = [
 
 const CharityTicker = () => {
   return (
-    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden max-w-full">
-      <div className="container mx-auto px-4 max-w-full overflow-hidden">
+    <div className="bg-white py-6 w-full border-b border-gray-100 overflow-hidden">
+      <div className="container mx-auto px-4 overflow-hidden">
         <div className="text-center text-sm text-gray-400 mb-6 font-light tracking-wide">
           Charities we choose to fundraise for
         </div>
         
-        {/* Ticker container with proper overflow containment */}
-        <div className="relative overflow-hidden w-full max-w-full">
-          <div className="flex space-x-12 animate-[scroll_20s_linear_infinite]" style={{ width: 'calc(200% + 3rem)' }}>
+        {/* Ticker container - completely contained */}
+        <div className="relative overflow-hidden w-full">
+          <div 
+            className="flex space-x-12 animate-ticker"
+            style={{ 
+              width: 'fit-content',
+              minWidth: '200%'
+            }}
+          >
             {/* First set of logos */}
             {charityLogos.map((charity, index) => (
               <div
                 key={`first-${index}`}
                 className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
+                style={{ minWidth: '120px' }}
               >
                 <img 
                   src={charity.logo} 
                   alt={charity.name}
-                  className="max-w-24 max-h-12 object-contain filter grayscale"
+                  className="w-20 h-10 object-contain filter grayscale"
                 />
               </div>
             ))}
@@ -39,11 +46,12 @@ const CharityTicker = () => {
               <div
                 key={`second-${index}`}
                 className="flex items-center justify-center whitespace-nowrap flex-shrink-0 opacity-40 hover:opacity-60 transition-opacity duration-300"
+                style={{ minWidth: '120px' }}
               >
                 <img 
                   src={charity.logo} 
                   alt={charity.name}
-                  className="max-w-24 max-h-12 object-contain filter grayscale"
+                  className="w-20 h-10 object-contain filter grayscale"
                 />
               </div>
             ))}

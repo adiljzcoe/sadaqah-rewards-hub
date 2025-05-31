@@ -104,32 +104,34 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
       <Header />
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
-      <section className="w-full">
-        <div className="grid lg:grid-cols-3 gap-8">
+      <section className="w-full max-w-full overflow-x-hidden">
+        <div className="max-w-full overflow-x-hidden">
+          <CharityTicker />
+        </div>
+        <div className="grid lg:grid-cols-3 gap-8 max-w-full overflow-x-hidden px-4">
           {/* Live Stream - Main Column */}
-          <div className="lg:col-span-2">
-            <CharityTicker />
-            <div className="hover-lift">
+          <div className="lg:col-span-2 max-w-full overflow-x-hidden">
+            <div className="hover-lift max-w-full overflow-x-hidden">
               <LiveVideo />
             </div>
             
             {/* Charity Feed Section - Right below video */}
-            <div className="hover-lift px-4 mt-6">
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden">
               <CharityFeedSection />
             </div>
             
-            <div className="hover-lift px-4 mt-6">
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden">
               <LiveFeed />
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 px-4">
+          <div className="space-y-6 max-w-full overflow-x-hidden">
             <div className="hover-lift">
               <UserStats />
             </div>
@@ -165,27 +167,29 @@ const Index = () => {
       </section>
 
       {/* Campaigns Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         <CampaignsCarousel campaigns={campaigns} title="Active Campaigns" />
       </section>
 
       {/* Fundraisers Section */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         <FundraisersCarousel fundraisers={fundraisers} title="Long-term Fundraisers" />
       </section>
 
       {/* Business Partners Section */}
-      <BusinessSection />
+      <div className="max-w-full overflow-x-hidden">
+        <BusinessSection />
+      </div>
 
       {/* Charity Partners Section */}
-      <section className="bg-gradient-to-r from-white to-blue-50/50 py-16">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-to-r from-white to-blue-50/50 py-16 max-w-full overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full overflow-x-hidden">
           <CharityPartners />
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-16 max-w-full overflow-x-hidden">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
             Why Choose Donate Feels Great?
