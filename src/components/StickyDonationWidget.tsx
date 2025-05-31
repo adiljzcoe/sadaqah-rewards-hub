@@ -132,6 +132,23 @@ const StickyDonationWidget = () => {
 
   return (
     <>
+      <style>{`
+        @keyframes gentle-pulse {
+          0% {
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2);
+            transform: scale(1);
+          }
+          50% {
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4), 0 0 24px rgba(16, 185, 129, 0.3);
+            transform: scale(1.02);
+          }
+          100% {
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2);
+            transform: scale(1);
+          }
+        }
+      `}</style>
+      
       <div className={`${isSticky ? 'fixed bottom-0' : 'relative'} left-0 right-0 z-50 transition-all duration-300 bg-white border-t border-gray-200 shadow-lg`}>
         <div className={`relative z-10 container mx-auto px-2 sm:px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -279,11 +296,11 @@ const StickyDonationWidget = () => {
                   </div>
                 </div>
 
-                {/* Pay button with gentle glow effect */}
+                {/* Pay button with gentle pulse animation */}
                 <div className="sm:col-span-4 relative">
                   <Button className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                     style={{
-                      boxShadow: '0 0 8px rgba(16, 185, 129, 0.3), 0 0 16px rgba(16, 185, 129, 0.2)'
+                      animation: 'gentle-pulse 3s ease-in-out infinite'
                     }}
                   >
                     <span className="relative z-10">
