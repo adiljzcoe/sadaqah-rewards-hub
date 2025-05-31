@@ -277,16 +277,27 @@ const StickyDonationWidget = () => {
                 {/* Emergency Cause Selection - now first and wider */}
                 <div className="col-span-5">
                   <Select value={selectedCause} onValueChange={setSelectedCause}>
-                    <SelectTrigger className={`text-xs transition-all duration-300 bg-slate-700/90 border-cyan-300/40 text-cyan-50 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`text-xs transition-all duration-300 bg-gradient-to-br from-white/95 via-blue-50/90 to-cyan-50/85 border-2 border-white/60 text-slate-700 backdrop-blur-md shadow-lg shadow-white/40 ring-2 ring-white/30 hover:ring-white/50 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-700/95 border border-cyan-300/40 shadow-lg z-[100] backdrop-blur-md">
+                    <SelectContent className="bg-gradient-to-br from-white/98 via-blue-50/95 to-cyan-50/90 border-2 border-white/70 shadow-2xl shadow-white/60 z-[100] backdrop-blur-xl ring-4 ring-white/40">
+                      {/* White crystal background effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-blue-50/30 to-cyan-50/20 rounded-lg"></div>
+                      <div className="absolute top-1 left-2 w-8 h-4 bg-white/60 rounded-full blur-sm"></div>
+                      <div className="absolute bottom-1 right-2 w-6 h-3 bg-cyan-100/50 rounded-full blur-sm"></div>
+                      
                       {emergencyCauses.map((cause) => (
-                        <SelectItem key={cause.id} value={cause.id} className="bg-slate-700/95 hover:bg-slate-600/95 text-cyan-50">
-                          <div className="flex items-center space-x-2">
-                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-400" />}
-                            <span className={cause.color}>{cause.name}</span>
+                        <SelectItem 
+                          key={cause.id} 
+                          value={cause.id} 
+                          className="relative bg-transparent hover:bg-white/70 text-slate-700 border-0 hover:shadow-lg hover:shadow-white/30 transition-all duration-200 backdrop-blur-sm"
+                        >
+                          <div className="flex items-center space-x-2 relative z-10">
+                            {cause.urgent && <AlertCircle className="h-3 w-3 text-red-500 drop-shadow-sm" />}
+                            <span className={`${cause.color} font-medium drop-shadow-sm`}>{cause.name}</span>
                           </div>
+                          {/* Individual item crystal effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 opacity-0 hover:opacity-100 transition-opacity rounded"></div>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -296,16 +307,26 @@ const StickyDonationWidget = () => {
                 {/* Currency selector - now second */}
                 <div className="col-span-1">
                   <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-slate-700/90 border-cyan-300/40 text-cyan-50 ${isSticky ? 'h-6' : 'h-8'}`}>
+                    <SelectTrigger className={`w-full text-xs transition-all duration-300 bg-gradient-to-br from-white/95 via-blue-50/90 to-cyan-50/85 border-2 border-white/60 text-slate-700 backdrop-blur-md shadow-lg shadow-white/40 ring-2 ring-white/30 hover:ring-white/50 ${isSticky ? 'h-6' : 'h-8'}`}>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-700/95 border border-cyan-300/40 shadow-lg z-[100] backdrop-blur-md">
+                    <SelectContent className="bg-gradient-to-br from-white/98 via-blue-50/95 to-cyan-50/90 border-2 border-white/70 shadow-2xl shadow-white/60 z-[100] backdrop-blur-xl ring-4 ring-white/40">
+                      {/* White crystal background effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-blue-50/30 to-cyan-50/20 rounded-lg"></div>
+                      <div className="absolute top-1 left-2 w-6 h-3 bg-white/60 rounded-full blur-sm"></div>
+                      
                       {currencies.map((curr) => (
-                        <SelectItem key={curr.code} value={curr.code} className="bg-slate-700/95 hover:bg-slate-600/95 text-cyan-50">
-                          <div className="flex items-center space-x-1">
-                            <span>{curr.flag}</span>
-                            <span>{curr.symbol}</span>
+                        <SelectItem 
+                          key={curr.code} 
+                          value={curr.code} 
+                          className="relative bg-transparent hover:bg-white/70 text-slate-700 border-0 hover:shadow-lg hover:shadow-white/30 transition-all duration-200 backdrop-blur-sm"
+                        >
+                          <div className="flex items-center space-x-1 relative z-10">
+                            <span className="drop-shadow-sm">{curr.flag}</span>
+                            <span className="font-medium drop-shadow-sm">{curr.symbol}</span>
                           </div>
+                          {/* Individual item crystal effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 opacity-0 hover:opacity-100 transition-opacity rounded"></div>
                         </SelectItem>
                       ))}
                     </SelectContent>
