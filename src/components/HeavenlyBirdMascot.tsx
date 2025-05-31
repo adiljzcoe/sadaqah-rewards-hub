@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -158,46 +157,8 @@ function DonationTin({ isActive }: DonationTinProps) {
         </mesh>
       </group>
 
-      {/* Enhanced Dwarf Beard - much fuller and more textured */}
+      {/* V-Shaped Dwarf Beard - redesigned to form a proper V */}
       <group ref={beardRef} position={[0, -0.08, 0.35]}>
-        {/* Main beard body - larger and more prominent */}
-        <mesh position={[0, -0.15, 0.05]}>
-          <sphereGeometry args={[0.22, 12, 12]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-        
-        {/* Extended beard length - classic dwarf style */}
-        <mesh position={[0, -0.3, 0.02]}>
-          <sphereGeometry args={[0.18, 10, 10]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-
-        {/* Beard tip - pointed dwarf style */}
-        <mesh position={[0, -0.42, 0]}>
-          <sphereGeometry args={[0.12, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-
-        {/* Fuller beard sides */}
-        <mesh position={[-0.12, -0.1, 0.03]} rotation={[0, 0.4, 0]}>
-          <sphereGeometry args={[0.12, 10, 10]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-        <mesh position={[0.12, -0.1, 0.03]} rotation={[0, -0.4, 0]}>
-          <sphereGeometry args={[0.12, 10, 10]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-
-        {/* Additional side volume for fuller dwarf beard */}
-        <mesh position={[-0.18, -0.2, 0]} rotation={[0, 0.6, 0]}>
-          <sphereGeometry args={[0.1, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-        <mesh position={[0.18, -0.2, 0]} rotation={[0, -0.6, 0]}>
-          <sphereGeometry args={[0.1, 8, 8]} />
-          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
-        </mesh>
-
         {/* Mustache - bushier dwarf style */}
         <mesh position={[-0.08, 0.08, 0.06]}>
           <sphereGeometry args={[0.05, 8, 8]} />
@@ -212,34 +173,66 @@ function DonationTin({ isActive }: DonationTinProps) {
           <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
         </mesh>
 
-        {/* Beard texture details - multiple layers for dwarf-like appearance */}
-        <mesh position={[-0.05, -0.12, 0.08]}>
+        {/* V-Shape Top: Upper beard layer forming the V */}
+        <mesh position={[-0.15, -0.1, 0.03]} rotation={[0, 0, -0.3]}>
+          <boxGeometry args={[0.08, 0.2, 0.1]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.15, -0.1, 0.03]} rotation={[0, 0, 0.3]}>
+          <boxGeometry args={[0.08, 0.2, 0.1]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* V-Shape Middle: Mid beard extending the V */}
+        <mesh position={[-0.12, -0.25, 0.02]} rotation={[0, 0, -0.4]}>
+          <boxGeometry args={[0.06, 0.25, 0.08]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.12, -0.25, 0.02]} rotation={[0, 0, 0.4]}>
+          <boxGeometry args={[0.06, 0.25, 0.08]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* V-Shape Bottom: Lower beard completing the V */}
+        <mesh position={[-0.08, -0.4, 0.01]} rotation={[0, 0, -0.5]}>
+          <boxGeometry args={[0.05, 0.2, 0.06]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.08, -0.4, 0.01]} rotation={[0, 0, 0.5]}>
+          <boxGeometry args={[0.05, 0.2, 0.06]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* V-Shape Point: The pointed tip of the V */}
+        <mesh position={[0, -0.5, 0]}>
+          <coneGeometry args={[0.04, 0.1, 8]} />
+          <meshStandardMaterial color="#8B5A3C" roughness={0.9} />
+        </mesh>
+
+        {/* Beard texture details - positioned to enhance V-shape */}
+        <mesh position={[-0.1, -0.15, 0.08]}>
           <sphereGeometry args={[0.02, 6, 6]} />
           <meshStandardMaterial color="#A0674A" roughness={0.95} />
         </mesh>
-        <mesh position={[0.05, -0.12, 0.08]}>
+        <mesh position={[0.1, -0.15, 0.08]}>
           <sphereGeometry args={[0.02, 6, 6]} />
           <meshStandardMaterial color="#A0674A" roughness={0.95} />
         </mesh>
-        <mesh position={[0, -0.18, 0.06]}>
+        <mesh position={[-0.06, -0.3, 0.06]}>
           <sphereGeometry args={[0.018, 6, 6]} />
           <meshStandardMaterial color="#A0674A" roughness={0.95} />
         </mesh>
-        <mesh position={[-0.08, -0.25, 0.04]}>
-          <sphereGeometry args={[0.015, 6, 6]} />
-          <meshStandardMaterial color="#A0674A" roughness={0.95} />
-        </mesh>
-        <mesh position={[0.08, -0.25, 0.04]}>
-          <sphereGeometry args={[0.015, 6, 6]} />
+        <mesh position={[0.06, -0.3, 0.06]}>
+          <sphereGeometry args={[0.018, 6, 6]} />
           <meshStandardMaterial color="#A0674A" roughness={0.95} />
         </mesh>
 
-        {/* Additional texture for fuller appearance */}
-        <mesh position={[-0.03, -0.35, 0.02]}>
+        {/* Additional V-shape enhancement details */}
+        <mesh position={[-0.04, -0.45, 0.02]}>
           <sphereGeometry args={[0.012, 6, 6]} />
           <meshStandardMaterial color="#9B6347" roughness={0.98} />
         </mesh>
-        <mesh position={[0.03, -0.35, 0.02]}>
+        <mesh position={[0.04, -0.45, 0.02]}>
           <sphereGeometry args={[0.012, 6, 6]} />
           <meshStandardMaterial color="#9B6347" roughness={0.98} />
         </mesh>
