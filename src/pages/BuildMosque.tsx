@@ -2,13 +2,22 @@
 import React from 'react';
 import Header from '@/components/Header';
 import ProjectDonationWidget from '@/components/ProjectDonationWidget';
-import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target } from 'lucide-react';
+import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target, Star, Award } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 
 const BuildMosque = () => {
+  // Mock user track record data - would come from API/localStorage
+  const userTrackRecord = {
+    prayerSpacesFunded: 0, // Change this to test different states
+    mosquesCompleted: 0,
+    totalContributed: 0,
+    activeContributions: 0
+  };
+
   // Mock data for mosque projects
   const mosqueProjects = [
     {
@@ -118,8 +127,14 @@ const BuildMosque = () => {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a
-                href="#impact"
+                href="#track-record"
                 className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold py-3 px-6 rounded-full transition-colors duration-300"
+              >
+                Your Progress
+              </a>
+              <a
+                href="#impact"
+                className="bg-teal-500 text-white hover:bg-teal-700 font-semibold py-3 px-6 rounded-full transition-colors duration-300"
               >
                 See the Impact
               </a>
@@ -139,6 +154,98 @@ const BuildMosque = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
+        {/* Your Track Record Section */}
+        <section id="track-record" className="mb-16">
+          <h3 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
+            <Award className="h-8 w-8 text-emerald-600" />
+            Your Mosque Building Track Record
+          </h3>
+          
+          {userTrackRecord.prayerSpacesFunded === 0 && userTrackRecord.mosquesCompleted === 0 ? (
+            <Card className="p-8 bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200">
+              <div className="text-center">
+                <div className="text-6xl mb-4">🕌</div>
+                <h4 className="text-2xl font-bold text-gray-800 mb-4">Start Your Mosque Building Journey</h4>
+                <p className="text-lg text-gray-600 mb-6">
+                  You haven't funded any prayer spaces yet. Every mosque starts with a single prayer space contribution!
+                </p>
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Target className="h-8 w-8 text-emerald-600" />
+                    </div>
+                    <h5 className="font-semibold text-gray-800 mb-2">Set Your Goal</h5>
+                    <p className="text-sm text-gray-600">Start with funding just 1 prayer space for £100</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Users className="h-8 w-8 text-blue-600" />
+                    </div>
+                    <h5 className="font-semibold text-gray-800 mb-2">Join Others</h5>
+                    <p className="text-sm text-gray-600">Pool with other donors to complete mosques faster</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Building2 className="h-8 w-8 text-green-600" />
+                    </div>
+                    <h5 className="font-semibold text-gray-800 mb-2">Build Legacy</h5>
+                    <p className="text-sm text-gray-600">Watch your mosque get built and serve the community</p>
+                  </div>
+                </div>
+                <div className="bg-white p-6 rounded-lg border border-emerald-200">
+                  <h5 className="font-semibold text-gray-800 mb-3">💡 Did you know?</h5>
+                  <p className="text-gray-600">
+                    The Prophet Muhammad ﷺ said: "Whoever builds a mosque for Allah, Allah will build for him a house in Paradise." 
+                    Start your journey today and earn this incredible reward!
+                  </p>
+                </div>
+              </div>
+            </Card>
+          ) : (
+            <div className="grid md:grid-cols-4 gap-6">
+              <Card className="p-6 bg-gradient-to-br from-emerald-50 to-green-50 border-emerald-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-emerald-600 text-sm font-medium">Prayer Spaces Funded</p>
+                    <p className="text-3xl font-bold text-emerald-800">{userTrackRecord.prayerSpacesFunded}</p>
+                  </div>
+                  <Target className="h-8 w-8 text-emerald-600" />
+                </div>
+              </Card>
+              
+              <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-green-600 text-sm font-medium">Mosques Completed</p>
+                    <p className="text-3xl font-bold text-green-800">{userTrackRecord.mosquesCompleted}</p>
+                  </div>
+                  <CheckCircle className="h-8 w-8 text-green-600" />
+                </div>
+              </Card>
+              
+              <Card className="p-6 bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-600 text-sm font-medium">Total Contributed</p>
+                    <p className="text-3xl font-bold text-blue-800">£{userTrackRecord.totalContributed}</p>
+                  </div>
+                  <Star className="h-8 w-8 text-blue-600" />
+                </div>
+              </Card>
+              
+              <Card className="p-6 bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-600 text-sm font-medium">Active Projects</p>
+                    <p className="text-3xl font-bold text-purple-800">{userTrackRecord.activeContributions}</p>
+                  </div>
+                  <Clock className="h-8 w-8 text-purple-600" />
+                </div>
+              </Card>
+            </div>
+          )}
+        </section>
+
         {/* Statistics Cards */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
