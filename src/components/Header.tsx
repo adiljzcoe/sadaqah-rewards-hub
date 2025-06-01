@@ -31,6 +31,15 @@ const Header = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  // Charity logos for rotation
+  const charityLogos = [
+    { name: 'One Nation', logo: '/lovable-uploads/06a0c139-e89f-4071-98fb-da09f757e1eb.png' },
+    { name: 'Human Appeal', logo: '/lovable-uploads/fe60c231-8422-4bf0-83e7-47b219d91e70.png' },
+    { name: 'Muslim Global Relief', logo: '/lovable-uploads/051509ed-1b47-49b2-8b42-123906f123c6.png' },
+    { name: 'Islamic Help', logo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png' },
+    { name: 'Muslim Aid', logo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png' }
+  ];
+
   return (
     <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-visible border-b-2 border-cyan-400/30 z-[100]">
       {/* Final Fantasy inspired crystalline background effects */}
@@ -112,6 +121,55 @@ const Header = () => {
                     </Button>
                   )}
                 </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Center Section - Rotating Charity Logos */}
+          <div className="hidden lg:flex items-center justify-center flex-1 max-w-md mx-8">
+            <div className="relative bg-gradient-to-r from-slate-800/40 via-blue-800/30 to-indigo-800/40 backdrop-blur-sm rounded-2xl border border-cyan-400/20 shadow-xl p-4 overflow-hidden">
+              {/* Magical background effects for trust section */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-indigo-500/10 rounded-2xl"></div>
+              <div className="absolute top-1 left-2 w-16 h-4 bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent rounded-full blur-sm animate-pulse"></div>
+              
+              <div className="relative z-10 flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  <Shield className="h-4 w-4 text-cyan-300 drop-shadow-sm" />
+                  <span className="text-xs font-medium text-slate-300 drop-shadow-sm">Trusted by</span>
+                </div>
+                
+                {/* Rotating logo container */}
+                <div className="relative w-20 h-8 overflow-hidden">
+                  <div 
+                    className="flex transition-transform duration-1000 ease-in-out"
+                    style={{ 
+                      transform: 'translateX(calc(-20px * var(--current-logo, 0)))',
+                      animation: 'charityRotate 10s infinite'
+                    }}
+                  >
+                    {charityLogos.map((charity, index) => (
+                      <div
+                        key={index}
+                        className="flex-shrink-0 w-20 h-8 flex items-center justify-center"
+                      >
+                        <img 
+                          src={charity.logo} 
+                          alt={charity.name}
+                          className="w-16 h-6 object-contain filter brightness-75 opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-1">
+                  <span className="text-xs text-slate-400">& more</span>
+                  <div className="flex space-x-0.5">
+                    <div className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"></div>
+                    <div className="w-1 h-1 bg-blue-400 rounded-full animate-pulse delay-200"></div>
+                    <div className="w-1 h-1 bg-indigo-400 rounded-full animate-pulse delay-400"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -381,6 +439,23 @@ const Header = () => {
           </Button>
         </div>
       </div>
+
+      {/* Custom CSS for charity logo rotation animation */}
+      <style jsx>{`
+        @keyframes charityRotate {
+          0% { transform: translateX(0); }
+          18% { transform: translateX(0); }
+          20% { transform: translateX(-20px); }
+          38% { transform: translateX(-20px); }
+          40% { transform: translateX(-40px); }
+          58% { transform: translateX(-40px); }
+          60% { transform: translateX(-60px); }
+          78% { transform: translateX(-60px); }
+          80% { transform: translateX(-80px); }
+          98% { transform: translateX(-80px); }
+          100% { transform: translateX(0); }
+        }
+      `}</style>
     </header>
   );
 };
