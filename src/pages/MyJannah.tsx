@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
-import { TreeDeciduous, TreePalm, Trees, Waterfall, Palace, Star, Coins, ShoppingCart, Sparkles } from 'lucide-react';
+import { TreeDeciduous, TreePalm, Trees, Waves, Home, Star, Coins, ShoppingCart, Sparkles } from 'lucide-react';
 import JannahBuilder from '@/components/JannahBuilder';
 import JannahShop from '@/components/JannahShop';
 
@@ -57,7 +57,7 @@ const jannahItems: JannahItem[] = [
   {
     id: 'waterfall',
     name: 'Heavenly Waterfall',
-    icon: <Waterfall className="h-6 w-6" />,
+    icon: <Waves className="h-6 w-6" />,
     price: 200,
     realProject: 'Clean water well projects',
     description: 'A cascading waterfall of pure water',
@@ -68,7 +68,7 @@ const jannahItems: JannahItem[] = [
   {
     id: 'small-palace',
     name: 'Beautiful Dwelling',
-    icon: <Palace className="h-6 w-6" />,
+    icon: <Home className="h-6 w-6" />,
     price: 500,
     realProject: 'Build homes for families in need',
     description: 'A modest but beautiful dwelling',
@@ -79,7 +79,7 @@ const jannahItems: JannahItem[] = [
   {
     id: 'grand-palace',
     name: 'Grand Palace',
-    icon: <Palace className="h-6 w-6" />,
+    icon: <Home className="h-6 w-6" />,
     price: 1000,
     realProject: 'Community center construction',
     description: 'A magnificent palace with gardens',

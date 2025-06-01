@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, TreeDeciduous, TreePalm, Trees, Waterfall, Palace } from 'lucide-react';
+import { Plus, TreeDeciduous, TreePalm, Trees, Waves, Home } from 'lucide-react';
 import type { JannahItem } from '@/pages/MyJannah';
 
 interface JannahBuilderProps {
