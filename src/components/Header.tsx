@@ -54,14 +54,14 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
 
-      {/* Flying Plane with Charity Partners Banner */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+      {/* Flying Plane with Charity Partners Banner - Above Everything */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
         {charityLogos.map((charity, index) => (
           <div
             key={index}
-            className="absolute top-4 -left-80 opacity-0 animate-[flyAcross_15s_infinite] flex items-center"
+            className="absolute top-4 -left-80 opacity-0 animate-[flyAcross_20s_infinite] flex items-center"
             style={{ 
-              animationDelay: `${index * 3}s`
+              animationDelay: `${index * 5}s`
             }}
           >
             {/* Plane */}
@@ -418,7 +418,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Custom CSS for flying plane animation */}
+      {/* Custom CSS for flying plane animation with 5-second gaps */}
       <style dangerouslySetInnerHTML={{
         __html: `
           @keyframes flyAcross {
@@ -429,8 +429,12 @@ const Header = () => {
             5% { 
               opacity: 1; 
             }
-            95% { 
+            20% { 
               opacity: 1; 
+            }
+            25% { 
+              transform: translateX(calc(100vw + 200px)); 
+              opacity: 0; 
             }
             100% { 
               transform: translateX(calc(100vw + 200px)); 
