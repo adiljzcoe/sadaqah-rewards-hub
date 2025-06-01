@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -47,7 +46,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30 z-[100]">
+    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30 z-[150]">
       {/* Final Fantasy inspired crystalline background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
       <div className="absolute top-0 left-0 w-full h-full">
@@ -61,12 +60,12 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
       
-      <div className="relative z-[120] container mx-auto px-3 py-3">
+      <div className="relative z-[160] container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User with proper z-index layering */}
           <div className="flex items-center space-x-3 relative">
             {/* Logo - Highest z-index */}
-            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-[150]">
+            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-[170]">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
@@ -75,7 +74,7 @@ const Header = () => {
             </Link>
 
             {/* User Section with FF styling */}
-            <div className="flex items-center flex-shrink-0 relative z-[110]">
+            <div className="flex items-center flex-shrink-0 relative z-[160]">
               {/* Unified Guardian User Button */}
               <div className="flex items-center">
                 <Link to="/profile">
@@ -132,7 +131,7 @@ const Header = () => {
           </div>
 
           {/* Navigation with Premium Mega Menu */}
-          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-[140]">
+          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-[160]">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
@@ -146,7 +145,7 @@ const Header = () => {
             </Link>
 
             {/* Premium Donate Mega Menu */}
-            <NavigationMenu className="relative z-[140]">
+            <NavigationMenu className="relative z-[160]">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 data-[state=open]:bg-transparent data-[state=open]:text-cyan-300">
@@ -262,7 +261,7 @@ const Header = () => {
             </NavigationMenu>
 
             {/* Premium Community Mega Menu */}
-            <NavigationMenu className="relative z-[140]">
+            <NavigationMenu className="relative z-[160]">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 data-[state=open]:bg-transparent data-[state=open]:text-cyan-300">
@@ -324,7 +323,7 @@ const Header = () => {
             </NavigationMenu>
 
             {/* Premium Rewards Mega Menu */}
-            <NavigationMenu className="relative z-[140]">
+            <NavigationMenu className="relative z-[160]">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 data-[state=open]:bg-transparent data-[state=open]:text-cyan-300">
@@ -388,7 +387,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu - Replace the old button with the new MobileSidebar */}
-          <div className="md:hidden relative z-[140]">
+          <div className="md:hidden relative z-[180]">
             <MobileSidebar 
               userLevel={userLevel}
               currentPoints={currentPoints}
