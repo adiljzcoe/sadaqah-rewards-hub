@@ -153,7 +153,7 @@ const BuildMosque = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50">
       <Header />
-      <ProjectDonationWidget projectType="mosque" />
+      <ProjectDonationWidget projectType="mosque" sticky={false} />
       
       {/* Live Donation Feed - moved above hero section */}
       <div className="container mx-auto px-4 py-8">
