@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -32,7 +31,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-visible border-b-2 border-cyan-400/30 z-50">
+    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-visible border-b-2 border-cyan-400/30 z-[100]">
       {/* Final Fantasy inspired crystalline background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
       <div className="absolute top-0 left-0 w-full h-full">
@@ -116,8 +115,8 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Navigation with FF styling */}
-          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center">
+          {/* Navigation with FF styling and increased z-index */}
+          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-[200]">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
@@ -130,14 +129,14 @@ const Header = () => {
               }`}></span>
             </Link>
 
-            <NavigationMenu>
+            <NavigationMenu className="relative z-[300]">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent">
                     Donate
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid w-[500px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30">
+                  <NavigationMenuContent className="z-[400]">
+                    <div className="grid w-[500px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30 z-[500]">
                       <div className="grid grid-cols-1 gap-4">
                         <div>
                           <h3 className="text-lg font-semibold text-cyan-300 mb-3">Donation Options</h3>
@@ -187,14 +186,14 @@ const Header = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
-            <NavigationMenu>
+            <NavigationMenu className="relative z-[300]">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent">
                     Community
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30">
+                  <NavigationMenuContent className="z-[400]">
+                    <div className="grid w-[400px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30 z-[500]">
                       <div className="grid grid-cols-1 gap-3">
                         <h3 className="text-lg font-semibold text-cyan-300 mb-2">Community Hub</h3>
                         <Link to="/leaderboards" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
@@ -222,14 +221,14 @@ const Header = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
-            <NavigationMenu>
+            <NavigationMenu className="relative z-[300]">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent">
                     Rewards
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30">
+                  <NavigationMenuContent className="z-[400]">
+                    <div className="grid w-[400px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30 z-[500]">
                       <div className="grid grid-cols-1 gap-3">
                         <h3 className="text-lg font-semibold text-cyan-300 mb-2">Rewards & Benefits</h3>
                         <Link to="/coins" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
