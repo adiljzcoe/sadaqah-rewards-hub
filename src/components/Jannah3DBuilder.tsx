@@ -191,8 +191,8 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
           <div className="absolute inset-0 border border-gray-300 border-opacity-40"></div>
         )}
         
-        {/* Placed item with enhanced 3D effect */}
-        {isMainCell && placedItem && (
+        {/* Show trees on ALL cells that contain a placed item (not just main cell) */}
+        {placedItem && (
           <div 
             className={`
               absolute inset-0 flex items-end justify-center pb-1
