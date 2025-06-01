@@ -59,14 +59,15 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
 
-      {/* Flying Biplane with Charity Partners Banner */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
+      {/* Flying Biplane with Charity Partners Banner - Fixed z-index and positioning */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[150]">
         {charityLogos.map((charity, index) => (
           <div
             key={index}
             className="absolute top-4 animate-biplane flex items-center"
             style={{ 
-              animationDelay: `${index * 10}s`
+              animationDelay: `${index * 10}s`,
+              zIndex: 150
             }}
             onAnimationStart={() => console.log(`✈️ FLYING: ${charity.name} biplane started!`)}
           >
@@ -98,12 +99,12 @@ const Header = () => {
         ))}
       </div>
       
-      <div className="relative z-10 container mx-auto px-3 py-3">
+      <div className="relative z-[200] container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
-          {/* Left Section - Logo and User */}
-          <div className="flex items-center space-x-3">
+          {/* Left Section - Logo and User - Lower z-index so plane goes behind */}
+          <div className="flex items-center space-x-3 relative z-[100]">
             {/* Logo without gloss effect */}
-            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px]">
+            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-[100]">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
@@ -111,8 +112,8 @@ const Header = () => {
               />
             </Link>
 
-            {/* User Section with FF styling */}
-            <div className="flex items-center flex-shrink-0">
+            {/* User Section with FF styling - Higher z-index so plane goes over it */}
+            <div className="flex items-center flex-shrink-0 relative z-[160]">
               {/* Unified Guardian User Button */}
               <div className="flex items-center">
                 <Link to="/profile">
@@ -169,7 +170,7 @@ const Header = () => {
           </div>
 
           {/* Navigation with Premium Mega Menu */}
-          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-[200]">
+          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-[300]">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
@@ -424,8 +425,8 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Mobile Menu - FF crystal style with better spacing */}
-          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0 ml-2">
+          {/* Mobile Menu - FF crystal style with better spacing - Lower z-index so plane goes behind */}
+          <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0 ml-2 z-[100]">
             <Menu className="h-5 w-5 drop-shadow-sm" />
             {/* Crystal sparkle effects */}
             <div className="absolute top-1 left-1 w-3 h-1.5 bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent rounded-full animate-shimmer"></div>

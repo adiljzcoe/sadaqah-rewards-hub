@@ -103,19 +103,31 @@
     animation: shimmer 2s infinite;
   }
 
-  /* Biplane Animation Keyframes */
+  /* Fixed Biplane Animation - Proper layering path */
   @keyframes flyAcrossHeader {
     0% { 
-      transform: translateX(-300px); 
-      opacity: 1; 
+      transform: translateX(-400px); 
+      opacity: 1;
+      z-index: 100; /* Behind logo */
+    }
+    25% { 
+      transform: translateX(calc(25vw - 200px)); 
+      opacity: 1;
+      z-index: 160; /* Over user profile */
+    }
+    75% { 
+      transform: translateX(calc(75vw - 100px)); 
+      opacity: 1;
+      z-index: 160; /* Still over content */
     }
     100% { 
-      transform: translateX(calc(100vw + 100px)); 
-      opacity: 1; 
+      transform: translateX(calc(100vw + 200px)); 
+      opacity: 1;
+      z-index: 100; /* Behind menu */
     }
   }
   
   .animate-biplane {
-    animation: flyAcrossHeader 8s linear infinite;
+    animation: flyAcrossHeader 15s linear infinite;
   }
 }
