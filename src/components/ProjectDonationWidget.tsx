@@ -361,15 +361,15 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 onClick={() => setFundingMode('portions')}
                 className={`p-4 rounded-xl border-2 transition-all ${
                   fundingMode === 'portions' 
-                    ? 'border-emerald-500 bg-emerald-50' 
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    ? 'border-emerald-500 bg-emerald-100' 
+                    : 'border-emerald-300 bg-emerald-50 hover:bg-emerald-100'
                 }`}
               >
                 <div className="flex items-center space-x-2 mb-2">
                   <Target className="h-5 w-5 text-emerald-600" />
-                  <span className="font-semibold text-gray-800">Fund Portions</span>
+                  <span className="font-semibold text-emerald-800">Fund Portions</span>
                 </div>
-                <p className="text-sm text-gray-600">Fund individual prayer spaces</p>
+                <p className="text-sm text-emerald-700">Fund individual prayer spaces</p>
               </button>
 
               {matchingProject && (
@@ -377,16 +377,16 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                   onClick={() => setFundingMode('full')}
                   className={`p-4 rounded-xl border-2 transition-all ${
                     fundingMode === 'full' 
-                      ? 'border-yellow-500 bg-yellow-50' 
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      ? 'border-amber-500 bg-amber-100' 
+                      : 'border-amber-300 bg-amber-50 hover:bg-amber-100'
                   }`}
                 >
                   <div className="flex items-center space-x-2 mb-2">
-                    <Star className="h-5 w-5 text-yellow-600" />
-                    <span className="font-semibold text-gray-800">Finish Funding a Mosque</span>
-                    <Badge className="bg-yellow-100 text-yellow-700 text-xs">🏆 Special Badge</Badge>
+                    <Star className="h-5 w-5 text-amber-600" />
+                    <span className="font-semibold text-amber-800">Finish Funding a Mosque</span>
+                    <Badge className="bg-amber-200 text-amber-700 text-xs">🏆 Special Badge</Badge>
                   </div>
-                  <p className="text-sm text-gray-600">Complete the entire project</p>
+                  <p className="text-sm text-amber-700">Complete the entire project</p>
                 </button>
               )}
 
@@ -394,16 +394,16 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 onClick={() => setFundingMode('new')}
                 className={`p-4 rounded-xl border-2 transition-all ${
                   fundingMode === 'new' 
-                    ? 'border-purple-500 bg-purple-50' 
-                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    ? 'border-purple-500 bg-purple-100' 
+                    : 'border-purple-300 bg-purple-50 hover:bg-purple-100'
                 }`}
               >
                 <div className="flex items-center space-x-2 mb-2">
                   <Crown className="h-5 w-5 text-purple-600" />
-                  <span className="font-semibold text-gray-800">Start a New Mosque and Name It</span>
-                  <Badge className="bg-purple-100 text-purple-700 text-xs">👑 Premium</Badge>
+                  <span className="font-semibold text-purple-800">Start a New Mosque and Name It</span>
+                  <Badge className="bg-purple-200 text-purple-700 text-xs">👑 Premium</Badge>
                 </div>
-                <p className="text-sm text-gray-600">Start your own project</p>
+                <p className="text-sm text-purple-700">Start your own project</p>
               </button>
             </div>
           </div>
