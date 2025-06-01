@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Header from '@/components/Header';
+import ProjectDonationWidget from '@/components/ProjectDonationWidget';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/Header';
 import { Plus, Users, Calendar, MapPin, CheckCircle, Clock, Hammer, Star, Trophy, Zap, Gift, Crown, Droplets } from 'lucide-react';
 
 const donationTiers = [
@@ -105,24 +106,18 @@ const WaterWells = () => {
   const completedProjects = wellProjects.filter(p => p.status === 'completed');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-cyan-300 to-blue-300 rounded-full opacity-20 animate-float"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-teal-300 to-cyan-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-r from-blue-300 to-teal-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
-      </div>
-      
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
       <Header />
+      <ProjectDonationWidget projectType="waterwell" />
       
-      <div className="container mx-auto px-4 py-8 relative">
+      <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-8 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-blue-300 to-teal-300 rounded-3xl blur-3xl opacity-30 animate-rainbow"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-300 via-cyan-300 to-teal-300 rounded-3xl blur-3xl opacity-30 animate-rainbow"></div>
             <div className="relative">
               <div className="mb-6 relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 to-blue-300 rounded-lg blur-lg opacity-60 animate-glow"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-cyan-300 rounded-lg blur-lg opacity-60 animate-glow"></div>
                 <div className="relative w-full h-48 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg shadow-2xl border-4 border-white mx-auto max-w-2xl transform hover:scale-105 transition-transform duration-300 flex items-center justify-center">
                   <div className="text-8xl animate-float">🌊</div>
                 </div>

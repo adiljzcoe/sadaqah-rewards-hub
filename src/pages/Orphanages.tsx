@@ -1,10 +1,10 @@
-
-import React, { useState } from 'react';
+import React from 'react';
+import Header from '@/components/Header';
+import ProjectDonationWidget from '@/components/ProjectDonationWidget';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/Header';
 import { Plus, Users, Calendar, MapPin, CheckCircle, Clock, Hammer, Star, Trophy, Zap, Gift, Crown, Heart } from 'lucide-react';
 
 const donationTiers = [
@@ -82,6 +82,29 @@ const orphanageProjects = [
   }
 ];
 
+const getStatusBadge = (status: string) => {
+  switch (status) {
+    case 'completed':
+      return <Badge className="bg-gradient-to-r from-pink-500 to-rose-600 text-white animate-bounce-in border-0 shadow-lg"><CheckCircle className="h-3 w-3 mr-1" />Home & Complete</Badge>;
+    case 'building':
+      return <Badge className="bg-gradient-to-r from-purple-500 to-pink-600 text-white animate-float border-0 shadow-lg"><Hammer className="h-3 w-3 mr-1" />Under Construction</Badge>;
+    case 'funding':
+      return <Badge className="bg-gradient-to-r from-rose-500 to-pink-600 text-white animate-glow border-0 shadow-lg"><Clock className="h-3 w-3 mr-1" />Needs Funding</Badge>;
+    default:
+      return <Badge variant="secondary">Unknown</Badge>;
+  }
+};
+
+const handleProjectSelect = (project: typeof orphanageProjects[0]) => {
+  setSelectedProject(project);
+  setSelectedPieces(1);
+  setCustomPieces('');
+};
+
+const fundingProjects = orphanageProjects.filter(p => p.status === 'funding');
+const buildingProjects = orphanageProjects.filter(p => p.status === 'building');
+const completedProjects = orphanageProjects.filter(p => p.status === 'completed');
+
 const Orphanages = () => {
   const [selectedPieces, setSelectedPieces] = useState(1);
   const [customPieces, setCustomPieces] = useState('');
@@ -94,65 +117,37 @@ const Orphanages = () => {
   const finalAmount = customPieces ? customAmount : selectedTier ? selectedTier.pieces * selectedProject.pricePerSpace : 0;
   const finalPieces = customPieces ? parseInt(customPieces) : selectedPieces;
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <Badge className="bg-gradient-to-r from-pink-500 to-rose-600 text-white animate-bounce-in border-0 shadow-lg"><CheckCircle className="h-3 w-3 mr-1" />Home & Complete</Badge>;
-      case 'building':
-        return <Badge className="bg-gradient-to-r from-purple-500 to-pink-600 text-white animate-float border-0 shadow-lg"><Hammer className="h-3 w-3 mr-1" />Under Construction</Badge>;
-      case 'funding':
-        return <Badge className="bg-gradient-to-r from-rose-500 to-pink-600 text-white animate-glow border-0 shadow-lg"><Clock className="h-3 w-3 mr-1" />Needs Funding</Badge>;
-      default:
-        return <Badge variant="secondary">Unknown</Badge>;
-    }
-  };
-
-  const handleProjectSelect = (project: typeof orphanageProjects[0]) => {
-    setSelectedProject(project);
-    setSelectedPieces(1);
-    setCustomPieces('');
-  };
-
-  const fundingProjects = orphanageProjects.filter(p => p.status === 'funding');
-  const buildingProjects = orphanageProjects.filter(p => p.status === 'building');
-  const completedProjects = orphanageProjects.filter(p => p.status === 'completed');
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-pink-300 to-rose-300 rounded-full opacity-20 animate-float"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-r from-purple-300 to-pink-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-r from-rose-300 to-purple-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
-      </div>
-      
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-pink-50">
       <Header />
+      <ProjectDonationWidget projectType="orphanage" />
       
-      <div className="container mx-auto px-4 py-8 relative">
-        <div className="max-w-6xl mx-auto">
-          {/* Hero Section */}
-          <div className="text-center mb-8 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-300 via-rose-300 to-purple-300 rounded-3xl blur-3xl opacity-30 animate-rainbow"></div>
-            <div className="relative">
-              <div className="mb-6 relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-300 to-rose-300 rounded-lg blur-lg opacity-60 animate-glow"></div>
-                <div className="relative w-full h-48 bg-gradient-to-r from-pink-400 to-rose-500 rounded-lg shadow-2xl border-4 border-white mx-auto max-w-2xl transform hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-                  <div className="text-8xl animate-float">🏠</div>
-                </div>
-                <div className="absolute top-4 right-4 bg-gradient-to-r from-pink-400 to-rose-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-bounce-in">
-                  <Heart className="h-4 w-4 inline mr-1 animate-sparkle" />
-                  SAFE HOMES FOR ALL
-                </div>
-              </div>
-              <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 bg-clip-text text-transparent animate-slide-in-bounce">
-                🏠 Build Orphanages Worldwide 🏠
-              </h1>
-              <p className="text-xl text-gray-700 max-w-3xl mx-auto font-semibold animate-bounce-in" style={{ animationDelay: '0.2s' }}>
-                Create safe havens for vulnerable children! Every space you fund transforms a life! 💝
-              </p>
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 text-white">
+        <div className="absolute inset-0 bg-gradient-to-r from-rose-300 to-rose-500 rounded-3xl blur-3xl opacity-30 animate-rainbow"></div>
+        <div className="relative">
+          <div className="mb-6 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-rose-300 to-rose-500 rounded-lg blur-lg opacity-60 animate-glow"></div>
+            <div className="relative w-full h-48 bg-gradient-to-r from-rose-400 to-rose-500 rounded-lg shadow-2xl border-4 border-white mx-auto max-w-2xl transform hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+              <div className="text-8xl animate-float">🏠</div>
+            </div>
+            <div className="absolute top-4 right-4 bg-gradient-to-r from-rose-400 to-rose-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-bounce-in">
+              <Heart className="h-4 w-4 inline mr-1 animate-sparkle" />
+              SAFE HOMES FOR ALL
             </div>
           </div>
+          <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 bg-clip-text text-transparent animate-slide-in-bounce">
+            🏠 Build Orphanages Worldwide 🏠
+          </h1>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto font-semibold animate-bounce-in" style={{ animationDelay: '0.2s' }}>
+            Create safe havens for vulnerable children! Every space you fund transforms a life! 💝
+          </p>
+        </div>
+      </div>
 
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-6xl mx-auto">
           {/* Project Selection Grid */}
           <div className="mb-8">
             <h2 className="text-3xl font-black text-center mb-6 bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent animate-number-pop">
