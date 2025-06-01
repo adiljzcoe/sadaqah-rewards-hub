@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import ProjectDonationWidget from '@/components/ProjectDonationWidget';
-import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target, Star, Award } from 'lucide-react';
+import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target, Star, Award, ShoppingCart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -18,7 +18,7 @@ const BuildMosque = () => {
     activeContributions: 0
   };
 
-  // Mock data for mosque projects
+  // Mock data for mosque projects with prayer space details
   const mosqueProjects = [
     {
       id: 1,
@@ -29,7 +29,11 @@ const BuildMosque = () => {
       completedDate: '2024-03-15',
       totalCost: 75000,
       contributors: 245,
-      progress: 100
+      progress: 100,
+      size: 'medium',
+      totalPrayerSpaces: 75,
+      fundedPrayerSpaces: 75,
+      prayerSpaceCost: 100
     },
     {
       id: 2,
@@ -42,7 +46,11 @@ const BuildMosque = () => {
       totalCost: 120000,
       raisedAmount: 95000,
       contributors: 387,
-      progress: 79
+      progress: 79,
+      size: 'large',
+      totalPrayerSpaces: 100,
+      fundedPrayerSpaces: 79,
+      prayerSpaceCost: 120
     },
     {
       id: 3,
@@ -53,7 +61,11 @@ const BuildMosque = () => {
       fundedDate: '2024-05-20',
       totalCost: 45000,
       contributors: 156,
-      progress: 100
+      progress: 100,
+      size: 'small',
+      totalPrayerSpaces: 50,
+      fundedPrayerSpaces: 50,
+      prayerSpaceCost: 90
     },
     {
       id: 4,
@@ -66,7 +78,11 @@ const BuildMosque = () => {
       totalCost: 85000,
       raisedAmount: 72000,
       contributors: 298,
-      progress: 85
+      progress: 85,
+      size: 'medium',
+      totalPrayerSpaces: 75,
+      fundedPrayerSpaces: 64,
+      prayerSpaceCost: 110
     },
     {
       id: 5,
@@ -77,7 +93,11 @@ const BuildMosque = () => {
       completedDate: '2024-04-12',
       totalCost: 55000,
       contributors: 189,
-      progress: 100
+      progress: 100,
+      size: 'medium',
+      totalPrayerSpaces: 60,
+      fundedPrayerSpaces: 60,
+      prayerSpaceCost: 92
     },
     {
       id: 6,
@@ -88,7 +108,11 @@ const BuildMosque = () => {
       fundedDate: '2024-05-28',
       totalCost: 95000,
       contributors: 234,
-      progress: 100
+      progress: 100,
+      size: 'large',
+      totalPrayerSpaces: 80,
+      fundedPrayerSpaces: 80,
+      prayerSpaceCost: 119
     }
   ];
 
@@ -105,10 +129,18 @@ const BuildMosque = () => {
     }
   };
 
+  const handleBuyPrayerSpace = (project: any) => {
+    console.log(`Buying prayer space for ${project.name} - £${project.prayerSpaceCost}`);
+    // This would integrate with the donation widget/payment system
+  };
+
   const completedCount = mosqueProjects.filter(p => p.status === 'completed').length;
   const underConstructionCount = mosqueProjects.filter(p => p.status === 'under-construction').length;
   const fundedCount = mosqueProjects.filter(p => p.status === 'funded').length;
   const totalContributors = mosqueProjects.reduce((sum, p) => sum + p.contributors, 0);
+  const totalPrayerSpacesNeeded = mosqueProjects
+    .filter(p => p.status === 'under-construction')
+    .reduce((sum, p) => sum + (p.totalPrayerSpaces - p.fundedPrayerSpaces), 0);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50">
@@ -125,6 +157,16 @@ const BuildMosque = () => {
             <p className="mt-6 text-xl">
               Empower communities by providing a sacred space for prayer and reflection.
             </p>
+            {totalPrayerSpacesNeeded > 0 && (
+              <div className="mt-4 p-4 bg-white/10 rounded-lg backdrop-blur-sm">
+                <p className="text-lg font-semibold">
+                  🙏 {totalPrayerSpacesNeeded} Prayer Spaces Needed Urgently
+                </p>
+                <p className="text-sm opacity-90">
+                  Help complete our mosques under construction
+                </p>
+              </div>
+            )}
             <div className="mt-8 flex flex-wrap gap-4">
               <a
                 href="#track-record"
@@ -307,10 +349,11 @@ const BuildMosque = () => {
                   <TableHead className="font-semibold">Mosque Name</TableHead>
                   <TableHead className="font-semibold">Location</TableHead>
                   <TableHead className="font-semibold">Status</TableHead>
-                  <TableHead className="font-semibold">Capacity</TableHead>
+                  <TableHead className="font-semibold">Prayer Spaces</TableHead>
                   <TableHead className="font-semibold">Progress</TableHead>
                   <TableHead className="font-semibold">Contributors</TableHead>
                   <TableHead className="font-semibold">Timeline</TableHead>
+                  <TableHead className="font-semibold">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -325,9 +368,20 @@ const BuildMosque = () => {
                     </TableCell>
                     <TableCell>{getStatusBadge(project.status)}</TableCell>
                     <TableCell>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-2 text-gray-500" />
-                        {project.capacity} people
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span>{project.fundedPrayerSpaces}/{project.totalPrayerSpaces} Spaces</span>
+                          <span className="text-xs text-gray-500">£{project.prayerSpaceCost} each</span>
+                        </div>
+                        <Progress 
+                          value={(project.fundedPrayerSpaces / project.totalPrayerSpaces) * 100} 
+                          className="h-2"
+                        />
+                        {project.status === 'under-construction' && (
+                          <p className="text-xs text-orange-600 font-medium">
+                            {project.totalPrayerSpaces - project.fundedPrayerSpaces} spaces needed
+                          </p>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -357,6 +411,22 @@ const BuildMosque = () => {
                           <span>Est. {new Date(project.expectedCompletion).toLocaleDateString()}</span>
                         )}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {project.status === 'under-construction' && project.fundedPrayerSpaces < project.totalPrayerSpaces ? (
+                        <Button
+                          size="sm"
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                          onClick={() => handleBuyPrayerSpace(project)}
+                        >
+                          <ShoppingCart className="h-3 w-3 mr-1" />
+                          £{project.prayerSpaceCost} for 1 space
+                        </Button>
+                      ) : (
+                        <span className="text-sm text-gray-500">
+                          {project.status === 'completed' ? 'Complete' : 'Fully Funded'}
+                        </span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
