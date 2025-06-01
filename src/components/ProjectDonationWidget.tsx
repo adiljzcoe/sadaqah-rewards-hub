@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -589,97 +588,100 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
             </div>
           )}
 
-          {/* General Pool Information */}
-          {selectedLocation === 'general' && fundingMode !== 'new' && (
-            <div className="mb-6 p-6 bg-gradient-to-br from-blue-50 to-sky-100 rounded-2xl border-2 border-blue-200 shadow-lg">
-              <h4 className="font-semibold text-blue-800 mb-3 flex items-center">
-                <div className="w-3 h-3 bg-blue-500 rounded-full mr-3 animate-pulse"></div>
-                General Mosque Pool Fund
-              </h4>
-              <p className="text-sm text-blue-700">
-                Your donation goes into a shared fund available to Muslim communities in Western locations who wish to build mosques. 
-                Fixed rate of £80 per prayer space regardless of mosque size. Earn {totalCost * 10} Jannah Points!
-              </p>
-            </div>
-          )}
-
-          {/* Existing Project Match */}
-          {matchingProject && selectedLocationData && selectedSizeData && selectedLocation !== 'general' && fundingMode !== 'new' && (
-            <div className="mb-6 p-6 bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl border-2 border-green-200 shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-semibold text-gray-800 flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                  Existing Project: {selectedSizeData.name} in {selectedLocationData.name}
+          {/* Redesigned Row Layout for Pool Info and Total */}
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* General Pool Information */}
+            {selectedLocation === 'general' && fundingMode !== 'new' && (
+              <div className="p-6 bg-gradient-to-br from-blue-50 to-sky-100 rounded-2xl border-2 border-blue-200 shadow-lg">
+                <h4 className="font-semibold text-blue-800 mb-3 flex items-center">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-3 animate-pulse"></div>
+                  General Mosque Pool Fund
                 </h4>
-                <Badge className="bg-blue-100 text-blue-700 rounded-full">
-                  {matchingProject.contributors} Contributors
-                </Badge>
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span>Progress: {matchingProject.currentPortions}/{matchingProject.totalPortions} {config.portionName}s</span>
-                  <span className="font-medium">
-                    {Math.round((matchingProject.currentPortions / matchingProject.totalPortions) * 100)}% Complete
-                  </span>
-                </div>
-                <Progress 
-                  value={(matchingProject.currentPortions / matchingProject.totalPortions) * 100} 
-                  className="h-3 rounded-full"
-                />
-                {fundingMode === 'full' && (
-                  <p className="text-sm font-medium text-yellow-700 bg-yellow-50 p-2 rounded">
-                    🏆 Complete this project to earn the "Full Mosque Funder" badge and 2.5x Jannah Points!
-                  </p>
-                )}
-                <p className="text-xs text-gray-600">
-                  {fundingMode === 'portions' 
-                    ? `Your contribution will help complete this ${config.type}! Only ${matchingProject.totalPortions - matchingProject.currentPortions} ${config.portionName.toLowerCase()}s remaining.`
-                    : `Fund the remaining ${matchingProject.totalPortions - matchingProject.currentPortions} ${config.portionName.toLowerCase()}s to complete this project!`
-                  }
+                <p className="text-sm text-blue-700">
+                  Your donation goes into a shared fund available to Muslim communities in Western locations who wish to build mosques. 
+                  Fixed rate of £80 per prayer space regardless of mosque size. Earn {totalCost * 10} Jannah Points!
                 </p>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Show message when filtering but no existing projects */}
-          {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && selectedLocation !== 'general' && fundingMode !== 'new' && (
-            <div className="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-              <p className="text-sm text-yellow-800">
-                No existing projects found for this combination. Your donation would start a new project fund!
-              </p>
-            </div>
-          )}
+            {/* Existing Project Match */}
+            {matchingProject && selectedLocationData && selectedSizeData && selectedLocation !== 'general' && fundingMode !== 'new' && (
+              <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl border-2 border-green-200 shadow-lg">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-semibold text-gray-800 flex items-center">
+                    <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
+                    Existing Project: {selectedSizeData.name} in {selectedLocationData.name}
+                  </h4>
+                  <Badge className="bg-blue-100 text-blue-700 rounded-full">
+                    {matchingProject.contributors} Contributors
+                  </Badge>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span>Progress: {matchingProject.currentPortions}/{matchingProject.totalPortions} {config.portionName}s</span>
+                    <span className="font-medium">
+                      {Math.round((matchingProject.currentPortions / matchingProject.totalPortions) * 100)}% Complete
+                    </span>
+                  </div>
+                  <Progress 
+                    value={(matchingProject.currentPortions / matchingProject.totalPortions) * 100} 
+                    className="h-3 rounded-full"
+                  />
+                  {fundingMode === 'full' && (
+                    <p className="text-sm font-medium text-yellow-700 bg-yellow-50 p-2 rounded">
+                      🏆 Complete this project to earn the "Full Mosque Funder" badge and 2.5x Jannah Points!
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-600">
+                    {fundingMode === 'portions' 
+                      ? `Your contribution will help complete this ${config.type}! Only ${matchingProject.totalPortions - matchingProject.currentPortions} ${config.portionName.toLowerCase()}s remaining.`
+                      : `Fund the remaining ${matchingProject.totalPortions - matchingProject.currentPortions} ${config.portionName.toLowerCase()}s to complete this project!`
+                    }
+                  </p>
+                </div>
+              </div>
+            )}
 
-          {/* Donation Summary & Action */}
-          <div className="flex items-center justify-between bg-gradient-to-br from-white to-sky-50 p-6 rounded-2xl border-2 border-sky-200 shadow-lg">
-            <div>
-              <div className="font-bold text-2xl text-gray-800 mb-1">
-                Total: £{totalCost.toLocaleString()}
+            {/* Show message when filtering but no existing projects */}
+            {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && selectedLocation !== 'general' && fundingMode !== 'new' && (
+              <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <p className="text-sm text-yellow-800">
+                  No existing projects found for this combination. Your donation would start a new project fund!
+                </p>
               </div>
-              <div className="text-sm text-gray-600 mb-2">
-                {fundingMode === 'portions' && `${portionCount} ${config.portionName}${portionCount > 1 ? 's' : ''} × £${prayerSpaceCost}`}
-                {fundingMode === 'full' && matchingProject && `Complete ${matchingProject.totalPortions - matchingProject.currentPortions} remaining ${config.portionName.toLowerCase()}s`}
-                {fundingMode === 'new' && selectedSizeData && `New ${selectedSizeData.name} (Premium ${dedicatedToSomeoneElse ? '+20%' : '+50%'})`}
-                {finalIntention && ` • ${finalIntention}`}
+            )}
+
+            {/* Total Section with Solid Background */}
+            <div className="bg-emerald-600 text-white p-6 rounded-2xl shadow-lg">
+              <div className="mb-4">
+                <div className="font-bold text-3xl mb-1">
+                  Total: £{totalCost.toLocaleString()}
+                </div>
+                <div className="text-emerald-100 mb-2">
+                  {fundingMode === 'portions' && `${portionCount} ${config.portionName}${portionCount > 1 ? 's' : ''} × £${prayerSpaceCost}`}
+                  {fundingMode === 'full' && matchingProject && `Complete ${matchingProject.totalPortions - matchingProject.currentPortions} remaining ${config.portionName.toLowerCase()}s`}
+                  {fundingMode === 'new' && selectedSizeData && `New ${selectedSizeData.name} (Premium ${dedicatedToSomeoneElse ? '+20%' : '+50%'})`}
+                  {finalIntention && ` • ${finalIntention}`}
+                </div>
+                <div className="text-emerald-200 font-semibold flex items-center">
+                  <Star className="h-4 w-4 mr-1" />
+                  +{totalCost * (fundingMode === 'full' ? 25 : fundingMode === 'new' ? 50 : 10)} Jannah Points
+                  {(fundingMode === 'full' || fundingMode === 'new') && (
+                    <span className="ml-2 text-yellow-300">
+                      + Special Badge {fundingMode === 'full' ? '🏆' : fundingMode === 'new' ? (dedicatedToSomeoneElse ? '👑' : '⭐') : ''}
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="text-xs text-emerald-600 font-semibold flex items-center">
-                <Star className="h-4 w-4 mr-1" />
-                +{totalCost * (fundingMode === 'full' ? 25 : fundingMode === 'new' ? 50 : 10)} Jannah Points
-                {(fundingMode === 'full' || fundingMode === 'new') && (
-                  <span className="ml-2 text-purple-600">
-                    + Special Badge {fundingMode === 'full' ? '🏆' : fundingMode === 'new' ? (dedicatedToSomeoneElse ? '👑' : '⭐') : ''}
-                  </span>
-                )}
-              </div>
+              <Button
+                className="w-full bg-white text-emerald-700 hover:bg-emerald-50 px-8 py-3 text-lg font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-200"
+                disabled={!selectedLocation || !selectedSize || !selectedIntention || (selectedIntention === 'Other (specify)' && !customIntention) || (fundingMode === 'new' && dedicatedToSomeoneElse && !dedicatedPersonName)}
+                onClick={handleDonation}
+              >
+                <Building2 className="h-5 w-5 mr-2" />
+                {fundingMode === 'full' ? 'Finish Funding' : fundingMode === 'new' ? 'Start New Mosque' : 'Fund Now'}
+              </Button>
             </div>
-            <Button
-              className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-8 py-3 text-lg font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-200"
-              disabled={!selectedLocation || !selectedSize || !selectedIntention || (selectedIntention === 'Other (specify)' && !customIntention) || (fundingMode === 'new' && dedicatedToSomeoneElse && !dedicatedPersonName)}
-              onClick={handleDonation}
-            >
-              <Building2 className="h-5 w-5 mr-2" />
-              {fundingMode === 'full' ? 'Finish Funding' : fundingMode === 'new' ? 'Start New Mosque' : 'Fund Now'}
-            </Button>
           </div>
         </Card>
       </div>
