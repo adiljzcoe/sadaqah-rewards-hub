@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,7 +30,7 @@ const Header = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Charity logos for rotation
+  // Charity logos for fading
   const charityLogos = [
     { name: 'One Nation', logo: '/lovable-uploads/06a0c139-e89f-4071-98fb-da09f757e1eb.png' },
     { name: 'Human Appeal', logo: '/lovable-uploads/fe60c231-8422-4bf0-83e7-47b219d91e70.png' },
@@ -125,8 +124,8 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Center Section - Rotating Charity Logos */}
-          <div className="hidden lg:flex items-center justify-center flex-1 max-w-md mx-8">
+          {/* Center Section - Fading Charity Logos */}
+          <div className="hidden md:flex items-center justify-center flex-1 max-w-md mx-8">
             <div className="relative bg-gradient-to-r from-slate-800/40 via-blue-800/30 to-indigo-800/40 backdrop-blur-sm rounded-2xl border border-cyan-400/20 shadow-xl p-4 overflow-hidden">
               {/* Magical background effects for trust section */}
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-indigo-500/10 rounded-2xl"></div>
@@ -135,42 +134,51 @@ const Header = () => {
               <div className="relative z-10 flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
                   <Shield className="h-4 w-4 text-cyan-300 drop-shadow-sm" />
-                  <span className="text-xs font-medium text-slate-300 drop-shadow-sm">Trusted by</span>
+                  <span className="text-xs font-medium text-slate-300 drop-shadow-sm">Charity Partners</span>
                 </div>
                 
-                {/* Rotating logo container */}
-                <div className="relative w-20 h-8 overflow-hidden">
-                  <div 
-                    className="flex transition-transform duration-1000 ease-in-out"
-                    style={{ 
-                      transform: 'translateX(calc(-20px * var(--current-logo, 0)))',
-                      animation: 'charityRotate 10s infinite'
-                    }}
-                  >
-                    {charityLogos.map((charity, index) => (
-                      <div
-                        key={index}
-                        className="flex-shrink-0 w-20 h-8 flex items-center justify-center"
-                      >
-                        <img 
-                          src={charity.logo} 
-                          alt={charity.name}
-                          className="w-16 h-6 object-contain filter brightness-75 opacity-90 hover:opacity-100 transition-opacity duration-300"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-1">
-                  <span className="text-xs text-slate-400">& more</span>
-                  <div className="flex space-x-0.5">
-                    <div className="w-1 h-1 bg-cyan-400 rounded-full animate-pulse"></div>
-                    <div className="w-1 h-1 bg-blue-400 rounded-full animate-pulse delay-200"></div>
-                    <div className="w-1 h-1 bg-indigo-400 rounded-full animate-pulse delay-400"></div>
-                  </div>
+                {/* Fading logo container */}
+                <div className="relative w-20 h-8 flex items-center justify-center">
+                  {charityLogos.map((charity, index) => (
+                    <div
+                      key={index}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 animate-[charityFade_10s_infinite]"
+                      style={{ 
+                        animationDelay: `${index * 2}s`
+                      }}
+                    >
+                      <img 
+                        src={charity.logo} 
+                        alt={charity.name}
+                        className="w-16 h-6 object-contain filter brightness-75 opacity-90"
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Mobile Charity Partners - Simplified */}
+          <div className="flex md:hidden items-center space-x-2 mx-4">
+            <Shield className="h-3 w-3 text-cyan-300" />
+            <span className="text-xs text-slate-300">Partners</span>
+            <div className="relative w-12 h-4 flex items-center justify-center">
+              {charityLogos.map((charity, index) => (
+                <div
+                  key={index}
+                  className="absolute inset-0 flex items-center justify-center opacity-0 animate-[charityFade_10s_infinite]"
+                  style={{ 
+                    animationDelay: `${index * 2}s`
+                  }}
+                >
+                  <img 
+                    src={charity.logo} 
+                    alt={charity.name}
+                    className="w-10 h-3 object-contain filter brightness-75 opacity-90"
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
@@ -440,22 +448,16 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Custom CSS for charity logo rotation animation */}
-      <style jsx>{`
-        @keyframes charityRotate {
-          0% { transform: translateX(0); }
-          18% { transform: translateX(0); }
-          20% { transform: translateX(-20px); }
-          38% { transform: translateX(-20px); }
-          40% { transform: translateX(-40px); }
-          58% { transform: translateX(-40px); }
-          60% { transform: translateX(-60px); }
-          78% { transform: translateX(-60px); }
-          80% { transform: translateX(-80px); }
-          98% { transform: translateX(-80px); }
-          100% { transform: translateX(0); }
-        }
-      `}</style>
+      {/* Custom CSS for charity logo fade animation */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes charityFade {
+            0%, 16% { opacity: 0; transform: translateY(5px); }
+            18%, 38% { opacity: 1; transform: translateY(0); }
+            40%, 100% { opacity: 0; transform: translateY(-5px); }
+          }
+        `
+      }} />
     </header>
   );
 };
