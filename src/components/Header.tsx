@@ -58,52 +58,12 @@ const Header = () => {
         <div className="absolute top-6 left-20 w-2 h-2 bg-cyan-300 rounded-full animate-pulse shadow-lg shadow-cyan-300/80"></div>
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
-
-      {/* Flying Biplane with Charity Partners Banner - Correct z-index layering */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[130]">
-        {charityLogos.map((charity, index) => (
-          <div
-            key={index}
-            className="absolute top-4 animate-biplane flex items-center"
-            style={{ 
-              animationDelay: `${index * 10}s`,
-              zIndex: 130
-            }}
-            onAnimationStart={() => console.log(`✈️ FLYING: ${charity.name} biplane started!`)}
-          >
-            {/* Flying Banner with pointed tail */}
-            <div className="relative">
-              {/* Banner body with charity-specific background */}
-              <div className={`${charity.bgColor} rounded-lg border-2 border-white shadow-xl px-4 py-2 flex items-center min-w-max relative`}>
-                {/* Logo */}
-                <img 
-                  src={charity.logo} 
-                  alt={charity.name}
-                  className="w-16 h-6 object-contain"
-                />
-                {/* Pointed tail */}
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-                  <div className={`w-0 h-0 border-l-[12px] border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
-                </div>
-              </div>
-              
-              {/* String connecting banner to plane */}
-              <div className="absolute right-0 top-1/2 w-8 h-0.5 bg-white -translate-y-1/2 translate-x-full"></div>
-              
-              {/* Biplane positioned to the right */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+32px)]">
-                <span className="text-3xl drop-shadow-lg">🛩️</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
       
       <div className="relative z-[120] container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User with proper z-index layering */}
           <div className="flex items-center space-x-3 relative">
-            {/* Logo - Highest z-index so plane goes behind it */}
+            {/* Logo - Highest z-index */}
             <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-[150]">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
@@ -112,7 +72,7 @@ const Header = () => {
               />
             </Link>
 
-            {/* User Section with FF styling - Lower z-index so plane goes over it */}
+            {/* User Section with FF styling */}
             <div className="flex items-center flex-shrink-0 relative z-[110]">
               {/* Unified Guardian User Button */}
               <div className="flex items-center">
@@ -169,7 +129,7 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Navigation with Premium Mega Menu - Higher z-index so plane goes behind menu */}
+          {/* Navigation with Premium Mega Menu */}
           <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-[140]">
             <Link 
               to="/" 
@@ -425,7 +385,7 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Mobile Menu - Higher z-index so plane goes behind */}
+          {/* Mobile Menu */}
           <Button className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0 ml-2 z-[140]">
             <Menu className="h-5 w-5 drop-shadow-sm" />
             {/* Crystal sparkle effects */}
@@ -439,24 +399,3 @@ const Header = () => {
 };
 
 export default Header;
-
-<style dangerouslySetInnerHTML={{
-  __html: `
-    @keyframes flyAcrossHeaderTest {
-      0% { 
-        transform: translateX(0); 
-        opacity: 1; 
-      }
-      10% { 
-        opacity: 1; 
-      }
-      90% { 
-        opacity: 1; 
-      }
-      100% { 
-        transform: translateX(calc(100vw + 400px)); 
-        opacity: 1; 
-      }
-    }
-  `
-}} />
