@@ -320,24 +320,6 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
         <Card className={`p-6 ${config.bgColor} border-2`}>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
-              <div className={`p-2 bg-white rounded-lg ${config.color}`}>
-                {config.icon}
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-800">
-                  {fundingMode === 'full' ? 'Finish Funding' : fundingMode === 'new' ? 'Start New' : 'Fund'} {config.type === 'waterwell' ? 'Water Well' : config.type === 'mosque' ? 'Mosque' : 'Orphanage'} {fundingMode === 'portions' ? config.portionName + 's' : ''}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  {fundingMode === 'full' ? 'Complete the entire project' : 
-                   fundingMode === 'new' ? 'Start your own project (Premium)' :
-                   projectType === 'mosque' && selectedLocation === 'general' 
-                    ? '£80 per prayer space (General Pool)' 
-                    : `£${prayerSpaceCost} per ${config.portionName.toLowerCase()}`
-                  }
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
               <Badge className="bg-purple-100 text-purple-700">Pooled Funding</Badge>
             </div>
           </div>
