@@ -11,6 +11,7 @@ interface Jannah3DBuilderProps {
   onPurchase: (item: JannahItem) => boolean;
   placedItems: Array<{ item: JannahItem; x: number; y: number }>;
   onItemsChange: (items: Array<{ item: JannahItem; x: number; y: number }>) => void;
+  gridSize: number;
 }
 
 const GRID_SIZE = 12;
@@ -20,7 +21,8 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
   userCoins,
   onPurchase,
   placedItems,
-  onItemsChange
+  onItemsChange,
+  gridSize
 }) => {
   const [selectedItem, setSelectedItem] = useState<JannahItem | null>(null);
   const [hoveredCell, setHoveredCell] = useState<{ x: number; y: number } | null>(null);
@@ -33,22 +35,30 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
   const handleCellClick = (x: number, y: number) => {
     if (selectedItem && canPlaceItem(x, y, selectedItem)) {
       if (onPurchase(selectedItem)) {
-        const newItems = [...placedItems, { item: selectedItem, x, y }];
-        onItemsChange(newItems);
+        // Don't place grid expansion items on the grid
+        if (!selectedItem.id.includes('grid-expansion')) {
+          const newItems = [...placedItems, { item: selectedItem, x, y }];
+          onItemsChange(newItems);
+        }
         setSelectedItem(null);
       }
     }
   };
 
   const canPlaceItem = (x: number, y: number, item: JannahItem): boolean => {
-    const size = item.size === '1x1' ? 1 : item.size === '2x2' ? 2 : 3;
+    // Grid expansion items don't need placement validation
+    if (item.id.includes('grid-expansion')) {
+      return true;
+    }
+
+    const size = item.size === '1x1' ? 1 : item.size === '2x2' ? 2 : item.size === '3x3' ? 3 : 4;
     
-    if (x + size > GRID_SIZE || y + size > GRID_SIZE) return false;
+    if (x + size > gridSize || y + size > gridSize) return false;
     
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         if (placedItems.some(placed => {
-          const placedSize = placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : 3;
+          const placedSize = placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : placed.item.size === '3x3' ? 3 : 4;
           return (
             x + i >= placed.x && x + i < placed.x + placedSize &&
             y + j >= placed.y && y + j < placed.y + placedSize
@@ -74,6 +84,13 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
     switch (item.category) {
       case 'nature': return 'from-green-500 to-emerald-700';
       case 'structures': return 'from-amber-500 to-orange-700';
+      case 'terrain': return 'from-orange-500 to-red-700';
+      case 'religious': return 'from-purple-500 to-indigo-700';
+      case 'animals': return 'from-pink-500 to-rose-700';
+      case 'fruits': return 'from-orange-400 to-yellow-600';
+      case 'decorations': return 'from-indigo-500 to-purple-700';
+      case 'transport': return 'from-cyan-500 to-blue-700';
+      case 'utilities': return 'from-gray-500 to-slate-700';
       default: return 'from-purple-500 to-pink-700';
     }
   };
@@ -145,8 +162,8 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
 
   const renderCell = (x: number, y: number) => {
     const placedItem = placedItems.find(placed => 
-      x >= placed.x && x < placed.x + (placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : 3) &&
-      y >= placed.y && y < placed.y + (placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : 3)
+      x >= placed.x && x < placed.x + (placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : placed.item.size === '3x3' ? 3 : 4) &&
+      y >= placed.y && y < placed.y + (placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : placed.item.size === '3x3' ? 3 : 4)
     );
 
     const isMainCell = placedItem && placedItem.x === x && placedItem.y === y;
@@ -210,7 +227,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
         )}
         
         {/* Preview for selected item */}
-        {selectedItem && canPlace && isHovered && (
+        {selectedItem && canPlace && isHovered && !selectedItem.id.includes('grid-expansion') && (
           <div 
             className={`
               absolute inset-0 flex items-end justify-center pb-1
@@ -247,7 +264,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-2xl font-bold text-green-400 flex items-center">
               <Zap className="h-6 w-6 mr-2" />
-              🏗️ Paradise City Builder
+              🏗️ Paradise City Builder ({gridSize}x{gridSize})
             </h3>
             <div className="flex space-x-2">
               <Button
@@ -321,7 +338,12 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
               <div className="text-center">
                 <p className="font-bold text-green-400 text-lg">🎯 {selectedItem.name} Selected</p>
                 <p className="text-gray-300 mt-1">{selectedItem.description}</p>
-                <p className="text-gray-400 text-sm mt-2">Click on the grid to place your building</p>
+                <p className="text-gray-400 text-sm mt-2">
+                  {selectedItem.id.includes('grid-expansion') 
+                    ? 'Click anywhere to purchase this expansion' 
+                    : 'Click on the grid to place your building'
+                  }
+                </p>
               </div>
             </div>
           )}
@@ -333,7 +355,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
         <CardContent className="p-8">
           <div className="text-center mb-6">
             <h3 className="text-2xl font-bold text-white drop-shadow-lg">🌍 Your Paradise City</h3>
-            <p className="text-green-200 mt-2">Build wisely, Paradise Mayor!</p>
+            <p className="text-green-200 mt-2">Build wisely, Paradise Mayor! Grid Size: {gridSize}x{gridSize}</p>
           </div>
           
           <div className="max-w-6xl mx-auto" style={{ perspective: '1200px' }}>
@@ -344,13 +366,13 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
                 ${viewMode === 'isometric' ? 'transform-style-preserve-3d' : ''}
               `}
               style={{ 
-                gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))`,
+                gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))`,
                 transform: viewMode === 'isometric' ? 'rotateX(15deg)' : 'none'
               }}
             >
-              {Array.from({ length: GRID_SIZE * GRID_SIZE }, (_, index) => {
-                const x = index % GRID_SIZE;
-                const y = Math.floor(index / GRID_SIZE);
+              {Array.from({ length: gridSize * gridSize }, (_, index) => {
+                const x = index % gridSize;
+                const y = Math.floor(index / gridSize);
                 return renderCell(x, y);
               })}
             </div>
