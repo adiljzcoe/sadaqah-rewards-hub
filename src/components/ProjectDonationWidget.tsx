@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Building2, Droplets, Heart, MapPin, Users, Target, Plus, Minus } from 'lucide-react';
+import { Building2, Droplets, Heart, MapPin, Users, Target, Plus, Minus, Filter } from 'lucide-react';
 
 interface ProjectConfig {
   type: 'mosque' | 'waterwell' | 'orphanage';
@@ -119,6 +119,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
   const [selectedIntention, setSelectedIntention] = useState('');
   const [customIntention, setCustomIntention] = useState('');
   const [portionCount, setPortionCount] = useState(1);
+  const [showOnlyExisting, setShowOnlyExisting] = useState(false);
   
   // Mock existing project data - would come from API
   const [existingProjects] = useState([
@@ -137,6 +138,22 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
       currentPortions: 45,
       totalPortions: 75,
       contributors: 89
+    },
+    {
+      id: 'somalia-hand-pump-1',
+      location: 'somalia',
+      size: 'hand-pump',
+      currentPortions: 18,
+      totalPortions: 30,
+      contributors: 45
+    },
+    {
+      id: 'gaza-small-orphan-1',
+      location: 'gaza',
+      size: 'small',
+      currentPortions: 12,
+      totalPortions: 20,
+      contributors: 35
     }
   ]);
 
@@ -147,6 +164,22 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
   const matchingProject = existingProjects.find(
     project => project.location === selectedLocation && project.size === selectedSize
   );
+
+  // Filter locations and sizes based on existing projects when filter is active
+  const getFilteredLocations = () => {
+    if (!showOnlyExisting) return config.locations;
+    const existingLocationIds = [...new Set(existingProjects.map(p => p.location))];
+    return config.locations.filter(loc => existingLocationIds.includes(loc.id));
+  };
+
+  const getFilteredSizes = () => {
+    if (!showOnlyExisting) return config.sizes;
+    if (!selectedLocation) return config.sizes;
+    const existingSizeIds = existingProjects
+      .filter(p => p.location === selectedLocation)
+      .map(p => p.size);
+    return config.sizes.filter(size => existingSizeIds.includes(size.id));
+  };
 
   const totalCost = portionCount * config.portionPrice;
   const finalIntention = selectedIntention === 'Other (specify)' ? customIntention : selectedIntention;
@@ -180,7 +213,18 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <p className="text-sm text-gray-600">£{config.portionPrice} per {config.portionName.toLowerCase()}</p>
               </div>
             </div>
-            <Badge className="bg-purple-100 text-purple-700">Pooled Funding</Badge>
+            <div className="flex items-center space-x-3">
+              <Button
+                variant={showOnlyExisting ? "default" : "outline"}
+                size="sm"
+                onClick={() => setShowOnlyExisting(!showOnlyExisting)}
+                className="flex items-center space-x-2"
+              >
+                <Filter className="h-4 w-4" />
+                <span>Existing Projects</span>
+              </Button>
+              <Badge className="bg-purple-100 text-purple-700">Pooled Funding</Badge>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-4 gap-4 mb-6">
@@ -194,9 +238,9 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Choose location" />
                 </SelectTrigger>
-                <SelectContent>
-                  {config.locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id}>
+                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                  {getFilteredLocations().map((location) => (
+                    <SelectItem key={location.id} value={location.id} className="bg-white hover:bg-gray-50">
                       <div className="flex items-center justify-between w-full">
                         <span>{location.name}, {location.country}</span>
                         {getUrgencyBadge(location.urgency)}
@@ -217,9 +261,9 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Choose size" />
                 </SelectTrigger>
-                <SelectContent>
-                  {config.sizes.map((size) => (
-                    <SelectItem key={size.id} value={size.id}>
+                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                  {getFilteredSizes().map((size) => (
+                    <SelectItem key={size.id} value={size.id} className="bg-white hover:bg-gray-50">
                       <div>
                         <div className="font-medium">{size.name}</div>
                         <div className="text-xs text-gray-500">{size.description}</div>
@@ -240,9 +284,9 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Choose intention" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white border border-gray-200 shadow-lg">
                   {intentionOptions.map((intention) => (
-                    <SelectItem key={intention} value={intention}>
+                    <SelectItem key={intention} value={intention} className="bg-white hover:bg-gray-50">
                       {intention}
                     </SelectItem>
                   ))}
@@ -299,9 +343,10 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
 
           {/* Existing Project Match */}
           {matchingProject && selectedLocationData && selectedSizeData && (
-            <div className="mb-6 p-4 bg-white rounded-lg border border-gray-200">
+            <div className="mb-6 p-4 bg-white rounded-lg border-2 border-green-200 shadow-sm">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-gray-800">
+                <h4 className="font-semibold text-gray-800 flex items-center">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                   Existing Project: {selectedSizeData.name} in {selectedLocationData.name}
                 </h4>
                 <Badge className="bg-blue-100 text-blue-700">
@@ -320,9 +365,18 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                   className="h-3"
                 />
                 <p className="text-xs text-gray-600">
-                  Your contribution will help complete this {config.type}!
+                  Your contribution will help complete this {config.type}! Only {matchingProject.totalPortions - matchingProject.currentPortions} {config.portionName.toLowerCase()}s remaining.
                 </p>
               </div>
+            </div>
+          )}
+
+          {/* Show message when filtering but no existing projects */}
+          {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && (
+            <div className="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+              <p className="text-sm text-yellow-800">
+                No existing projects found for this combination. Your donation would start a new project fund!
+              </p>
             </div>
           )}
 
