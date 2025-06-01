@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import { TreeDeciduous, TreePalm, Trees, Waves, Home, Star, Coins, ShoppingCart, Sparkles } from 'lucide-react';
-import JannahBuilder from '@/components/JannahBuilder';
+import Jannah3DBuilder from '@/components/Jannah3DBuilder';
 import JannahShop from '@/components/JannahShop';
 
 export interface JannahItem {
@@ -90,7 +90,7 @@ const jannahItems: JannahItem[] = [
 ];
 
 const MyJannah = () => {
-  const [userCoins, setUserCoins] = useState(142); // Get from user stats
+  const [userCoins, setUserCoins] = useState(142);
   const [activeTab, setActiveTab] = useState<'build' | 'shop'>('build');
   const [placedItems, setPlacedItems] = useState<Array<{
     item: JannahItem;
@@ -101,7 +101,6 @@ const MyJannah = () => {
   const handlePurchaseItem = (item: JannahItem) => {
     if (userCoins >= item.price) {
       setUserCoins(prev => prev - item.price);
-      // Item will be placed by the builder component
       return true;
     }
     return false;
@@ -118,69 +117,83 @@ const MyJannah = () => {
         {/* Header Section */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <div className="bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full p-6 shadow-xl">
-              <Sparkles className="h-16 w-16 text-white" />
+            <div className="bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 rounded-full p-8 shadow-2xl animate-pulse">
+              <Sparkles className="h-20 w-20 text-white drop-shadow-lg" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            My Jannah
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-lg">
+            ✨ My Jannah ✨
           </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-6">
-            Build your dream space in paradise while supporting real charitable projects. 
-            Each item you place represents your intentions and helps fund actual causes.
+          <p className="text-xl text-gray-700 max-w-4xl mx-auto mb-8 leading-relaxed">
+            🏗️ Build your dream paradise while supporting real charitable projects! 
+            Each item represents your beautiful intentions and helps fund actual causes around the world. 🌍
           </p>
           
-          {/* Stats */}
-          <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <Card className="bg-white/60 backdrop-blur-sm border-yellow-200">
-              <CardContent className="p-4 text-center">
-                <Coins className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-yellow-700">{userCoins}</div>
-                <div className="text-sm text-gray-600">Sadaqah Coins</div>
+          {/* Enhanced Stats */}
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-yellow-100 via-amber-100 to-orange-100 backdrop-blur-sm border-2 border-yellow-300 shadow-xl hover:scale-105 transition-transform duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full p-4 w-fit mx-auto mb-4 shadow-lg">
+                  <Coins className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-yellow-700 mb-1">{userCoins}</div>
+                <div className="text-sm text-yellow-600 font-medium">✨ Sadaqah Coins</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-white/60 backdrop-blur-sm border-green-200">
-              <CardContent className="p-4 text-center">
-                <Star className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-green-700">{totalSpent}</div>
-                <div className="text-sm text-gray-600">Coins Donated</div>
+            <Card className="bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100 backdrop-blur-sm border-2 border-green-300 shadow-xl hover:scale-105 transition-transform duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full p-4 w-fit mx-auto mb-4 shadow-lg">
+                  <Star className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-green-700 mb-1">{totalSpent}</div>
+                <div className="text-sm text-green-600 font-medium">💝 Coins Donated</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-white/60 backdrop-blur-sm border-purple-200">
-              <CardContent className="p-4 text-center">
-                <ShoppingCart className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-purple-700">{realProjectsFunded}</div>
-                <div className="text-sm text-gray-600">Projects Funded</div>
+            <Card className="bg-gradient-to-br from-purple-100 via-violet-100 to-indigo-100 backdrop-blur-sm border-2 border-purple-300 shadow-xl hover:scale-105 transition-transform duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full p-4 w-fit mx-auto mb-4 shadow-lg">
+                  <ShoppingCart className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-purple-700 mb-1">{realProjectsFunded}</div>
+                <div className="text-sm text-purple-600 font-medium">🌍 Projects Funded</div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Enhanced Tab Navigation */}
         <div className="flex justify-center mb-8">
-          <div className="bg-white/70 backdrop-blur-sm rounded-full p-1 shadow-lg">
+          <div className="bg-gradient-to-r from-white via-blue-50 to-purple-50 backdrop-blur-sm rounded-2xl p-2 shadow-2xl border-2 border-white/50">
             <Button
               variant={activeTab === 'build' ? 'default' : 'ghost'}
               onClick={() => setActiveTab('build')}
-              className={`rounded-full px-8 py-2 ${activeTab === 'build' ? 'bg-blue-500 text-white' : 'text-blue-600'}`}
+              className={`rounded-xl px-8 py-3 text-lg font-medium transition-all duration-300 ${
+                activeTab === 'build' 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105' 
+                  : 'text-blue-600 hover:bg-blue-100'
+              }`}
             >
-              Build My Jannah
+              🏗️ Build My Paradise
             </Button>
             <Button
               variant={activeTab === 'shop' ? 'default' : 'ghost'}
               onClick={() => setActiveTab('shop')}
-              className={`rounded-full px-8 py-2 ${activeTab === 'shop' ? 'bg-blue-500 text-white' : 'text-blue-600'}`}
+              className={`rounded-xl px-8 py-3 text-lg font-medium transition-all duration-300 ${
+                activeTab === 'shop' 
+                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg scale-105' 
+                  : 'text-purple-600 hover:bg-purple-100'
+              }`}
             >
-              Heavenly Shop
+              🛍️ Heavenly Shop
             </Button>
           </div>
         </div>
 
         {/* Content */}
         {activeTab === 'build' ? (
-          <JannahBuilder
+          <Jannah3DBuilder
             items={jannahItems}
             userCoins={userCoins}
             onPurchase={handlePurchaseItem}

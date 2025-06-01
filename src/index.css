@@ -1,4 +1,3 @@
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
@@ -69,6 +68,86 @@ html, body {
   70% { transform: translateX(-1px) rotate(-0.5deg); }
   80% { transform: translateX(1px) rotate(0.5deg); }
   90% { transform: translateX(-0.5px) rotate(-0.25deg); }
+}
+
+/* 3D Game-like animations for Jannah Builder */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes rotate-y {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes scale-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes build-in {
+  0% { 
+    transform: scale(0.5) translateY(50px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) translateY(-10px);
+    opacity: 0.8;
+  }
+  100% { 
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* Game-like utility classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-rotate-y {
+  animation: rotate-y 10s linear infinite;
+}
+
+.animate-scale-bounce {
+  animation: scale-bounce 2s ease-in-out infinite;
+}
+
+.animate-build-in {
+  animation: build-in 0.6s ease-out;
+}
+
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+}
+
+/* 3D isometric grid effects */
+.isometric-grid {
+  transform: rotateX(60deg) rotateY(-45deg);
+}
+
+.isometric-cell {
+  transform: rotateX(-60deg) rotateY(45deg);
+}
+
+/* Glowing effects for heavenly theme */
+.heavenly-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(147, 51, 234, 0.3);
+}
+
+.paradise-shine {
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  background-size: 200% 200%;
+  animation: shimmer 3s ease-in-out infinite;
 }
 
 /* Custom utility classes */
