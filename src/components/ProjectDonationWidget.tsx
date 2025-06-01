@@ -144,7 +144,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
   const [customIntention, setCustomIntention] = useState('');
   const [portionCount, setPortionCount] = useState(1);
   const [showOnlyExisting, setShowOnlyExisting] = useState(false);
-  const fundingMode = 'portions'; // Always use portions mode
+  const [fundingMode, setFundingMode] = useState<'portions' | 'full' | 'new'>('portions');
   const [newProjectName, setNewProjectName] = useState('');
   const [dedicatedToSomeoneElse, setDedicatedToSomeoneElse] = useState(false);
   const [dedicatedPersonName, setDedicatedPersonName] = useState('');
@@ -220,9 +220,26 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
     project => project.location === selectedLocation && project.size === selectedSize
   );
 
+  // Auto-switch funding mode if no matching project exists
+  useEffect(() => {
+    if (fundingMode === 'full' && !matchingProject) {
+      setFundingMode('portions');
+    }
+  }, [matchingProject, fundingMode]);
+
   // Calculate costs based on funding mode
   const getProjectCost = () => {
-    return portionCount * prayerSpaceCost;
+    if (fundingMode === 'portions') {
+      return portionCount * prayerSpaceCost;
+    } else if (fundingMode === 'full' && matchingProject) {
+      const remainingPortions = matchingProject.totalPortions - matchingProject.currentPortions;
+      return remainingPortions * prayerSpaceCost;
+    } else if (fundingMode === 'new' && selectedSizeData) {
+      const baseCost = selectedSizeData.totalCost || selectedSizeData.totalPortions * prayerSpaceCost;
+      const premiumCost = dedicatedToSomeoneElse ? baseCost * 1.2 : baseCost * 1.5; // 20% premium for others, 50% for self
+      return premiumCost;
+    }
+    return 0;
   };
 
   // Filter locations and sizes based on existing projects when filter is active
@@ -261,20 +278,38 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
     let badge = '';
     let jannahMultiplier = 10;
     
+    if (fundingMode === 'full') {
+      badge = '🏆 Full Mosque Funder';
+      jannahMultiplier = 25; // 2.5x jannah points for full funding
+    } else if (fundingMode === 'new') {
+      badge = dedicatedToSomeoneElse ? '👑 Mosque Founder (Dedicated)' : '⭐ Premium Mosque Founder';
+      jannahMultiplier = 50; // 5x jannah points for starting new mosque
+    }
+
     console.log('Processing donation:', {
       projectType,
       fundingMode,
       location: selectedLocationData?.name,
       size: selectedSizeData?.name,
       intention: finalIntention,
-      portionCount: portionCount,
+      portionCount: fundingMode === 'portions' ? portionCount : undefined,
       prayerSpaceCost,
       totalCost,
       jannahPoints: totalCost * jannahMultiplier,
-      badge
+      badge,
+      newProjectName: fundingMode === 'new' ? newProjectName : undefined,
+      dedicatedTo: fundingMode === 'new' && dedicatedToSomeoneElse ? dedicatedPersonName : undefined
     });
 
-    let successMessage = `Donation successful! £${totalCost} donated for ${portionCount} ${config.portionName.toLowerCase()}${portionCount > 1 ? 's' : ''}. You earned ${totalCost * jannahMultiplier} Jannah Points!`;
+    let successMessage = `Donation successful! £${totalCost} donated`;
+    
+    if (fundingMode === 'full') {
+      successMessage += ` to fully fund the remaining ${config.portionName.toLowerCase()}s. You earned the "${badge}" badge and ${totalCost * jannahMultiplier} Jannah Points!`;
+    } else if (fundingMode === 'new') {
+      successMessage += ` to start a new ${selectedSizeData?.name}${newProjectName ? ` called "${newProjectName}"` : ''}${dedicatedToSomeoneElse && dedicatedPersonName ? ` dedicated to ${dedicatedPersonName}` : ''}. You earned the "${badge}" badge and ${totalCost * jannahMultiplier} Jannah Points!`;
+    } else {
+      successMessage += ` for ${portionCount} ${config.portionName.toLowerCase()}${portionCount > 1 ? 's' : ''}. You earned ${totalCost * jannahMultiplier} Jannah Points!`;
+    }
 
     alert(successMessage);
   };
@@ -288,6 +323,124 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               <Badge className="bg-purple-100 text-purple-700">Pooled Funding</Badge>
             </div>
           </div>
+
+          {/* Funding Mode Selection */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Choose Funding Method
+            </label>
+            <div className={`grid grid-cols-1 ${matchingProject ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3`}>
+              <button
+                onClick={() => setFundingMode('portions')}
+                className={`p-4 rounded-xl border-2 transition-all ${
+                  fundingMode === 'portions' 
+                    ? 'border-emerald-500 bg-emerald-100' 
+                    : 'border-emerald-300 bg-emerald-50 hover:bg-emerald-100'
+                }`}
+              >
+                <div className="flex items-center space-x-2 mb-2">
+                  <Target className="h-5 w-5 text-emerald-600" />
+                  <span className="font-semibold text-emerald-800">Fund Portions</span>
+                </div>
+                <p className="text-sm text-emerald-700">Fund individual prayer spaces</p>
+              </button>
+
+              {matchingProject && (
+                <button
+                  onClick={() => setFundingMode('full')}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    fundingMode === 'full' 
+                      ? 'border-amber-500 bg-amber-100' 
+                      : 'border-amber-300 bg-amber-50 hover:bg-amber-100'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Star className="h-5 w-5 text-amber-600" />
+                    <span className="font-semibold text-amber-800">Finish Funding a Mosque</span>
+                    <Badge className="bg-amber-200 text-amber-700 text-xs">🏆 Special Badge</Badge>
+                  </div>
+                  <p className="text-sm text-amber-700">Complete the entire project</p>
+                </button>
+              )}
+
+              <button
+                onClick={() => setFundingMode('new')}
+                className={`p-4 rounded-xl border-2 transition-all ${
+                  fundingMode === 'new' 
+                    ? 'border-purple-500 bg-purple-100' 
+                    : 'border-purple-300 bg-purple-50 hover:bg-purple-100'
+                }`}
+              >
+                <div className="flex items-center space-x-2 mb-2">
+                  <Crown className="h-5 w-5 text-purple-600" />
+                  <span className="font-semibold text-purple-800">Start a New Mosque and Name It</span>
+                  <Badge className="bg-purple-200 text-purple-700 text-xs">👑 Premium</Badge>
+                </div>
+                <p className="text-sm text-purple-700">Start your own project</p>
+              </button>
+            </div>
+          </div>
+
+          {/* New Project Options */}
+          {fundingMode === 'new' && (
+            <div className="mb-6 p-4 bg-purple-50 rounded-lg border-2 border-purple-200">
+              <h4 className="font-semibold text-purple-800 mb-3 flex items-center">
+                <Sparkles className="h-4 w-4 mr-2" />
+                Premium Project Setup
+              </h4>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-purple-700 mb-2">
+                    Project Name (Optional)
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="e.g., Al-Rahman Mosque, Community Center..."
+                    value={newProjectName}
+                    onChange={(e) => setNewProjectName(e.target.value)}
+                    className="bg-white border-purple-300"
+                  />
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    id="dedicateToOther"
+                    checked={dedicatedToSomeoneElse}
+                    onChange={(e) => setDedicatedToSomeoneElse(e.target.checked)}
+                    className="rounded border-purple-300"
+                  />
+                  <label htmlFor="dedicateToOther" className="text-sm font-medium text-purple-700">
+                    Dedicate this project to someone else (Reduces premium to +20%)
+                  </label>
+                </div>
+
+                {dedicatedToSomeoneElse && (
+                  <div>
+                    <label className="block text-sm font-medium text-purple-700 mb-2">
+                      Dedicated To
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="Enter name of person this is dedicated to..."
+                      value={dedicatedPersonName}
+                      onChange={(e) => setDedicatedPersonName(e.target.value)}
+                      className="bg-white border-purple-300"
+                    />
+                  </div>
+                )}
+
+                <div className="bg-white p-3 rounded-lg border border-purple-200">
+                  <p className="text-sm text-purple-800">
+                    <strong>Premium Cost:</strong> {dedicatedToSomeoneElse ? '+20%' : '+50%'} of base project cost
+                    <br />
+                    <strong>Special Rewards:</strong> {dedicatedToSomeoneElse ? '👑 Dedicated Founder Badge' : '⭐ Premium Founder Badge'} + 5x Jannah Points
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="grid md:grid-cols-4 gap-4 mb-6">
             {/* Location Selection */}
@@ -366,38 +519,40 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               </Select>
             </div>
 
-            {/* Portion Count */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Users className="h-4 w-4 inline mr-1" />
-                {config.portionName}s
-              </label>
-              <div className="flex items-center space-x-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setPortionCount(Math.max(1, portionCount - 1))}
-                  className="h-8 w-8 p-0"
-                >
-                  <Minus className="h-3 w-3" />
-                </Button>
-                <Input
-                  type="number"
-                  value={portionCount}
-                  onChange={(e) => setPortionCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="text-center bg-white w-16 h-8"
-                  min="1"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setPortionCount(portionCount + 1)}
-                  className="h-8 w-8 p-0"
-                >
-                  <Plus className="h-3 w-3" />
-                </Button>
+            {/* Portion Count - Only show for portions mode */}
+            {fundingMode === 'portions' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <Users className="h-4 w-4 inline mr-1" />
+                  {config.portionName}s
+                </label>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setPortionCount(Math.max(1, portionCount - 1))}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Minus className="h-3 w-3" />
+                  </Button>
+                  <Input
+                    type="number"
+                    value={portionCount}
+                    onChange={(e) => setPortionCount(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="text-center bg-white w-16 h-8"
+                    min="1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setPortionCount(portionCount + 1)}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Plus className="h-3 w-3" />
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Custom Intention Input */}
@@ -414,7 +569,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
           )}
 
           {/* General Pool Information */}
-          {selectedLocation === 'general' && (
+          {selectedLocation === 'general' && fundingMode !== 'new' && (
             <div className="mb-6 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
               <h4 className="font-semibold text-blue-800 mb-2 flex items-center">
                 <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
@@ -428,7 +583,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
           )}
 
           {/* Existing Project Match */}
-          {matchingProject && selectedLocationData && selectedSizeData && selectedLocation !== 'general' && (
+          {matchingProject && selectedLocationData && selectedSizeData && selectedLocation !== 'general' && fundingMode !== 'new' && (
             <div className="mb-6 p-4 bg-white rounded-lg border-2 border-green-200 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-800 flex items-center">
@@ -450,15 +605,23 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                   value={(matchingProject.currentPortions / matchingProject.totalPortions) * 100} 
                   className="h-3"
                 />
+                {fundingMode === 'full' && (
+                  <p className="text-sm font-medium text-yellow-700 bg-yellow-50 p-2 rounded">
+                    🏆 Complete this project to earn the "Full Mosque Funder" badge and 2.5x Jannah Points!
+                  </p>
+                )}
                 <p className="text-xs text-gray-600">
-                  Your contribution will help complete this {config.type}! Only {matchingProject.totalPortions - matchingProject.currentPortions} {config.portionName.toLowerCase()}s remaining.
+                  {fundingMode === 'portions' 
+                    ? `Your contribution will help complete this ${config.type}! Only ${matchingProject.totalPortions - matchingProject.currentPortions} ${config.portionName.toLowerCase()}s remaining.`
+                    : `Fund the remaining ${matchingProject.totalPortions - matchingProject.currentPortions} ${config.portionName.toLowerCase()}s to complete this project!`
+                  }
                 </p>
               </div>
             </div>
           )}
 
           {/* Show message when filtering but no existing projects */}
-          {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && selectedLocation !== 'general' && (
+          {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && selectedLocation !== 'general' && fundingMode !== 'new' && (
             <div className="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
               <p className="text-sm text-yellow-800">
                 No existing projects found for this combination. Your donation would start a new project fund!
@@ -473,19 +636,26 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 Total: £{totalCost.toLocaleString()}
               </div>
               <div className="text-sm text-gray-600">
-                {`${portionCount} ${config.portionName}${portionCount > 1 ? 's' : ''} × £${prayerSpaceCost}`}
+                {fundingMode === 'portions' && `${portionCount} ${config.portionName}${portionCount > 1 ? 's' : ''} × £${prayerSpaceCost}`}
+                {fundingMode === 'full' && matchingProject && `Complete ${matchingProject.totalPortions - matchingProject.currentPortions} remaining ${config.portionName.toLowerCase()}s`}
+                {fundingMode === 'new' && selectedSizeData && `New ${selectedSizeData.name} (Premium ${dedicatedToSomeoneElse ? '+20%' : '+50%'})`}
                 {finalIntention && ` • ${finalIntention}`}
               </div>
               <div className="text-xs text-emerald-600 font-medium">
-                +{totalCost * 10} Jannah Points
+                +{totalCost * (fundingMode === 'full' ? 25 : fundingMode === 'new' ? 50 : 10)} Jannah Points
+                {(fundingMode === 'full' || fundingMode === 'new') && (
+                  <span className="ml-2 text-purple-600">
+                    + Special Badge {fundingMode === 'full' ? '🏆' : fundingMode === 'new' ? (dedicatedToSomeoneElse ? '👑' : '⭐') : ''}
+                  </span>
+                )}
               </div>
             </div>
             <Button
               className={`${config.color.replace('text-', 'bg-').replace('-600', '-600')} hover:${config.color.replace('text-', 'bg-').replace('-600', '-700')} text-white px-8 py-2 text-lg font-semibold`}
-              disabled={!selectedLocation || !selectedSize || !selectedIntention || (selectedIntention === 'Other (specify)' && !customIntention)}
+              disabled={!selectedLocation || !selectedSize || !selectedIntention || (selectedIntention === 'Other (specify)' && !customIntention) || (fundingMode === 'new' && dedicatedToSomeoneElse && !dedicatedPersonName)}
               onClick={handleDonation}
             >
-              Fund Now
+              {fundingMode === 'full' ? 'Finish Funding' : fundingMode === 'new' ? 'Start New Mosque' : 'Fund Now'}
             </Button>
           </div>
         </Card>
