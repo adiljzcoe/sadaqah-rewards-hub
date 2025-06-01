@@ -220,6 +220,13 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
     project => project.location === selectedLocation && project.size === selectedSize
   );
 
+  // Auto-switch funding mode if no matching project exists
+  useEffect(() => {
+    if (fundingMode === 'full' && !matchingProject) {
+      setFundingMode('portions');
+    }
+  }, [matchingProject, fundingMode]);
+
   // Calculate costs based on funding mode
   const getProjectCost = () => {
     if (fundingMode === 'portions') {
@@ -349,7 +356,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Choose Funding Method
             </label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className={`grid grid-cols-1 ${matchingProject ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3`}>
               <button
                 onClick={() => setFundingMode('portions')}
                 className={`p-4 rounded-xl border-2 transition-all ${
@@ -365,24 +372,23 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <p className="text-sm text-gray-600">Fund individual prayer spaces</p>
               </button>
 
-              <button
-                onClick={() => setFundingMode('full')}
-                disabled={!matchingProject}
-                className={`p-4 rounded-xl border-2 transition-all ${
-                  fundingMode === 'full' 
-                    ? 'border-yellow-500 bg-yellow-50' 
-                    : matchingProject 
-                      ? 'border-gray-200 bg-white hover:border-gray-300' 
-                      : 'border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed'
-                }`}
-              >
-                <div className="flex items-center space-x-2 mb-2">
-                  <Star className="h-5 w-5 text-yellow-600" />
-                  <span className="font-semibold text-gray-800">Fund Complete</span>
-                  <Badge className="bg-yellow-100 text-yellow-700 text-xs">🏆 Special Badge</Badge>
-                </div>
-                <p className="text-sm text-gray-600">Complete the entire project</p>
-              </button>
+              {matchingProject && (
+                <button
+                  onClick={() => setFundingMode('full')}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    fundingMode === 'full' 
+                      ? 'border-yellow-500 bg-yellow-50' 
+                      : 'border-gray-200 bg-white hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Star className="h-5 w-5 text-yellow-600" />
+                    <span className="font-semibold text-gray-800">Fund Complete</span>
+                    <Badge className="bg-yellow-100 text-yellow-700 text-xs">🏆 Special Badge</Badge>
+                  </div>
+                  <p className="text-sm text-gray-600">Complete the entire project</p>
+                </button>
+              )}
 
               <button
                 onClick={() => setFundingMode('new')}
