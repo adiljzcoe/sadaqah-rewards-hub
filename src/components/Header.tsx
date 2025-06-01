@@ -54,13 +54,14 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
 
-      {/* Flying Biplane with Charity Partners Banner - Slower and Less Frequent */}
+      {/* Flying Biplane with Charity Partners Banner - Every 10 seconds */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
         {charityLogos.map((charity, index) => (
           <div
             key={index}
-            className="absolute top-4 -left-80 opacity-0 animate-[flyAcrossSlower_50s_infinite] flex items-center"
+            className="absolute top-4 opacity-0 animate-[flyAcrossHeader_10s_infinite] flex items-center"
             style={{ 
+              left: '-200px',
               animationDelay: `${index * 10}s`
             }}
           >
@@ -72,20 +73,20 @@ const Header = () => {
                 <img 
                   src={charity.logo} 
                   alt={charity.name}
-                  className="w-16 h-6 object-contain"
+                  className="w-12 h-4 object-contain"
                 />
                 {/* Pointed tail */}
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-                  <div className={`w-0 h-0 border-l-[10px] border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
+                  <div className={`w-0 h-0 border-l-[8px] border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
                 </div>
               </div>
               
               {/* String connecting banner to plane */}
-              <div className="absolute right-0 top-1/2 w-6 h-px bg-gray-600 -translate-y-1/2 translate-x-full"></div>
+              <div className="absolute right-0 top-1/2 w-4 h-px bg-gray-400 -translate-y-1/2 translate-x-full"></div>
               
               {/* Biplane positioned to the right */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+24px)]">
-                <span className="text-2xl">🛩️</span>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+16px)]">
+                <span className="text-lg">🛩️</span>
               </div>
             </div>
           </div>
@@ -435,23 +436,19 @@ export default Header;
 
 <style dangerouslySetInnerHTML={{
   __html: `
-    @keyframes flyAcrossSlower {
+    @keyframes flyAcrossHeader {
       0% { 
         transform: translateX(0); 
         opacity: 0; 
       }
-      2% { 
+      5% { 
         opacity: 1; 
       }
-      8% { 
+      95% { 
         opacity: 1; 
-      }
-      10% { 
-        transform: translateX(calc(100vw + 200px)); 
-        opacity: 0; 
       }
       100% { 
-        transform: translateX(calc(100vw + 200px)); 
+        transform: translateX(calc(100vw + 300px)); 
         opacity: 0; 
       }
     }
