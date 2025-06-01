@@ -1,7 +1,6 @@
 
 import React from 'react';
 import Header from '@/components/Header';
-import ProjectDonationWidget from '@/components/ProjectDonationWidget';
 import LiveDonationFeed from '@/components/LiveDonationFeed';
 import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target, Star, Award, ShoppingCart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -153,9 +152,8 @@ const BuildMosque = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50">
       <Header />
-      <ProjectDonationWidget projectType="mosque" sticky={false} />
       
-      {/* Live Donation Feed - moved above hero section */}
+      {/* Live Donation Feed */}
       <div className="container mx-auto px-4 py-8">
         <LiveDonationFeed />
       </div>
