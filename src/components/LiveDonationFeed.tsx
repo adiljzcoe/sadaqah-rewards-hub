@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -133,6 +132,18 @@ const LiveDonationFeed: React.FC = () => {
     return `${Math.floor(diffInSeconds / 3600)}h ago`;
   };
 
+  // Get different row colors for variety
+  const getRowColor = (index: number) => {
+    const colors = [
+      'from-emerald-50 via-green-50 to-teal-50',
+      'from-blue-50 via-sky-50 to-cyan-50',
+      'from-purple-50 via-violet-50 to-indigo-50',
+      'from-rose-50 via-pink-50 to-red-50',
+      'from-amber-50 via-yellow-50 to-orange-50'
+    ];
+    return colors[index % colors.length];
+  };
+
   return (
     <div className="mb-12">
       {/* Header with sparkle effect */}
@@ -150,11 +161,11 @@ const LiveDonationFeed: React.FC = () => {
         </Badge>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {activities.map((activity, index) => (
-          <Card 
+          <div 
             key={activity.id} 
-            className={`relative overflow-hidden border-l-4 border-emerald-400 bg-gradient-to-r from-white via-emerald-50 to-green-50 transform transition-all duration-700 hover:scale-[1.02] hover:shadow-xl ${
+            className={`relative overflow-hidden rounded-2xl bg-gradient-to-r ${getRowColor(index)} transform transition-all duration-700 hover:scale-[1.02] hover:shadow-xl ${
               index === 0 ? 'animate-fade-in scale-105 shadow-lg ring-2 ring-emerald-200' : ''
             }`}
           >
@@ -163,7 +174,7 @@ const LiveDonationFeed: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
             )}
             
-            <div className="p-5">
+            <div className="px-6 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   {/* Enhanced avatar with gradient */}
@@ -176,19 +187,19 @@ const LiveDonationFeed: React.FC = () => {
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="font-bold text-gray-800 text-lg">{activity.userName}</span>
                       <span className="text-gray-600 font-medium">just funded</span>
-                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-semibold px-3 py-1 shadow-md">
+                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-500 text-white text-sm font-semibold px-3 py-1 shadow-md rounded-full">
                         🕌 {activity.prayerSpaces} prayer space{activity.prayerSpaces > 1 ? 's' : ''}
                       </Badge>
                     </div>
                     
                     {/* Mosque and location info with flag */}
                     <div className="flex items-center space-x-3 text-gray-700">
-                      <div className="flex items-center space-x-2 bg-white/70 rounded-full px-3 py-1 shadow-sm">
+                      <div className="flex items-center space-x-2 bg-white/70 rounded-full px-3 py-1.5 shadow-sm">
                         <Building2 className="h-4 w-4 text-emerald-600" />
                         <span className="font-semibold text-sm">{activity.mosqueName}</span>
                       </div>
                       
-                      <div className="flex items-center space-x-1 bg-white/70 rounded-full px-3 py-1 shadow-sm">
+                      <div className="flex items-center space-x-1 bg-white/70 rounded-full px-3 py-1.5 shadow-sm">
                         <span className="text-lg">{activity.flag}</span>
                         <MapPin className="h-3 w-3 text-gray-500" />
                         <span className="text-sm font-medium">{activity.location}</span>
@@ -203,7 +214,7 @@ const LiveDonationFeed: React.FC = () => {
                     <div className="bg-gradient-to-r from-emerald-100 to-green-100 rounded-full px-4 py-2 shadow-sm">
                       <span className="font-bold text-emerald-700 text-lg">💷 £{activity.amount}</span>
                     </div>
-                    <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">
+                    <span className="text-xs text-gray-500 bg-gray-100 rounded-full px-3 py-1">
                       ⏰ {getTimeAgo(activity.timestamp)}
                     </span>
                   </div>
@@ -220,7 +231,7 @@ const LiveDonationFeed: React.FC = () => {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 
