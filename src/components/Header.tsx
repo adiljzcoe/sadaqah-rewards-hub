@@ -39,6 +39,11 @@ const Header = () => {
     { name: 'Muslim Aid', logo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png', bgColor: 'bg-red-600' }
   ];
 
+  // Debug log to check if component renders
+  React.useEffect(() => {
+    console.log('Header component rendered, biplane animation should be visible');
+  }, []);
+
   return (
     <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30 z-[100]">
       {/* Final Fantasy inspired crystalline background effects */}
@@ -54,39 +59,40 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
 
-      {/* Flying Biplane with Charity Partners Banner - Every 10 seconds */}
+      {/* Flying Biplane with Charity Partners Banner - Every 10 seconds with debugging */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
         {charityLogos.map((charity, index) => (
           <div
             key={index}
-            className="absolute top-4 opacity-0 animate-[flyAcrossHeader_10s_infinite] flex items-center"
+            className="absolute top-3 opacity-0 animate-[flyAcrossHeaderVisible_10s_infinite] flex items-center"
             style={{ 
-              left: '-200px',
+              left: '-250px',
               animationDelay: `${index * 10}s`
             }}
+            onAnimationStart={() => console.log(`Biplane animation started for ${charity.name}`)}
           >
             {/* Flying Banner with pointed tail */}
             <div className="relative">
               {/* Banner body with charity-specific background */}
-              <div className={`${charity.bgColor} rounded-md border border-white/30 shadow-lg px-2 py-1 flex items-center min-w-max relative`}>
+              <div className={`${charity.bgColor} rounded-md border-2 border-white/50 shadow-xl px-3 py-1.5 flex items-center min-w-max relative`}>
                 {/* Logo */}
                 <img 
                   src={charity.logo} 
                   alt={charity.name}
-                  className="w-12 h-4 object-contain"
+                  className="w-14 h-5 object-contain"
                 />
                 {/* Pointed tail */}
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-                  <div className={`w-0 h-0 border-l-[8px] border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
+                  <div className={`w-0 h-0 border-l-[10px] border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
                 </div>
               </div>
               
               {/* String connecting banner to plane */}
-              <div className="absolute right-0 top-1/2 w-4 h-px bg-gray-400 -translate-y-1/2 translate-x-full"></div>
+              <div className="absolute right-0 top-1/2 w-5 h-px bg-gray-300 -translate-y-1/2 translate-x-full"></div>
               
               {/* Biplane positioned to the right */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+16px)]">
-                <span className="text-lg">🛩️</span>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+20px)]">
+                <span className="text-xl">🛩️</span>
               </div>
             </div>
           </div>
@@ -436,19 +442,19 @@ export default Header;
 
 <style dangerouslySetInnerHTML={{
   __html: `
-    @keyframes flyAcrossHeader {
+    @keyframes flyAcrossHeaderVisible {
       0% { 
         transform: translateX(0); 
         opacity: 0; 
       }
-      5% { 
+      3% { 
         opacity: 1; 
       }
-      95% { 
+      97% { 
         opacity: 1; 
       }
       100% { 
-        transform: translateX(calc(100vw + 300px)); 
+        transform: translateX(calc(100vw + 350px)); 
         opacity: 0; 
       }
     }
