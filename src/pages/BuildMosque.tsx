@@ -1,7 +1,7 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import ProjectDonationWidget from '@/components/ProjectDonationWidget';
+import LiveDonationFeed from '@/components/LiveDonationFeed';
 import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target, Star, Award, ShoppingCart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -203,6 +203,9 @@ const BuildMosque = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
+        {/* Live Donation Feed */}
+        <LiveDonationFeed />
+
         {/* Your Track Record Section */}
         <section id="track-record" className="mb-16">
           <h3 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
