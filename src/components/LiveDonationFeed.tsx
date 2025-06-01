@@ -132,16 +132,19 @@ const LiveDonationFeed: React.FC = () => {
     return `${Math.floor(diffInSeconds / 3600)}h ago`;
   };
 
-  // Get different row colors for variety
+  // Get different row colors for variety with alternating blue
   const getRowColor = (index: number) => {
+    if (index % 2 === 1) {
+      return 'from-blue-50 via-sky-50 to-cyan-50';
+    }
+    
     const colors = [
       'from-emerald-50 via-green-50 to-teal-50',
-      'from-blue-50 via-sky-50 to-cyan-50',
       'from-purple-50 via-violet-50 to-indigo-50',
       'from-rose-50 via-pink-50 to-red-50',
       'from-amber-50 via-yellow-50 to-orange-50'
     ];
-    return colors[index % colors.length];
+    return colors[Math.floor(index / 2) % colors.length];
   };
 
   return (
