@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
-import { TreeDeciduous, TreePalm, Trees, Waves, Home, Star, Coins, ShoppingCart, Sparkles, Mountain, Church, Castle, Tent, Flower, Sun, Moon, Cloud, Fish, Bird, Rabbit, Deer, Apple, Grape, Crown, Diamond, Heart, Gift, Bell, Key, Scroll, Book, Candle, Gem, Shield, Sword, Wand, Music, Camera, Palette, Compass, Anchor, Ship, Plane, Car, Train, Rocket, Building, Factory, Warehouse, School, Hospital, Library, Store, Cafe, Theater } from 'lucide-react';
+import { TreeDeciduous, TreePalm, Trees, Waves, Home, Star, Coins, ShoppingCart, Sparkles, Mountain, Church, Castle, Tent, Flower, Sun, Moon, Cloud, Fish, Bird, Rabbit, Apple, Grape, Crown, Diamond, Heart, Gift, Bell, Key, Scroll, Book, Flame, Gem, Shield, Sword, Wand, Music, Camera, Palette, Compass, Anchor, Ship, Plane, Car, Train, Rocket, Building, Factory, Warehouse, School, Hospital, Library, Store, Coffee, Theater } from 'lucide-react';
 import Jannah3DBuilder from '@/components/Jannah3DBuilder';
 import JannahShop from '@/components/JannahShop';
 
@@ -308,7 +308,7 @@ const jannahItems: JannahItem[] = [
   {
     id: 'deer',
     name: 'Gentle Deer',
-    icon: <Deer className="h-6 w-6" />,
+    icon: <Rabbit className="h-6 w-6" />,
     price: 150,
     realProject: 'Wildlife habitat protection',
     description: 'A graceful deer in eternal youth',
@@ -422,7 +422,7 @@ const jannahItems: JannahItem[] = [
   {
     id: 'candle',
     name: 'Eternal Candle',
-    icon: <Candle className="h-6 w-6" />,
+    icon: <Flame className="h-6 w-6" />,
     price: 75,
     realProject: 'Lighting for communities',
     description: 'A candle that never burns out',
@@ -468,7 +468,7 @@ const jannahItems: JannahItem[] = [
   {
     id: 'lamp-post',
     name: 'Divine Lamp',
-    icon: <Candle className="h-6 w-6" />,
+    icon: <Flame className="h-6 w-6" />,
     price: 100,
     realProject: 'Street lighting for communities',
     description: 'A lamp that illuminates the path',
