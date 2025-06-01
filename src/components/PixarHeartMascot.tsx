@@ -261,7 +261,7 @@ function PixarHeart({ isActive }: PixarHeartProps) {
       {/* Halo inner glow */}
       <mesh position={[0, 1.2, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.45, 0.02, 8, 24]} />
-        <meshBasicMaterial 
+        <meshStandardMaterial 
           color="#FFFFFF" 
           transparent 
           opacity={0.9}
@@ -270,26 +270,26 @@ function PixarHeart({ isActive }: PixarHeartProps) {
         />
       </mesh>
 
-      {/* Magical sparkles floating around */}
+      {/* Magical sparkles floating around - using MeshStandardMaterial for emissive */}
       <mesh position={[0.6, 0.4, 0.3]}>
         <sphereGeometry args={[0.025, 8, 8]} />
-        <meshBasicMaterial color="#FFD700" emissive="#FFD700" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#FFD700" emissive="#FFD700" emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[-0.5, 0.2, 0.4]}>
         <sphereGeometry args={[0.02, 8, 8]} />
-        <meshBasicMaterial color="#FFA500" emissive="#FFA500" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#FFA500" emissive="#FFA500" emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[0.4, -0.3, 0.35]}>
         <sphereGeometry args={[0.022, 8, 8]} />
-        <meshBasicMaterial color="#FFD700" emissive="#FFD700" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#FFD700" emissive="#FFD700" emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[-0.4, 0.5, 0.3]}>
         <sphereGeometry args={[0.018, 8, 8]} />
-        <meshBasicMaterial color="#FFA500" emissive="#FFA500" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#FFA500" emissive="#FFA500" emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[0.2, 0.7, 0.2]}>
         <sphereGeometry args={[0.015, 8, 8]} />
-        <meshBasicMaterial color="#FFD700" emissive="#FFD700" emissiveIntensity={0.5} />
+        <meshStandardMaterial color="#FFD700" emissive="#FFD700" emissiveIntensity={0.5} />
       </mesh>
 
       {/* Additional heart decorations on the sides */}
