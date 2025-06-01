@@ -8,8 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Users, Calendar, MapPin, CheckCircle, Clock, Hammer, Star, Trophy, Zap, Gift, Crown, Droplets } from 'lucide-react';
 
 const donationTiers = [
-  { pieces: 1, price: 250, description: 'Single Water Point', color: 'from-cyan-400 to-blue-600', badge: '💧' },
-  { pieces: 2, price: 500, description: 'Double Impact', color: 'from-blue-400 to-cyan-600', badge: '⚡' },
+  { pieces: 1, price: 250, description: 'Single Water Barrel', color: 'from-cyan-400 to-blue-600', badge: '🛢️' },
+  { pieces: 2, price: 500, description: 'Double Flow', color: 'from-blue-400 to-cyan-600', badge: '⚡' },
   { pieces: 4, price: 1000, description: 'Community Builder', color: 'from-teal-400 to-cyan-600', badge: '🏗️' },
   { pieces: 6, price: 1500, description: 'Water Champion', color: 'from-cyan-400 to-teal-600', badge: '🏆' },
   { pieces: 10, price: 2500, description: 'Well Sponsor', color: 'from-blue-500 to-teal-500', badge: '🌟' },
@@ -25,7 +25,7 @@ const wellProjects = [
     raised: 15000,
     goal: 15000,
     pricePerSpace: 250,
-    image: '🌊',
+    image: '🛢️',
     completedDate: '2023-12-15',
     achievement: 'Water Hero',
     supporters: 60,
@@ -39,7 +39,7 @@ const wellProjects = [
     raised: 18000,
     goal: 18000,
     pricePerSpace: 300,
-    image: '🌊',
+    image: '🛢️',
     estimatedCompletion: '2024-07-15',
     supporters: 60,
     description: 'Solar-powered well with water storage tank'
@@ -52,7 +52,7 @@ const wellProjects = [
     raised: 8750,
     goal: 12500,
     pricePerSpace: 250,
-    image: '🌊',
+    image: '🛢️',
     supporters: 35,
     description: 'Hand-pump well for remote village'
   },
@@ -64,7 +64,7 @@ const wellProjects = [
     raised: 4200,
     goal: 10000,
     pricePerSpace: 200,
-    image: '🌊',
+    image: '🛢️',
     supporters: 21,
     description: 'Well serving school and surrounding community'
   }
@@ -119,7 +119,7 @@ const WaterWells = () => {
               <div className="mb-6 relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-cyan-300 rounded-lg blur-lg opacity-60 animate-glow"></div>
                 <div className="relative w-full h-48 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg shadow-2xl border-4 border-white mx-auto max-w-2xl transform hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-                  <div className="text-8xl animate-float">🌊</div>
+                  <div className="text-8xl animate-float">🛢️</div>
                 </div>
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-bounce-in">
                   <Droplets className="h-4 w-4 inline mr-1 animate-sparkle" />
@@ -127,10 +127,10 @@ const WaterWells = () => {
                 </div>
               </div>
               <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-teal-600 bg-clip-text text-transparent animate-slide-in-bounce">
-                🌊 Build Water Wells Worldwide 🌊
+                🛢️ Build Water Wells Worldwide 🛢️
               </h1>
               <p className="text-xl text-gray-700 max-w-3xl mx-auto font-semibold animate-bounce-in" style={{ animationDelay: '0.2s' }}>
-                Bring life-giving water to communities in need! Every water point you fund saves lives! 💧
+                Bring life-giving water to communities in need! Every barrel you fund saves lives AND builds your house in Paradise! 🛢️
               </p>
             </div>
           </div>
@@ -189,7 +189,7 @@ const WaterWells = () => {
                               {project.supporters} supporters
                             </span>
                             <span className="font-bold text-blue-600">
-                              £{project.pricePerSpace}/point
+                              £{project.pricePerSpace}/barrel
                             </span>
                           </div>
                         </div>
@@ -327,7 +327,7 @@ const WaterWells = () => {
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
                       </div>
                       <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">
-                        {Math.round(progressPercentage)}% FUNDED! 💧
+                        {Math.round(progressPercentage)}% FUNDED! 🛢️
                       </div>
                     </div>
                     
@@ -337,7 +337,7 @@ const WaterWells = () => {
                         <span className="text-blue-800">{selectedProject.supporters} Heroes</span>
                       </div>
                       <div className="flex items-center bg-gradient-to-r from-cyan-100 to-teal-100 px-4 py-2 rounded-full shadow-lg animate-float" style={{ animationDelay: '0.5s' }}>
-                        <span className="text-cyan-800">£{selectedProject.pricePerSpace}/point</span>
+                        <span className="text-cyan-800">£{selectedProject.pricePerSpace}/barrel</span>
                       </div>
                     </div>
                   </div>
@@ -352,10 +352,10 @@ const WaterWells = () => {
                     Fund {selectedProject.title}
                     <Droplets className="h-6 w-6 animate-sparkle" />
                   </CardTitle>
-                  <p className="text-blue-100 font-semibold">Each water point costs £{selectedProject.pricePerSpace} 💧</p>
+                  <p className="text-blue-100 font-semibold">Each water barrel costs £{selectedProject.pricePerSpace} 🛢️</p>
                 </CardHeader>
                 <CardContent className="p-6">
-                  {/* Water Point Options */}
+                  {/* Water Barrel Options */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                     {donationTiers.map((tier) => (
                       <div
@@ -375,7 +375,7 @@ const WaterWells = () => {
                         </div>
                         
                         <div className={`font-bold text-lg ${selectedPieces === tier.pieces && !customPieces ? 'text-white' : 'text-gray-900'}`}>
-                          {tier.pieces} Point{tier.pieces > 1 ? 's' : ''}
+                          {tier.pieces} Barrel{tier.pieces > 1 ? 's' : ''}
                         </div>
                         <div className={`text-2xl font-black ${selectedPieces === tier.pieces && !customPieces ? 'text-yellow-200' : 'text-blue-600'}`}>
                           £{tier.pieces * selectedProject.pricePerSpace}
@@ -391,13 +391,13 @@ const WaterWells = () => {
                   <div className="mb-6 p-5 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border-2 border-cyan-300 shadow-lg professional-card">
                     <label className="block text-lg font-bold text-blue-800 mb-3 flex items-center gap-2">
                       <Droplets className="h-5 w-5 animate-sparkle" />
-                      Custom Amount (£{selectedProject.pricePerSpace} per water point)
+                      Custom Amount (£{selectedProject.pricePerSpace} per water barrel)
                       <Crown className="h-5 w-5 text-cyan-600" />
                     </label>
                     <div className="flex items-center space-x-3">
                       <input
                         type="number"
-                        placeholder="Enter number of water points"
+                        placeholder="Enter number of water barrels"
                         value={customPieces}
                         onChange={(e) => {
                           setCustomPieces(e.target.value);
@@ -417,7 +417,7 @@ const WaterWells = () => {
                     {customPieces && (
                       <div className="mt-3 text-center">
                         <div className="text-2xl font-black text-blue-600 animate-number-pop">
-                          💧 {customPieces} water points = £{customAmount} 💧
+                          🛢️ {customPieces} water barrels = £{customAmount} 🛢️
                         </div>
                       </div>
                     )}
@@ -431,10 +431,10 @@ const WaterWells = () => {
                       <Trophy className="h-6 w-6 text-yellow-300 animate-bounce-in" />
                     </h4>
                     <div className="text-3xl font-black text-white animate-number-pop">
-                      💧 {finalPieces} water point{finalPieces > 1 ? 's' : ''} = £{finalAmount} 💧
+                      🛢️ {finalPieces} water barrel{finalPieces > 1 ? 's' : ''} = £{finalAmount} 🛢️
                     </div>
                     <div className="text-lg font-bold text-yellow-100 mt-2">
-                      You're bringing clean water to {selectedProject.title}! 🌊✨
+                      You're bringing clean water to {selectedProject.title} AND building your house in Paradise! 🏠✨
                     </div>
                   </div>
 
@@ -477,7 +477,7 @@ const WaterWells = () => {
                     <span>{selectedProject.supporters} supporters</span>
                   </div>
                   <div className="flex items-center text-sm font-bold">
-                    <span className="text-teal-600">£{selectedProject.pricePerSpace} per water point</span>
+                    <span className="text-teal-600">£{selectedProject.pricePerSpace} per water barrel</span>
                   </div>
                 </CardContent>
               </Card>
@@ -517,12 +517,12 @@ const WaterWells = () => {
           <div className="mt-8 text-center bg-gradient-to-r from-cyan-500 via-blue-500 to-teal-500 text-white p-10 rounded-2xl shadow-2xl animate-rainbow">
             <h3 className="text-4xl font-black mb-4 flex items-center justify-center gap-3">
               <Star className="h-8 w-8 animate-sparkle" />
-              Bring Clean Water Worldwide
+              Bring Clean Water & Build Your Paradise
               <Crown className="h-8 w-8 animate-bounce-in" />
             </h3>
             <p className="text-xl mb-6 font-bold">
               Join thousands of water heroes in our mission to provide clean water across the globe. 
-              Each water point brings life to communities in desperate need! 🚀✨
+              Each barrel you fund brings life to communities in desperate need AND builds your house in Paradise! 🚀✨
             </p>
             <Button 
               variant="secondary" 

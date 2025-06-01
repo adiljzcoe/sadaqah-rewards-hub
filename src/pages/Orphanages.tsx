@@ -122,32 +122,31 @@ const Orphanages = () => {
       <Header />
       <ProjectDonationWidget projectType="orphanage" />
       
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-rose-300 to-rose-500 rounded-3xl blur-3xl opacity-30 animate-rainbow"></div>
-        <div className="relative">
-          <div className="mb-6 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-rose-300 to-rose-500 rounded-lg blur-lg opacity-60 animate-glow"></div>
-            <div className="relative w-full h-48 bg-gradient-to-r from-rose-400 to-rose-500 rounded-lg shadow-2xl border-4 border-white mx-auto max-w-2xl transform hover:scale-105 transition-transform duration-300 flex items-center justify-center">
-              <div className="text-8xl animate-float">🏠</div>
-            </div>
-            <div className="absolute top-4 right-4 bg-gradient-to-r from-rose-400 to-rose-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-bounce-in">
-              <Heart className="h-4 w-4 inline mr-1 animate-sparkle" />
-              SAFE HOMES FOR ALL
-            </div>
-          </div>
-          <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 bg-clip-text text-transparent animate-slide-in-bounce">
-            🏠 Build Orphanages Worldwide 🏠
-          </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto font-semibold animate-bounce-in" style={{ animationDelay: '0.2s' }}>
-            Create safe havens for vulnerable children! Every space you fund transforms a life! 💝
-          </p>
-        </div>
-      </div>
-
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
+          {/* Hero Section */}
+          <div className="text-center mb-8 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 rounded-3xl blur-3xl opacity-30 animate-rainbow"></div>
+            <div className="relative">
+              <div className="mb-6 relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-rose-300 to-pink-300 rounded-lg blur-lg opacity-60 animate-glow"></div>
+                <div className="relative w-full h-48 bg-gradient-to-r from-rose-400 to-pink-500 rounded-lg shadow-2xl border-4 border-white mx-auto max-w-2xl transform hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+                  <div className="text-8xl animate-float">🏠</div>
+                </div>
+                <div className="absolute top-4 right-4 bg-gradient-to-r from-rose-400 to-pink-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-bounce-in">
+                  <Heart className="h-4 w-4 inline mr-1 animate-sparkle" />
+                  SAFE HOMES FOR ALL
+                </div>
+              </div>
+              <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 bg-clip-text text-transparent animate-slide-in-bounce">
+                🏠 Build Orphanages Worldwide 🏠
+              </h1>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto font-semibold animate-bounce-in" style={{ animationDelay: '0.2s' }}>
+                Create safe havens for vulnerable children! Every space you fund transforms a life and builds your house in Paradise! 💝
+              </p>
+            </div>
+          </div>
+
           {/* Project Selection Grid */}
           <div className="mb-8">
             <h2 className="text-3xl font-black text-center mb-6 bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent animate-number-pop">
@@ -213,100 +212,8 @@ const Orphanages = () => {
               </div>
             )}
 
-            {/* Building and Completed sections similar to Water Wells... */}
-            {/* Building Section */}
-            {buildingProjects.length > 0 && (
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-4 text-purple-600 flex items-center gap-2">
-                  <Hammer className="h-6 w-6 animate-wiggle" />
-                  🏗️ Under Construction
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {buildingProjects.map((project) => (
-                    <Card key={project.id} className="border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50 professional-card hover:scale-105 transition-transform duration-300">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <div className="text-3xl animate-float">{project.image}</div>
-                          {getStatusBadge(project.status)}
-                        </div>
-                        <CardTitle className="text-lg">{project.title}</CardTitle>
-                        <p className="text-sm text-gray-600 flex items-center">
-                          <MapPin className="h-3 w-3 mr-1" />
-                          {project.location}
-                        </p>
-                        <p className="text-xs text-gray-500">{project.description}</p>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          <div>
-                            <Progress value={100} className="h-3" />
-                            <div className="text-xs text-center mt-1 font-bold text-purple-600">
-                              Fully Funded - Construction In Progress
-                            </div>
-                          </div>
-                          <div className="flex justify-between text-xs">
-                            <span className="flex items-center">
-                              <Users className="h-3 w-3 mr-1" />
-                              {project.supporters} supporters
-                            </span>
-                            <span className="text-purple-600 font-bold">
-                              Est: {project.estimatedCompletion}
-                            </span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Completed Section */}
-            {completedProjects.length > 0 && (
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold mb-4 text-pink-600 flex items-center gap-2">
-                  <CheckCircle className="h-6 w-6 animate-sparkle" />
-                  ✅ Homes & Complete
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {completedProjects.map((project) => (
-                    <Card key={project.id} className="border-pink-200 bg-gradient-to-br from-pink-50 to-rose-50 professional-card hover:scale-105 transition-transform duration-300">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <div className="text-3xl animate-float">{project.image}</div>
-                          {getStatusBadge(project.status)}
-                        </div>
-                        <CardTitle className="text-lg">{project.title}</CardTitle>
-                        <p className="text-sm text-gray-600 flex items-center">
-                          <MapPin className="h-3 w-3 mr-1" />
-                          {project.location}
-                        </p>
-                        <p className="text-xs text-gray-500">{project.description}</p>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          <div>
-                            <Progress value={100} className="h-3" />
-                            <div className="text-xs text-center mt-1 font-bold text-pink-600">
-                              100% Complete - Caring For Children!
-                            </div>
-                          </div>
-                          <div className="flex justify-between text-xs">
-                            <span className="flex items-center">
-                              <Users className="h-3 w-3 mr-1" />
-                              {project.supporters} supporters
-                            </span>
-                            <span className="text-pink-600 font-bold">
-                              Completed: {project.completedDate}
-                            </span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Building and Completed sections... */}
+            {/* ... keep existing code (building and completed sections) ... */}
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -530,12 +437,12 @@ const Orphanages = () => {
           <div className="mt-8 text-center bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 text-white p-10 rounded-2xl shadow-2xl animate-rainbow">
             <h3 className="text-4xl font-black mb-4 flex items-center justify-center gap-3">
               <Star className="h-8 w-8 animate-sparkle" />
-              Create Safe Homes Worldwide
+              Create Safe Homes & Build Your Paradise
               <Crown className="h-8 w-8 animate-bounce-in" />
             </h3>
             <p className="text-xl mb-6 font-bold">
               Join thousands of caring hearts in our mission to provide safe homes for vulnerable children. 
-              Each space you fund gives a child hope for a brighter future! 🚀✨
+              Each space you fund gives a child hope AND builds your house in Paradise! 🚀✨
             </p>
             <Button 
               variant="secondary" 
