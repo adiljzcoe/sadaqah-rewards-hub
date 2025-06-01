@@ -64,23 +64,31 @@ const Header = () => {
               animationDelay: `${index * 5}s`
             }}
           >
-            {/* Biplane */}
+            {/* Flying Banner with pointed tail */}
             <div className="relative">
-              <span className="text-2xl">🛩️</span>
-              
-              {/* String connecting plane to banner */}
-              <div className="absolute left-8 top-1/2 w-6 h-px bg-gray-600 -translate-y-1/2"></div>
-              
-              {/* White Banner with string attachment */}
-              <div className="absolute left-14 top-1/2 -translate-y-1/2 bg-white rounded-lg border border-gray-300 shadow-lg px-3 py-2 flex flex-col items-center min-w-max">
-                {/* Small "Charity Partner" text on top */}
-                <span className="text-xs font-medium text-gray-600 mb-1 whitespace-nowrap">Charity Partner</span>
+              {/* Banner body */}
+              <div className="bg-white rounded-lg border border-gray-300 shadow-lg px-3 py-2 flex flex-col items-center min-w-max relative">
+                {/* Tiny "Charity Partner" text on top */}
+                <span className="text-xs font-medium text-gray-600 mb-1 whitespace-nowrap text-center leading-tight" style={{ fontSize: '10px' }}>Charity Partner</span>
                 {/* Logo */}
                 <img 
                   src={charity.logo} 
                   alt={charity.name}
                   className="w-16 h-6 object-contain"
                 />
+                {/* Pointed tail */}
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
+                  <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent"></div>
+                  <div className="absolute top-1/2 -translate-y-1/2 left-1 w-0 h-0 border-l-[10px] border-l-gray-300 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent"></div>
+                </div>
+              </div>
+              
+              {/* String connecting banner to plane */}
+              <div className="absolute right-0 top-1/2 w-6 h-px bg-gray-600 -translate-y-1/2 translate-x-full"></div>
+              
+              {/* Biplane positioned to the right */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+24px)]">
+                <span className="text-2xl">🛩️</span>
               </div>
             </div>
           </div>
