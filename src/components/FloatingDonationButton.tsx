@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
-import HeavenlyBirdMascot from './HeavenlyBirdMascot';
+import PixarHeartMascot from './PixarHeartMascot';
 import CoinAnimation from './CoinAnimation';
 
 const FloatingDonationButton = () => {
@@ -293,7 +292,7 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with mascot - Fixed positioning */}
+        {/* Main donation button with heart mascot - Fixed positioning */}
         <div
           onClick={() => setIsExpanded(!isExpanded)}
           className="relative w-40 h-40 cursor-pointer transition-all duration-300 group"
@@ -301,9 +300,9 @@ const FloatingDonationButton = () => {
             animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
-          {/* Mascot - Base layer */}
+          {/* Heart Mascot - Base layer */}
           <div className="absolute inset-0 z-10">
-            <HeavenlyBirdMascot 
+            <PixarHeartMascot 
               isActive={showCallToAction} 
               className="w-full h-full"
             />
