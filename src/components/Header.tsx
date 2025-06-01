@@ -54,7 +54,7 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
 
-      {/* Flying Plane with Charity Partners Banner - Above Everything */}
+      {/* Flying Biplane with Charity Partners Banner - Above Everything */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
         {charityLogos.map((charity, index) => (
           <div
@@ -64,17 +64,22 @@ const Header = () => {
               animationDelay: `${index * 5}s`
             }}
           >
-            {/* Plane */}
+            {/* Biplane */}
             <div className="relative">
-              <span className="text-2xl">✈️</span>
-              {/* Banner trailing behind plane */}
-              <div className="absolute left-8 top-1/2 -translate-y-1/2 bg-gradient-to-r from-slate-800/95 via-blue-800/90 to-indigo-800/95 backdrop-blur-sm rounded-lg border border-cyan-400/30 shadow-xl px-3 py-1.5 flex items-center space-x-2 min-w-max">
-                <Shield className="h-3 w-3 text-cyan-300 drop-shadow-sm flex-shrink-0" />
-                <span className="text-xs font-medium text-slate-300 drop-shadow-sm whitespace-nowrap">Charity Partner</span>
+              <span className="text-2xl">🛩️</span>
+              
+              {/* String connecting plane to banner */}
+              <div className="absolute left-8 top-1/2 w-6 h-px bg-gray-600 -translate-y-1/2"></div>
+              
+              {/* White Banner with string attachment */}
+              <div className="absolute left-14 top-1/2 -translate-y-1/2 bg-white rounded-lg border border-gray-300 shadow-lg px-3 py-2 flex flex-col items-center min-w-max">
+                {/* Small "Charity Partner" text on top */}
+                <span className="text-xs font-medium text-gray-600 mb-1 whitespace-nowrap">Charity Partner</span>
+                {/* Logo */}
                 <img 
                   src={charity.logo} 
                   alt={charity.name}
-                  className="w-12 h-4 object-contain filter brightness-90 opacity-95 flex-shrink-0"
+                  className="w-16 h-6 object-contain"
                 />
               </div>
             </div>
