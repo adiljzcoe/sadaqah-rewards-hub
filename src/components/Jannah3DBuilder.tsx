@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -79,6 +78,71 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
     }
   };
 
+  const renderTreeBlock = (item: JannahItem) => {
+    const isTreeItem = item.name.toLowerCase().includes('tree') || item.category === 'nature';
+    
+    if (!isTreeItem) {
+      return (
+        <div className={`
+          relative p-2 rounded-lg shadow-2xl
+          bg-gradient-to-b ${getItemColor(item)}
+          text-white transform transition-all duration-300 hover:scale-110
+          border-2 border-white/40
+          before:content-[''] before:absolute before:inset-0 before:bg-white/20 before:rounded-lg
+        `}>
+          {React.cloneElement(item.icon as React.ReactElement, {
+            className: "h-6 w-6 drop-shadow-lg relative z-10"
+          })}
+          <div className="absolute -bottom-1 -right-1 w-full h-full bg-black/20 rounded-lg -z-10"></div>
+        </div>
+      );
+    }
+
+    // Enhanced tree block with multiple trees and foliage
+    return (
+      <div className="relative w-full h-full">
+        {/* Forest ground with grass texture */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-emerald-500 to-green-600 rounded-lg border-2 border-green-700 shadow-xl">
+          {/* Animated grass pattern */}
+          <div className="absolute inset-0 opacity-30">
+            <div className="absolute inset-0 bg-gradient-to-tr from-green-300/50 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-green-800/40 to-transparent"></div>
+          </div>
+          
+          {/* Multiple trees arranged naturally */}
+          <div className="absolute inset-1 flex items-end justify-center">
+            {/* Background trees (smaller, darker) */}
+            <div className="absolute inset-0 flex items-end justify-around">
+              <TreeDeciduous className="h-4 w-4 text-green-800/60 transform -translate-y-1 animate-float" style={{ animationDelay: '0s' }} />
+              <Trees className="h-5 w-5 text-green-700/70 transform translate-x-1 animate-float" style={{ animationDelay: '0.5s' }} />
+              <TreePalm className="h-4 w-4 text-green-800/60 transform -translate-x-1 animate-float" style={{ animationDelay: '1s' }} />
+            </div>
+            
+            {/* Foreground main tree */}
+            <div className="relative z-10 transform -translate-y-1">
+              {React.cloneElement(item.icon as React.ReactElement, {
+                className: "h-8 w-8 text-green-100 drop-shadow-xl animate-float"
+              })}
+            </div>
+            
+            {/* Animated foliage particles */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1 left-2 w-1 h-1 bg-green-300 rounded-full animate-pulse opacity-60"></div>
+              <div className="absolute top-3 right-1 w-1 h-1 bg-emerald-200 rounded-full animate-pulse opacity-40" style={{ animationDelay: '0.3s' }}></div>
+              <div className="absolute bottom-2 left-1 w-0.5 h-0.5 bg-green-200 rounded-full animate-pulse opacity-50" style={{ animationDelay: '0.8s' }}></div>
+            </div>
+            
+            {/* Subtle wind effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-200/10 to-transparent animate-shimmer"></div>
+          </div>
+          
+          {/* Tree shadows */}
+          <div className="absolute bottom-0 right-1 w-6 h-2 bg-black/20 rounded-full blur-sm"></div>
+        </div>
+      </div>
+    );
+  };
+
   const renderCell = (x: number, y: number) => {
     const placedItem = placedItems.find(placed => 
       x >= placed.x && x < placed.x + (placed.item.size === '1x1' ? 1 : placed.item.size === '2x2' ? 2 : 3) &&
@@ -127,7 +191,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
           <div className="absolute inset-0 border border-gray-300 border-opacity-40"></div>
         )}
         
-        {/* Placed item with SimCity-style 3D effect */}
+        {/* Placed item with enhanced 3D effect */}
         {isMainCell && placedItem && (
           <div 
             className={`
@@ -141,19 +205,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
                 : `rotateZ(-${rotationAngle}deg)`
             }}
           >
-            <div className={`
-              relative p-2 rounded-lg shadow-2xl
-              bg-gradient-to-b ${getItemColor(placedItem.item)}
-              text-white transform transition-all duration-300 hover:scale-110
-              border-2 border-white/40
-              before:content-[''] before:absolute before:inset-0 before:bg-white/20 before:rounded-lg
-            `}>
-              {React.cloneElement(placedItem.item.icon as React.ReactElement, {
-                className: "h-6 w-6 drop-shadow-lg relative z-10"
-              })}
-              {/* SimCity-style building shadow */}
-              <div className="absolute -bottom-1 -right-1 w-full h-full bg-black/20 rounded-lg -z-10"></div>
-            </div>
+            {renderTreeBlock(placedItem.item)}
           </div>
         )}
         
@@ -171,15 +223,8 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
                 : `rotateZ(-${rotationAngle}deg)`
             }}
           >
-            <div className={`
-              relative p-2 rounded-lg shadow-xl opacity-70
-              bg-gradient-to-b ${getItemColor(selectedItem)}
-              text-white border-2 border-yellow-400 animate-pulse
-              before:content-[''] before:absolute before:inset-0 before:bg-white/30 before:rounded-lg
-            `}>
-              {React.cloneElement(selectedItem.icon as React.ReactElement, {
-                className: "h-6 w-6 drop-shadow-lg relative z-10"
-              })}
+            <div className="opacity-70">
+              {renderTreeBlock(selectedItem)}
             </div>
           </div>
         )}
