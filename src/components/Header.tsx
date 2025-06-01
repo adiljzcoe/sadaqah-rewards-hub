@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -42,8 +41,7 @@ const Header = () => {
 
   // Debug log to check if component renders
   React.useEffect(() => {
-    console.log('Header component rendered, biplane animation should be visible');
-    console.log('Animation should start immediately for testing');
+    console.log('🛩️ Header component rendered - biplane should be flying!');
   }, []);
 
   return (
@@ -61,23 +59,21 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
 
-      {/* Flying Biplane with Charity Partners Banner - Immediate start for testing */}
+      {/* Flying Biplane with Charity Partners Banner */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
         {charityLogos.map((charity, index) => (
           <div
             key={index}
-            className="absolute top-3 animate-[flyAcrossHeaderTest_15s_infinite] flex items-center border-2 border-red-500"
+            className="absolute top-4 animate-biplane flex items-center"
             style={{ 
-              left: '-300px',
-              animationDelay: `${index * 2}s`
+              animationDelay: `${index * 10}s`
             }}
-            onAnimationStart={() => console.log(`🛩️ BIPLANE ANIMATION STARTED for ${charity.name}`)}
-            onAnimationIteration={() => console.log(`🛩️ BIPLANE ANIMATION ITERATION for ${charity.name}`)}
+            onAnimationStart={() => console.log(`✈️ FLYING: ${charity.name} biplane started!`)}
           >
             {/* Flying Banner with pointed tail */}
             <div className="relative">
               {/* Banner body with charity-specific background */}
-              <div className={`${charity.bgColor} rounded-md border-4 border-white shadow-2xl px-4 py-2 flex items-center min-w-max relative`}>
+              <div className={`${charity.bgColor} rounded-lg border-2 border-white shadow-xl px-4 py-2 flex items-center min-w-max relative`}>
                 {/* Logo */}
                 <img 
                   src={charity.logo} 
@@ -91,11 +87,11 @@ const Header = () => {
               </div>
               
               {/* String connecting banner to plane */}
-              <div className="absolute right-0 top-1/2 w-6 h-1 bg-white -translate-y-1/2 translate-x-full"></div>
+              <div className="absolute right-0 top-1/2 w-8 h-0.5 bg-white -translate-y-1/2 translate-x-full"></div>
               
               {/* Biplane positioned to the right */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+24px)]">
-                <span className="text-2xl">🛩️</span>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+32px)]">
+                <span className="text-3xl drop-shadow-lg">🛩️</span>
               </div>
             </div>
           </div>
@@ -463,4 +459,3 @@ export default Header;
     }
   `
 }} />
-
