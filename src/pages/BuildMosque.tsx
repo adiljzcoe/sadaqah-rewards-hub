@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +7,7 @@ import Header from '@/components/Header';
 import { Plus, Users, Calendar, MapPin, CheckCircle, Clock, Hammer, Star, Trophy, Zap, Gift, Crown } from 'lucide-react';
 
 const donationTiers = [
-  { pieces: 1, price: 40, description: 'Single Brick', color: 'from-red-400 to-red-600', badge: '🧱' },
+  { pieces: 1, price: 40, description: 'Single Prayer Space', color: 'from-red-400 to-red-600', badge: '🤲' },
   { pieces: 2, price: 80, description: 'Double Impact', color: 'from-orange-400 to-orange-600', badge: '⚡' },
   { pieces: 4, price: 160, description: 'Foundation Builder', color: 'from-yellow-400 to-yellow-600', badge: '🏗️' },
   { pieces: 6, price: 240, description: 'Pillar Supporter', color: 'from-green-400 to-green-600', badge: '🏛️' },
@@ -129,8 +128,8 @@ const BuildMosque = () => {
                 🕌 Build a Mosque Together 🕌
               </h1>
               <p className="text-xl text-gray-700 max-w-2xl mx-auto font-semibold">
-                Join our epic quest: "Build a Mosque, Together, One Piece at a Time." 
-                Every brick counts in this divine mission! 🚀
+                Join our epic quest: "Build a Mosque, Together, One Prayer Space at a Time." 
+                Every space counts in this divine mission! 🚀
               </p>
             </div>
           </div>
@@ -189,10 +188,10 @@ const BuildMosque = () => {
                     Choose Your Divine Contribution
                     <Zap className="h-6 w-6 animate-pulse" />
                   </CardTitle>
-                  <p className="text-blue-100 font-semibold">Select your brick package and join the builder's league! 🏗️</p>
+                  <p className="text-blue-100 font-semibold">Select your prayer space package and join the builder's league! 🏗️</p>
                 </CardHeader>
                 <CardContent className="p-6 relative z-10">
-                  {/* Enhanced Brick Options */}
+                  {/* Enhanced Prayer Space Options */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                     {donationTiers.map((tier) => (
                       <div
@@ -207,13 +206,13 @@ const BuildMosque = () => {
                             : 'border-gray-300 hover:border-blue-400 bg-gradient-to-br from-white to-gray-50 hover:shadow-xl'
                         }`}
                       >
-                        {/* Enhanced Brick Visual */}
+                        {/* Enhanced Prayer Space Visual */}
                         <div className="mb-3 flex justify-center">
                           <div className="text-3xl animate-bounce">{tier.badge}</div>
                         </div>
                         
                         <div className={`font-bold text-lg ${selectedPieces === tier.pieces && !customPieces ? 'text-white' : 'text-gray-900'}`}>
-                          {tier.pieces} Piece{tier.pieces > 1 ? 's' : ''}
+                          {tier.pieces} Space{tier.pieces > 1 ? 's' : ''}
                         </div>
                         <div className={`text-2xl font-black ${selectedPieces === tier.pieces && !customPieces ? 'text-yellow-200' : 'text-blue-600'}`}>
                           £{tier.price}
@@ -237,13 +236,13 @@ const BuildMosque = () => {
                   <div className="mb-6 p-5 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border-2 border-yellow-300 shadow-lg">
                     <label className="block text-lg font-bold text-orange-800 mb-3 flex items-center gap-2">
                       <Zap className="h-5 w-5 animate-pulse" />
-                      Custom Mega Donation (£40 per brick)
+                      Custom Mega Donation (£40 per prayer space)
                       <Crown className="h-5 w-5 text-yellow-600" />
                     </label>
                     <div className="flex items-center space-x-3">
                       <input
                         type="number"
-                        placeholder="Enter number of bricks"
+                        placeholder="Enter number of prayer spaces"
                         value={customPieces}
                         onChange={(e) => {
                           setCustomPieces(e.target.value);
@@ -263,7 +262,7 @@ const BuildMosque = () => {
                     {customPieces && (
                       <div className="mt-3 text-center">
                         <div className="text-2xl font-black text-orange-600 animate-pulse">
-                          🧱 {customPieces} bricks = £{customAmount} 🧱
+                          🤲 {customPieces} prayer spaces = £{customAmount} 🤲
                         </div>
                         <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white animate-bounce mt-2">
                           <Trophy className="h-3 w-3 mr-1" />
@@ -283,10 +282,10 @@ const BuildMosque = () => {
                         <Trophy className="h-6 w-6 text-yellow-500 animate-bounce" />
                       </h4>
                       <div className="text-3xl font-black bg-gradient-to-r from-emerald-600 to-purple-600 bg-clip-text text-transparent animate-pulse">
-                        🧱 {finalPieces} brick{finalPieces > 1 ? 's' : ''} = £{finalAmount} 🧱
+                        🤲 {finalPieces} prayer space{finalPieces > 1 ? 's' : ''} = £{finalAmount} 🤲
                       </div>
                       <div className="text-lg font-bold text-emerald-700 mt-2">
-                        You're building the foundation of faith! 🕌✨
+                        You're creating sacred spaces for worship! 🕌✨
                       </div>
                     </div>
                   </div>
@@ -299,7 +298,7 @@ const BuildMosque = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
                     <div className="relative z-10 flex items-center justify-center gap-3">
                       <Star className="h-6 w-6 animate-spin" />
-                      CONTRIBUTE YOUR DIVINE PIECE - £{finalAmount}
+                      CONTRIBUTE YOUR DIVINE SPACE - £{finalAmount}
                       <Crown className="h-6 w-6 animate-bounce" />
                     </div>
                   </Button>
@@ -423,7 +422,7 @@ const BuildMosque = () => {
                 <Crown className="h-8 w-8 animate-bounce" />
               </h3>
               <p className="text-xl mb-6 font-bold">
-                This epic, visual, and transparent adventure highlights the divine impact of each contribution, 
+                This epic, visual, and transparent adventure highlights the divine impact of each prayer space contribution, 
                 builds unshakeable trust, and inspires eternal participation! 🚀✨
               </p>
               <Button 
