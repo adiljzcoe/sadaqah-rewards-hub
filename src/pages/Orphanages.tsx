@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import ProjectDonationWidget from '@/components/ProjectDonationWidget';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -95,16 +95,6 @@ const getStatusBadge = (status: string) => {
   }
 };
 
-const handleProjectSelect = (project: typeof orphanageProjects[0]) => {
-  setSelectedProject(project);
-  setSelectedPieces(1);
-  setCustomPieces('');
-};
-
-const fundingProjects = orphanageProjects.filter(p => p.status === 'funding');
-const buildingProjects = orphanageProjects.filter(p => p.status === 'building');
-const completedProjects = orphanageProjects.filter(p => p.status === 'completed');
-
 const Orphanages = () => {
   const [selectedPieces, setSelectedPieces] = useState(1);
   const [customPieces, setCustomPieces] = useState('');
@@ -116,6 +106,16 @@ const Orphanages = () => {
   const customAmount = customPieces ? parseInt(customPieces) * selectedProject.pricePerSpace : 0;
   const finalAmount = customPieces ? customAmount : selectedTier ? selectedTier.pieces * selectedProject.pricePerSpace : 0;
   const finalPieces = customPieces ? parseInt(customPieces) : selectedPieces;
+
+  const handleProjectSelect = (project: typeof orphanageProjects[0]) => {
+    setSelectedProject(project);
+    setSelectedPieces(1);
+    setCustomPieces('');
+  };
+
+  const fundingProjects = orphanageProjects.filter(p => p.status === 'funding');
+  const buildingProjects = orphanageProjects.filter(p => p.status === 'building');
+  const completedProjects = orphanageProjects.filter(p => p.status === 'completed');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-pink-50">
