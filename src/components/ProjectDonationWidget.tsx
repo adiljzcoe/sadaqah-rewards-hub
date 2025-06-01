@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -25,6 +25,8 @@ interface ProjectConfig {
     name: string;
     totalPortions: number;
     description: string;
+    capacity?: number;
+    totalCost?: number;
   }>;
 }
 
@@ -37,6 +39,7 @@ const projectConfigs: Record<string, ProjectConfig> = {
     color: 'text-emerald-600',
     bgColor: 'bg-emerald-50 border-emerald-200',
     locations: [
+      { id: 'general', name: 'General Pool', country: 'Western Locations', urgency: 'medium' },
       { id: 'gaza', name: 'Gaza', country: 'Palestine', urgency: 'high' },
       { id: 'syria', name: 'Aleppo', country: 'Syria', urgency: 'high' },
       { id: 'pakistan', name: 'Karachi', country: 'Pakistan', urgency: 'medium' },
@@ -45,9 +48,30 @@ const projectConfigs: Record<string, ProjectConfig> = {
       { id: 'yemen', name: 'Sana\'a', country: 'Yemen', urgency: 'high' }
     ],
     sizes: [
-      { id: 'small', name: 'Small Mosque', totalPortions: 50, description: 'Community mosque for 200 people' },
-      { id: 'medium', name: 'Medium Mosque', totalPortions: 75, description: 'District mosque for 500 people' },
-      { id: 'large', name: 'Large Mosque', totalPortions: 100, description: 'Central mosque for 1000+ people' }
+      { 
+        id: 'small', 
+        name: 'Small Mosque', 
+        totalPortions: 50, 
+        description: 'Community mosque for 200 people',
+        capacity: 200,
+        totalCost: 45000
+      },
+      { 
+        id: 'medium', 
+        name: 'Medium Mosque', 
+        totalPortions: 75, 
+        description: 'District mosque for 500 people',
+        capacity: 500,
+        totalCost: 75000
+      },
+      { 
+        id: 'large', 
+        name: 'Large Mosque', 
+        totalPortions: 100, 
+        description: 'Central mosque for 1000+ people',
+        capacity: 1000,
+        totalCost: 120000
+      }
     ]
   },
   waterwell: {
@@ -120,6 +144,15 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
   const [customIntention, setCustomIntention] = useState('');
   const [portionCount, setPortionCount] = useState(1);
   const [showOnlyExisting, setShowOnlyExisting] = useState(false);
+
+  // Auto-select defaults for mosque
+  useEffect(() => {
+    if (projectType === 'mosque') {
+      setSelectedLocation('general');
+      setSelectedSize('medium');
+      setSelectedIntention('For myself');
+    }
+  }, [projectType]);
   
   // Mock existing project data - would come from API
   const [existingProjects] = useState([
@@ -160,6 +193,24 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
   const selectedLocationData = config.locations.find(loc => loc.id === selectedLocation);
   const selectedSizeData = config.sizes.find(size => size.id === selectedSize);
   
+  // Calculate prayer space cost based on capacity and total cost
+  const calculatePrayerSpaceCost = () => {
+    if (projectType === 'mosque') {
+      // General pool has fixed price
+      if (selectedLocation === 'general') {
+        return 80;
+      }
+      
+      // Calculate based on capacity and total cost
+      if (selectedSizeData?.capacity && selectedSizeData?.totalCost) {
+        return Math.round(selectedSizeData.totalCost / selectedSizeData.capacity);
+      }
+    }
+    return config.portionPrice;
+  };
+
+  const prayerSpaceCost = calculatePrayerSpaceCost();
+  
   // Find existing project that matches selection
   const matchingProject = existingProjects.find(
     project => project.location === selectedLocation && project.size === selectedSize
@@ -181,7 +232,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
     return config.sizes.filter(size => existingSizeIds.includes(size.id));
   };
 
-  const totalCost = portionCount * config.portionPrice;
+  const totalCost = portionCount * prayerSpaceCost;
   const finalIntention = selectedIntention === 'Other (specify)' ? customIntention : selectedIntention;
 
   const getUrgencyBadge = (urgency?: string) => {
@@ -197,6 +248,23 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
     }
   };
 
+  const handleDonation = () => {
+    console.log('Processing donation:', {
+      projectType,
+      location: selectedLocationData?.name,
+      size: selectedSizeData?.name,
+      intention: finalIntention,
+      portionCount,
+      prayerSpaceCost,
+      totalCost,
+      jannahPoints: totalCost * 10 // 10 jannah points per £1
+    });
+
+    // This would integrate with the donation processing system
+    // and add jannah points to user's account
+    alert(`Donation successful! £${totalCost} donated for ${portionCount} prayer space${portionCount > 1 ? 's' : ''}. You earned ${totalCost * 10} Jannah Points!`);
+  };
+
   return (
     <div className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
       <div className="container mx-auto px-4 py-4">
@@ -210,7 +278,12 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <h3 className="text-xl font-bold text-gray-800">
                   Fund {config.type === 'waterwell' ? 'Water Well' : config.type === 'mosque' ? 'Mosque' : 'Orphanage'} {config.portionName}s
                 </h3>
-                <p className="text-sm text-gray-600">£{config.portionPrice} per {config.portionName.toLowerCase()}</p>
+                <p className="text-sm text-gray-600">
+                  {projectType === 'mosque' && selectedLocation === 'general' 
+                    ? '£80 per prayer space (General Pool)' 
+                    : `£${prayerSpaceCost} per ${config.portionName.toLowerCase()}`
+                  }
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -238,11 +311,16 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Choose location" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
                   {getFilteredLocations().map((location) => (
                     <SelectItem key={location.id} value={location.id} className="bg-white hover:bg-gray-50">
                       <div className="flex items-center justify-between w-full">
-                        <span>{location.name}, {location.country}</span>
+                        <span>
+                          {location.name}, {location.country}
+                          {location.id === 'general' && (
+                            <Badge className="ml-2 bg-blue-100 text-blue-700 text-xs">Default</Badge>
+                          )}
+                        </span>
                         {getUrgencyBadge(location.urgency)}
                       </div>
                     </SelectItem>
@@ -261,12 +339,17 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Choose size" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
                   {getFilteredSizes().map((size) => (
                     <SelectItem key={size.id} value={size.id} className="bg-white hover:bg-gray-50">
                       <div>
                         <div className="font-medium">{size.name}</div>
-                        <div className="text-xs text-gray-500">{size.description}</div>
+                        <div className="text-xs text-gray-500">
+                          {size.description}
+                          {projectType === 'mosque' && size.capacity && (
+                            <span> • {size.capacity} capacity</span>
+                          )}
+                        </div>
                       </div>
                     </SelectItem>
                   ))}
@@ -284,7 +367,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Choose intention" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 shadow-lg">
+                <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
                   {intentionOptions.map((intention) => (
                     <SelectItem key={intention} value={intention} className="bg-white hover:bg-gray-50">
                       {intention}
@@ -341,8 +424,22 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
             </div>
           )}
 
+          {/* General Pool Information */}
+          {selectedLocation === 'general' && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+              <h4 className="font-semibold text-blue-800 mb-2 flex items-center">
+                <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                General Mosque Pool Fund
+              </h4>
+              <p className="text-sm text-blue-700">
+                Your donation goes into a shared fund available to Muslim communities in Western locations who wish to build mosques. 
+                Fixed rate of £80 per prayer space regardless of mosque size. Earn {totalCost * 10} Jannah Points!
+              </p>
+            </div>
+          )}
+
           {/* Existing Project Match */}
-          {matchingProject && selectedLocationData && selectedSizeData && (
+          {matchingProject && selectedLocationData && selectedSizeData && selectedLocation !== 'general' && (
             <div className="mb-6 p-4 bg-white rounded-lg border-2 border-green-200 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-800 flex items-center">
@@ -372,7 +469,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
           )}
 
           {/* Show message when filtering but no existing projects */}
-          {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && (
+          {showOnlyExisting && !matchingProject && selectedLocation && selectedSize && selectedLocation !== 'general' && (
             <div className="mb-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
               <p className="text-sm text-yellow-800">
                 No existing projects found for this combination. Your donation would start a new project fund!
@@ -387,13 +484,17 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 Total: £{totalCost.toLocaleString()}
               </div>
               <div className="text-sm text-gray-600">
-                {portionCount} {config.portionName}{portionCount > 1 ? 's' : ''} × £{config.portionPrice}
+                {portionCount} {config.portionName}{portionCount > 1 ? 's' : ''} × £{prayerSpaceCost}
                 {finalIntention && ` • ${finalIntention}`}
+              </div>
+              <div className="text-xs text-emerald-600 font-medium">
+                +{totalCost * 10} Jannah Points
               </div>
             </div>
             <Button
               className={`${config.color.replace('text-', 'bg-').replace('-600', '-600')} hover:${config.color.replace('text-', 'bg-').replace('-600', '-700')} text-white px-8 py-2 text-lg font-semibold`}
               disabled={!selectedLocation || !selectedSize || !selectedIntention || (selectedIntention === 'Other (specify)' && !customIntention)}
+              onClick={handleDonation}
             >
               Fund Now
             </Button>

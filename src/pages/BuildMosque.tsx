@@ -18,6 +18,11 @@ const BuildMosque = () => {
     activeContributions: 0
   };
 
+  // Calculate prayer space cost based on capacity and total cost
+  const calculatePrayerSpaceCost = (capacity: number, totalCost: number) => {
+    return Math.round(totalCost / capacity);
+  };
+
   // Mock data for mosque projects with prayer space details
   const mosqueProjects = [
     {
@@ -33,7 +38,7 @@ const BuildMosque = () => {
       size: 'medium',
       totalPrayerSpaces: 75,
       fundedPrayerSpaces: 75,
-      prayerSpaceCost: 100
+      prayerSpaceCost: calculatePrayerSpaceCost(500, 75000)
     },
     {
       id: 2,
@@ -50,7 +55,7 @@ const BuildMosque = () => {
       size: 'large',
       totalPrayerSpaces: 100,
       fundedPrayerSpaces: 79,
-      prayerSpaceCost: 120
+      prayerSpaceCost: calculatePrayerSpaceCost(800, 120000)
     },
     {
       id: 3,
@@ -65,7 +70,7 @@ const BuildMosque = () => {
       size: 'small',
       totalPrayerSpaces: 50,
       fundedPrayerSpaces: 50,
-      prayerSpaceCost: 90
+      prayerSpaceCost: calculatePrayerSpaceCost(300, 45000)
     },
     {
       id: 4,
@@ -82,7 +87,7 @@ const BuildMosque = () => {
       size: 'medium',
       totalPrayerSpaces: 75,
       fundedPrayerSpaces: 64,
-      prayerSpaceCost: 110
+      prayerSpaceCost: calculatePrayerSpaceCost(600, 85000)
     },
     {
       id: 5,
@@ -97,7 +102,7 @@ const BuildMosque = () => {
       size: 'medium',
       totalPrayerSpaces: 60,
       fundedPrayerSpaces: 60,
-      prayerSpaceCost: 92
+      prayerSpaceCost: calculatePrayerSpaceCost(400, 55000)
     },
     {
       id: 6,
@@ -112,7 +117,7 @@ const BuildMosque = () => {
       size: 'large',
       totalPrayerSpaces: 80,
       fundedPrayerSpaces: 80,
-      prayerSpaceCost: 119
+      prayerSpaceCost: calculatePrayerSpaceCost(700, 95000)
     }
   ];
 
@@ -132,6 +137,8 @@ const BuildMosque = () => {
   const handleBuyPrayerSpace = (project: any) => {
     console.log(`Buying prayer space for ${project.name} - £${project.prayerSpaceCost}`);
     // This would integrate with the donation widget/payment system
+    // and add jannah points to user's account
+    alert(`Donation successful! £${project.prayerSpaceCost} donated for 1 prayer space in ${project.name}. You earned ${project.prayerSpaceCost * 10} Jannah Points!`);
   };
 
   const completedCount = mosqueProjects.filter(p => p.status === 'completed').length;
