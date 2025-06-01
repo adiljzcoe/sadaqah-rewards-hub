@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -451,21 +452,24 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
           )}
 
           <div className="grid md:grid-cols-4 gap-6 mb-6">
-            {/* Location Selection - Sky Blue Theme */}
-            <div className="bg-gradient-to-br from-sky-50 to-sky-100 p-6 rounded-2xl border-2 border-sky-200 shadow-lg">
-              <label className="block text-sm font-semibold text-sky-800 mb-3 flex items-center">
-                <MapPin className="h-4 w-4 mr-2 text-sky-600" />
+            {/* Step 1: Location Selection - Light Blue Theme */}
+            <div className="bg-gradient-to-br from-blue-100 via-blue-50 to-cyan-100 p-6 rounded-2xl border-2 border-blue-300 shadow-lg relative">
+              <div className="absolute -top-3 -left-3 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                1
+              </div>
+              <label className="block text-sm font-semibold text-blue-800 mb-3 flex items-center">
+                <MapPin className="h-4 w-4 mr-2 text-blue-600" />
                 Select Location
               </label>
               <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                <SelectTrigger className="bg-white/80 backdrop-blur-sm border-sky-300 rounded-xl h-12 text-sky-800 shadow-md">
+                <SelectTrigger className="bg-white/90 backdrop-blur-sm border-blue-400 rounded-xl h-12 text-blue-800 shadow-md">
                   <SelectValue placeholder="Choose location" />
                 </SelectTrigger>
-                <SelectContent className="bg-white/95 backdrop-blur-sm border border-sky-200 shadow-xl rounded-xl">
+                <SelectContent className="bg-white/95 backdrop-blur-sm border border-blue-200 shadow-xl rounded-xl">
                   {getFilteredLocations().map((location) => (
-                    <SelectItem key={location.id} value={location.id} className="bg-white/80 hover:bg-sky-50 rounded-lg m-1">
+                    <SelectItem key={location.id} value={location.id} className="bg-white/80 hover:bg-blue-50 rounded-lg m-1">
                       <div className="flex items-center justify-between w-full">
-                        <span className="text-sky-800">
+                        <span className="text-blue-800">
                           {location.name}, {location.country}
                           {location.id === 'general' && (
                             <Badge className="ml-2 bg-blue-100 text-blue-700 text-xs rounded-full">Default</Badge>
@@ -479,22 +483,25 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               </Select>
             </div>
 
-            {/* Size Selection - Light Blue Theme */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl border-2 border-blue-200 shadow-lg">
-              <label className="block text-sm font-semibold text-blue-800 mb-3 flex items-center">
-                <Target className="h-4 w-4 mr-2 text-blue-600" />
+            {/* Step 2: Size Selection - Green Theme */}
+            <div className="bg-gradient-to-br from-emerald-100 via-green-50 to-teal-100 p-6 rounded-2xl border-2 border-emerald-300 shadow-lg relative">
+              <div className="absolute -top-3 -left-3 w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                2
+              </div>
+              <label className="block text-sm font-semibold text-emerald-800 mb-3 flex items-center">
+                <Target className="h-4 w-4 mr-2 text-emerald-600" />
                 Project Size
               </label>
               <Select value={selectedSize} onValueChange={setSelectedSize}>
-                <SelectTrigger className="bg-white/80 backdrop-blur-sm border-blue-300 rounded-xl h-12 text-blue-800 shadow-md">
+                <SelectTrigger className="bg-white/90 backdrop-blur-sm border-emerald-400 rounded-xl h-12 text-emerald-800 shadow-md">
                   <SelectValue placeholder="Choose size" />
                 </SelectTrigger>
-                <SelectContent className="bg-white/95 backdrop-blur-sm border border-blue-200 shadow-xl rounded-xl">
+                <SelectContent className="bg-white/95 backdrop-blur-sm border border-emerald-200 shadow-xl rounded-xl">
                   {getFilteredSizes().map((size) => (
-                    <SelectItem key={size.id} value={size.id} className="bg-white/80 hover:bg-blue-50 rounded-lg m-1">
+                    <SelectItem key={size.id} value={size.id} className="bg-white/80 hover:bg-emerald-50 rounded-lg m-1">
                       <div>
-                        <div className="font-medium text-blue-800">{size.name}</div>
-                        <div className="text-xs text-blue-600">
+                        <div className="font-medium text-emerald-800">{size.name}</div>
+                        <div className="text-xs text-emerald-600">
                           {size.description}
                           {projectType === 'mosque' && size.capacity && (
                             <span> • {size.capacity} capacity</span>
@@ -507,19 +514,22 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               </Select>
             </div>
 
-            {/* Intention Selection - Indigo Theme */}
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-100 p-6 rounded-2xl border-2 border-indigo-200 shadow-lg">
-              <label className="block text-sm font-semibold text-indigo-800 mb-3 flex items-center">
-                <Heart className="h-4 w-4 mr-2 text-indigo-600" />
+            {/* Step 3: Intention Selection - Purple Theme */}
+            <div className="bg-gradient-to-br from-purple-100 via-violet-50 to-indigo-100 p-6 rounded-2xl border-2 border-purple-300 shadow-lg relative">
+              <div className="absolute -top-3 -left-3 w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                3
+              </div>
+              <label className="block text-sm font-semibold text-purple-800 mb-3 flex items-center">
+                <Heart className="h-4 w-4 mr-2 text-purple-600" />
                 Intention
               </label>
               <Select value={selectedIntention} onValueChange={setSelectedIntention}>
-                <SelectTrigger className="bg-white/80 backdrop-blur-sm border-indigo-300 rounded-xl h-12 text-indigo-800 shadow-md">
+                <SelectTrigger className="bg-white/90 backdrop-blur-sm border-purple-400 rounded-xl h-12 text-purple-800 shadow-md">
                   <SelectValue placeholder="Choose intention" />
                 </SelectTrigger>
-                <SelectContent className="bg-white/95 backdrop-blur-sm border border-indigo-200 shadow-xl rounded-xl">
+                <SelectContent className="bg-white/95 backdrop-blur-sm border border-purple-200 shadow-xl rounded-xl">
                   {intentionOptions.map((intention) => (
-                    <SelectItem key={intention} value={intention} className="bg-white/80 hover:bg-indigo-50 rounded-lg m-1 text-indigo-800">
+                    <SelectItem key={intention} value={intention} className="bg-white/80 hover:bg-purple-50 rounded-lg m-1 text-purple-800">
                       {intention}
                     </SelectItem>
                   ))}
@@ -527,11 +537,14 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               </Select>
             </div>
 
-            {/* Portion Count - Only show for portions mode */}
+            {/* Step 4: Portion Count - Only show for portions mode - Pink Theme */}
             {fundingMode === 'portions' && (
-              <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-6 rounded-2xl border-2 border-purple-200 shadow-lg">
-                <label className="block text-sm font-semibold text-purple-800 mb-3 flex items-center">
-                  <Users className="h-4 w-4 mr-2 text-purple-600" />
+              <div className="bg-gradient-to-br from-pink-100 via-rose-50 to-red-100 p-6 rounded-2xl border-2 border-pink-300 shadow-lg relative">
+                <div className="absolute -top-3 -left-3 w-8 h-8 bg-pink-500 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                  4
+                </div>
+                <label className="block text-sm font-semibold text-pink-800 mb-3 flex items-center">
+                  <Users className="h-4 w-4 mr-2 text-pink-600" />
                   {config.portionName}s
                 </label>
                 <div className="flex items-center space-x-3">
@@ -539,7 +552,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                     size="sm"
                     variant="outline"
                     onClick={() => setPortionCount(Math.max(1, portionCount - 1))}
-                    className="h-10 w-10 p-0 bg-white/80 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-xl shadow-md"
+                    className="h-10 w-10 p-0 bg-white/90 border-pink-400 text-pink-700 hover:bg-pink-50 rounded-xl shadow-md"
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
@@ -547,14 +560,14 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                     type="number"
                     value={portionCount}
                     onChange={(e) => setPortionCount(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="text-center bg-white/80 border-purple-300 w-16 h-10 rounded-xl text-purple-800 shadow-md"
+                    className="text-center bg-white/90 border-pink-400 w-16 h-10 rounded-xl text-pink-800 shadow-md"
                     min="1"
                   />
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => setPortionCount(portionCount + 1)}
-                    className="h-10 w-10 p-0 bg-white/80 border-purple-300 text-purple-700 hover:bg-purple-50 rounded-xl shadow-md"
+                    className="h-10 w-10 p-0 bg-white/90 border-pink-400 text-pink-700 hover:bg-pink-50 rounded-xl shadow-md"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
