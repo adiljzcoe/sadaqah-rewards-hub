@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Building2, Droplets, Heart, MapPin, Users, Target, Plus, Minus, Filter, Crown, Star, Sparkles } from 'lucide-react';
+import { Building2, Droplets, Heart, MapPin, Users, Target, Plus, Minus, Crown, Star, Sparkles } from 'lucide-react';
 
 interface ProjectConfig {
   type: 'mosque' | 'waterwell' | 'orphanage';
@@ -338,15 +338,6 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <Button
-                variant={showOnlyExisting ? "default" : "outline"}
-                size="sm"
-                onClick={() => setShowOnlyExisting(!showOnlyExisting)}
-                className="flex items-center space-x-2"
-              >
-                <Filter className="h-4 w-4" />
-                <span>Existing Projects</span>
-              </Button>
               <Badge className="bg-purple-100 text-purple-700">Pooled Funding</Badge>
             </div>
           </div>
