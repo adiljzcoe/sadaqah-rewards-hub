@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import ProjectDonationWidget from '@/components/ProjectDonationWidget';
@@ -109,7 +108,7 @@ const WaterWells = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
       <Header />
-      <ProjectDonationWidget projectType="well" sticky={false} />
+      <ProjectDonationWidget projectType="waterwell" />
       
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
