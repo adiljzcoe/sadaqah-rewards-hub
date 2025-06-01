@@ -312,8 +312,8 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
                 </div>
               ))}
             </div>
-          </div>
-        </CardContent>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
