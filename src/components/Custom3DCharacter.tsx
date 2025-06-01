@@ -61,7 +61,10 @@ function BlessedHeart({ isActive }: BlessedHeartProps) {
       if (glowRef.current) {
         const glowIntensity = 0.7 + Math.sin(time * 2) * 0.3;
         glowRef.current.scale.setScalar(glowIntensity);
-        glowRef.current.material.opacity = 0.3 + Math.sin(time * 2) * 0.1;
+        const material = glowRef.current.material as THREE.MeshBasicMaterial;
+        if (material) {
+          material.opacity = 0.3 + Math.sin(time * 2) * 0.1;
+        }
       }
     }
   });
