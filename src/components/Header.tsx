@@ -30,13 +30,13 @@ const Header = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Charity logos for the flying plane
+  // Charity logos for the flying plane with matching backgrounds
   const charityLogos = [
-    { name: 'One Nation', logo: '/lovable-uploads/06a0c139-e89f-4071-98fb-da09f757e1eb.png' },
-    { name: 'Human Appeal', logo: '/lovable-uploads/fe60c231-8422-4bf0-83e7-47b219d91e70.png' },
-    { name: 'Muslim Global Relief', logo: '/lovable-uploads/051509ed-1b47-49b2-8b42-123906f123c6.png' },
-    { name: 'Islamic Help', logo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png' },
-    { name: 'Muslim Aid', logo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png' }
+    { name: 'One Nation', logo: '/lovable-uploads/06a0c139-e89f-4071-98fb-da09f757e1eb.png', bgColor: 'bg-blue-600' },
+    { name: 'Human Appeal', logo: '/lovable-uploads/fe60c231-8422-4bf0-83e7-47b219d91e70.png', bgColor: 'bg-orange-500' },
+    { name: 'Muslim Global Relief', logo: '/lovable-uploads/051509ed-1b47-49b2-8b42-123906f123c6.png', bgColor: 'bg-green-600' },
+    { name: 'Islamic Help', logo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png', bgColor: 'bg-purple-600' },
+    { name: 'Muslim Aid', logo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png', bgColor: 'bg-red-600' }
   ];
 
   return (
@@ -66,10 +66,8 @@ const Header = () => {
           >
             {/* Flying Banner with pointed tail */}
             <div className="relative">
-              {/* Banner body */}
-              <div className="bg-white rounded-lg border border-gray-300 shadow-lg px-3 py-2 flex flex-col items-center min-w-max relative">
-                {/* Tiny "Charity Partner" text on top */}
-                <span className="text-xs font-medium text-gray-600 mb-1 whitespace-nowrap text-center leading-tight" style={{ fontSize: '10px' }}>Charity Partner</span>
+              {/* Banner body with charity-specific background */}
+              <div className={`${charity.bgColor} rounded-md border border-white/30 shadow-lg px-2 py-1 flex items-center min-w-max relative`}>
                 {/* Logo */}
                 <img 
                   src={charity.logo} 
@@ -78,8 +76,7 @@ const Header = () => {
                 />
                 {/* Pointed tail */}
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-                  <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent"></div>
-                  <div className="absolute top-1/2 -translate-y-1/2 left-1 w-0 h-0 border-l-[10px] border-l-gray-300 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent"></div>
+                  <div className={`w-0 h-0 border-l-[10px] border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
                 </div>
               </div>
               
