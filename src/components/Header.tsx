@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,7 +32,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30">
+    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-visible border-b-2 border-cyan-400/30 z-50">
       {/* Final Fantasy inspired crystalline background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
       <div className="absolute top-0 left-0 w-full h-full">
@@ -132,30 +133,53 @@ const Header = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm">
+                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent">
                     Donate
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-3 p-4 bg-slate-800/95 backdrop-blur-md border border-cyan-400/40 shadow-xl rounded-xl ring-1 ring-cyan-300/30">
-                      <div className="grid w-[400px] gap-3 p-4">
-                        <Link to="/campaigns" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Campaigns</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Support urgent causes and make a direct impact
-                          </p>
-                        </Link>
-                        <Link to="/charities" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Charity Partners</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Browse our trusted charity partners and their projects
-                          </p>
-                        </Link>
-                        <Link to="/why-donate" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Why Donate With Us</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Learn about our transparent fund distribution
-                          </p>
-                        </Link>
+                    <div className="grid w-[500px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30">
+                      <div className="grid grid-cols-1 gap-4">
+                        <div>
+                          <h3 className="text-lg font-semibold text-cyan-300 mb-3">Donation Options</h3>
+                          <div className="space-y-3">
+                            <Link to="/campaigns" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                              <div className="text-sm font-medium leading-none text-white">Active Campaigns</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-slate-300">
+                                Support urgent causes and make a direct impact
+                              </p>
+                            </Link>
+                            <Link to="/build-mosque" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                              <div className="text-sm font-medium leading-none text-white">Build a Mosque</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-slate-300">
+                                Fund mosque construction projects worldwide
+                              </p>
+                            </Link>
+                            <Link to="/water-wells" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                              <div className="text-sm font-medium leading-none text-white">Water Wells</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-slate-300">
+                                Provide clean water access to communities in need
+                              </p>
+                            </Link>
+                            <Link to="/orphanages" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                              <div className="text-sm font-medium leading-none text-white">Orphanages</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-slate-300">
+                                Support orphan care and education programs
+                              </p>
+                            </Link>
+                            <Link to="/charities" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                              <div className="text-sm font-medium leading-none text-white">Charity Partners</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-slate-300">
+                                Browse our trusted charity partners and their projects
+                              </p>
+                            </Link>
+                            <Link to="/why-donate" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                              <div className="text-sm font-medium leading-none text-white">Why Donate With Us</div>
+                              <p className="line-clamp-2 text-sm leading-snug text-slate-300">
+                                Learn about our transparent fund distribution
+                              </p>
+                            </Link>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </NavigationMenuContent>
@@ -166,27 +190,28 @@ const Header = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm">
+                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent">
                     Community
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-3 p-4 bg-slate-800/95 backdrop-blur-md border border-cyan-400/40 shadow-xl rounded-xl ring-1 ring-cyan-300/30">
-                      <div className="grid w-[400px] gap-3 p-4">
-                        <Link to="/leaderboards" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Leaderboards</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    <div className="grid w-[400px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30">
+                      <div className="grid grid-cols-1 gap-3">
+                        <h3 className="text-lg font-semibold text-cyan-300 mb-2">Community Hub</h3>
+                        <Link to="/leaderboards" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                          <div className="text-sm font-medium leading-none text-white">Leaderboards</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-slate-300">
                             See top donors and earn recognition for your contributions
                           </p>
                         </Link>
-                        <Link to="/live" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Live Feed</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        <Link to="/live" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                          <div className="text-sm font-medium leading-none text-white">Live Feed</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-slate-300">
                             Real-time updates from charity partners and projects
                           </p>
                         </Link>
-                        <Link to="/blog" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Blog</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        <Link to="/blog" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                          <div className="text-sm font-medium leading-none text-white">Blog</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-slate-300">
                             Stories, updates, and insights from our community
                           </p>
                         </Link>
@@ -200,21 +225,22 @@ const Header = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm">
+                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent">
                     Rewards
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[400px] gap-3 p-4 bg-slate-800/95 backdrop-blur-md border border-cyan-400/40 shadow-xl rounded-xl ring-1 ring-cyan-300/30">
-                      <div className="grid w-[400px] gap-3 p-4">
-                        <Link to="/coins" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Sadaqah Coins</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    <div className="grid w-[400px] gap-4 p-6 bg-slate-800/98 backdrop-blur-md border border-cyan-400/40 shadow-2xl rounded-xl ring-1 ring-cyan-300/30">
+                      <div className="grid grid-cols-1 gap-3">
+                        <h3 className="text-lg font-semibold text-cyan-300 mb-2">Rewards & Benefits</h3>
+                        <Link to="/coins" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                          <div className="text-sm font-medium leading-none text-white">Sadaqah Coins</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-slate-300">
                             Purchase coins and unlock exclusive rewards
                           </p>
                         </Link>
-                        <Link to="/membership" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Membership Tiers</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        <Link to="/membership" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-slate-700/50 hover:text-cyan-300 focus:bg-slate-700/50 focus:text-cyan-300">
+                          <div className="text-sm font-medium leading-none text-white">Membership Tiers</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-slate-300">
                             Upgrade for multiplied points and exclusive benefits
                           </p>
                         </Link>
