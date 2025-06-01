@@ -14,8 +14,6 @@ interface Jannah3DBuilderProps {
   gridSize: number;
 }
 
-const GRID_SIZE = 12;
-
 const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
   items,
   userCoins,
@@ -35,7 +33,6 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
   const handleCellClick = (x: number, y: number) => {
     if (selectedItem && canPlaceItem(x, y, selectedItem)) {
       if (onPurchase(selectedItem)) {
-        // Don't place grid expansion items on the grid
         if (!selectedItem.id.includes('grid-expansion')) {
           const newItems = [...placedItems, { item: selectedItem, x, y }];
           onItemsChange(newItems);
@@ -46,7 +43,6 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
   };
 
   const canPlaceItem = (x: number, y: number, item: JannahItem): boolean => {
-    // Grid expansion items don't need placement validation
     if (item.id.includes('grid-expansion')) {
       return true;
     }
@@ -72,90 +68,139 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
     return true;
   };
 
-  const getItemHeight = (item: JannahItem) => {
+  const getBuildingHeight = (item: JannahItem) => {
     switch (item.category) {
-      case 'structures': return 'h-20';
-      case 'nature': return item.name.includes('Tree') ? 'h-16' : 'h-12';
-      default: return 'h-14';
+      case 'structures': 
+        if (item.name.includes('Palace') || item.name.includes('Castle')) return 80;
+        if (item.name.includes('Mosque') || item.name.includes('Library')) return 60;
+        return 40;
+      case 'nature': 
+        if (item.name.includes('Mountain')) return 100;
+        if (item.name.includes('Tree') || item.name.includes('Grove')) return 35;
+        return 20;
+      case 'terrain':
+        if (item.name.includes('Mountain')) return 120;
+        if (item.name.includes('Hill')) return 50;
+        return 25;
+      case 'special':
+        if (item.name.includes('Sun') || item.name.includes('Rainbow')) return 150;
+        if (item.name.includes('Moon') || item.name.includes('Throne')) return 90;
+        return 30;
+      default: return 25;
     }
   };
 
   const getItemColor = (item: JannahItem) => {
     switch (item.category) {
-      case 'nature': return 'from-green-500 to-emerald-700';
-      case 'structures': return 'from-amber-500 to-orange-700';
-      case 'terrain': return 'from-orange-500 to-red-700';
-      case 'religious': return 'from-purple-500 to-indigo-700';
-      case 'animals': return 'from-pink-500 to-rose-700';
-      case 'fruits': return 'from-orange-400 to-yellow-600';
-      case 'decorations': return 'from-indigo-500 to-purple-700';
-      case 'transport': return 'from-cyan-500 to-blue-700';
-      case 'utilities': return 'from-gray-500 to-slate-700';
-      default: return 'from-purple-500 to-pink-700';
+      case 'nature': return 'from-emerald-400 via-green-500 to-emerald-600';
+      case 'structures': return 'from-amber-400 via-orange-500 to-amber-600';
+      case 'terrain': return 'from-orange-400 via-red-500 to-orange-600';
+      case 'religious': return 'from-purple-400 via-indigo-500 to-purple-600';
+      case 'animals': return 'from-pink-400 via-rose-500 to-pink-600';
+      case 'fruits': return 'from-yellow-400 via-orange-500 to-yellow-600';
+      case 'decorations': return 'from-indigo-400 via-purple-500 to-indigo-600';
+      case 'transport': return 'from-cyan-400 via-blue-500 to-cyan-600';
+      case 'utilities': return 'from-gray-400 via-slate-500 to-gray-600';
+      default: return 'from-purple-400 via-pink-500 to-purple-600';
     }
   };
 
-  const renderTreeBlock = (item: JannahItem) => {
-    const isTreeItem = item.name.toLowerCase().includes('tree') || item.category === 'nature';
+  const render3DBuilding = (item: JannahItem) => {
+    const height = getBuildingHeight(item);
+    const isStructure = item.category === 'structures' || item.category === 'terrain';
     
-    if (!isTreeItem) {
-      return (
-        <div className={`
-          relative p-2 rounded-lg shadow-2xl
-          bg-gradient-to-b ${getItemColor(item)}
-          text-white transform transition-all duration-300 hover:scale-110
-          border-2 border-white/40
-          before:content-[''] before:absolute before:inset-0 before:bg-white/20 before:rounded-lg
-        `}>
-          {React.cloneElement(item.icon as React.ReactElement, {
-            className: "h-6 w-6 drop-shadow-lg relative z-10"
-          })}
-          <div className="absolute -bottom-1 -right-1 w-full h-full bg-black/20 rounded-lg -z-10"></div>
-        </div>
-      );
-    }
-
-    // Enhanced tree block with multiple trees and foliage
     return (
-      <div className="relative w-full h-full">
-        {/* Forest ground with grass texture */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-emerald-500 to-green-600 rounded-lg border-2 border-green-700 shadow-xl">
-          {/* Animated grass pattern */}
-          <div className="absolute inset-0 opacity-30">
-            <div className="absolute inset-0 bg-gradient-to-tr from-green-300/50 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-green-800/40 to-transparent"></div>
+      <div className="relative w-full h-full flex items-end justify-center" style={{ height: `${height}px` }}>
+        {/* Building shadow */}
+        <div 
+          className="absolute bottom-0 bg-black/30 rounded-full blur-sm"
+          style={{ 
+            width: isStructure ? '90%' : '70%', 
+            height: '8px',
+            transform: 'translateX(4px) translateY(2px)'
+          }}
+        />
+        
+        {/* Main building structure */}
+        <div 
+          className={`
+            relative transform-gpu
+            bg-gradient-to-b ${getItemColor(item)}
+            border-2 border-white/40
+            shadow-2xl
+          `}
+          style={{
+            width: isStructure ? '80%' : '60%',
+            height: `${height * 0.8}px`,
+            transform: viewMode === 'isometric' 
+              ? 'rotateX(60deg) rotateY(-30deg) translateZ(10px)' 
+              : 'translateZ(10px)',
+            borderRadius: isStructure ? '4px' : '8px',
+            boxShadow: `
+              0 ${height * 0.1}px ${height * 0.2}px rgba(0,0,0,0.3),
+              inset 0 0 20px rgba(255,255,255,0.2),
+              0 0 30px rgba(59, 130, 246, 0.3)
+            `
+          }}
+        >
+          {/* Building top highlight */}
+          <div 
+            className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-white/50 to-transparent rounded-t"
+          />
+          
+          {/* Building side panels for 3D effect */}
+          <div 
+            className="absolute top-0 right-0 bg-black/20"
+            style={{
+              width: '6px',
+              height: '100%',
+              transform: 'rotateY(90deg) translateZ(3px)',
+              transformOrigin: 'left center'
+            }}
+          />
+          
+          {/* Building icon */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            {React.cloneElement(item.icon as React.ReactElement, {
+              className: `h-8 w-8 text-white drop-shadow-2xl ${
+                isStructure ? 'animate-pulse' : 'animate-float'
+              }`,
+              style: { 
+                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))',
+                transform: viewMode === 'isometric' 
+                  ? 'rotateX(-60deg) rotateY(30deg)' 
+                  : 'none'
+              }
+            })}
           </div>
           
-          {/* Multiple trees arranged naturally */}
-          <div className="absolute inset-1 flex items-end justify-center">
-            {/* Background trees (smaller, darker) */}
-            <div className="absolute inset-0 flex items-end justify-around">
-              <TreeDeciduous className="h-4 w-4 text-green-800/60 transform -translate-y-1 animate-float" style={{ animationDelay: '0s' }} />
-              <Trees className="h-5 w-5 text-green-700/70 transform translate-x-1 animate-float" style={{ animationDelay: '0.5s' }} />
-              <TreePalm className="h-4 w-4 text-green-800/60 transform -translate-x-1 animate-float" style={{ animationDelay: '1s' }} />
+          {/* Animated particles for special items */}
+          {(item.category === 'special' || item.category === 'religious') && (
+            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded">
+              <div className="absolute top-2 left-2 w-1 h-1 bg-yellow-300 rounded-full animate-pulse opacity-80"></div>
+              <div className="absolute top-4 right-3 w-1 h-1 bg-white rounded-full animate-pulse opacity-60" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute bottom-3 left-4 w-0.5 h-0.5 bg-yellow-200 rounded-full animate-pulse opacity-70" style={{ animationDelay: '1s' }}></div>
             </div>
-            
-            {/* Foreground main tree */}
-            <div className="relative z-10 transform -translate-y-1">
-              {React.cloneElement(item.icon as React.ReactElement, {
-                className: "h-8 w-8 text-green-100 drop-shadow-xl animate-float"
-              })}
-            </div>
-            
-            {/* Animated foliage particles */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-1 left-2 w-1 h-1 bg-green-300 rounded-full animate-pulse opacity-60"></div>
-              <div className="absolute top-3 right-1 w-1 h-1 bg-emerald-200 rounded-full animate-pulse opacity-40" style={{ animationDelay: '0.3s' }}></div>
-              <div className="absolute bottom-2 left-1 w-0.5 h-0.5 bg-green-200 rounded-full animate-pulse opacity-50" style={{ animationDelay: '0.8s' }}></div>
-            </div>
-            
-            {/* Subtle wind effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-200/10 to-transparent animate-shimmer"></div>
-          </div>
+          )}
           
-          {/* Tree shadows */}
-          <div className="absolute bottom-0 right-1 w-6 h-2 bg-black/20 rounded-full blur-sm"></div>
+          {/* Divine glow effect */}
+          <div 
+            className="absolute inset-0 rounded bg-gradient-to-t from-transparent via-transparent to-white/10 animate-shimmer"
+            style={{ animationDuration: '4s' }}
+          />
         </div>
+        
+        {/* Special effects for nature items */}
+        {item.category === 'nature' && (
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Grass base */}
+            <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-green-600 to-green-400 rounded-b opacity-80" />
+            
+            {/* Floating leaves */}
+            <div className="absolute top-0 w-1 h-1 bg-green-300 rounded-full animate-float opacity-60" style={{ left: '20%' }}></div>
+            <div className="absolute top-2 w-0.5 h-0.5 bg-emerald-200 rounded-full animate-float opacity-50" style={{ right: '30%', animationDelay: '1s' }}></div>
+          </div>
+        )}
       </div>
     );
   };
@@ -170,87 +215,64 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
     const canPlace = selectedItem ? canPlaceItem(x, y, selectedItem) : false;
     const isHovered = hoveredCell?.x === x && hoveredCell?.y === y;
 
-    // SimCity-style isometric calculations
-    const cellStyle = viewMode === 'isometric' ? {
-      transform: `rotateX(60deg) rotateZ(${rotationAngle}deg)`,
-      transformStyle: 'preserve-3d' as const,
-    } : {
-      transform: `rotateZ(${rotationAngle}deg)`,
-    };
-
     return (
       <div
         key={`${x}-${y}`}
         className={`
-          relative transition-all duration-200 cursor-pointer
-          ${viewMode === 'isometric' ? 'aspect-[0.866/1]' : 'aspect-square'}
+          relative transition-all duration-200 cursor-pointer aspect-square
           ${placedItem 
-            ? 'bg-gradient-to-br from-green-400 via-emerald-500 to-green-600 shadow-lg border-green-700' 
+            ? 'bg-gradient-to-br from-emerald-100 via-green-50 to-emerald-100' 
             : selectedItem && canPlace
-              ? 'bg-gradient-to-br from-cyan-300 via-blue-400 to-cyan-500 shadow-md border-cyan-600 animate-pulse'
+              ? 'bg-gradient-to-br from-cyan-200 via-blue-100 to-cyan-200 animate-pulse'
               : selectedItem
-                ? 'bg-gradient-to-br from-red-200 to-red-300 opacity-60 border-red-400'
-                : 'bg-gradient-to-br from-gray-200 via-gray-100 to-white border-gray-400 hover:from-blue-100 hover:to-cyan-100'
+                ? 'bg-gradient-to-br from-red-100 to-red-200 opacity-60'
+                : 'bg-gradient-to-br from-gray-50 via-white to-gray-50 hover:from-blue-50 hover:to-cyan-50'
           }
-          ${isHovered && selectedItem && canPlace ? 'ring-2 ring-yellow-400 ring-opacity-80' : ''}
-          border-2 ${showGrid ? 'border-opacity-60' : 'border-opacity-20'}
+          ${isHovered && selectedItem && canPlace ? 'ring-4 ring-yellow-400 ring-opacity-60' : ''}
+          border-2 ${showGrid ? 'border-gray-300' : 'border-gray-200'} border-opacity-40
+          overflow-visible
         `}
-        style={cellStyle}
+        style={{
+          height: '60px',
+          perspective: viewMode === 'isometric' ? '800px' : 'none',
+          transform: viewMode === 'isometric' 
+            ? `rotateX(30deg) rotateY(${rotationAngle}deg)` 
+            : `rotateZ(${rotationAngle}deg)`
+        }}
         onClick={() => handleCellClick(x, y)}
         onMouseEnter={() => setHoveredCell({ x, y })}
         onMouseLeave={() => setHoveredCell(null)}
       >
-        {/* SimCity-style ground texture */}
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-30"></div>
+        {/* Enhanced ground texture */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-green-100/50 via-emerald-50/30 to-green-100/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
+        </div>
         
-        {/* Grid lines for SimCity feel */}
-        {showGrid && !placedItem && (
-          <div className="absolute inset-0 border border-gray-300 border-opacity-40"></div>
+        {/* Grid coordinates */}
+        {showGrid && (
+          <div className="absolute top-1 left-1 text-xs text-gray-400 font-mono bg-white/80 px-1 rounded">
+            {x},{y}
+          </div>
         )}
         
-        {/* Show trees on ALL cells that contain a placed item (not just main cell) */}
-        {placedItem && (
-          <div 
-            className={`
-              absolute inset-0 flex items-end justify-center pb-1
-              ${getItemHeight(placedItem.item)}
-              transform-gpu perspective-1000
-            `}
-            style={{
-              transform: viewMode === 'isometric' 
-                ? `rotateX(-60deg) rotateZ(-${rotationAngle}deg) translateZ(10px)` 
-                : `rotateZ(-${rotationAngle}deg)`
-            }}
-          >
-            {renderTreeBlock(placedItem.item)}
+        {/* 3D Building rendering - only on main cell */}
+        {placedItem && isMainCell && (
+          <div className="absolute inset-0 flex items-end justify-center pb-1">
+            {render3DBuilding(placedItem.item)}
           </div>
         )}
         
         {/* Preview for selected item */}
         {selectedItem && canPlace && isHovered && !selectedItem.id.includes('grid-expansion') && (
-          <div 
-            className={`
-              absolute inset-0 flex items-end justify-center pb-1
-              ${getItemHeight(selectedItem)}
-              transform-gpu perspective-1000
-            `}
-            style={{
-              transform: viewMode === 'isometric' 
-                ? `rotateX(-60deg) rotateZ(-${rotationAngle}deg) translateZ(10px)` 
-                : `rotateZ(-${rotationAngle}deg)`
-            }}
-          >
-            <div className="opacity-70">
-              {renderTreeBlock(selectedItem)}
-            </div>
+          <div className="absolute inset-0 flex items-end justify-center pb-1 opacity-70">
+            {render3DBuilding(selectedItem)}
           </div>
         )}
         
-        {/* SimCity-style coordinate display */}
-        {showGrid && (
-          <div className="absolute top-0 left-0 text-xs text-gray-500 font-mono bg-white/60 px-1 rounded-br">
-            {x},{y}
-          </div>
+        {/* Heavenly ground sparkles */}
+        {!placedItem && Math.random() > 0.95 && (
+          <div className="absolute bottom-1 right-1 w-1 h-1 bg-yellow-300 rounded-full animate-pulse opacity-60"></div>
         )}
       </div>
     );
@@ -258,35 +280,35 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* SimCity-style Control Panel */}
-      <Card className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-white border-2 border-gray-600 shadow-2xl">
+      {/* Enhanced Control Panel */}
+      <Card className="bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 text-white border-2 border-purple-500 shadow-2xl">
         <CardContent className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold text-green-400 flex items-center">
-              <Zap className="h-6 w-6 mr-2" />
-              🏗️ Paradise City Builder ({gridSize}x{gridSize})
+            <h3 className="text-2xl font-bold text-yellow-300 flex items-center">
+              <Zap className="h-6 w-6 mr-2 animate-pulse" />
+              🏗️ Paradise Builder ({gridSize}x{gridSize})
             </h3>
             <div className="flex space-x-2">
               <Button
                 variant={viewMode === 'isometric' ? 'default' : 'outline'}
                 onClick={() => setViewMode('isometric')}
-                className="bg-green-600 hover:bg-green-700 text-white border-0"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white border-0 shadow-lg"
               >
                 <Eye className="h-4 w-4 mr-2" />
-                Isometric
+                3D View
               </Button>
               <Button
                 variant={viewMode === 'top' ? 'default' : 'outline'}
                 onClick={() => setViewMode('top')}
-                className="bg-blue-600 hover:bg-blue-700 text-white border-0"
+                className="bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-lg"
               >
                 <Eye className="h-4 w-4 mr-2" />
-                Top Down
+                Top View
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setRotationAngle(prev => (prev + 45) % 360)}
-                className="border-gray-500 text-gray-300 hover:bg-gray-700"
+                className="border-purple-400 text-purple-200 hover:bg-purple-700 shadow-lg"
               >
                 <RotateCcw className="h-4 w-4 mr-2" />
                 Rotate
@@ -294,7 +316,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
               <Button
                 variant="outline"
                 onClick={() => setShowGrid(!showGrid)}
-                className="border-gray-500 text-gray-300 hover:bg-gray-700"
+                className="border-purple-400 text-purple-200 hover:bg-purple-700 shadow-lg"
               >
                 <Grid3X3 className="h-4 w-4 mr-2" />
                 Grid
@@ -310,17 +332,17 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
                 variant={selectedItem?.id === item.id ? "default" : "outline"}
                 className={`h-24 flex flex-col items-center justify-center space-y-2 transition-all duration-200 ${
                   selectedItem?.id === item.id 
-                    ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg ring-2 ring-green-400' 
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg ring-2 ring-emerald-400' 
                     : userCoins < item.price 
                       ? 'opacity-50 bg-gray-700 border-gray-600 text-gray-400' 
-                      : 'bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-gray-500'
+                      : 'bg-purple-800 border-purple-600 text-purple-200 hover:bg-purple-700 hover:border-purple-500'
                 }`}
                 onClick={() => setSelectedItem(selectedItem?.id === item.id ? null : item)}
                 disabled={userCoins < item.price}
               >
-                <div className={`p-2 rounded ${selectedItem?.id === item.id ? 'bg-white/20' : 'bg-gray-700'}`}>
+                <div className={`p-2 rounded ${selectedItem?.id === item.id ? 'bg-white/20' : 'bg-purple-700'}`}>
                   {React.cloneElement(item.icon as React.ReactElement, {
-                    className: `h-5 w-5 ${selectedItem?.id === item.id ? 'text-white' : 'text-gray-300'}`
+                    className: `h-5 w-5 ${selectedItem?.id === item.id ? 'text-white' : 'text-purple-200'}`
                   })}
                 </div>
                 <div className="text-xs text-center">
@@ -334,11 +356,11 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
           </div>
           
           {selectedItem && (
-            <div className="mt-6 p-4 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg border border-gray-600">
+            <div className="mt-6 p-4 bg-gradient-to-r from-purple-700 to-indigo-800 rounded-lg border border-purple-500">
               <div className="text-center">
-                <p className="font-bold text-green-400 text-lg">🎯 {selectedItem.name} Selected</p>
-                <p className="text-gray-300 mt-1">{selectedItem.description}</p>
-                <p className="text-gray-400 text-sm mt-2">
+                <p className="font-bold text-yellow-300 text-lg">🎯 {selectedItem.name} Selected</p>
+                <p className="text-purple-200 mt-1">{selectedItem.description}</p>
+                <p className="text-purple-300 text-sm mt-2">
                   {selectedItem.id.includes('grid-expansion') 
                     ? 'Click anywhere to purchase this expansion' 
                     : 'Click on the grid to place your building'
@@ -350,24 +372,26 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
         </CardContent>
       </Card>
 
-      {/* SimCity-style Building Grid */}
-      <Card className="bg-gradient-to-br from-green-800 via-green-700 to-green-900 border-2 border-green-600 shadow-2xl overflow-hidden">
+      {/* Enhanced 3D Building Grid */}
+      <Card className="bg-gradient-to-br from-emerald-800 via-green-700 to-emerald-900 border-2 border-emerald-500 shadow-2xl overflow-hidden">
         <CardContent className="p-8">
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-white drop-shadow-lg">🌍 Your Paradise City</h3>
-            <p className="text-green-200 mt-2">Build wisely, Paradise Mayor! Grid Size: {gridSize}x{gridSize}</p>
+            <h3 className="text-3xl font-bold text-white drop-shadow-lg">🌍 Your Divine Paradise</h3>
+            <p className="text-emerald-200 mt-2">Build your heavenly realm! Grid Size: {gridSize}x{gridSize}</p>
           </div>
           
-          <div className="max-w-6xl mx-auto" style={{ perspective: '1200px' }}>
+          <div className="max-w-6xl mx-auto" style={{ perspective: '1500px' }}>
             <div 
               className={`
-                grid gap-1 p-6 rounded-xl shadow-inner
-                bg-gradient-to-br from-green-600 via-emerald-600 to-green-700
+                grid gap-1 p-6 rounded-xl
+                bg-gradient-to-br from-emerald-600 via-green-600 to-emerald-700
+                shadow-inner border border-emerald-400/30
                 ${viewMode === 'isometric' ? 'transform-style-preserve-3d' : ''}
               `}
               style={{ 
                 gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))`,
-                transform: viewMode === 'isometric' ? 'rotateX(15deg)' : 'none'
+                transform: viewMode === 'isometric' ? 'rotateX(10deg)' : 'none',
+                boxShadow: 'inset 0 0 50px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.2)'
               }}
             >
               {Array.from({ length: gridSize * gridSize }, (_, index) => {
@@ -378,45 +402,37 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
             </div>
           </div>
 
-          {placedItems.length === 0 && (
-            <div className="text-center mt-8 text-white">
-              <Home className="h-16 w-16 mx-auto mb-4 opacity-70" />
-              <p className="text-xl font-medium">Welcome, Paradise Mayor!</p>
-              <p className="text-green-200 mt-2">Select a building and start developing your holy city</p>
-            </div>
-          )}
-          
           {/* SimCity-style city stats */}
           {placedItems.length > 0 && (
             <div className="mt-6 grid grid-cols-3 gap-4 max-w-md mx-auto">
               <div className="text-center text-white">
-                <div className="text-2xl font-bold text-green-400">{placedItems.length}</div>
-                <div className="text-sm text-green-200">Buildings</div>
+                <div className="text-2xl font-bold text-yellow-400">{placedItems.length}</div>
+                <div className="text-sm text-yellow-200">Buildings</div>
               </div>
               <div className="text-center text-white">
-                <div className="text-2xl font-bold text-blue-400">{placedItems.filter(i => i.item.category === 'nature').length}</div>
-                <div className="text-sm text-blue-200">Nature</div>
+                <div className="text-2xl font-bold text-emerald-400">{placedItems.filter(i => i.item.category === 'nature').length}</div>
+                <div className="text-sm text-emerald-200">Nature</div>
               </div>
               <div className="text-center text-white">
-                <div className="text-2xl font-bold text-yellow-400">{placedItems.reduce((sum, { item }) => sum + item.price, 0)}</div>
-                <div className="text-sm text-yellow-200">Total Value</div>
+                <div className="text-2xl font-bold text-purple-400">{placedItems.reduce((sum, { item }) => sum + item.price, 0)}</div>
+                <div className="text-sm text-purple-200">Total Value</div>
               </div>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* SimCity-style Building List */}
+      {/* Enhanced Building List */}
       {placedItems.length > 0 && (
-        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 text-white border-2 border-gray-600 shadow-xl">
+        <Card className="bg-gradient-to-br from-slate-800 to-slate-900 text-white border-2 border-slate-600 shadow-xl">
           <CardContent className="p-6">
-            <h3 className="text-xl font-bold mb-4 text-green-400 flex items-center">
+            <h3 className="text-xl font-bold mb-4 text-yellow-400 flex items-center">
               <Sparkles className="h-6 w-6 mr-2" />
-              City Development Report
+              Paradise Development Report
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               {placedItems.map((placedItem, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors duration-200">
+                <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-700 to-slate-800 rounded-lg border border-slate-600 hover:border-slate-500 transition-colors duration-200">
                   <div className="flex items-center space-x-4">
                     <div className={`p-3 rounded-lg bg-gradient-to-br ${getItemColor(placedItem.item)} shadow-lg border border-white/20`}>
                       {React.cloneElement(placedItem.item.icon as React.ReactElement, {
@@ -425,7 +441,7 @@ const Jannah3DBuilder: React.FC<Jannah3DBuilderProps> = ({
                     </div>
                     <div>
                       <div className="font-bold text-white">{placedItem.item.name}</div>
-                      <div className="text-sm text-gray-400">{placedItem.item.intention}</div>
+                      <div className="text-sm text-slate-400">{placedItem.item.intention}</div>
                     </div>
                   </div>
                   <Badge className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-bold">
