@@ -138,7 +138,7 @@ const Header = () => {
                     Donate
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="z-[500]">
-                    <div className="w-[800px] p-8 bg-gradient-to-br from-slate-900/98 via-blue-900/95 to-indigo-900/98 backdrop-blur-xl border border-cyan-400/30 shadow-2xl rounded-2xl ring-1 ring-cyan-300/20">
+                    <div className="w-[800px] p-8 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-xl border border-cyan-400/30 shadow-2xl rounded-2xl ring-1 ring-cyan-300/20">
                       <div className="grid grid-cols-3 gap-8">
                         {/* Quick Actions */}
                         <div className="space-y-4">
@@ -147,7 +147,7 @@ const Header = () => {
                             Quick Actions
                           </h3>
                           <div className="space-y-3">
-                            <Link to="/campaigns" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600/20 to-green-600/20 hover:from-emerald-500/30 hover:to-green-500/30 transition-all duration-300 border border-emerald-400/20 hover:border-emerald-300/40">
+                            <Link to="/campaigns" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 transition-all duration-300 border border-emerald-400 hover:border-emerald-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mr-3">
                                 <Heart className="h-5 w-5 text-white" />
                               </div>
@@ -157,7 +157,7 @@ const Header = () => {
                               </div>
                             </Link>
                             
-                            <Link to="/build-mosque" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600/20 to-indigo-600/20 hover:from-blue-500/30 hover:to-indigo-500/30 transition-all duration-300 border border-blue-400/20 hover:border-blue-300/40">
+                            <Link to="/build-mosque" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all duration-300 border border-blue-400 hover:border-blue-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
                                 <Building className="h-5 w-5 text-white" />
                               </div>
@@ -176,7 +176,7 @@ const Header = () => {
                             Essential Causes
                           </h3>
                           <div className="space-y-3">
-                            <Link to="/water-wells" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600/20 to-blue-600/20 hover:from-cyan-500/30 hover:to-blue-500/30 transition-all duration-300 border border-cyan-400/20 hover:border-cyan-300/40">
+                            <Link to="/water-wells" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 border border-cyan-400 hover:border-cyan-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center mr-3">
                                 <span className="text-white text-lg">💧</span>
                               </div>
@@ -186,7 +186,7 @@ const Header = () => {
                               </div>
                             </Link>
                             
-                            <Link to="/orphanages" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-pink-600/20 to-rose-600/20 hover:from-pink-500/30 hover:to-rose-500/30 transition-all duration-300 border border-pink-400/20 hover:border-pink-300/40">
+                            <Link to="/orphanages" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 transition-all duration-300 border border-pink-400 hover:border-pink-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center mr-3">
                                 <span className="text-white text-lg">👶</span>
                               </div>
@@ -205,7 +205,7 @@ const Header = () => {
                             Trust & Partners
                           </h3>
                           <div className="space-y-3">
-                            <Link to="/charities" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-violet-600/20 to-purple-600/20 hover:from-violet-500/30 hover:to-purple-500/30 transition-all duration-300 border border-violet-400/20 hover:border-violet-300/40">
+                            <Link to="/charities" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all duration-300 border border-violet-400 hover:border-violet-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-violet-500 rounded-lg flex items-center justify-center mr-3">
                                 <Users className="h-5 w-5 text-white" />
                               </div>
@@ -215,7 +215,7 @@ const Header = () => {
                               </div>
                             </Link>
                             
-                            <Link to="/why-donate" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-orange-600/20 to-amber-600/20 hover:from-orange-500/30 hover:to-amber-500/30 transition-all duration-300 border border-orange-400/20 hover:border-orange-300/40">
+                            <Link to="/why-donate" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 transition-all duration-300 border border-orange-400 hover:border-orange-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
                                 <Shield className="h-5 w-5 text-white" />
                               </div>
@@ -254,7 +254,7 @@ const Header = () => {
                     Community
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="z-[500]">
-                    <div className="w-[600px] p-8 bg-gradient-to-br from-slate-900/98 via-purple-900/95 to-indigo-900/98 backdrop-blur-xl border border-purple-400/30 shadow-2xl rounded-2xl ring-1 ring-purple-300/20">
+                    <div className="w-[600px] p-8 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 backdrop-blur-xl border border-purple-400/30 shadow-2xl rounded-2xl ring-1 ring-purple-300/20">
                       <div className="grid grid-cols-2 gap-8">
                         <div className="space-y-4">
                           <h3 className="text-xl font-bold text-purple-300 mb-4 flex items-center">
@@ -262,7 +262,7 @@ const Header = () => {
                             Compete & Connect
                           </h3>
                           <div className="space-y-3">
-                            <Link to="/leaderboards" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600/20 to-yellow-600/20 hover:from-amber-500/30 hover:to-yellow-500/30 transition-all duration-300 border border-amber-400/20 hover:border-amber-300/40">
+                            <Link to="/leaderboards" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 transition-all duration-300 border border-amber-400 hover:border-amber-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center mr-3">
                                 <Trophy className="h-5 w-5 text-white" />
                               </div>
@@ -272,7 +272,7 @@ const Header = () => {
                               </div>
                             </Link>
                             
-                            <Link to="/live" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-red-600/20 to-pink-600/20 hover:from-red-500/30 hover:to-pink-500/30 transition-all duration-300 border border-red-400/20 hover:border-red-300/40">
+                            <Link to="/live" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 transition-all duration-300 border border-red-400 hover:border-red-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center mr-3">
                                 <span className="text-white text-lg">🔴</span>
                               </div>
@@ -290,7 +290,7 @@ const Header = () => {
                             Stories & Insights
                           </h3>
                           <div className="space-y-3">
-                            <Link to="/blog" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-600/20 to-blue-600/20 hover:from-indigo-500/30 hover:to-blue-500/30 transition-all duration-300 border border-indigo-400/20 hover:border-indigo-300/40">
+                            <Link to="/blog" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 transition-all duration-300 border border-indigo-400 hover:border-indigo-300">
                               <div className="flex-shrink-0 w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
                                 <BookOpen className="h-5 w-5 text-white" />
                               </div>
@@ -316,7 +316,7 @@ const Header = () => {
                     Rewards
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="z-[500]">
-                    <div className="w-[500px] p-8 bg-gradient-to-br from-slate-900/98 via-amber-900/95 to-orange-900/98 backdrop-blur-xl border border-amber-400/30 shadow-2xl rounded-2xl ring-1 ring-amber-300/20">
+                    <div className="w-[500px] p-8 bg-gradient-to-br from-slate-900 via-amber-900 to-orange-900 backdrop-blur-xl border border-amber-400/30 shadow-2xl rounded-2xl ring-1 ring-amber-300/20">
                       <div className="space-y-6">
                         <h3 className="text-xl font-bold text-amber-300 mb-4 flex items-center">
                           <Gift className="h-5 w-5 mr-2 text-amber-400" />
@@ -324,7 +324,7 @@ const Header = () => {
                         </h3>
                         
                         <div className="space-y-4">
-                          <Link to="/coins" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-yellow-600/20 to-amber-600/20 hover:from-yellow-500/30 hover:to-amber-500/30 transition-all duration-300 border border-yellow-400/20 hover:border-yellow-300/40">
+                          <Link to="/coins" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 transition-all duration-300 border border-yellow-400 hover:border-yellow-300">
                             <div className="flex-shrink-0 w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
                               <Coins className="h-5 w-5 text-white" />
                             </div>
@@ -334,7 +334,7 @@ const Header = () => {
                             </div>
                           </Link>
                           
-                          <Link to="/membership" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600/20 to-indigo-600/20 hover:from-purple-500/30 hover:to-indigo-500/30 transition-all duration-300 border border-purple-400/20 hover:border-purple-300/40">
+                          <Link to="/membership" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 border border-purple-400 hover:border-purple-300">
                             <div className="flex-shrink-0 w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
                               <Shield className="h-5 w-5 text-white" />
                             </div>
