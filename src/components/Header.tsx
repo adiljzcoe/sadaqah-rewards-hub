@@ -53,44 +53,6 @@ const Header = () => {
         <div className="absolute top-6 left-20 w-2 h-2 bg-cyan-300 rounded-full animate-pulse shadow-lg shadow-cyan-300/80"></div>
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
-
-      {/* Flying Biplane with Charity Partners Banner - Above Everything */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-[9999]">
-        {charityLogos.map((charity, index) => (
-          <div
-            key={index}
-            className="absolute top-4 -left-80 opacity-0 animate-[flyAcross_20s_infinite] flex items-center"
-            style={{ 
-              animationDelay: `${index * 5}s`
-            }}
-          >
-            {/* Flying Banner with pointed tail */}
-            <div className="relative">
-              {/* Banner body with charity-specific background */}
-              <div className={`${charity.bgColor} rounded-md border border-white/30 shadow-lg px-2 py-1 flex items-center min-w-max relative`}>
-                {/* Logo */}
-                <img 
-                  src={charity.logo} 
-                  alt={charity.name}
-                  className="w-16 h-6 object-contain"
-                />
-                {/* Pointed tail */}
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
-                  <div className={`w-0 h-0 border-l-[10px] border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ${charity.bgColor === 'bg-blue-600' ? 'border-l-blue-600' : charity.bgColor === 'bg-orange-500' ? 'border-l-orange-500' : charity.bgColor === 'bg-green-600' ? 'border-l-green-600' : charity.bgColor === 'bg-purple-600' ? 'border-l-purple-600' : 'border-l-red-600'}`}></div>
-                </div>
-              </div>
-              
-              {/* String connecting banner to plane */}
-              <div className="absolute right-0 top-1/2 w-6 h-px bg-gray-600 -translate-y-1/2 translate-x-full"></div>
-              
-              {/* Biplane positioned to the right */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[calc(100%+24px)]">
-                <span className="text-2xl">🛩️</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
       
       <div className="relative z-10 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
@@ -427,32 +389,6 @@ const Header = () => {
           </Button>
         </div>
       </div>
-
-      {/* Custom CSS for flying plane animation with 5-second gaps */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          @keyframes flyAcross {
-            0% { 
-              transform: translateX(0); 
-              opacity: 0; 
-            }
-            5% { 
-              opacity: 1; 
-            }
-            20% { 
-              opacity: 1; 
-            }
-            25% { 
-              transform: translateX(calc(100vw + 200px)); 
-              opacity: 0; 
-            }
-            100% { 
-              transform: translateX(calc(100vw + 200px)); 
-              opacity: 0; 
-            }
-          }
-        `
-      }} />
     </header>
   );
 };
