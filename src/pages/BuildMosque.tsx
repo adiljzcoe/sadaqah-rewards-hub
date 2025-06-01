@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import ProjectDonationWidget from '@/components/ProjectDonationWidget';
@@ -154,6 +155,11 @@ const BuildMosque = () => {
       <Header />
       <ProjectDonationWidget projectType="mosque" />
       
+      {/* Live Donation Feed - moved above hero section */}
+      <div className="container mx-auto px-4 py-8">
+        <LiveDonationFeed />
+      </div>
+      
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 text-white">
         <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -203,9 +209,6 @@ const BuildMosque = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
-        {/* Live Donation Feed */}
-        <LiveDonationFeed />
-
         {/* Your Track Record Section */}
         <section id="track-record" className="mb-16">
           <h3 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
