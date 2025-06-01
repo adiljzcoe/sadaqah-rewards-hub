@@ -325,7 +325,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-800">
-                  {fundingMode === 'full' ? 'Fund Complete' : fundingMode === 'new' ? 'Start New' : 'Fund'} {config.type === 'waterwell' ? 'Water Well' : config.type === 'mosque' ? 'Mosque' : 'Orphanage'} {fundingMode === 'portions' ? config.portionName + 's' : ''}
+                  {fundingMode === 'full' ? 'Finish Funding' : fundingMode === 'new' ? 'Start New' : 'Fund'} {config.type === 'waterwell' ? 'Water Well' : config.type === 'mosque' ? 'Mosque' : 'Orphanage'} {fundingMode === 'portions' ? config.portionName + 's' : ''}
                 </h3>
                 <p className="text-sm text-gray-600">
                   {fundingMode === 'full' ? 'Complete the entire project' : 
@@ -383,7 +383,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
                 >
                   <div className="flex items-center space-x-2 mb-2">
                     <Star className="h-5 w-5 text-yellow-600" />
-                    <span className="font-semibold text-gray-800">Fund Complete</span>
+                    <span className="font-semibold text-gray-800">Finish Funding a Mosque</span>
                     <Badge className="bg-yellow-100 text-yellow-700 text-xs">🏆 Special Badge</Badge>
                   </div>
                   <p className="text-sm text-gray-600">Complete the entire project</p>
@@ -400,7 +400,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               >
                 <div className="flex items-center space-x-2 mb-2">
                   <Crown className="h-5 w-5 text-purple-600" />
-                  <span className="font-semibold text-gray-800">Start New</span>
+                  <span className="font-semibold text-gray-800">Start a New Mosque and Name It</span>
                   <Badge className="bg-purple-100 text-purple-700 text-xs">👑 Premium</Badge>
                 </div>
                 <p className="text-sm text-gray-600">Start your own project</p>
@@ -682,7 +682,7 @@ const ProjectDonationWidget: React.FC<ProjectDonationWidgetProps> = ({ projectTy
               disabled={!selectedLocation || !selectedSize || !selectedIntention || (selectedIntention === 'Other (specify)' && !customIntention) || (fundingMode === 'new' && dedicatedToSomeoneElse && !dedicatedPersonName)}
               onClick={handleDonation}
             >
-              {fundingMode === 'full' ? 'Fund Complete' : fundingMode === 'new' ? 'Start New' : 'Fund Now'}
+              {fundingMode === 'full' ? 'Finish Funding' : fundingMode === 'new' ? 'Start New Mosque' : 'Fund Now'}
             </Button>
           </div>
         </Card>
