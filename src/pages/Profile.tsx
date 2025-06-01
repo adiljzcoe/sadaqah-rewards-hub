@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift } from 'lucide-react';
 import Header from '@/components/Header';
 import GoldCoin3D from '@/components/GoldCoin3D';
+import ProjectContributions from '@/components/ProjectContributions';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -138,6 +138,11 @@ const Profile = () => {
             </div>
             <p className="font-semibold text-gray-900">Amount Donated</p>
           </Card>
+        </div>
+
+        {/* Project Contributions Section */}
+        <div className="mb-8">
+          <ProjectContributions />
         </div>
 
         {/* Epic Donations Showcase */}
