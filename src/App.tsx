@@ -19,6 +19,7 @@ import CharityPartnersPublic from "./pages/CharityPartnersPublic";
 import Blog from "./pages/Blog";
 import WhyDonate from "./pages/WhyDonate";
 import Checkout from "./pages/Checkout";
+import BuildMosque from "./pages/BuildMosque";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/why-donate" element={<WhyDonate />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/build-mosque" element={<BuildMosque />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
