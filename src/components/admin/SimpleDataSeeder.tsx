@@ -47,7 +47,7 @@ const SimpleDataSeeder = () => {
     try {
       console.log('🌱 Starting simple data seeding...');
       
-      // Direct insertion without RLS complexity
+      // Insert charities without RLS issues
       const { data: charities, error: charityError } = await supabase
         .from('charities')
         .insert(sampleCharities)
@@ -60,7 +60,7 @@ const SimpleDataSeeder = () => {
 
       console.log('✅ Charities created successfully:', charities?.length);
 
-      // Create some sample donations if charities were created successfully
+      // Create some sample donations WITHOUT user_id to avoid foreign key issues
       if (charities && charities.length > 0) {
         const sampleDonations = [
           {
@@ -73,6 +73,7 @@ const SimpleDataSeeder = () => {
             jannah_points_earned: 250,
             sadaqah_coins_earned: 125,
             created_at: new Date().toISOString()
+            // Note: No user_id to avoid foreign key constraint errors
           },
           {
             charity_id: charities[1]?.id || charities[0].id,
@@ -84,6 +85,7 @@ const SimpleDataSeeder = () => {
             jannah_points_earned: 150,
             sadaqah_coins_earned: 75,
             created_at: new Date().toISOString()
+            // Note: No user_id to avoid foreign key constraint errors
           }
         ];
 
@@ -93,7 +95,8 @@ const SimpleDataSeeder = () => {
           .select();
 
         if (donationError) {
-          console.warn('⚠️ Donation insert warning:', donationError);
+          console.error('❌ Donation insert error:', donationError);
+          throw new Error(`Failed to insert donations: ${donationError.message}`);
         } else {
           console.log('✅ Donations created:', donations?.length);
         }
@@ -101,7 +104,7 @@ const SimpleDataSeeder = () => {
 
       toast({
         title: "Test Data Created! 🎉",
-        description: `Successfully created ${charities?.length || 0} charities with sample data.`,
+        description: `Successfully created ${charities?.length || 0} charities with sample donations.`,
       });
 
     } catch (error: any) {
@@ -123,13 +126,34 @@ const SimpleDataSeeder = () => {
       console.log('🧹 Clearing test data...');
       
       // Clear donations first (due to foreign key constraints)
-      await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      const { error: donationsError } = await supabase
+        .from('donations')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      if (donationsError) {
+        console.error('❌ Error clearing donations:', donationsError);
+      }
       
       // Clear charity allocations
-      await supabase.from('charity_allocations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      const { error: allocationsError } = await supabase
+        .from('charity_allocations')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      if (allocationsError) {
+        console.error('❌ Error clearing charity allocations:', allocationsError);
+      }
       
       // Clear charities
-      await supabase.from('charities').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      const { error: charitiesError } = await supabase
+        .from('charities')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      if (charitiesError) {
+        console.error('❌ Error clearing charities:', charitiesError);
+      }
 
       toast({
         title: "Data Cleared",
