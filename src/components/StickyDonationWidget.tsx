@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -280,7 +279,7 @@ const StickyDonationWidget = () => {
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
-              {/* Gift Section - Enhanced for sticky widget */}
+              {/* Gift Section - Enhanced and tidied up */}
               {activeTab === 'gift' && (
                 <div className="mb-3 p-3 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl">
                   <div className="flex items-center mb-2">
@@ -288,86 +287,74 @@ const StickyDonationWidget = () => {
                     <h4 className="text-sm font-semibold text-pink-900">Gift Donation</h4>
                   </div>
                   
-                  <div className="space-y-3">
-                    {/* Friend's Details - Grid Layout */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <div className="space-y-2">
+                    {/* Friend's Contact Details - Compact with colored backgrounds */}
+                    <div className="grid grid-cols-3 gap-2">
+                      <Input
+                        type="text"
+                        placeholder="Friend's Name"
+                        value={friendName}
+                        onChange={(e) => setFriendName(e.target.value)}
+                        className="text-xs bg-blue-100 border border-blue-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-blue-700"
+                      />
+                      <Input
+                        type="email"
+                        placeholder="Email Address"
+                        value={friendEmail}
+                        onChange={(e) => setFriendEmail(e.target.value)}
+                        className="text-xs bg-green-100 border border-green-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-green-700"
+                      />
+                      <Input
+                        type="tel"
+                        placeholder="Mobile Number"
+                        value={friendMobile}
+                        onChange={(e) => setFriendMobile(e.target.value)}
+                        className="text-xs bg-purple-100 border border-purple-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-purple-700"
+                      />
+                    </div>
+
+                    {/* Blessing Selection and Personal Note - Same Row */}
+                    <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="text-xs font-medium text-pink-800 mb-1 block">Friend's Name</label>
+                        <Select value={selectedBlessing} onValueChange={setSelectedBlessing}>
+                          <SelectTrigger className="text-xs bg-white border border-pink-300 text-pink-800 w-full rounded-lg h-8">
+                            <SelectValue placeholder="Choose a blessing" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-pink-300 shadow-lg z-[100] rounded-lg max-h-48 overflow-y-auto">
+                            {giftBlessingOptions.map((blessing) => (
+                              <SelectItem key={blessing.id} value={blessing.id} className="bg-white hover:bg-pink-50 text-pink-800 rounded-lg">
+                                <div className="font-medium text-xs">{blessing.title}</div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div>
                         <Input
                           type="text"
-                          placeholder="Enter their name"
-                          value={friendName}
-                          onChange={(e) => setFriendName(e.target.value)}
-                          className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-pink-800 mb-1 block">Email Address</label>
-                        <Input
-                          type="email"
-                          placeholder="their@email.com"
-                          value={friendEmail}
-                          onChange={(e) => setFriendEmail(e.target.value)}
-                          className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium text-pink-800 mb-1 block">Mobile Number</label>
-                        <Input
-                          type="tel"
-                          placeholder="+44 7XXX XXXXXX"
-                          value={friendMobile}
-                          onChange={(e) => setFriendMobile(e.target.value)}
-                          className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
+                          placeholder="Add personal note..."
+                          value={customMessage}
+                          onChange={(e) => setCustomMessage(e.target.value)}
+                          maxLength={100}
+                          className="text-xs bg-white border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
                         />
                       </div>
                     </div>
 
-                    {/* Blessing Type Selection */}
-                    <div>
-                      <label className="text-xs font-medium text-pink-800 mb-2 block">Choose a Blessing Message</label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-32 overflow-y-auto">
-                        {giftBlessingOptions.map((blessing) => (
-                          <button
-                            key={blessing.id}
-                            onClick={() => setSelectedBlessing(blessing.id)}
-                            className={`p-2 rounded-lg text-left transition-all duration-200 text-xs ${
-                              selectedBlessing === blessing.id
-                                ? 'bg-pink-600 text-white shadow-md'
-                                : 'bg-white border border-pink-300 text-pink-800 hover:bg-pink-100'
-                            }`}
-                          >
-                            <div className="font-medium">{blessing.title}</div>
-                          </button>
-                        ))}
+                    {/* Character count - only show when there's content */}
+                    {customMessage && (
+                      <div className="text-[10px] text-pink-600 text-right">
+                        {customMessage.length}/100 characters
                       </div>
-                    </div>
+                    )}
 
                     {/* Preview of Selected Message */}
                     {selectedBlessingDetails && (
                       <div className="bg-white/70 p-2 rounded-lg border border-pink-200">
-                        <div className="text-xs font-medium text-pink-800 mb-1">Message Preview:</div>
                         <div className="text-xs text-pink-700 italic">"{selectedBlessingDetails.message}"</div>
                       </div>
                     )}
-
-                    {/* Custom Additional Message */}
-                    <div>
-                      <label className="text-xs font-medium text-pink-800 mb-1 block">Add Personal Note (Optional)</label>
-                      <Input
-                        type="text"
-                        placeholder="Add your own personal message..."
-                        value={customMessage}
-                        onChange={(e) => setCustomMessage(e.target.value)}
-                        maxLength={150}
-                        className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
-                      />
-                      {customMessage && (
-                        <div className="text-[10px] text-pink-600 text-right mt-1">
-                          {customMessage.length}/150 characters
-                        </div>
-                      )}
-                    </div>
                   </div>
                 </div>
               )}
@@ -384,7 +371,6 @@ const StickyDonationWidget = () => {
                     {/* Cause and Honoring - Same Row */}
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="text-xs font-medium text-rose-800 mb-1 block">Select a cause</label>
                         <Select value={selectedMemoryCause} onValueChange={setSelectedMemoryCause}>
                           <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-8">
                             <SelectValue />
@@ -403,7 +389,6 @@ const StickyDonationWidget = () => {
                       </div>
 
                       <div>
-                        <label className="text-xs font-medium text-rose-800 mb-1 block">Honoring</label>
                         <Select value={memoryPerson} onValueChange={setMemoryPerson}>
                           <SelectTrigger className="text-xs bg-white border border-rose-300 text-rose-800 w-full rounded-lg h-8">
                             <SelectValue placeholder="Select person" />
@@ -426,7 +411,6 @@ const StickyDonationWidget = () => {
                     {memoryPerson === 'other' ? (
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <label className="text-xs font-medium text-rose-800 mb-1 block">Custom name</label>
                           <Input
                             type="text"
                             placeholder="Enter custom name..."
@@ -436,7 +420,6 @@ const StickyDonationWidget = () => {
                           />
                         </div>
                         <div>
-                          <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
                           <Input
                             type="text"
                             placeholder="Love you dad, Always in our hearts..."
@@ -450,7 +433,6 @@ const StickyDonationWidget = () => {
                     ) : (
                       /* Personal Note - Full width when no custom name */
                       <div>
-                        <label className="text-xs font-medium text-rose-800 mb-1 block">Personal note</label>
                         <Input
                           type="text"
                           placeholder="e.g., Love you dad, Always in our hearts..."
