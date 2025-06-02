@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import MasjidSelector from '@/components/MasjidSelector';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
 import UserMasjidDashboard from '@/components/UserMasjidDashboard';
+import MasjidMembersSection from '@/components/MasjidMembersSection';
 import { useMasjidAffiliation } from '@/hooks/useMasjidAffiliation';
 import { Building, Users, Trophy } from 'lucide-react';
 
@@ -96,6 +97,9 @@ const MasjidCommunity = () => {
           <div className="space-y-8">
             {/* User's Masjid Dashboard */}
             <UserMasjidDashboard masjidId={selectedMasjid.id} />
+            
+            {/* YourJannah Members Section */}
+            <MasjidMembersSection masjidName={selectedMasjid.name} />
             
             {/* Change Masjid Option */}
             <Card className="p-6">
