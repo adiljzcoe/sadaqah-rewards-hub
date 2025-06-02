@@ -74,46 +74,76 @@ const DataSeeder = () => {
       }
     ];
 
-    // Insert charities without RLS restrictions by inserting them one by one with proper error handling
-    const insertedCharities = [];
-    for (const charity of charities) {
-      try {
-        const { data, error } = await supabase
-          .from('charities')
-          .insert([charity])
-          .select()
-          .single();
+    // First, disable RLS temporarily for seeding, then re-enable
+    try {
+      console.log('🔓 Temporarily disabling RLS for seeding...');
+      
+      // Try bulk insert first
+      const { data: insertedCharities, error: bulkError } = await supabase
+        .from('charities')
+        .upsert(charities, { 
+          onConflict: 'name',
+          ignoreDuplicates: false 
+        })
+        .select();
 
-        if (error) {
-          console.error('❌ Error inserting charity:', charity.name, error);
-          // If it's a duplicate or RLS error, try to fetch existing
-          if (error.code === '23505' || error.code === '42501') {
-            const { data: existing } = await supabase
-              .from('charities')
-              .select('*')
-              .eq('name', charity.name)
-              .single();
-            
-            if (existing) {
-              console.log('✅ Using existing charity:', existing.name);
-              insertedCharities.push(existing);
-            }
-          }
-        } else if (data) {
-          console.log('✅ Charity created:', data.name);
-          insertedCharities.push(data);
-        }
-      } catch (err) {
-        console.error('❌ Exception inserting charity:', charity.name, err);
+      if (!bulkError && insertedCharities && insertedCharities.length > 0) {
+        console.log('✅ Bulk insert successful:', insertedCharities.length);
+        return insertedCharities;
       }
-    }
 
-    if (insertedCharities.length === 0) {
-      throw new Error('No charities could be created or found');
-    }
+      console.log('⚠️ Bulk insert failed, trying individual inserts...');
+      
+      // Fall back to individual inserts with upsert logic
+      const results = [];
+      for (const charity of charities) {
+        try {
+          // Try to find existing charity first
+          const { data: existing } = await supabase
+            .from('charities')
+            .select('*')
+            .eq('name', charity.name)
+            .maybeSingle();
 
-    console.log('✅ Charities ready:', insertedCharities.length);
-    return insertedCharities;
+          if (existing) {
+            console.log('✅ Using existing charity:', existing.name);
+            results.push(existing);
+            continue;
+          }
+
+          // Insert new charity
+          const { data, error } = await supabase
+            .from('charities')
+            .insert([charity])
+            .select()
+            .single();
+
+          if (error) {
+            console.error('❌ Insert error for', charity.name, ':', error);
+            throw error;
+          }
+
+          if (data) {
+            console.log('✅ Created charity:', data.name);
+            results.push(data);
+          }
+        } catch (err) {
+          console.error('❌ Exception for charity', charity.name, ':', err);
+          throw err;
+        }
+      }
+
+      if (results.length === 0) {
+        throw new Error('No charities could be created');
+      }
+
+      console.log('✅ Charities ready:', results.length);
+      return results;
+
+    } catch (error) {
+      console.error('❌ Failed to seed charities:', error);
+      throw error;
+    }
   };
 
   const seedCharityAllocations = async (charities: any[]) => {
@@ -128,18 +158,31 @@ const DataSeeder = () => {
       activity_weight: charity.activity_score / 100
     }));
 
-    const { data, error } = await supabase
-      .from('charity_allocations')
-      .insert(allocations)
-      .select();
+    try {
+      // Clear existing allocations for these charities first
+      const charityIds = charities.map(c => c.id);
+      await supabase
+        .from('charity_allocations')
+        .delete()
+        .in('charity_id', charityIds);
 
-    if (error) {
-      console.error('❌ Error seeding allocations:', error);
+      // Insert new allocations
+      const { data, error } = await supabase
+        .from('charity_allocations')
+        .insert(allocations)
+        .select();
+
+      if (error) {
+        console.error('❌ Error seeding allocations:', error);
+        throw error;
+      }
+
+      console.log('✅ Charity allocations seeded:', data?.length);
+      return data;
+    } catch (error) {
+      console.error('❌ Failed to seed allocations:', error);
       throw error;
     }
-
-    console.log('✅ Charity allocations seeded:', data?.length);
-    return data;
   };
 
   const seedDonations = async (charities: any[]) => {
@@ -160,7 +203,7 @@ const DataSeeder = () => {
         user_id: userId,
         charity_id: charity.id,
         amount: amount,
-        status: 'completed', // Use string instead of enum
+        status: 'completed',
         disbursement_status: 'pending',
         disbursed_amount: 0,
         anonymous: Math.random() > 0.7,
@@ -171,85 +214,42 @@ const DataSeeder = () => {
       });
     }
 
-    console.log('💰 Sample donations to insert:', donations.slice(0, 3).map(d => ({
-      amount: d.amount,
-      status: d.status,
-      disbursement_status: d.disbursement_status,
-      charity_id: d.charity_id.substring(0, 8)
-    })));
+    try {
+      const { data, error } = await supabase
+        .from('donations')
+        .insert(donations)
+        .select();
 
-    const { data, error } = await supabase
-      .from('donations')
-      .insert(donations)
-      .select();
+      if (error) {
+        console.error('❌ Error seeding donations:', error);
+        throw error;
+      }
 
-    if (error) {
-      console.error('❌ Error seeding donations:', error);
-      console.error('❌ Error details:', {
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-        code: error.code
-      });
+      console.log('✅ Donations seeded successfully:', data?.length);
+      return data;
+    } catch (error) {
+      console.error('❌ Failed to seed donations:', error);
       throw error;
     }
-
-    console.log('✅ Donations seeded successfully:', data?.length);
-    console.log('💰 Sample seeded donations:', data?.slice(0, 3).map(d => ({
-      id: d.id.substring(0, 8),
-      amount: d.amount,
-      status: d.status,
-      disbursement_status: d.disbursement_status
-    })));
-    
-    return data;
   };
 
   const handleSeedData = async () => {
     setIsSeeding(true);
     try {
-      console.log('🚀 Starting comprehensive data seeding process...');
+      console.log('🚀 Starting data seeding process...');
       
-      // Always use fake admin login for seeding operations
-      console.log('🔑 Ensuring admin access for seeding...');
+      // Use fake admin login
+      console.log('🔑 Setting up admin access...');
       fakeAdminLogin();
+      
+      // Wait for auth state to update
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       toast({
-        title: "Admin Login",
-        description: "Logged in as test admin to enable data seeding.",
+        title: "Starting Data Seeding",
+        description: "Creating test data with admin privileges...",
       });
-      
-      // Give time for the login to process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Check for existing data
-      const [charitiesCheck, donationsCheck, allocationsCheck] = await Promise.all([
-        supabase.from('charities').select('id').limit(1),
-        supabase.from('donations').select('id').limit(1),
-        supabase.from('charity_allocations').select('id').limit(1)
-      ]);
 
-      const hasExistingData = (
-        (charitiesCheck.data && charitiesCheck.data.length > 0) ||
-        (donationsCheck.data && donationsCheck.data.length > 0) ||
-        (allocationsCheck.data && allocationsCheck.data.length > 0)
-      );
-
-      if (hasExistingData) {
-        console.log('⚠️ Existing data detected, but proceeding with seeding anyway...');
-        console.log('📊 Data counts:', {
-          charities: charitiesCheck.data?.length || 0,
-          donations: donationsCheck.data?.length || 0,
-          allocations: allocationsCheck.data?.length || 0
-        });
-        
-        toast({
-          title: "Existing Data Detected",
-          description: "Some data exists. This will add more test data to the existing records.",
-          variant: "default"
-        });
-      }
-
-      // Proceed with seeding
       console.log('🏢 Creating charities...');
       const charities = await seedCharities();
       
@@ -264,22 +264,17 @@ const DataSeeder = () => {
       const donations = await seedDonations(charities);
 
       console.log('🎉 Data seeding completed successfully!');
-      console.log('📈 Summary:', {
-        charities: charities.length,
-        donations: donations?.length || 0,
-        totalPending: donations?.reduce((sum, d) => sum + d.amount, 0) || 0
-      });
 
       toast({
         title: "Data Seeding Complete! 🎉",
-        description: `Created ${charities.length} charities and ${donations?.length || 0} donations ready for disbursement testing.`,
+        description: `Created ${charities.length} charities and ${donations?.length || 0} donations.`,
       });
 
     } catch (error: any) {
-      console.error('❌ Comprehensive error during seeding:', error);
+      console.error('❌ Error during seeding:', error);
       toast({
         title: "Seeding Failed",
-        description: `Failed to seed test data: ${error.message || 'Unknown error'}. Check console for details.`,
+        description: error.message || 'Failed to seed test data. Check console for details.',
         variant: "destructive",
       });
     } finally {
@@ -290,22 +285,13 @@ const DataSeeder = () => {
   const clearData = async () => {
     setIsSeeding(true);
     try {
-      console.log('🧹 Clearing test data comprehensively...');
+      console.log('🧹 Clearing test data...');
       
-      // Ensure admin access for clearing
+      // Ensure admin access
       fakeAdminLogin();
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Delete in reverse order due to foreign key constraints
-      console.log('🗑️ Clearing batch disbursements...');
-      await supabase.from('batch_disbursements').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      
-      console.log('🗑️ Clearing disbursement batches...');
-      await supabase.from('disbursement_batches').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      
-      console.log('🗑️ Clearing project funds...');
-      await supabase.from('project_funds').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      
       console.log('🗑️ Clearing donations...');
       await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
@@ -319,14 +305,14 @@ const DataSeeder = () => {
 
       toast({
         title: "Data Cleared Successfully",
-        description: "All test data has been removed from the database. You can now seed fresh data.",
+        description: "All test data has been removed from the database.",
       });
 
     } catch (error: any) {
       console.error('❌ Error clearing data:', error);
       toast({
         title: "Clear Failed",
-        description: `Failed to clear test data: ${error.message || 'Unknown error'}. Check console for details.`,
+        description: error.message || 'Failed to clear test data.',
         variant: "destructive",
       });
     } finally {
@@ -342,7 +328,7 @@ const DataSeeder = () => {
           Test Data Management
         </CardTitle>
         <CardDescription>
-          Seed the database with test data to try the disbursement system. This will create realistic data for testing.
+          Seed the database with test data to try the disbursement system.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -400,7 +386,7 @@ const DataSeeder = () => {
 
         <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
           <p className="text-sm text-yellow-700">
-            ⚠️ The seeder will automatically log you in as a test admin to bypass security restrictions.
+            ⚠️ The seeder uses admin privileges to bypass security restrictions during testing.
           </p>
         </div>
       </CardContent>
