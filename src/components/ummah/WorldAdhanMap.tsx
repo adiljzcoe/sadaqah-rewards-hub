@@ -40,8 +40,9 @@ const WorldAdhanMap = () => {
     { id: 'sydney', city: 'Sydney', country: 'Australia', timezone: 'Australia/Sydney', lat: -33.8688, lng: 151.2093 }
   ];
 
-  // Convert coordinates to map position (simplified projection)
+  // Convert latitude/longitude to pixel position on the map container
   const getMapPosition = (lat: number, lng: number) => {
+    // Simple mercator projection for positioning on the iframe
     const x = ((lng + 180) / 360) * 100;
     const y = ((90 - lat) / 180) * 100;
     return { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) };
@@ -52,7 +53,7 @@ const WorldAdhanMap = () => {
     const activeIds: string[] = [];
     prayerLocations.forEach(location => {
       // Simulate prayer times based on current time and location
-      const shouldBeActive = Math.random() < 0.15; // 15% chance any location is active
+      const shouldBeActive = Math.random() < 0.2; // 20% chance any location is active
       if (shouldBeActive) {
         activeIds.push(location.id);
       }
@@ -64,7 +65,7 @@ const WorldAdhanMap = () => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
       checkAdhanActive();
-    }, 5000); // Update every 5 seconds
+    }, 4000); // Update every 4 seconds
 
     return () => clearInterval(timer);
   }, []);
@@ -81,20 +82,22 @@ const WorldAdhanMap = () => {
         </Badge>
       </div>
 
-      {/* World Map */}
+      {/* World Map with Google Maps */}
       <Card className="overflow-hidden">
         <CardContent className="p-0">
           <div className="relative h-96 lg:h-[500px] overflow-hidden">
-            {/* World Map Background Image - Now showing entire world */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url('https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
-              }}
+            {/* Google Maps Iframe - World View */}
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d196337421.39749992!2d-180!3d0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMDDCsDAwJzAwLjAiTiAwMMKwMDAnMDAuMCJF!5e1!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus&maptype=satellite&zoom=2"
+              className="absolute inset-0 w-full h-full border-0"
+              style={{ filter: 'brightness(0.7)' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
             
             {/* Dark overlay for better visibility of markers */}
-            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
             {/* Prayer Location Markers */}
             {prayerLocations.map((location) => {
@@ -102,8 +105,8 @@ const WorldAdhanMap = () => {
               const isActive = activeLocations.includes(location.id);
               
               return (
-                <div key={location.id} className="absolute">
-                  {/* Ripple effect for active locations */}
+                <div key={location.id} className="absolute pointer-events-none">
+                  {/* Green ripple effect for active locations */}
                   {isActive && (
                     <>
                       <div
@@ -111,10 +114,10 @@ const WorldAdhanMap = () => {
                         style={{
                           left: `${position.x}%`,
                           top: `${position.y}%`,
-                          width: '40px',
-                          height: '40px',
+                          width: '60px',
+                          height: '60px',
                           transform: 'translate(-50%, -50%)',
-                          animationDuration: '3s'
+                          animationDuration: '2s'
                         }}
                       />
                       <div
@@ -122,11 +125,11 @@ const WorldAdhanMap = () => {
                         style={{
                           left: `${position.x}%`,
                           top: `${position.y}%`,
-                          width: '60px',
-                          height: '60px',
+                          width: '90px',
+                          height: '90px',
                           transform: 'translate(-50%, -50%)',
-                          animationDuration: '3s',
-                          animationDelay: '0.5s'
+                          animationDuration: '2s',
+                          animationDelay: '0.3s'
                         }}
                       />
                       <div
@@ -134,11 +137,11 @@ const WorldAdhanMap = () => {
                         style={{
                           left: `${position.x}%`,
                           top: `${position.y}%`,
-                          width: '80px',
-                          height: '80px',
+                          width: '120px',
+                          height: '120px',
                           transform: 'translate(-50%, -50%)',
-                          animationDuration: '3s',
-                          animationDelay: '1s'
+                          animationDuration: '2s',
+                          animationDelay: '0.6s'
                         }}
                       />
                     </>
@@ -146,7 +149,7 @@ const WorldAdhanMap = () => {
                   
                   {/* Location marker */}
                   <div
-                    className={`absolute w-3 h-3 rounded-full border-2 border-white shadow-lg transition-all duration-1000 ${
+                    className={`absolute w-4 h-4 rounded-full border-2 border-white shadow-lg transition-all duration-1000 z-10 ${
                       isActive ? 'bg-green-500 scale-150 shadow-green-500/50' : 'bg-blue-400'
                     }`}
                     style={{
@@ -159,11 +162,11 @@ const WorldAdhanMap = () => {
                   {/* City label for active locations */}
                   {isActive && (
                     <div
-                      className="absolute bg-green-600 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap animate-fade-in shadow-lg"
+                      className="absolute bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap animate-fade-in shadow-lg z-20"
                       style={{
                         left: `${position.x}%`,
                         top: `${position.y}%`,
-                        transform: 'translate(-50%, -120%)',
+                        transform: 'translate(-50%, -140%)',
                       }}
                     >
                       🕌 {location.city}
@@ -175,7 +178,7 @@ const WorldAdhanMap = () => {
             })}
 
             {/* Map Legend */}
-            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3">
+            <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 z-30">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-3 h-3 bg-blue-400 rounded-full border-2 border-white"></div>
                 <span className="text-xs text-gray-700">Prayer locations</span>
