@@ -71,14 +71,14 @@ const QurbaniOrderSummary = ({
         order_type: isPreorderMode ? 'preorder' : 'qurbani',
         shares_purchased: selectedShares,
         total_amount: totalAmount,
-        status: isPreorderMode ? 'preorder' : 'confirmed',
+        status: (isPreorderMode ? 'preorder' : 'confirmed') as 'preorder' | 'confirmed',
         recipient_name: recipientName || 'Self',
         special_instructions: specialInstructions || null
       };
 
       const { data, error } = await supabase
         .from('qurbani_orders')
-        .insert([orderData])
+        .insert(orderData)
         .select()
         .single();
 
