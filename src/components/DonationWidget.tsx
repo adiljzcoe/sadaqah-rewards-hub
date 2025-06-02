@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Heart, CreditCard, Gift, Users } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
+import { useUTMTracking } from '@/hooks/useUTMTracking';
 
 interface DonationWidgetProps {
   campaignId?: string;
@@ -32,9 +33,13 @@ const DonationWidget = ({
   const [anonymous, setAnonymous] = useState(false);
   const [isCustom, setIsCustom] = useState(false);
 
+  const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
+
   const predefinedAmounts = [10, 25, 50, 100, 250, 500];
 
   const handleAmountSelect = (value: string) => {
+    trackClick(`amount-${value}`, 'amount_button');
+    
     if (value === 'custom') {
       setIsCustom(true);
       setAmount('');
@@ -54,14 +59,29 @@ const DonationWidget = ({
       return;
     }
 
-    // Here you would integrate with your payment system
-    console.log('Processing donation:', {
+    // Get attribution data
+    const attributionData = getAttributionData();
+
+    // Track the donation with UTM attribution
+    trackDonation({
       amount: donationAmount,
       type: donationType,
       message,
       anonymous,
       campaignId,
-      charityId
+      charityId,
+      ...attributionData
+    });
+
+    // Here you would integrate with your payment system
+    console.log('Processing donation with attribution:', {
+      amount: donationAmount,
+      type: donationType,
+      message,
+      anonymous,
+      campaignId,
+      charityId,
+      attribution: attributionData
     });
   };
 
@@ -175,13 +195,22 @@ const DonationWidget = ({
           </div>
 
           {/* Submit Button */}
-          <Button type="submit" className="w-full" size="lg">
+          <Button 
+            type="submit" 
+            className="w-full" 
+            size="lg"
+            onClick={() => trackClick('donate-button', 'primary_cta')}
+          >
             <CreditCard className="h-4 w-4 mr-2" />
             Donate £{isCustom ? customAmount || '0' : amount}
           </Button>
 
           <div className="text-center">
-            <Button variant="link" className="text-emerald-600 p-0 h-auto font-normal">
+            <Button 
+              variant="link" 
+              className="text-emerald-600 p-0 h-auto font-normal"
+              onClick={() => trackClick('gift-card-link', 'secondary_cta')}
+            >
               <Gift className="h-4 w-4 mr-1" />
               Send as Gift Card Instead
             </Button>

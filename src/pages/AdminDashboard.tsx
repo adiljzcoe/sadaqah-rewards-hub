@@ -1,205 +1,213 @@
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { 
-  Users, 
-  Heart, 
-  TrendingUp, 
-  Gift,
-  DollarSign,
-  BarChart3,
-  Settings,
-  Mail,
-  UserCheck,
-  Sparkles,
-  ShoppingBag,
-  Database
-} from "lucide-react";
-import DashboardCharts from "@/components/admin/DashboardCharts";
-import ProductManagement from "@/components/admin/ProductManagement";
-import GiftCardManagement from "@/components/admin/GiftCardManagement";
-import AffiliateSystem from "@/components/admin/AffiliateSystem";
-import EmailMarketing from "@/components/admin/EmailMarketing";
-import MobileAdminHeader from "@/components/admin/MobileAdminHeader";
-import MobileAdminNav from "@/components/admin/MobileAdminNav";
-import { useIsMobile } from "@/hooks/use-mobile";
-import DisbursementManagement from "@/components/admin/DisbursementManagement";
-import DataSeeder from "@/components/admin/DataSeeder";
+import React, { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+import { Shield, BarChart3, Database, Users, DollarSign, Settings, Activity, TrendingUp, Globe, MousePointer } from 'lucide-react';
+
+// Import all the admin components
+import SimpleDataSeeder from '@/components/admin/SimpleDataSeeder';
+import DashboardCharts from '@/components/admin/DashboardCharts';
+import ProductManagement from '@/components/admin/ProductManagement';
+import GiftCardManagement from '@/components/admin/GiftCardManagement';
+import DisbursementManagement from '@/components/admin/DisbursementManagement';
+import EmailMarketing from '@/components/admin/EmailMarketing';
+import AffiliateSystem from '@/components/admin/AffiliateSystem';
+
+// Import new enterprise components
+import RealTimeMonitoring from '@/components/admin/RealTimeMonitoring';
+import FinancialManagement from '@/components/admin/FinancialManagement';
+import UTMAnalytics from '@/components/admin/UTMAnalytics';
+import ScalabilityMonitoring from '@/components/admin/ScalabilityMonitoring';
+import ComplianceAndSecurity from '@/components/admin/ComplianceAndSecurity';
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState("overview");
-  const isMobile = useIsMobile();
+  const { user, fakeAdminLogin } = useAuth();
+  const [activeTab, setActiveTab] = useState('overview');
 
-  const stats = [
-    {
-      title: "Total Users",
-      value: "2,847",
-      change: "+12.3%",
-      icon: Users,
-      color: "text-blue-600",
-    },
-    {
-      title: "Total Donations",
-      value: "£156,789",
-      change: "+18.2%",
-      icon: Heart,
-      color: "text-red-600",
-    },
-    {
-      title: "Active Campaigns",
-      value: "23",
-      change: "+5",
-      icon: TrendingUp,
-      color: "text-green-600",
-    },
-    {
-      title: "Gift Cards Sold",
-      value: "342",
-      change: "+23.1%",
-      icon: Gift,
-      color: "text-purple-600",
-    },
-  ];
+  // For demo purposes - in real app, check actual admin role
+  const isAdmin = user?.email === 'admin@test.com' || user?.id === '00000000-0000-0000-0000-000000000001';
 
-  if (isMobile) {
+  if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <MobileAdminHeader activeTab={activeTab} />
-        <div className="px-4 py-6 space-y-6">
-          {/* Mobile Stats Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat) => {
-              const IconComponent = stat.icon;
-              return (
-                <Card key={stat.title}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-xs text-muted-foreground">{stat.title}</p>
-                        <p className="text-lg font-bold">{stat.value}</p>
-                        <Badge variant="secondary" className="text-xs">
-                          {stat.change}
-                        </Badge>
-                      </div>
-                      <IconComponent className={`h-6 w-6 ${stat.color}`} />
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <Shield className="h-12 w-12 mx-auto mb-4 text-blue-600" />
+            <CardTitle>Admin Access Required</CardTitle>
+            <CardDescription>
+              Please log in with admin credentials to access the dashboard
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Button onClick={fakeAdminLogin} className="w-full">
+              <Shield className="h-4 w-4 mr-2" />
+              Demo Admin Login
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
-          {/* Mobile Content */}
-          <Card>
-            <CardContent className="p-4">
-              {activeTab === "overview" && <DashboardCharts />}
-              {activeTab === "products" && <ProductManagement />}
-              {activeTab === "gift-cards" && <GiftCardManagement />}
-              {activeTab === "disbursements" && <DisbursementManagement />}
-              {activeTab === "affiliates" && <AffiliateSystem />}
-              {activeTab === "marketing" && <EmailMarketing />}
-              {activeTab === "test-data" && <DataSeeder />}
-            </CardContent>
-          </Card>
-        </div>
-        
-        <MobileAdminNav activeTab={activeTab} setActiveTab={setActiveTab} />
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <Shield className="h-12 w-12 mx-auto mb-4 text-red-600" />
+            <CardTitle>Access Denied</CardTitle>
+            <CardDescription>
+              You don't have permission to access the admin dashboard
+            </CardDescription>
+          </CardHeader>
+        </Card>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage your charity platform</p>
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <Shield className="h-8 w-8 text-blue-600 mr-3" />
+              <h1 className="text-2xl font-bold text-gray-900">Enterprise Admin Dashboard</h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Welcome, {user.email}</span>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat) => {
-            const IconComponent = stat.icon;
-            return (
-              <Card key={stat.title}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">{stat.title}</p>
-                      <p className="text-2xl font-bold">{stat.value}</p>
-                      <Badge variant="secondary" className="mt-1">
-                        {stat.change}
-                      </Badge>
-                    </div>
-                    <IconComponent className={`h-8 w-8 ${stat.color}`} />
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 h-auto p-2">
+            <TabsTrigger value="overview" className="flex flex-col items-center gap-1 p-3">
               <BarChart3 className="h-4 w-4" />
-              Overview
+              <span className="text-xs">Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="products" className="flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4" />
-              Products
+            <TabsTrigger value="realtime" className="flex flex-col items-center gap-1 p-3">
+              <Activity className="h-4 w-4" />
+              <span className="text-xs">Real-time</span>
             </TabsTrigger>
-            <TabsTrigger value="gift-cards" className="flex items-center gap-2">
-              <Gift className="h-4 w-4" />
-              Gift Cards
-            </TabsTrigger>
-            <TabsTrigger value="disbursements" className="flex items-center gap-2">
+            <TabsTrigger value="financial" className="flex flex-col items-center gap-1 p-3">
               <DollarSign className="h-4 w-4" />
-              Disbursements
+              <span className="text-xs">Financial</span>
             </TabsTrigger>
-            <TabsTrigger value="affiliates" className="flex items-center gap-2">
-              <UserCheck className="h-4 w-4" />
-              Affiliates
+            <TabsTrigger value="utm" className="flex flex-col items-center gap-1 p-3">
+              <MousePointer className="h-4 w-4" />
+              <span className="text-xs">UTM Analytics</span>
             </TabsTrigger>
-            <TabsTrigger value="marketing" className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              Marketing
+            <TabsTrigger value="scalability" className="flex flex-col items-center gap-1 p-3">
+              <TrendingUp className="h-4 w-4" />
+              <span className="text-xs">Scalability</span>
             </TabsTrigger>
-            <TabsTrigger value="test-data" className="flex items-center gap-2">
+            <TabsTrigger value="compliance" className="flex flex-col items-center gap-1 p-3">
+              <Shield className="h-4 w-4" />
+              <span className="text-xs">Compliance</span>
+            </TabsTrigger>
+            <TabsTrigger value="management" className="flex flex-col items-center gap-1 p-3">
+              <Users className="h-4 w-4" />
+              <span className="text-xs">Management</span>
+            </TabsTrigger>
+            <TabsTrigger value="data" className="flex flex-col items-center gap-1 p-3">
               <Database className="h-4 w-4" />
-              Test Data
+              <span className="text-xs">Data</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview">
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">System Status</p>
+                      <p className="text-2xl font-bold text-green-600">Operational</p>
+                    </div>
+                    <Activity className="h-8 w-8 text-green-600" />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Daily Donations</p>
+                      <p className="text-2xl font-bold">125,420</p>
+                    </div>
+                    <DollarSign className="h-8 w-8 text-blue-600" />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Active Users</p>
+                      <p className="text-2xl font-bold">2.4M</p>
+                    </div>
+                    <Users className="h-8 w-8 text-purple-600" />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Global Reach</p>
+                      <p className="text-2xl font-bold">68 Countries</p>
+                    </div>
+                    <Globe className="h-8 w-8 text-orange-600" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
             <DashboardCharts />
           </TabsContent>
 
-          <TabsContent value="products">
-            <ProductManagement />
+          <TabsContent value="realtime">
+            <RealTimeMonitoring />
           </TabsContent>
 
-          <TabsContent value="gift-cards">
-            <GiftCardManagement />
+          <TabsContent value="financial">
+            <FinancialManagement />
           </TabsContent>
 
-          <TabsContent value="disbursements">
-            <DisbursementManagement />
+          <TabsContent value="utm">
+            <UTMAnalytics />
           </TabsContent>
 
-          <TabsContent value="affiliates">
+          <TabsContent value="scalability">
+            <ScalabilityMonitoring />
+          </TabsContent>
+
+          <TabsContent value="compliance">
+            <ComplianceAndSecurity />
+          </TabsContent>
+
+          <TabsContent value="management" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ProductManagement />
+              <GiftCardManagement />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <DisbursementManagement />
+              <EmailMarketing />
+            </div>
             <AffiliateSystem />
           </TabsContent>
 
-          <TabsContent value="marketing">
-            <EmailMarketing />
-          </TabsContent>
-
-          <TabsContent value="test-data">
-            <DataSeeder />
+          <TabsContent value="data">
+            <SimpleDataSeeder />
           </TabsContent>
         </Tabs>
       </div>
