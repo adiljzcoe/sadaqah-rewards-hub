@@ -935,7 +935,12 @@ export type Database = {
     }
     Enums: {
       campaign_status: "draft" | "active" | "paused" | "completed" | "cancelled"
-      donation_status: "pending" | "completed" | "failed" | "refunded"
+      donation_status:
+        | "pending"
+        | "completed"
+        | "failed"
+        | "refunded"
+        | "sent_to_charity"
       user_role:
         | "user"
         | "admin"
@@ -1058,7 +1063,13 @@ export const Constants = {
   public: {
     Enums: {
       campaign_status: ["draft", "active", "paused", "completed", "cancelled"],
-      donation_status: ["pending", "completed", "failed", "refunded"],
+      donation_status: [
+        "pending",
+        "completed",
+        "failed",
+        "refunded",
+        "sent_to_charity",
+      ],
       user_role: [
         "user",
         "admin",

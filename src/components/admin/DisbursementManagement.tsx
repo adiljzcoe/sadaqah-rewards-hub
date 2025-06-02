@@ -89,27 +89,28 @@ const DisbursementManagement = () => {
       console.log('✅ Charities fetched:', charitiesData?.length || 0);
       setCharities(charitiesData || []);
 
-      // Fetch pending donations - updated query to be more explicit
+      // Fetch pending donations - updated query to include sent_to_charity status
       const { data: donationsData, error: donationsError } = await supabase
         .from('donations')
         .select(`
           *,
           charities (name)
         `)
-        .eq('status', 'completed')
-        .in('disbursement_status', ['pending', 'partial']);
+        .in('status', ['completed', 'sent_to_charity'])
+        .in('disbursement_status', ['pending', 'partial', 'completed']);
 
       if (donationsError) {
         console.error('❌ Error fetching donations:', donationsError);
         throw donationsError;
       }
       
-      console.log('✅ Pending donations fetched:', donationsData?.length || 0);
-      console.log('💰 Donation amounts:', donationsData?.map(d => ({
+      console.log('✅ Donations fetched:', donationsData?.length || 0);
+      console.log('💰 Donation statuses:', donationsData?.map(d => ({
         id: d.id.substring(0, 8),
         amount: d.amount,
         disbursed: d.disbursed_amount || 0,
-        status: d.disbursement_status
+        status: d.status,
+        disbursement_status: d.disbursement_status
       })));
       
       setPendingDonations(donationsData || []);
@@ -212,11 +213,14 @@ const DisbursementManagement = () => {
     return <div className="flex items-center justify-center p-8">Loading...</div>;
   }
 
-  const totalPendingAmount = pendingDonations.reduce((sum, donation) => {
-    const remaining = donation.amount - (donation.disbursed_amount || 0);
-    console.log(`💰 Donation ${donation.id.substring(0, 8)}: £${donation.amount/100} - £${(donation.disbursed_amount || 0)/100} = £${remaining/100}`);
-    return sum + remaining;
-  }, 0);
+  // Calculate pending donations only (exclude sent_to_charity)
+  const totalPendingAmount = pendingDonations
+    .filter(donation => donation.status !== 'sent_to_charity')
+    .reduce((sum, donation) => {
+      const remaining = donation.amount - (donation.disbursed_amount || 0);
+      console.log(`💰 Donation ${donation.id.substring(0, 8)}: £${donation.amount/100} - £${(donation.disbursed_amount || 0)/100} = £${remaining/100}`);
+      return sum + remaining;
+    }, 0);
 
   console.log('💰 Total pending amount:', totalPendingAmount, 'pence (£' + (totalPendingAmount / 100).toFixed(2) + ')');
 
@@ -224,6 +228,19 @@ const DisbursementManagement = () => {
     if (rating >= 8) return 'bg-green-500';
     if (rating >= 6) return 'bg-yellow-500';
     return 'bg-red-500';
+  };
+
+  const getStatusBadge = (status: string, disbursementStatus: string) => {
+    if (status === 'sent_to_charity') {
+      return <Badge className="bg-green-100 text-green-800">Successfully Sent to Charity</Badge>;
+    }
+    if (disbursementStatus === 'completed') {
+      return <Badge variant="default">Disbursed</Badge>;
+    }
+    if (disbursementStatus === 'pending') {
+      return <Badge variant="secondary">Pending</Badge>;
+    }
+    return <Badge variant="outline">{disbursementStatus}</Badge>;
   };
 
   return (
@@ -255,7 +272,9 @@ const DisbursementManagement = () => {
               <div>
                 <p className="text-sm text-muted-foreground">Pending Amount</p>
                 <p className="text-2xl font-bold">£{(totalPendingAmount / 100).toFixed(2)}</p>
-                <p className="text-xs text-gray-500 mt-1">{pendingDonations.length} donations</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {pendingDonations.filter(d => d.status !== 'sent_to_charity').length} pending donations
+                </p>
               </div>
               <AlertCircle className="h-8 w-8 text-orange-600" />
             </div>
@@ -404,8 +423,8 @@ const DisbursementManagement = () => {
         <TabsContent value="pending">
           <Card>
             <CardHeader>
-              <CardTitle>Pending Donations</CardTitle>
-              <CardDescription>Donations awaiting disbursement</CardDescription>
+              <CardTitle>Donation Status Overview</CardTitle>
+              <CardDescription>All donations and their disbursement status</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -423,11 +442,15 @@ const DisbursementManagement = () => {
                     <TableRow key={donation.id}>
                       <TableCell>£{(donation.amount / 100).toFixed(2)}</TableCell>
                       <TableCell>£{((donation.disbursed_amount || 0) / 100).toFixed(2)}</TableCell>
-                      <TableCell>£{((donation.amount - (donation.disbursed_amount || 0)) / 100).toFixed(2)}</TableCell>
                       <TableCell>
-                        <Badge variant={donation.disbursement_status === 'pending' ? 'secondary' : 'outline'}>
-                          {donation.disbursement_status}
-                        </Badge>
+                        {donation.status === 'sent_to_charity' ? (
+                          <span className="text-green-600 font-medium">Complete</span>
+                        ) : (
+                          `£${((donation.amount - (donation.disbursed_amount || 0)) / 100).toFixed(2)}`
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(donation.status, donation.disbursement_status)}
                       </TableCell>
                       <TableCell>{new Date(donation.created_at).toLocaleDateString()}</TableCell>
                     </TableRow>
