@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -71,9 +70,10 @@ interface MasjidMembersSectionProps {
 }
 
 const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
-  const affiliateEarnings = 340; // Amount earned from YourJannah affiliate program
+  const membershipDonationPerMember = 8; // Amount donated to masjid per member per month
   const memberCount = mockMasjidMembers.length;
-  const monthlyPerMember = 8; // Monthly affiliate commission per active member
+  const monthlyDonationToMasjid = memberCount * membershipDonationPerMember;
+  const totalDonatedToMasjid = 340; // Total donated to date
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('');
@@ -93,7 +93,16 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
     <Card className="p-6">
       <div className="flex items-center gap-2 mb-6">
         <Heart className="h-6 w-6 text-red-500" />
-        <h3 className="text-xl font-bold text-gray-900">YourJannah Affiliate Program</h3>
+        <h3 className="text-xl font-bold text-gray-900">Help Your Masjid Through YourJannah Membership</h3>
+      </div>
+
+      {/* How it Works */}
+      <div className="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
+        <h4 className="font-semibold text-blue-900 mb-2">How YourJannah Helps Your Masjid</h4>
+        <p className="text-sm text-blue-800">
+          When community members join YourJannah, we donate <span className="font-bold">£{membershipDonationPerMember} per month</span> from each membership to {masjidName}. 
+          The more members from your community who join, the more your masjid receives!
+        </p>
       </div>
 
       {/* Summary Stats */}
@@ -101,32 +110,32 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="h-5 w-5 text-green-600" />
-            <span className="text-sm font-medium text-green-800">Total Earned</span>
+            <span className="text-sm font-medium text-green-800">Total Donated</span>
           </div>
           <div className="text-2xl font-bold text-green-700">
-            £{affiliateEarnings.toLocaleString()}
+            £{totalDonatedToMasjid}
           </div>
-          <p className="text-xs text-green-600 mt-1">From YourJannah membership</p>
+          <p className="text-xs text-green-600 mt-1">From membership donations</p>
         </div>
 
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
           <div className="flex items-center gap-2 mb-2">
             <Users className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium text-blue-800">Active Members</span>
+            <span className="text-sm font-medium text-blue-800">Community Members</span>
           </div>
           <div className="text-2xl font-bold text-blue-700">{memberCount}</div>
-          <p className="text-xs text-blue-600 mt-1">From {masjidName}</p>
+          <p className="text-xs text-blue-600 mt-1">YourJannah members from {masjidName}</p>
         </div>
 
         <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
           <div className="flex items-center gap-2 mb-2">
             <Heart className="h-5 w-5 text-purple-600" />
-            <span className="text-sm font-medium text-purple-800">Monthly Earning</span>
+            <span className="text-sm font-medium text-purple-800">Monthly Support</span>
           </div>
           <div className="text-2xl font-bold text-purple-700">
-            £{memberCount * monthlyPerMember}
+            £{monthlyDonationToMasjid}
           </div>
-          <p className="text-xs text-purple-600 mt-1">Per month from members</p>
+          <p className="text-xs text-purple-600 mt-1">Per month to your masjid</p>
         </div>
       </div>
 
@@ -134,7 +143,7 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
       <div>
         <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Users className="h-5 w-5 text-gray-600" />
-          YourJannah Members ({memberCount})
+          YourJannah Members from {masjidName} ({memberCount})
         </h4>
         
         <div className="space-y-3">
@@ -176,9 +185,9 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
                 <div className="text-right">
                   <div className="flex items-center gap-1 text-green-600">
                     <Star className="h-3 w-3" />
-                    <span className="text-sm font-medium">Active</span>
+                    <span className="text-sm font-medium">Supporting</span>
                   </div>
-                  <div className="text-xs text-gray-500">Earning £{monthlyPerMember}/mo</div>
+                  <div className="text-xs text-gray-500">£{membershipDonationPerMember}/month to masjid</div>
                 </div>
               </div>
             );
@@ -189,7 +198,8 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
       <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
         <p className="text-sm text-green-800 text-center">
           <Heart className="inline h-4 w-4 mr-1" />
-          {masjidName} earns <span className="font-bold">£{memberCount * monthlyPerMember} per month</span> through the YourJannah affiliate program. Every active member from your community contributes £{monthlyPerMember} monthly to your masjid's funds.
+          Encourage more community members to join YourJannah! Each new member means an additional <span className="font-bold">£{membershipDonationPerMember} per month</span> donated to {masjidName}. 
+          Together, we can increase your masjid's monthly support.
         </p>
       </div>
     </Card>
