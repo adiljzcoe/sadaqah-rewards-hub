@@ -115,7 +115,7 @@ const DataSeeder = () => {
         charity_id: charity.id,
         amount: Math.floor(Math.random() * 50000) + 10000, // £100-£500 in pence
         status: 'completed',
-        disbursement_status: 'pending',
+        disbursement_status: 'pending', // Explicitly set to pending
         disbursed_amount: 0,
         anonymous: Math.random() > 0.7,
         jannah_points_earned: Math.floor(Math.random() * 500) + 100,
@@ -135,6 +135,12 @@ const DataSeeder = () => {
     }
 
     console.log('✅ Donations seeded:', data?.length);
+    console.log('💰 Sample donation amounts:', data?.slice(0, 3).map(d => ({
+      amount: d.amount,
+      status: d.status,
+      disbursement_status: d.disbursement_status
+    })));
+    
     return data;
   };
 
@@ -169,7 +175,7 @@ const DataSeeder = () => {
 
       toast({
         title: "Data Seeding Complete! 🎉",
-        description: "Test charities, allocations, and donations have been created. You can now test the disbursement system.",
+        description: "Test charities, allocations, and donations have been created with pending disbursement status.",
       });
 
     } catch (error) {
