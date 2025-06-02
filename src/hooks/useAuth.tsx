@@ -50,10 +50,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [toast]);
 
-  // Fake admin login for testing
+  // Fake admin login for testing - using proper UUID format
   const fakeAdminLogin = () => {
     const fakeUser = {
-      id: 'fake-admin-id',
+      id: '00000000-0000-0000-0000-000000000001', // Proper UUID format
       email: 'admin@test.com',
       user_metadata: { full_name: 'Test Admin' },
       app_metadata: {},
