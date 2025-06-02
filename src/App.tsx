@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -7,7 +8,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
-import MasjidCommunity from "@/components/MasjidCommunity";
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -31,6 +31,7 @@ const BusinessProfile = lazy(() => import("./pages/BusinessProfile"));
 const Auth = lazy(() => import("./pages/Auth"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const GiftCards = lazy(() => import("./pages/GiftCards"));
+const MasjidCommunity = lazy(() => import("./pages/MasjidCommunity"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
