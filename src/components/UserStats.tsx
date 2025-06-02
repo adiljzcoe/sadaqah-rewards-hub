@@ -30,6 +30,19 @@ const UserStats = () => {
   // Mock user membership status - set to false to show upgrade link
   const isMember = false;
 
+  // Listen for prayer completion events
+  React.useEffect(() => {
+    const handleJannahPointsUpdate = (event: CustomEvent) => {
+      setCurrentPoints(event.detail.newPoints);
+    };
+
+    window.addEventListener('jannahPointsUpdated', handleJannahPointsUpdate as EventListener);
+    
+    return () => {
+      window.removeEventListener('jannahPointsUpdated', handleJannahPointsUpdate as EventListener);
+    };
+  }, []);
+
   // Check for new achievements when component loads
   React.useEffect(() => {
     const userStats = {
@@ -183,7 +196,7 @@ const UserStats = () => {
           <div className="text-3xl font-black text-white animate-points-pop">
             {currentPoints.toLocaleString()}
           </div>
-          <div className="text-sm text-white/80 mt-1">✨ Divine Rewards + Streak Bonuses ✨</div>
+          <div className="text-sm text-white/80 mt-1">✨ Divine Rewards + Prayer & Streak Bonuses ✨</div>
         </div>
 
         {/* Level Progress */}
@@ -223,6 +236,21 @@ const UserStats = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-200/50 to-transparent animate-shimmer"></div>
           </div>
         )}
+
+        {/* Prayer Rewards Info */}
+        <div className="game-card p-4 bg-gradient-to-r from-green-100 to-teal-100 text-center relative overflow-hidden">
+          <div className="relative z-10">
+            <p className="font-bold text-green-800 mb-1 text-lg">🤲 Prayer Rewards!</p>
+            <p className="text-sm font-bold text-green-700">
+              <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
+              Complete your 5 daily prayers for bonus points!
+            </p>
+            <div className="text-xs text-green-600 mt-2">
+              Each prayer: +50 points • All 5 prayers: +100 bonus points
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-200/50 to-transparent animate-shimmer"></div>
+        </div>
 
         {/* Streak Bonus Info */}
         <div className="game-card p-4 bg-gradient-to-r from-orange-100 to-yellow-100 text-center relative overflow-hidden">

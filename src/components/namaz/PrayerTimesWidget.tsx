@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Sun, Moon, Sunrise, Sunset } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, Sun, Moon, Sunrise, Sunset, Check } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface PrayerTimes {
   fajr: string;
@@ -25,6 +27,8 @@ const PrayerTimesWidget = ({ city, userLocation, onTimesUpdate, onLoadingChange 
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
   const [loading, setLoading] = useState(false);
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string; remaining: string } | null>(null);
+  const [prayedPrayers, setPrayedPrayers] = useState<Set<string>>(new Set());
+  const { toast } = useToast();
 
   // Mock prayer times calculation - in a real app, you'd use an API like Aladhan API
   const calculatePrayerTimes = async (lat: number, lng: number) => {
@@ -100,6 +104,49 @@ const PrayerTimesWidget = ({ city, userLocation, onTimesUpdate, onLoadingChange 
       remaining: `${hoursRemaining}h ${minutesRemaining}m`
     });
   };
+
+  const handlePrayerCompleted = (prayerName: string) => {
+    if (prayedPrayers.has(prayerName)) {
+      toast({
+        title: "Already Completed!",
+        description: `You've already marked ${prayerName} as completed today.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Add to prayed prayers
+    const newPrayedPrayers = new Set(prayedPrayers);
+    newPrayedPrayers.add(prayerName);
+    setPrayedPrayers(newPrayedPrayers);
+
+    // Save to localStorage (in a real app, this would be saved to the database)
+    const today = new Date().toDateString();
+    const savedPrayers = JSON.parse(localStorage.getItem(`prayers_${today}`) || '[]');
+    savedPrayers.push(prayerName);
+    localStorage.setItem(`prayers_${today}`, JSON.stringify(savedPrayers));
+
+    // Award Jannah points
+    const basePoints = 50;
+    const currentPoints = parseInt(localStorage.getItem('jannahPoints') || '0');
+    const newPoints = currentPoints + basePoints;
+    localStorage.setItem('jannahPoints', newPoints.toString());
+
+    toast({
+      title: "Prayer Completed! 🤲",
+      description: `Alhamdulillah! You earned ${basePoints} Jannah points for completing ${prayerName}.`,
+    });
+
+    // Trigger a custom event to update UserStats component
+    window.dispatchEvent(new CustomEvent('jannahPointsUpdated', { detail: { newPoints } }));
+  };
+
+  // Load today's completed prayers from localStorage
+  useEffect(() => {
+    const today = new Date().toDateString();
+    const savedPrayers = JSON.parse(localStorage.getItem(`prayers_${today}`) || '[]');
+    setPrayedPrayers(new Set(savedPrayers));
+  }, []);
 
   useEffect(() => {
     if (userLocation) {
@@ -179,27 +226,54 @@ const PrayerTimesWidget = ({ city, userLocation, onTimesUpdate, onLoadingChange 
           <p className="text-sm text-gray-600">{prayerTimes.date}</p>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { name: 'Fajr', time: prayerTimes.fajr, arabic: 'الفجر' },
-              { name: 'Sunrise', time: prayerTimes.sunrise, arabic: 'الشروق' },
               { name: 'Dhuhr', time: prayerTimes.dhuhr, arabic: 'الظهر' },
               { name: 'Asr', time: prayerTimes.asr, arabic: 'العصر' },
               { name: 'Maghrib', time: prayerTimes.maghrib, arabic: 'المغرب' },
               { name: 'Isha', time: prayerTimes.isha, arabic: 'العشاء' }
-            ].map((prayer) => (
-              <div
-                key={prayer.name}
-                className="bg-gray-50 rounded-lg p-4 text-center hover:bg-gray-100 transition-colors"
-              >
-                <div className="flex justify-center mb-2">
-                  {getPrayerIcon(prayer.name)}
+            ].map((prayer) => {
+              const isPrayed = prayedPrayers.has(prayer.name);
+              return (
+                <div
+                  key={prayer.name}
+                  className={`rounded-lg p-4 text-center transition-colors ${
+                    isPrayed 
+                      ? 'bg-green-50 border-2 border-green-200' 
+                      : 'bg-gray-50 hover:bg-gray-100'
+                  }`}
+                >
+                  <div className="flex justify-center mb-2">
+                    {getPrayerIcon(prayer.name)}
+                  </div>
+                  <div className="font-semibold text-gray-900">{prayer.name}</div>
+                  <div className="text-sm text-gray-600 mb-1">{prayer.arabic}</div>
+                  <div className="text-lg font-bold text-blue-600 mb-3">{prayer.time}</div>
+                  
+                  <Button
+                    size="sm"
+                    variant={isPrayed ? "outline" : "default"}
+                    onClick={() => handlePrayerCompleted(prayer.name)}
+                    disabled={isPrayed}
+                    className={`w-full ${
+                      isPrayed 
+                        ? 'bg-green-100 text-green-800 border-green-300 cursor-not-allowed' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}
+                  >
+                    {isPrayed ? (
+                      <>
+                        <Check className="h-4 w-4 mr-2" />
+                        Completed
+                      </>
+                    ) : (
+                      'Mark as Prayed'
+                    )}
+                  </Button>
                 </div>
-                <div className="font-semibold text-gray-900">{prayer.name}</div>
-                <div className="text-sm text-gray-600 mb-1">{prayer.arabic}</div>
-                <div className="text-lg font-bold text-blue-600">{prayer.time}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>
