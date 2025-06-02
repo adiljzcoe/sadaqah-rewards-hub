@@ -85,7 +85,7 @@ const WorldAdhanMap = () => {
       <Card className="overflow-hidden">
         <CardContent className="p-0">
           <div className="relative h-96 lg:h-[500px] overflow-hidden">
-            {/* World Map Background Image */}
+            {/* World Map Background Image - Now showing entire world */}
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
