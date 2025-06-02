@@ -14,6 +14,7 @@ const DhikrCommunity = () => {
   const [collectiveCount, setCollectiveCount] = useState(47289);
   const [selectedDhikr, setSelectedDhikr] = useState('Subhan Allah');
   const [recentAwards, setRecentAwards] = useState([]);
+  const [jannahPoints, setJannahPoints] = useState(0);
 
   // Simulate collective count increasing automatically (background activity)
   useEffect(() => {
@@ -90,6 +91,9 @@ const DhikrCommunity = () => {
     setPersonalCount(prev => prev + 1);
     setCollectiveCount(prev => prev + 1);
     
+    // Award Jannah points (1 point per dhikr)
+    setJannahPoints(prev => prev + 1);
+    
     // Show random award every 10 dhikrs
     if ((personalCount + 1) % 10 === 0) {
       const randomAward = awards[Math.floor(Math.random() * awards.length)];
@@ -154,10 +158,10 @@ const DhikrCommunity = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-cyan-100">Favorite</p>
-                  <p className="text-lg font-bold">{personalStats.favoriteAzkar}</p>
+                  <p className="text-cyan-100">Jannah Points</p>
+                  <p className="text-3xl font-bold">{jannahPoints}</p>
                 </div>
-                <Heart className="h-8 w-8 text-cyan-200" />
+                <Star className="h-8 w-8 text-cyan-200" />
               </div>
             </CardContent>
           </Card>
@@ -228,6 +232,9 @@ const DhikrCommunity = () => {
                       {personalCount}
                     </div>
                     <div className="text-blue-600">Your Count Today</div>
+                    <div className="text-sm text-purple-600 mt-2">
+                      +{jannahPoints} Jannah Points Earned
+                    </div>
                     
                     <Button
                       size="lg"
