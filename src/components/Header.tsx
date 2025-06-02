@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -214,6 +215,15 @@ const Header = () => {
                       </div>
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dhikr-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white">
+                      <Sparkles className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Dhikr Community</div>
+                        <p className="text-sm text-purple-200">Spiritual remembrance together</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -388,15 +398,6 @@ const Header = () => {
                       <div>
                         <div className="font-semibold">Leaderboards</div>
                         <p className="text-sm text-amber-200">Top donors & recognition</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/dhikr-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white">
-                      <Sparkles className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Dhikr Community</div>
-                        <p className="text-sm text-purple-200">Spiritual remembrance together</p>
                       </div>
                     </Link>
                   </DropdownMenuItem>
