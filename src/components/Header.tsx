@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -272,7 +273,6 @@ const Header = () => {
           currentPoints={250}
           nextLevelPoints={500}
           isMember={true}
-          onClose={() => setIsMobileMenuOpen(false)} 
         />
       )}
     </header>
