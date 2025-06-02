@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -36,6 +37,7 @@ const Qurbani = lazy(() => import("./pages/Qurbani"));
 const RamadanCalendar = lazy(() => import("./pages/RamadanCalendar"));
 const DhikrCommunity = lazy(() => import("./pages/DhikrCommunity"));
 const QuranReader = lazy(() => import("./pages/QuranReader"));
+const NamazTimes = lazy(() => import("./pages/NamazTimes"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -84,6 +86,8 @@ function App() {
                           <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
                           <Route path="/dhikr-community" element={<DhikrCommunity />} />
                           <Route path="/quran-reader" element={<QuranReader />} />
+                          <Route path="/namaz-times" element={<NamazTimes />} />
+                          <Route path="/namaz-times/:city" element={<NamazTimes />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={
