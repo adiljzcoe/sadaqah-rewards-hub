@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,41 +8,37 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Heart, Upload, Gift, Users, Building, Droplets, User, Mail, Calendar, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
-const causes = [
-  {
-    id: 'gaza',
-    name: 'Gaza Emergency Relief',
-    description: 'Provide urgent aid to families in Gaza',
-    icon: Heart,
-    color: 'bg-red-500',
-    image: '/lovable-uploads/eb14ceb3-42ed-4808-b9eb-8aeedbc7de1c.png'
-  },
-  {
-    id: 'mosque',
-    name: 'Build a Mosque',
-    description: 'Support mosque construction projects',
-    icon: Building,
-    color: 'bg-blue-500',
-    image: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png'
-  },
-  {
-    id: 'water',
-    name: 'Water Wells',
-    description: 'Provide clean water access',
-    icon: Droplets,
-    color: 'bg-cyan-500',
-    image: '/lovable-uploads/fe60c231-8422-4bf0-83e7-47b219d91e70.png'
-  },
-  {
-    id: 'orphans',
-    name: 'Support Orphans',
-    description: 'Care for orphaned children',
-    icon: Users,
-    color: 'bg-pink-500',
-    image: '/lovable-uploads/fa941c0a-2492-4fde-8299-aa6d80b65abf.png'
-  }
-];
+// Icon mapping for dynamic icons
+const iconMap = {
+  Heart,
+  Building,
+  Droplets,
+  Users,
+  Gift,
+  User,
+  Mail,
+  Calendar,
+  Star
+} as const;
+
+type IconName = keyof typeof iconMap;
+
+interface GiftCardProduct {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  image_url: string;
+  icon: string;
+  color: string;
+  min_amount: number;
+  max_amount: number;
+  is_active: boolean;
+  sort_order: number;
+}
 
 const presetMessages = [
   {
@@ -91,6 +87,9 @@ const amounts = [25, 50, 100, 250, 500];
 
 const GiftCards = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [causes, setCauses] = useState<GiftCardProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCause, setSelectedCause] = useState('');
   const [selectedAmount, setSelectedAmount] = useState(50);
   const [customAmount, setCustomAmount] = useState('');
@@ -104,6 +103,32 @@ const GiftCards = () => {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [senderName, setSenderName] = useState('');
   const [deliveryDate, setDeliveryDate] = useState('');
+
+  useEffect(() => {
+    fetchGiftCardProducts();
+  }, []);
+
+  const fetchGiftCardProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('gift_card_products')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true });
+
+      if (error) throw error;
+      setCauses(data || []);
+    } catch (error) {
+      console.error('Error fetching gift card products:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load gift card options. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -138,6 +163,14 @@ const GiftCards = () => {
   const finalAmount = Number(customAmount) || selectedAmount;
   const selectedCauseData = causes.find(c => c.id === selectedCause);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container mx-auto px-4 py-8">
@@ -166,7 +199,7 @@ const GiftCards = () => {
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-4">
                     {causes.map((cause) => {
-                      const IconComponent = cause.icon;
+                      const IconComponent = iconMap[cause.icon as IconName] || Gift;
                       return (
                         <div
                           key={cause.id}
@@ -179,7 +212,7 @@ const GiftCards = () => {
                         >
                           <div className="flex items-center space-x-3">
                             <img 
-                              src={cause.image} 
+                              src={cause.image_url} 
                               alt={cause.name}
                               className="w-16 h-12 object-cover rounded"
                             />
@@ -189,6 +222,9 @@ const GiftCards = () => {
                                 <h3 className="font-semibold text-gray-800">{cause.name}</h3>
                               </div>
                               <p className="text-sm text-gray-600">{cause.description}</p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                Min: £{(cause.min_amount / 100).toFixed(2)} - Max: £{(cause.max_amount / 100).toFixed(2)}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -409,7 +445,7 @@ const GiftCards = () => {
                       
                       {selectedCauseData && (
                         <div className="mb-4">
-                          <img src={selectedCauseData.image} alt={selectedCauseData.name} className="w-full h-20 object-cover rounded-lg mb-2" />
+                          <img src={selectedCauseData.image_url} alt={selectedCauseData.name} className="w-full h-20 object-cover rounded-lg mb-2" />
                           <p className="text-sm font-semibold">{selectedCauseData.name}</p>
                         </div>
                       )}

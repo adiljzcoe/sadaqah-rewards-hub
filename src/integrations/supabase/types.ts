@@ -260,6 +260,54 @@ export type Database = {
           },
         ]
       }
+      gift_card_products: {
+        Row: {
+          category: string
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          max_amount: number | null
+          min_amount: number | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          max_amount?: number | null
+          min_amount?: number | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          max_amount?: number | null
+          min_amount?: number | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       matching_pool: {
         Row: {
           business_partner_id: string | null
