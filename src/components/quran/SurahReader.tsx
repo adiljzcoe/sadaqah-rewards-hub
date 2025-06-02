@@ -1,14 +1,13 @@
-
 import React, { useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { useVerseLikes } from '@/hooks/useVerseLikes';
-import { ArrowLeft, Check, Star, Volume2, Heart } from 'lucide-react';
+import { useVerseProgress } from '@/hooks/useVerseProgress';
+import { ArrowLeft, CheckCircle, Trophy } from 'lucide-react';
+import VerseCard from './VerseCard';
 
 interface Verse {
   id: string;
@@ -35,111 +34,15 @@ interface SurahReaderProps {
   onBack: () => void;
 }
 
-interface VerseCardProps {
-  verse: Verse;
-  isCompleted: boolean;
-  completingVerse: string | null;
-  onCompleteVerse: (verse: Verse) => void;
-  user: any;
-}
-
-const VerseCard = ({ verse, isCompleted, completingVerse, onCompleteVerse, user }: VerseCardProps) => {
-  const { isLiked, isLiking, handleToggleLike } = useVerseLikes(verse.id);
-
-  return (
-    <Card className={`transition-all duration-200 ${isCompleted ? 'bg-green-50 border-green-200' : 'hover:shadow-md'}`}>
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <Badge variant="outline" className="text-sm">
-            Verse {verse.verse_number}
-          </Badge>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="text-xs">
-              +{verse.jannah_points_reward} points
-            </Badge>
-            {isCompleted && (
-              <Badge className="bg-green-500 text-xs">
-                <Check className="h-3 w-3 mr-1" />
-                Completed
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        {/* Arabic Text */}
-        <div className="mb-4 p-4 bg-gray-50 rounded-lg text-right" dir="rtl">
-          <div className="text-2xl font-bold text-gray-800 leading-relaxed arabic-font">
-            {verse.text_arabic}
-          </div>
-        </div>
-
-        {/* Transliteration */}
-        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-          <div className="text-sm text-blue-600 font-medium mb-1">Transliteration:</div>
-          <div className="text-lg text-blue-800 italic">
-            {verse.text_transliteration}
-          </div>
-        </div>
-
-        {/* Translation */}
-        <div className="mb-4 p-3 bg-emerald-50 rounded-lg">
-          <div className="text-sm text-emerald-600 font-medium mb-1">Translation:</div>
-          <div className="text-lg text-emerald-800">
-            {verse.text_translation}
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center justify-between pt-4 border-t">
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
-              <Volume2 className="h-4 w-4 mr-2" />
-              Listen
-            </Button>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleToggleLike}
-              disabled={isLiking}
-              className={`${isLiked ? 'text-red-600 border-red-200 bg-red-50' : ''}`}
-            >
-              <Heart className={`h-4 w-4 mr-1 ${isLiked ? 'fill-current' : ''}`} />
-              {verse.likes_count || 0}
-            </Button>
-          </div>
-          
-          {user && !isCompleted && (
-            <Button
-              onClick={() => onCompleteVerse(verse)}
-              disabled={completingVerse === verse.id}
-              className="bg-emerald-600 hover:bg-emerald-700"
-            >
-              {completingVerse === verse.id ? 'Completing...' : (
-                <>
-                  <Check className="h-4 w-4 mr-2" />
-                  Mark Complete
-                </>
-              )}
-            </Button>
-          )}
-
-          {!user && (
-            <Button variant="outline" size="sm" disabled>
-              Sign in to track progress
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
 const SurahReader = ({ surah, onBack }: SurahReaderProps) => {
   const { user } = useAuth();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
   const [completingVerse, setCompletingVerse] = useState<string | null>(null);
+  const { 
+    completedVerses, 
+    markVerseAsRead, 
+    markSurahAsComplete, 
+    autoMarkingVerse 
+  } = useVerseProgress(surah.id);
 
   const { data: verses, isLoading } = useQuery({
     queryKey: ['quran-verses', surah.id],
@@ -155,89 +58,17 @@ const SurahReader = ({ surah, onBack }: SurahReaderProps) => {
     }
   });
 
-  const { data: completedVerses } = useQuery({
-    queryKey: ['user-verse-progress', surah.id],
-    queryFn: async () => {
-      if (!user) return [];
-      
-      const { data, error } = await supabase
-        .from('user_verse_progress')
-        .select('verse_id')
-        .eq('user_id', user.id);
-      
-      if (error) throw error;
-      return data.map(item => item.verse_id);
-    },
-    enabled: !!user
-  });
-
   const handleCompleteVerse = async (verse: Verse) => {
-    if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to track your progress and earn Jannah points.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (completedVerses?.includes(verse.id)) {
-      toast({
-        title: "Already completed",
-        description: "You have already completed this verse!",
-        variant: "destructive"
-      });
-      return;
-    }
+    if (!user || completedVerses.includes(verse.id)) return;
 
     setCompletingVerse(verse.id);
-
-    try {
-      // Record verse completion
-      const { error: progressError } = await supabase
-        .from('user_verse_progress')
-        .insert({
-          user_id: user.id,
-          verse_id: verse.id,
-          jannah_points_earned: verse.jannah_points_reward
-        });
-
-      if (progressError) throw progressError;
-
-      // Update user's Jannah points
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('jannah_points')
-        .eq('id', user.id)
-        .single();
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          jannah_points: (profile?.jannah_points || 0) + verse.jannah_points_reward
-        })
-        .eq('id', user.id);
-
-      if (profileError) throw profileError;
-
-      toast({
-        title: "Verse completed! 🎉",
-        description: `You earned ${verse.jannah_points_reward} Jannah points! May Allah reward you.`,
-      });
-
-      // Refresh data
-      queryClient.invalidateQueries({ queryKey: ['user-verse-progress'] });
-    } catch (error) {
-      console.error('Error completing verse:', error);
-      toast({
-        title: "Error",
-        description: "Failed to complete verse. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setCompletingVerse(null);
-    }
+    await markVerseAsRead(verse.id, verse.jannah_points_reward);
+    setCompletingVerse(null);
   };
+
+  const completedCount = verses?.filter(v => completedVerses.includes(v.id)).length || 0;
+  const totalVerses = verses?.length || 0;
+  const isFullyCompleted = completedCount === totalVerses && totalVerses > 0;
 
   if (isLoading) {
     return (
@@ -282,26 +113,98 @@ const SurahReader = ({ surah, onBack }: SurahReaderProps) => {
             <div className="text-emerald-200">
               Surah {surah.surah_number} • {surah.total_verses} verses
             </div>
+            {user && (
+              <div className="text-emerald-100">
+                Progress: {completedCount}/{totalVerses} verses completed
+              </div>
+            )}
           </div>
         </CardHeader>
       </Card>
 
+      {/* Progress Indicator */}
+      {user && totalVerses > 0 && (
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-medium">Reading Progress</span>
+              <span className="text-sm text-gray-600">
+                {Math.round((completedCount / totalVerses) * 100)}%
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(completedCount / totalVerses) * 100}%` }}
+              ></div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Verses */}
       <div className="space-y-6">
         {verses?.map((verse) => {
-          const isCompleted = completedVerses?.includes(verse.id);
+          const isCompleted = completedVerses.includes(verse.id);
           return (
             <VerseCard
               key={verse.id}
               verse={verse}
-              isCompleted={isCompleted || false}
+              isCompleted={isCompleted}
               completingVerse={completingVerse}
               onCompleteVerse={handleCompleteVerse}
+              onMarkAsRead={markVerseAsRead}
               user={user}
+              autoMarkingVerse={autoMarkingVerse}
             />
           );
         })}
       </div>
+
+      {/* Surah Completion Button */}
+      {user && verses && verses.length > 0 && (
+        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+          <CardContent className="p-6 text-center">
+            {isFullyCompleted ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-center">
+                  <Trophy className="h-16 w-16 text-amber-500" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-amber-800 mb-2">
+                    Surah Completed! 🎉
+                  </h3>
+                  <p className="text-amber-700">
+                    Congratulations! You have completed all verses in this surah.
+                    May Allah reward you for your dedication.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-center">
+                  <CheckCircle className="h-12 w-12 text-emerald-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    Complete This Surah
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Mark all remaining verses as read and earn bonus Jannah points
+                  </p>
+                  <Button
+                    onClick={() => markSurahAsComplete(verses)}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 text-lg"
+                  >
+                    <CheckCircle className="h-5 w-5 mr-2" />
+                    Complete Surah ({totalVerses - completedCount} verses remaining)
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
