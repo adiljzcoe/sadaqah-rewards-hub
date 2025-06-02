@@ -166,21 +166,31 @@ const LiveDhikrSession = () => {
 
       if (participationError) throw participationError;
 
-      // Award Jannah points
-      const points = Math.floor(selectedEvent.jannah_points_reward * selectedEvent.bonus_multiplier);
-      if (newCount % 10 === 0) { // Award points every 10 dhikr
-        const { error: profileError } = await supabase
+      // Award Jannah points every 10 dhikr
+      if (newCount % 10 === 0) {
+        const points = Math.floor(selectedEvent.jannah_points_reward * selectedEvent.bonus_multiplier);
+        
+        // Get current profile to update points
+        const { data: profile } = await supabase
           .from('profiles')
-          .update({
-            jannah_points: supabase.rpc('increment', { x: points })
-          })
-          .eq('id', user.id);
+          .select('jannah_points')
+          .eq('id', user.id)
+          .single();
 
-        if (!profileError) {
-          toast({
-            title: `+${points} Jannah Points! ✨`,
-            description: `${newCount} dhikr completed!`
-          });
+        if (profile) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({
+              jannah_points: (profile.jannah_points || 0) + points
+            })
+            .eq('id', user.id);
+
+          if (!profileError) {
+            toast({
+              title: `+${points} Jannah Points! ✨`,
+              description: `${newCount} dhikr completed!`
+            });
+          }
         }
       }
     } catch (error) {
