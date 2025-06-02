@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -5,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { AlertCircle, Coins, Flower } from 'lucide-react';
+import { AlertCircle, Coins, Flower, Gift } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -64,6 +65,18 @@ const memoryDedicationOptions = [
   'My Sister', 'My Brother', 'My Friend', 'My Uncle', 'My Aunt', 'My Spouse'
 ];
 
+const giftBlessingOptions = [
+  { id: 'baby', title: 'To Bless Your Baby', message: 'May Allah bless your precious little one with health, happiness, and righteousness. This donation is made in celebration of your beautiful baby.' },
+  { id: 'exams', title: 'May Allah Help You in Your Exams', message: 'May Allah grant you success in your studies and exams. This donation is made as a dua for your academic success and future.' },
+  { id: 'health', title: 'For Your Health & Recovery', message: 'May Allah grant you complete healing and restore your health. This donation is made as a prayer for your wellbeing.' },
+  { id: 'marriage', title: 'Blessing Your Marriage', message: 'May Allah bless your marriage with love, understanding, and happiness. This donation celebrates your union.' },
+  { id: 'newjob', title: 'Congratulations on Your New Job', message: 'May Allah bless you in your new role and grant you success. This donation celebrates your achievement.' },
+  { id: 'graduation', title: 'Celebrating Your Graduation', message: 'May Allah open doors of opportunities for you. This donation celebrates your academic achievement.' },
+  { id: 'difficult', title: 'Thinking of You in Difficult Times', message: 'May Allah ease your difficulties and grant you strength. You are in our thoughts and prayers.' },
+  { id: 'birthday', title: 'Happy Birthday Blessing', message: 'May Allah bless you with another year of health, happiness, and righteousness. Happy Birthday!' },
+  { id: 'general', title: 'Just Thinking of You', message: 'May Allah shower His blessings upon you always. This donation is made with love and duas for you.' }
+];
+
 const donationTypeStyles = {
   sadaqah: {
     gradient: 'bg-blue-600 hover:bg-blue-700',
@@ -90,6 +103,11 @@ const donationTypeStyles = {
     text: 'text-white',
     icon: '🌹'
   },
+  gift: {
+    gradient: 'bg-pink-600 hover:bg-pink-700',
+    text: 'text-white',
+    icon: '🎁'
+  },
   coins: {
     gradient: 'bg-yellow-600 hover:bg-yellow-700',
     text: 'text-white',
@@ -110,6 +128,13 @@ const StickyDonationWidget = () => {
   const [customMemoryPerson, setCustomMemoryPerson] = useState('');
   const [memoryNote, setMemoryNote] = useState('');
   const [selectedMemoryCause, setSelectedMemoryCause] = useState('clean-water');
+
+  // Gift specific states
+  const [friendName, setFriendName] = useState('');
+  const [friendEmail, setFriendEmail] = useState('');
+  const [friendMobile, setFriendMobile] = useState('');
+  const [selectedBlessing, setSelectedBlessing] = useState('general');
+  const [customMessage, setCustomMessage] = useState('');
 
   // Mock user membership status - in real app this would come from auth/database
   const isMember = true;
@@ -160,6 +185,9 @@ const StickyDonationWidget = () => {
 
   // Get the final memory person name
   const finalMemoryPerson = memoryPerson === 'other' ? customMemoryPerson : memoryPerson;
+
+  // Get the selected blessing details
+  const selectedBlessingDetails = giftBlessingOptions.find(b => b.id === selectedBlessing);
 
   return (
     <>
@@ -214,13 +242,25 @@ const StickyDonationWidget = () => {
             box-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 0 10px rgba(239, 68, 68, 0.3);
           }
         }
+
+        @keyframes pink-gift-glow {
+          0% {
+            box-shadow: 0 0 5px rgba(236, 72, 153, 0.4), 0 0 10px rgba(236, 72, 153, 0.3), 0 0 15px rgba(236, 72, 153, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.6), 0 0 20px rgba(236, 72, 153, 0.4), 0 0 30px rgba(236, 72, 153, 0.3), 0 0 40px rgba(236, 72, 153, 0.1);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(236, 72, 153, 0.4), 0 0 10px rgba(236, 72, 153, 0.3), 0 0 15px rgba(236, 72, 153, 0.2);
+          }
+        }
       `}</style>
       
       <div className={`${isSticky ? 'fixed bottom-0' : 'relative'} left-0 right-0 z-50 transition-all duration-300 bg-white border-t border-gray-200 shadow-lg`}>
         <div className={`relative z-10 container mx-auto px-2 sm:px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Responsive TabsList - Stack on mobile, grid on larger screens */}
-            <div className={`grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
+            <div className={`grid grid-cols-3 sm:grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
                   key={key}
@@ -240,6 +280,98 @@ const StickyDonationWidget = () => {
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
+              {/* Gift Section - Enhanced for sticky widget */}
+              {activeTab === 'gift' && (
+                <div className="mb-3 p-3 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl">
+                  <div className="flex items-center mb-2">
+                    <Gift className="h-4 w-4 mr-2 text-pink-600" />
+                    <h4 className="text-sm font-semibold text-pink-900">Gift Donation</h4>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {/* Friend's Details - Grid Layout */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <div>
+                        <label className="text-xs font-medium text-pink-800 mb-1 block">Friend's Name</label>
+                        <Input
+                          type="text"
+                          placeholder="Enter their name"
+                          value={friendName}
+                          onChange={(e) => setFriendName(e.target.value)}
+                          className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-pink-800 mb-1 block">Email Address</label>
+                        <Input
+                          type="email"
+                          placeholder="their@email.com"
+                          value={friendEmail}
+                          onChange={(e) => setFriendEmail(e.target.value)}
+                          className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-pink-800 mb-1 block">Mobile Number</label>
+                        <Input
+                          type="tel"
+                          placeholder="+44 7XXX XXXXXX"
+                          value={friendMobile}
+                          onChange={(e) => setFriendMobile(e.target.value)}
+                          className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Blessing Type Selection */}
+                    <div>
+                      <label className="text-xs font-medium text-pink-800 mb-2 block">Choose a Blessing Message</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-32 overflow-y-auto">
+                        {giftBlessingOptions.map((blessing) => (
+                          <button
+                            key={blessing.id}
+                            onClick={() => setSelectedBlessing(blessing.id)}
+                            className={`p-2 rounded-lg text-left transition-all duration-200 text-xs ${
+                              selectedBlessing === blessing.id
+                                ? 'bg-pink-600 text-white shadow-md'
+                                : 'bg-white border border-pink-300 text-pink-800 hover:bg-pink-100'
+                            }`}
+                          >
+                            <div className="font-medium">{blessing.title}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Preview of Selected Message */}
+                    {selectedBlessingDetails && (
+                      <div className="bg-white/70 p-2 rounded-lg border border-pink-200">
+                        <div className="text-xs font-medium text-pink-800 mb-1">Message Preview:</div>
+                        <div className="text-xs text-pink-700 italic">"{selectedBlessingDetails.message}"</div>
+                      </div>
+                    )}
+
+                    {/* Custom Additional Message */}
+                    <div>
+                      <label className="text-xs font-medium text-pink-800 mb-1 block">Add Personal Note (Optional)</label>
+                      <Input
+                        type="text"
+                        placeholder="Add your own personal message..."
+                        value={customMessage}
+                        onChange={(e) => setCustomMessage(e.target.value)}
+                        maxLength={150}
+                        className="w-full text-xs border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
+                      />
+                      {customMessage && (
+                        <div className="text-[10px] text-pink-600 text-right mt-1">
+                          {customMessage.length}/150 characters
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Honoring Section - Enhanced for sticky widget */}
               {activeTab === 'honoring' && (
                 <div className="mb-3 p-3 bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-xl">
@@ -382,6 +514,10 @@ const StickyDonationWidget = () => {
                       <div className="text-xs bg-rose-50 border border-rose-300 rounded-xl px-3 py-1.5 text-rose-700">
                         Honoring Donation
                       </div>
+                    ) : activeTab === 'gift' ? (
+                      <div className="text-xs bg-pink-50 border border-pink-300 rounded-xl px-3 py-1.5 text-pink-700">
+                        Gift Donation
+                      </div>
                     ) : (
                       <Select value={selectedCause} onValueChange={setSelectedCause}>
                         <SelectTrigger className={`text-xs w-full rounded-xl ${isSticky ? 'h-7' : 'h-8'} ${
@@ -519,6 +655,25 @@ const StickyDonationWidget = () => {
                         <Coins className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
                         Top-up {currentCurrency?.symbol}{donationAmount}
                       </span>
+                    </Button>
+                  ) : activeTab === 'gift' ? (
+                    /* Gift Donation Button with special pink glow */
+                    <Button className={`flex-1 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                      style={{
+                        animation: 'gentle-pulse 3s ease-in-out infinite, pink-gift-glow 2.5s ease-in-out infinite'
+                      }}
+                    >
+                      <span className="relative z-10 flex items-center justify-center">
+                        <Gift className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
+                        Send Gift {currentCurrency?.symbol}{donationAmount}
+                        {friendName && ` to ${friendName}`}
+                      </span>
+                      
+                      {isMember && (
+                        <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20 rounded-lg">
+                          2x
+                        </Badge>
+                      )}
                     </Button>
                   ) : (
                     /* Main Donate Button with gentle pulse animation and green glow */
