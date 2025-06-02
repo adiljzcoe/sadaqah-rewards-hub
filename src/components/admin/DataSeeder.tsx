@@ -74,12 +74,9 @@ const DataSeeder = () => {
       }
     ];
 
-    // First, disable RLS temporarily for seeding, then re-enable
     try {
-      console.log('🔓 Temporarily disabling RLS for seeding...');
-      
-      // Try bulk insert first
-      const { data: insertedCharities, error: bulkError } = await supabase
+      // Use upsert with conflict resolution on name
+      const { data: insertedCharities, error } = await supabase
         .from('charities')
         .upsert(charities, { 
           onConflict: 'name',
@@ -87,58 +84,13 @@ const DataSeeder = () => {
         })
         .select();
 
-      if (!bulkError && insertedCharities && insertedCharities.length > 0) {
-        console.log('✅ Bulk insert successful:', insertedCharities.length);
-        return insertedCharities;
+      if (error) {
+        console.error('❌ Bulk upsert failed:', error);
+        throw error;
       }
 
-      console.log('⚠️ Bulk insert failed, trying individual inserts...');
-      
-      // Fall back to individual inserts with upsert logic
-      const results = [];
-      for (const charity of charities) {
-        try {
-          // Try to find existing charity first
-          const { data: existing } = await supabase
-            .from('charities')
-            .select('*')
-            .eq('name', charity.name)
-            .maybeSingle();
-
-          if (existing) {
-            console.log('✅ Using existing charity:', existing.name);
-            results.push(existing);
-            continue;
-          }
-
-          // Insert new charity
-          const { data, error } = await supabase
-            .from('charities')
-            .insert([charity])
-            .select()
-            .single();
-
-          if (error) {
-            console.error('❌ Insert error for', charity.name, ':', error);
-            throw error;
-          }
-
-          if (data) {
-            console.log('✅ Created charity:', data.name);
-            results.push(data);
-          }
-        } catch (err) {
-          console.error('❌ Exception for charity', charity.name, ':', err);
-          throw err;
-        }
-      }
-
-      if (results.length === 0) {
-        throw new Error('No charities could be created');
-      }
-
-      console.log('✅ Charities ready:', results.length);
-      return results;
+      console.log('✅ Charities seeded:', insertedCharities?.length);
+      return insertedCharities || [];
 
     } catch (error) {
       console.error('❌ Failed to seed charities:', error);
@@ -151,7 +103,7 @@ const DataSeeder = () => {
     
     const allocations = charities.map(charity => ({
       charity_id: charity.id,
-      allocation_percentage: 25, // Equal allocation for demo
+      allocation_percentage: 25,
       is_active: true,
       manual_override: false,
       trust_weight: charity.trust_rating,
@@ -159,7 +111,7 @@ const DataSeeder = () => {
     }));
 
     try {
-      // Clear existing allocations for these charities first
+      // Clear existing allocations first
       const charityIds = charities.map(c => c.id);
       await supabase
         .from('charity_allocations')
@@ -188,16 +140,14 @@ const DataSeeder = () => {
   const seedDonations = async (charities: any[]) => {
     console.log('🌱 Seeding donations...');
     
-    // Ensure we have a user ID for donations
     const userId = user?.id || 'fake-admin-id';
     console.log('👤 Using user ID for donations:', userId);
     
     const donations = [];
     
-    // Create multiple donations to different charities
     for (let i = 0; i < 15; i++) {
       const charity = charities[i % charities.length];
-      const amount = Math.floor(Math.random() * 50000) + 10000; // £100-£500 in pence
+      const amount = Math.floor(Math.random() * 50000) + 10000;
       
       donations.push({
         user_id: userId,
@@ -207,10 +157,10 @@ const DataSeeder = () => {
         disbursement_status: 'pending',
         disbursed_amount: 0,
         anonymous: Math.random() > 0.7,
-        jannah_points_earned: Math.floor(amount / 100) * 10, // 10 points per £1
-        sadaqah_coins_earned: Math.floor(amount / 100) * 5, // 5 coins per £1
+        jannah_points_earned: Math.floor(amount / 100) * 10,
+        sadaqah_coins_earned: Math.floor(amount / 100) * 5,
         message: i % 3 === 0 ? 'May Allah accept this donation' : null,
-        created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString() // Random dates within last 30 days
+        created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
       });
     }
 
@@ -238,32 +188,25 @@ const DataSeeder = () => {
     try {
       console.log('🚀 Starting data seeding process...');
       
-      // Use fake admin login
-      console.log('🔑 Setting up admin access...');
+      // Use fake admin login first
       fakeAdminLogin();
       
-      // Wait for auth state to update
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Add a longer delay to ensure auth state updates
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       toast({
         title: "Starting Data Seeding",
-        description: "Creating test data with admin privileges...",
+        description: "Creating test data...",
       });
 
-      console.log('🏢 Creating charities...');
       const charities = await seedCharities();
       
       if (!charities || charities.length === 0) {
         throw new Error('No charities were created');
       }
       
-      console.log('📊 Creating charity allocations...');
       await seedCharityAllocations(charities);
-      
-      console.log('💝 Creating donations...');
       const donations = await seedDonations(charities);
-
-      console.log('🎉 Data seeding completed successfully!');
 
       toast({
         title: "Data Seeding Complete! 🎉",
@@ -287,11 +230,9 @@ const DataSeeder = () => {
     try {
       console.log('🧹 Clearing test data...');
       
-      // Ensure admin access
       fakeAdminLogin();
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Delete in reverse order due to foreign key constraints
       console.log('🗑️ Clearing donations...');
       await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
@@ -300,8 +241,6 @@ const DataSeeder = () => {
       
       console.log('🗑️ Clearing charities...');
       await supabase.from('charities').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-
-      console.log('✅ All test data cleared successfully');
 
       toast({
         title: "Data Cleared Successfully",
@@ -386,7 +325,7 @@ const DataSeeder = () => {
 
         <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
           <p className="text-sm text-yellow-700">
-            ⚠️ The seeder uses admin privileges to bypass security restrictions during testing.
+            ⚠️ If seeding fails due to RLS policies, the database permissions may need adjustment.
           </p>
         </div>
       </CardContent>
