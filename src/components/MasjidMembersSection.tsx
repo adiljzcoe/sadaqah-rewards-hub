@@ -3,66 +3,66 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Users, TrendingUp, Heart, Crown } from 'lucide-react';
+import { Users, TrendingUp, Heart, Crown, Star } from 'lucide-react';
 
 interface MasjidMember {
   id: string;
   name: string;
   avatar?: string;
-  totalDonated: number;
   joinedDate: string;
-  isTopDonor: boolean;
+  isTopContributor: boolean;
   streakDays: number;
+  contributionLevel: 'bronze' | 'silver' | 'gold' | 'platinum';
 }
 
 const mockMasjidMembers: MasjidMember[] = [
   {
     id: '1',
     name: 'Ahmed Hassan',
-    totalDonated: 340,
     joinedDate: '2024-01-15',
-    isTopDonor: true,
-    streakDays: 45
+    isTopContributor: true,
+    streakDays: 45,
+    contributionLevel: 'platinum'
   },
   {
     id: '2',
     name: 'Fatima Al-Zahra',
-    totalDonated: 280,
     joinedDate: '2024-02-03',
-    isTopDonor: true,
-    streakDays: 32
+    isTopContributor: true,
+    streakDays: 32,
+    contributionLevel: 'gold'
   },
   {
     id: '3',
     name: 'Omar Ibrahim',
-    totalDonated: 195,
     joinedDate: '2024-01-28',
-    isTopDonor: false,
-    streakDays: 28
+    isTopContributor: false,
+    streakDays: 28,
+    contributionLevel: 'gold'
   },
   {
     id: '4',
     name: 'Aisha Mohamed',
-    totalDonated: 150,
     joinedDate: '2024-03-01',
-    isTopDonor: false,
-    streakDays: 15
+    isTopContributor: false,
+    streakDays: 15,
+    contributionLevel: 'silver'
   },
   {
     id: '5',
     name: 'Yusuf Ali',
-    totalDonated: 125,
     joinedDate: '2024-02-20',
-    isTopDonor: false,
-    streakDays: 12
+    isTopContributor: false,
+    streakDays: 12,
+    contributionLevel: 'silver'
   },
   {
     id: '6',
     name: 'Maryam Said',
-    totalDonated: 98,
     joinedDate: '2024-03-10',
-    isTopDonor: false,
-    streakDays: 8
+    isTopContributor: false,
+    streakDays: 8,
+    contributionLevel: 'bronze'
   }
 ];
 
@@ -71,18 +71,29 @@ interface MasjidMembersSectionProps {
 }
 
 const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
-  const totalCollected = mockMasjidMembers.reduce((sum, member) => sum + member.totalDonated, 0);
+  const affiliateEarnings = 340; // Amount earned from YourJannah affiliate program
   const memberCount = mockMasjidMembers.length;
+  const monthlyPerMember = 8; // Monthly affiliate commission per active member
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('');
+  };
+
+  const getContributionBadge = (level: string) => {
+    const badges = {
+      bronze: { color: 'bg-amber-100 text-amber-800', label: 'Bronze' },
+      silver: { color: 'bg-gray-100 text-gray-800', label: 'Silver' },
+      gold: { color: 'bg-yellow-100 text-yellow-800', label: 'Gold' },
+      platinum: { color: 'bg-purple-100 text-purple-800', label: 'Platinum' }
+    };
+    return badges[level] || badges.bronze;
   };
 
   return (
     <Card className="p-6">
       <div className="flex items-center gap-2 mb-6">
         <Heart className="h-6 w-6 text-red-500" />
-        <h3 className="text-xl font-bold text-gray-900">YourJannah Community Impact</h3>
+        <h3 className="text-xl font-bold text-gray-900">YourJannah Affiliate Program</h3>
       </div>
 
       {/* Summary Stats */}
@@ -90,12 +101,12 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="h-5 w-5 text-green-600" />
-            <span className="text-sm font-medium text-green-800">Total Collected</span>
+            <span className="text-sm font-medium text-green-800">Total Earned</span>
           </div>
           <div className="text-2xl font-bold text-green-700">
-            £{totalCollected.toLocaleString()}
+            £{affiliateEarnings.toLocaleString()}
           </div>
-          <p className="text-xs text-green-600 mt-1">Through YourJannah platform</p>
+          <p className="text-xs text-green-600 mt-1">From YourJannah membership</p>
         </div>
 
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
@@ -110,12 +121,12 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
         <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
           <div className="flex items-center gap-2 mb-2">
             <Heart className="h-5 w-5 text-purple-600" />
-            <span className="text-sm font-medium text-purple-800">Average per Member</span>
+            <span className="text-sm font-medium text-purple-800">Monthly Earning</span>
           </div>
           <div className="text-2xl font-bold text-purple-700">
-            £{Math.round(totalCollected / memberCount)}
+            £{memberCount * monthlyPerMember}
           </div>
-          <p className="text-xs text-purple-600 mt-1">Community contribution</p>
+          <p className="text-xs text-purple-600 mt-1">Per month from members</p>
         </div>
       </div>
 
@@ -123,60 +134,62 @@ const MasjidMembersSection = ({ masjidName }: MasjidMembersSectionProps) => {
       <div>
         <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Users className="h-5 w-5 text-gray-600" />
-          Community Members ({memberCount})
+          YourJannah Members ({memberCount})
         </h4>
         
         <div className="space-y-3">
-          {mockMasjidMembers.map((member, index) => (
-            <div 
-              key={member.id}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={member.avatar} />
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm">
-                      {getInitials(member.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  {member.isTopDonor && (
-                    <Crown className="absolute -top-1 -right-1 h-4 w-4 text-yellow-500" />
-                  )}
-                </div>
-                
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900">{member.name}</span>
-                    {index === 0 && (
-                      <Badge className="bg-yellow-100 text-yellow-800 text-xs">
-                        Top Donor
-                      </Badge>
+          {mockMasjidMembers.map((member, index) => {
+            const badge = getContributionBadge(member.contributionLevel);
+            return (
+              <div 
+                key={member.id}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={member.avatar} />
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm">
+                        {getInitials(member.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    {member.isTopContributor && (
+                      <Crown className="absolute -top-1 -right-1 h-4 w-4 text-yellow-500" />
                     )}
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-gray-600">
-                    <span>Joined {new Date(member.joinedDate).toLocaleDateString()}</span>
-                    <span>•</span>
-                    <span>{member.streakDays} day streak</span>
+                  
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-gray-900">{member.name}</span>
+                      <Badge className={`${badge.color} text-xs`}>
+                        {badge.label} Member
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-gray-600">
+                      <span>Joined {new Date(member.joinedDate).toLocaleDateString()}</span>
+                      <span>•</span>
+                      <span>{member.streakDays} day streak</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="text-right">
-                <div className="font-bold text-green-600">
-                  £{member.totalDonated}
+                
+                <div className="text-right">
+                  <div className="flex items-center gap-1 text-green-600">
+                    <Star className="h-3 w-3" />
+                    <span className="text-sm font-medium">Active</span>
+                  </div>
+                  <div className="text-xs text-gray-500">Earning £{monthlyPerMember}/mo</div>
                 </div>
-                <div className="text-xs text-gray-500">contributed</div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <p className="text-sm text-blue-800 text-center">
+      <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+        <p className="text-sm text-green-800 text-center">
           <Heart className="inline h-4 w-4 mr-1" />
-          Together, our {masjidName} community has raised <span className="font-bold">£{totalCollected.toLocaleString()}</span> through the YourJannah platform, making a real difference in the world.
+          {masjidName} earns <span className="font-bold">£{memberCount * monthlyPerMember} per month</span> through the YourJannah affiliate program. Every active member from your community contributes £{monthlyPerMember} monthly to your masjid's funds.
         </p>
       </div>
     </Card>
