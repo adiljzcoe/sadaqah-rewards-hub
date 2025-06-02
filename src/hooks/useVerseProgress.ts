@@ -11,26 +11,48 @@ export const useVerseProgress = (surahId: string) => {
   const queryClient = useQueryClient();
   const [autoMarkingVerse, setAutoMarkingVerse] = useState<string | null>(null);
 
-  const { data: completedVerses } = useQuery({
-    queryKey: ['user-verse-progress', surahId],
+  console.log('useVerseProgress - user:', user, 'surahId:', surahId);
+
+  const { data: completedVerses, isLoading: loadingProgress } = useQuery({
+    queryKey: ['user-verse-progress', surahId, user?.id],
     queryFn: async () => {
-      if (!user) return [];
+      if (!user) {
+        console.log('No user, returning empty array');
+        return [];
+      }
       
+      console.log('Fetching verse progress for user:', user.id);
       const { data, error } = await supabase
         .from('user_verse_progress')
         .select('verse_id')
         .eq('user_id', user.id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching verse progress:', error);
+        throw error;
+      }
+      
+      console.log('Fetched verse progress:', data);
       return data.map(item => item.verse_id);
     },
     enabled: !!user
   });
 
   const markVerseAsRead = async (verseId: string, jannahPoints: number) => {
-    if (!user || completedVerses?.includes(verseId)) return;
+    console.log('markVerseAsRead called', { verseId, jannahPoints, user: !!user, completedVerses });
+    
+    if (!user) {
+      console.log('No user, cannot mark verse as read');
+      return;
+    }
+    
+    if (completedVerses?.includes(verseId)) {
+      console.log('Verse already completed');
+      return;
+    }
 
     setAutoMarkingVerse(verseId);
+    console.log('Marking verse as read:', verseId);
 
     try {
       // Record verse completion
@@ -42,7 +64,12 @@ export const useVerseProgress = (surahId: string) => {
           jannah_points_earned: jannahPoints
         });
 
-      if (progressError) throw progressError;
+      if (progressError) {
+        console.error('Error inserting verse progress:', progressError);
+        throw progressError;
+      }
+
+      console.log('Verse progress recorded successfully');
 
       // Update user's Jannah points
       const { data: profile } = await supabase
@@ -58,12 +85,27 @@ export const useVerseProgress = (surahId: string) => {
         })
         .eq('id', user.id);
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error('Error updating profile points:', profileError);
+        throw profileError;
+      }
+
+      console.log('Profile points updated successfully');
 
       // Refresh data
       queryClient.invalidateQueries({ queryKey: ['user-verse-progress'] });
+      
+      toast({
+        title: "Verse completed! 📖",
+        description: `You earned ${jannahPoints} Jannah points!`,
+      });
     } catch (error) {
       console.error('Error marking verse as read:', error);
+      toast({
+        title: "Error",
+        description: "Failed to mark verse as read. Please try again.",
+        variant: "destructive"
+      });
     } finally {
       setAutoMarkingVerse(null);
     }
@@ -139,10 +181,17 @@ export const useVerseProgress = (surahId: string) => {
     }
   };
 
+  console.log('useVerseProgress returning:', {
+    completedVerses: completedVerses || [],
+    autoMarkingVerse,
+    loadingProgress
+  });
+
   return {
     completedVerses: completedVerses || [],
     markVerseAsRead,
     markSurahAsComplete,
-    autoMarkingVerse
+    autoMarkingVerse,
+    loadingProgress
   };
 };

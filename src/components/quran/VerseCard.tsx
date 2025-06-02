@@ -38,19 +38,44 @@ const VerseCard = ({
   const { isLiked, isLiking, handleToggleLike } = useVerseLikes(verse.id);
   const verseRef = useRef<HTMLDivElement>(null);
 
+  console.log('VerseCard render:', {
+    verseId: verse.id,
+    verseNumber: verse.verse_number,
+    isCompleted,
+    user: !!user,
+    autoMarkingVerse
+  });
+
   useEffect(() => {
-    if (!user || isCompleted) return;
+    if (!user || isCompleted) {
+      console.log('Skipping intersection observer - no user or already completed');
+      return;
+    }
+
+    console.log('Setting up intersection observer for verse:', verse.verse_number);
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          console.log('Intersection observer triggered:', {
+            verseNumber: verse.verse_number,
+            isIntersecting: entry.isIntersecting,
+            intersectionRatio: entry.intersectionRatio,
+            isCompleted
+          });
+          
           if (entry.isIntersecting && entry.intersectionRatio > 0.8) {
+            console.log('Verse is 80% visible, starting auto-mark timer');
             // Mark as read when 80% of the verse is visible
-            setTimeout(() => {
+            const timer = setTimeout(() => {
               if (!isCompleted) {
+                console.log('Auto-marking verse as read:', verse.verse_number);
                 onMarkAsRead(verse.id, verse.jannah_points_reward);
               }
             }, 2000); // Wait 2 seconds before auto-marking
+
+            // Clean up timer if component unmounts or conditions change
+            return () => clearTimeout(timer);
           }
         });
       },
@@ -59,14 +84,16 @@ const VerseCard = ({
 
     if (verseRef.current) {
       observer.observe(verseRef.current);
+      console.log('Observer attached to verse:', verse.verse_number);
     }
 
     return () => {
       if (verseRef.current) {
         observer.unobserve(verseRef.current);
       }
+      observer.disconnect();
     };
-  }, [verse.id, isCompleted, user, onMarkAsRead, verse.jannah_points_reward]);
+  }, [verse.id, isCompleted, user, onMarkAsRead, verse.jannah_points_reward, verse.verse_number]);
 
   return (
     <Card 
