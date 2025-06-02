@@ -12,17 +12,15 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { 
-  Heart, 
   User, 
   Settings, 
   LogOut, 
   Menu, 
   X, 
   Building2, 
-  Users, 
-  Gift,
   Coins,
-  Crown
+  Crown,
+  ChevronDown
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import MobileSidebar from './MobileSidebar';
@@ -38,28 +36,58 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-emerald-600 rounded-lg flex items-center justify-center">
-              <Heart className="h-5 w-5 text-white" />
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="relative">
+              <div className="w-12 h-8 bg-white rounded-full flex items-center justify-center">
+                <span className="text-blue-900 font-bold text-sm">JANNAH</span>
+              </div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full"></div>
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              Sadaqah Hub
-            </span>
           </Link>
 
-          {/* Desktop Navigation - Simple Links */}
+          {/* User Level Badge */}
+          {user && (
+            <div className="hidden md:flex">
+              <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-3 py-1">
+                <span className="text-sm font-bold">Ahmad M. LV 12</span>
+                <span className="ml-1 text-xs">Guardian</span>
+                <span className="ml-2 text-sm">🪙 5,632 pts</span>
+              </Badge>
+            </div>
+          )}
+
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link to="/campaigns" className="text-gray-700 hover:text-green-600 transition-colors">
-              Donate
+            <Link to="/" className="text-white hover:text-cyan-300 transition-colors font-medium">
+              Home
             </Link>
-            <Link to="/leaderboards" className="text-gray-700 hover:text-green-600 transition-colors">
-              Community
-            </Link>
-            <Link to="/about" className="text-gray-700 hover:text-green-600 transition-colors">
+            
+            <div className="relative group">
+              <button className="flex items-center text-white hover:text-cyan-300 transition-colors font-medium">
+                Donate
+                <ChevronDown className="h-4 w-4 ml-1" />
+              </button>
+            </div>
+            
+            <div className="relative group">
+              <button className="flex items-center text-white hover:text-cyan-300 transition-colors font-medium">
+                Community
+                <ChevronDown className="h-4 w-4 ml-1" />
+              </button>
+            </div>
+            
+            <div className="relative group">
+              <button className="flex items-center text-white hover:text-cyan-300 transition-colors font-medium">
+                Rewards
+                <ChevronDown className="h-4 w-4 ml-1" />
+              </button>
+            </div>
+            
+            <Link to="/about" className="text-white hover:text-cyan-300 transition-colors font-medium">
               About
             </Link>
           </nav>
@@ -76,21 +104,13 @@ const Header = () => {
                   </Button>
                 </Link>
 
-                {/* Membership Badge - Desktop */}
-                <Link to="/membership" className="hidden md:flex">
-                  <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                    <Crown className="h-3 w-3 mr-1" />
-                    Premium
-                  </Badge>
-                </Link>
-
                 {/* User Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={user.user_metadata?.avatar_url || ''} alt={user.user_metadata?.full_name || 'User'} />
-                        <AvatarFallback>
+                        <AvatarFallback className="bg-cyan-500 text-white">
                           {user.user_metadata?.full_name?.split(' ').map((n: string) => n[0]).join('') || user.email?.charAt(0).toUpperCase() || 'U'}
                         </AvatarFallback>
                       </Avatar>
@@ -124,12 +144,6 @@ const Header = () => {
                         Sadaqah Coins
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/membership" className="cursor-pointer md:hidden">
-                        <Crown className="mr-2 h-4 w-4" />
-                        Membership
-                      </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                       <LogOut className="mr-2 h-4 w-4" />
@@ -141,12 +155,12 @@ const Header = () => {
             ) : (
               <>
                 <Link to="/auth">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="text-white hover:text-cyan-300 hover:bg-white/10">
                     Sign In
                   </Button>
                 </Link>
                 <Link to="/auth">
-                  <Button size="sm" className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+                  <Button size="sm" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white">
                     Get Started
                   </Button>
                 </Link>
@@ -157,7 +171,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden"
+              className="lg:hidden text-white hover:bg-white/10"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
