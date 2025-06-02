@@ -84,72 +84,17 @@ const WorldAdhanMap = () => {
       {/* World Map */}
       <Card className="overflow-hidden">
         <CardContent className="p-0">
-          <div className="relative h-96 lg:h-[500px] bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 overflow-hidden">
-            {/* Starry background effect */}
-            <div className="absolute inset-0 opacity-30">
-              {Array.from({ length: 50 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-1 h-1 bg-white rounded-full opacity-60"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 3}s`
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* World Map Continents - More detailed shapes */}
-            <div className="absolute inset-0 opacity-25">
-              {/* North America */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path
-                  d="M 15 20 Q 18 15 25 18 Q 30 16 35 20 Q 32 25 30 30 Q 28 35 25 40 Q 20 38 18 35 Q 15 30 15 25 Z"
-                  fill="rgba(34, 197, 94, 0.3)"
-                />
-              </svg>
-              
-              {/* Europe */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path
-                  d="M 48 18 Q 52 16 56 18 Q 58 20 56 23 Q 54 25 52 23 Q 50 21 48 20 Z"
-                  fill="rgba(34, 197, 94, 0.3)"
-                />
-              </svg>
-
-              {/* Africa */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path
-                  d="M 48 30 Q 50 28 52 30 Q 54 35 52 45 Q 50 55 48 60 Q 46 55 46 45 Q 46 35 48 30 Z"
-                  fill="rgba(34, 197, 94, 0.3)"
-                />
-              </svg>
-
-              {/* Asia */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path
-                  d="M 58 15 Q 70 12 80 18 Q 85 22 82 28 Q 78 35 75 40 Q 70 38 65 35 Q 60 30 58 25 Q 56 20 58 15 Z"
-                  fill="rgba(34, 197, 94, 0.3)"
-                />
-              </svg>
-
-              {/* Australia */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path
-                  d="M 75 65 Q 80 63 85 65 Q 87 68 85 70 Q 80 72 75 70 Q 73 68 75 65 Z"
-                  fill="rgba(34, 197, 94, 0.3)"
-                />
-              </svg>
-
-              {/* South America */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path
-                  d="M 25 45 Q 28 43 30 45 Q 32 50 30 60 Q 28 70 25 75 Q 22 70 22 60 Q 22 50 25 45 Z"
-                  fill="rgba(34, 197, 94, 0.3)"
-                />
-              </svg>
-            </div>
+          <div className="relative h-96 lg:h-[500px] overflow-hidden">
+            {/* World Map Background Image */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`
+              }}
+            />
+            
+            {/* Dark overlay for better visibility of markers */}
+            <div className="absolute inset-0 bg-black/30" />
 
             {/* Prayer Location Markers */}
             {prayerLocations.map((location) => {
@@ -184,6 +129,18 @@ const WorldAdhanMap = () => {
                           animationDelay: '0.5s'
                         }}
                       />
+                      <div
+                        className="absolute animate-ping rounded-full bg-green-200 opacity-30"
+                        style={{
+                          left: `${position.x}%`,
+                          top: `${position.y}%`,
+                          width: '80px',
+                          height: '80px',
+                          transform: 'translate(-50%, -50%)',
+                          animationDuration: '3s',
+                          animationDelay: '1s'
+                        }}
+                      />
                     </>
                   )}
                   
@@ -202,7 +159,7 @@ const WorldAdhanMap = () => {
                   {/* City label for active locations */}
                   {isActive && (
                     <div
-                      className="absolute bg-green-600 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap animate-fade-in"
+                      className="absolute bg-green-600 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap animate-fade-in shadow-lg"
                       style={{
                         left: `${position.x}%`,
                         top: `${position.y}%`,
@@ -217,8 +174,17 @@ const WorldAdhanMap = () => {
               );
             })}
 
-            {/* Day/Night overlay effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/10 to-transparent opacity-30" />
+            {/* Map Legend */}
+            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-blue-400 rounded-full border-2 border-white"></div>
+                <span className="text-xs text-gray-700">Prayer locations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                <span className="text-xs text-gray-700">Adhan in progress</span>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
