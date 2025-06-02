@@ -60,11 +60,14 @@ const SimpleDataSeeder = () => {
 
       console.log('✅ Charities created successfully:', charities?.length);
 
-      // Create some sample donations WITHOUT user_id to avoid foreign key issues
+      // Create some sample donations with a system user ID to avoid foreign key issues
       if (charities && charities.length > 0) {
+        const systemUserId = '00000000-0000-0000-0000-000000000001'; // System user ID
+        
         const sampleDonations = [
           {
             charity_id: charities[0].id,
+            user_id: systemUserId,
             amount: 25000,
             status: 'completed' as const,
             disbursement_status: 'pending',
@@ -73,10 +76,10 @@ const SimpleDataSeeder = () => {
             jannah_points_earned: 250,
             sadaqah_coins_earned: 125,
             created_at: new Date().toISOString()
-            // Note: No user_id to avoid foreign key constraint errors
           },
           {
             charity_id: charities[1]?.id || charities[0].id,
+            user_id: systemUserId,
             amount: 15000,
             status: 'completed' as const,
             disbursement_status: 'pending',
@@ -85,7 +88,6 @@ const SimpleDataSeeder = () => {
             jannah_points_earned: 150,
             sadaqah_coins_earned: 75,
             created_at: new Date().toISOString()
-            // Note: No user_id to avoid foreign key constraint errors
           }
         ];
 
