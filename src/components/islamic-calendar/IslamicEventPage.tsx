@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import DonationWidget from '@/components/DonationWidget';
+import NotificationScheduler from './NotificationScheduler';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -178,8 +179,15 @@ const IslamicEventPage = () => {
             </Card>
           </div>
 
-          {/* Donation Sidebar */}
+          {/* Sidebar */}
           <div className="space-y-6">
+            {/* Notification Scheduler */}
+            <NotificationScheduler 
+              eventId={event.id}
+              eventTitle={event.title}
+              eventDate={event.gregorianDate}
+            />
+
             {/* Main Donation Widget */}
             <DonationWidget 
               title={`Support ${event.title}`}
