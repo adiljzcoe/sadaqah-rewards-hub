@@ -40,18 +40,6 @@ const WorldAdhanMap = () => {
     { id: 'sydney', city: 'Sydney', country: 'Australia', timezone: 'Australia/Sydney', lat: -33.8688, lng: 151.2093 }
   ];
 
-  // Mock prayer times - in a real app, this would come from an Islamic prayer times API
-  const getPrayerTimes = (timezone: string) => {
-    const now = new Date();
-    return {
-      fajr: '05:30',
-      dhuhr: '12:15',
-      asr: '15:45',
-      maghrib: '18:30',
-      isha: '20:00'
-    };
-  };
-
   // Convert coordinates to map position (simplified projection)
   const getMapPosition = (lat: number, lng: number) => {
     const x = ((lng + 180) / 360) * 100;
@@ -112,33 +100,55 @@ const WorldAdhanMap = () => {
               ))}
             </div>
 
-            {/* Continents silhouettes (simplified shapes) */}
-            <div className="absolute inset-0 opacity-20">
-              {/* Africa */}
-              <div 
-                className="absolute bg-green-400 rounded-lg opacity-40"
-                style={{ left: '48%', top: '35%', width: '8%', height: '25%' }}
-              />
-              {/* Asia */}
-              <div 
-                className="absolute bg-green-400 rounded-lg opacity-40"
-                style={{ left: '60%', top: '20%', width: '25%', height: '30%' }}
-              />
-              {/* Europe */}
-              <div 
-                className="absolute bg-green-400 rounded-lg opacity-40"
-                style={{ left: '50%', top: '20%', width: '8%', height: '12%' }}
-              />
+            {/* World Map Continents - More detailed shapes */}
+            <div className="absolute inset-0 opacity-25">
               {/* North America */}
-              <div 
-                className="absolute bg-green-400 rounded-lg opacity-40"
-                style={{ left: '15%', top: '15%', width: '20%', height: '25%' }}
-              />
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path
+                  d="M 15 20 Q 18 15 25 18 Q 30 16 35 20 Q 32 25 30 30 Q 28 35 25 40 Q 20 38 18 35 Q 15 30 15 25 Z"
+                  fill="rgba(34, 197, 94, 0.3)"
+                />
+              </svg>
+              
+              {/* Europe */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path
+                  d="M 48 18 Q 52 16 56 18 Q 58 20 56 23 Q 54 25 52 23 Q 50 21 48 20 Z"
+                  fill="rgba(34, 197, 94, 0.3)"
+                />
+              </svg>
+
+              {/* Africa */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path
+                  d="M 48 30 Q 50 28 52 30 Q 54 35 52 45 Q 50 55 48 60 Q 46 55 46 45 Q 46 35 48 30 Z"
+                  fill="rgba(34, 197, 94, 0.3)"
+                />
+              </svg>
+
+              {/* Asia */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path
+                  d="M 58 15 Q 70 12 80 18 Q 85 22 82 28 Q 78 35 75 40 Q 70 38 65 35 Q 60 30 58 25 Q 56 20 58 15 Z"
+                  fill="rgba(34, 197, 94, 0.3)"
+                />
+              </svg>
+
               {/* Australia */}
-              <div 
-                className="absolute bg-green-400 rounded-lg opacity-40"
-                style={{ left: '75%', top: '65%', width: '8%', height: '8%' }}
-              />
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path
+                  d="M 75 65 Q 80 63 85 65 Q 87 68 85 70 Q 80 72 75 70 Q 73 68 75 65 Z"
+                  fill="rgba(34, 197, 94, 0.3)"
+                />
+              </svg>
+
+              {/* South America */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path
+                  d="M 25 45 Q 28 43 30 45 Q 32 50 30 60 Q 28 70 25 75 Q 22 70 22 60 Q 22 50 25 45 Z"
+                  fill="rgba(34, 197, 94, 0.3)"
+                />
+              </svg>
             </div>
 
             {/* Prayer Location Markers */}
