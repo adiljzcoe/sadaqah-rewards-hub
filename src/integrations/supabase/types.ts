@@ -821,6 +821,77 @@ export type Database = {
           },
         ]
       }
+      dua_ameens: {
+        Row: {
+          created_at: string | null
+          dua_id: string
+          id: string
+          ip_address: unknown | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dua_id: string
+          id?: string
+          ip_address?: unknown | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dua_id?: string
+          id?: string
+          ip_address?: unknown | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dua_ameens_dua_id_fkey"
+            columns: ["dua_id"]
+            isOneToOne: false
+            referencedRelation: "duas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      duas: {
+        Row: {
+          ameen_count: number | null
+          audio_duration: number | null
+          audio_url: string
+          created_at: string | null
+          description: string | null
+          id: string
+          is_anonymous: boolean | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ameen_count?: number | null
+          audio_duration?: number | null
+          audio_url: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ameen_count?: number | null
+          audio_duration?: number | null
+          audio_url?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       gift_card_products: {
         Row: {
           assigned_charity_id: string | null
@@ -1507,6 +1578,42 @@ export type Database = {
           ramadan_start_date?: string
           updated_at?: string
           year?: number
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          stripe_customer_id: string | null
+          subscribed: boolean
+          subscription_end: string | null
+          subscription_tier: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
