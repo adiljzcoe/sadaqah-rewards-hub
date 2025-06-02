@@ -39,6 +39,7 @@ const DhikrCommunity = lazy(() => import("./pages/DhikrCommunity"));
 const QuranReader = lazy(() => import("./pages/QuranReader"));
 const NamazTimes = lazy(() => import("./pages/NamazTimes"));
 const DuaWall = lazy(() => import("./pages/DuaWall"));
+const MyUmmah = lazy(() => import("./pages/MyUmmah"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -90,6 +91,7 @@ function App() {
                           <Route path="/namaz-times" element={<NamazTimes />} />
                           <Route path="/namaz-times/:city" element={<NamazTimes />} />
                           <Route path="/dua-wall" element={<DuaWall />} />
+                          <Route path="/my-ummah" element={<MyUmmah />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={
