@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { ArrowLeft, Check, Star, Volume2 } from 'lucide-react';
+import { useVerseLikes } from '@/hooks/useVerseLikes';
+import { ArrowLeft, Check, Star, Volume2, Heart } from 'lucide-react';
 
 interface Verse {
   id: string;
@@ -16,6 +17,7 @@ interface Verse {
   text_transliteration: string;
   text_translation: string;
   jannah_points_reward: number;
+  likes_count: number;
 }
 
 interface Surah {
@@ -32,6 +34,106 @@ interface SurahReaderProps {
   surah: Surah;
   onBack: () => void;
 }
+
+interface VerseCardProps {
+  verse: Verse;
+  isCompleted: boolean;
+  completingVerse: string | null;
+  onCompleteVerse: (verse: Verse) => void;
+  user: any;
+}
+
+const VerseCard = ({ verse, isCompleted, completingVerse, onCompleteVerse, user }: VerseCardProps) => {
+  const { isLiked, isLiking, handleToggleLike } = useVerseLikes(verse.id);
+
+  return (
+    <Card className={`transition-all duration-200 ${isCompleted ? 'bg-green-50 border-green-200' : 'hover:shadow-md'}`}>
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between mb-4">
+          <Badge variant="outline" className="text-sm">
+            Verse {verse.verse_number}
+          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="text-xs">
+              +{verse.jannah_points_reward} points
+            </Badge>
+            {isCompleted && (
+              <Badge className="bg-green-500 text-xs">
+                <Check className="h-3 w-3 mr-1" />
+                Completed
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Arabic Text */}
+        <div className="mb-4 p-4 bg-gray-50 rounded-lg text-right" dir="rtl">
+          <div className="text-2xl font-bold text-gray-800 leading-relaxed arabic-font">
+            {verse.text_arabic}
+          </div>
+        </div>
+
+        {/* Transliteration */}
+        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+          <div className="text-sm text-blue-600 font-medium mb-1">Transliteration:</div>
+          <div className="text-lg text-blue-800 italic">
+            {verse.text_transliteration}
+          </div>
+        </div>
+
+        {/* Translation */}
+        <div className="mb-4 p-3 bg-emerald-50 rounded-lg">
+          <div className="text-sm text-emerald-600 font-medium mb-1">Translation:</div>
+          <div className="text-lg text-emerald-800">
+            {verse.text_translation}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-4 border-t">
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm">
+              <Volume2 className="h-4 w-4 mr-2" />
+              Listen
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleToggleLike}
+              disabled={isLiking}
+              className={`${isLiked ? 'text-red-600 border-red-200 bg-red-50' : ''}`}
+            >
+              <Heart className={`h-4 w-4 mr-1 ${isLiked ? 'fill-current' : ''}`} />
+              {verse.likes_count || 0}
+            </Button>
+          </div>
+          
+          {user && !isCompleted && (
+            <Button
+              onClick={() => onCompleteVerse(verse)}
+              disabled={completingVerse === verse.id}
+              className="bg-emerald-600 hover:bg-emerald-700"
+            >
+              {completingVerse === verse.id ? 'Completing...' : (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Mark Complete
+                </>
+              )}
+            </Button>
+          )}
+
+          {!user && (
+            <Button variant="outline" size="sm" disabled>
+              Sign in to track progress
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 const SurahReader = ({ surah, onBack }: SurahReaderProps) => {
   const { user } = useAuth();
@@ -189,78 +291,14 @@ const SurahReader = ({ surah, onBack }: SurahReaderProps) => {
         {verses?.map((verse) => {
           const isCompleted = completedVerses?.includes(verse.id);
           return (
-            <Card key={verse.id} className={`transition-all duration-200 ${isCompleted ? 'bg-green-50 border-green-200' : 'hover:shadow-md'}`}>
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <Badge variant="outline" className="text-sm">
-                    Verse {verse.verse_number}
-                  </Badge>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">
-                      +{verse.jannah_points_reward} points
-                    </Badge>
-                    {isCompleted && (
-                      <Badge className="bg-green-500 text-xs">
-                        <Check className="h-3 w-3 mr-1" />
-                        Completed
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-
-                {/* Arabic Text */}
-                <div className="mb-4 p-4 bg-gray-50 rounded-lg text-right" dir="rtl">
-                  <div className="text-2xl font-bold text-gray-800 leading-relaxed arabic-font">
-                    {verse.text_arabic}
-                  </div>
-                </div>
-
-                {/* Transliteration */}
-                <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                  <div className="text-sm text-blue-600 font-medium mb-1">Transliteration:</div>
-                  <div className="text-lg text-blue-800 italic">
-                    {verse.text_transliteration}
-                  </div>
-                </div>
-
-                {/* Translation */}
-                <div className="mb-4 p-3 bg-emerald-50 rounded-lg">
-                  <div className="text-sm text-emerald-600 font-medium mb-1">Translation:</div>
-                  <div className="text-lg text-emerald-800">
-                    {verse.text_translation}
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center justify-between pt-4 border-t">
-                  <Button variant="outline" size="sm">
-                    <Volume2 className="h-4 w-4 mr-2" />
-                    Listen
-                  </Button>
-                  
-                  {user && !isCompleted && (
-                    <Button
-                      onClick={() => handleCompleteVerse(verse)}
-                      disabled={completingVerse === verse.id}
-                      className="bg-emerald-600 hover:bg-emerald-700"
-                    >
-                      {completingVerse === verse.id ? 'Completing...' : (
-                        <>
-                          <Check className="h-4 w-4 mr-2" />
-                          Mark Complete
-                        </>
-                      )}
-                    </Button>
-                  )}
-
-                  {!user && (
-                    <Button variant="outline" size="sm" disabled>
-                      Sign in to track progress
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <VerseCard
+              key={verse.id}
+              verse={verse}
+              isCompleted={isCompleted || false}
+              completingVerse={completingVerse}
+              onCompleteVerse={handleCompleteVerse}
+              user={user}
+            />
           );
         })}
       </div>

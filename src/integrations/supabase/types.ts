@@ -1115,6 +1115,7 @@ export type Database = {
           created_at: string
           id: string
           jannah_points_reward: number
+          likes_count: number | null
           surah_id: string
           text_arabic: string
           text_translation: string
@@ -1125,6 +1126,7 @@ export type Database = {
           created_at?: string
           id?: string
           jannah_points_reward?: number
+          likes_count?: number | null
           surah_id: string
           text_arabic: string
           text_translation: string
@@ -1135,6 +1137,7 @@ export type Database = {
           created_at?: string
           id?: string
           jannah_points_reward?: number
+          likes_count?: number | null
           surah_id?: string
           text_arabic?: string
           text_translation?: string
@@ -1597,6 +1600,35 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "user_verse_progress_verse_id_fkey"
+            columns: ["verse_id"]
+            isOneToOne: false
+            referencedRelation: "quran_verses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verse_likes: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          verse_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          verse_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          verse_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verse_likes_verse_id_fkey"
             columns: ["verse_id"]
             isOneToOne: false
             referencedRelation: "quran_verses"
