@@ -14,6 +14,7 @@ const DataSeeder = () => {
 
   const seedCharities = async () => {
     console.log('🌱 Seeding charities...');
+    console.log('👤 Current user:', user);
     
     const charities = [
       {
@@ -75,7 +76,12 @@ const DataSeeder = () => {
     ];
 
     try {
-      // Use regular insert instead of upsert
+      console.log('🔄 Attempting to insert charities...');
+      
+      // Test auth session first
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      console.log('🔐 Current session:', session ? 'Active' : 'None', sessionError);
+      
       const { data: insertedCharities, error } = await supabase
         .from('charities')
         .insert(charities)
@@ -83,10 +89,17 @@ const DataSeeder = () => {
 
       if (error) {
         console.error('❌ Insert failed:', error);
+        console.error('❌ Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
         throw error;
       }
 
-      console.log('✅ Charities seeded:', insertedCharities?.length);
+      console.log('✅ Charities seeded successfully:', insertedCharities?.length);
+      console.log('📊 Inserted charity IDs:', insertedCharities?.map(c => c.id));
       return insertedCharities || [];
 
     } catch (error) {
@@ -97,6 +110,7 @@ const DataSeeder = () => {
 
   const seedCharityAllocations = async (charities: any[]) => {
     console.log('🌱 Seeding charity allocations...');
+    console.log('🎯 Creating allocations for', charities.length, 'charities');
     
     const allocations = charities.map(charity => ({
       charity_id: charity.id,
@@ -108,6 +122,7 @@ const DataSeeder = () => {
     }));
 
     try {
+      console.log('🔄 Inserting charity allocations...');
       const { data, error } = await supabase
         .from('charity_allocations')
         .insert(allocations)
@@ -154,6 +169,7 @@ const DataSeeder = () => {
     }
 
     try {
+      console.log('🔄 Inserting donations...');
       const { data, error } = await supabase
         .from('donations')
         .insert(donations)
@@ -178,10 +194,14 @@ const DataSeeder = () => {
       console.log('🚀 Starting data seeding process...');
       
       // Use fake admin login
+      console.log('🔐 Setting up fake admin authentication...');
       fakeAdminLogin();
       
       // Wait for auth state to update
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('⏳ Waiting for auth state to update...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      console.log('👤 Auth state after fake login:', { user });
       
       toast({
         title: "Starting Data Seeding",
@@ -312,9 +332,9 @@ const DataSeeder = () => {
           </div>
         )}
 
-        <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
-          <p className="text-sm text-yellow-700">
-            ⚠️ If seeding still fails, try clearing data first, then seeding fresh data.
+        <div className="mt-4 p-3 bg-green-50 rounded-lg">
+          <p className="text-sm text-green-700">
+            ✅ RLS policies have been updated. Data seeding should now work properly.
           </p>
         </div>
       </CardContent>
