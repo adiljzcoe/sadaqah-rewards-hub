@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -143,7 +144,14 @@ const Header = () => {
       </header>
 
       {/* Mobile Sidebar */}
-      <MobileSidebar isOpen={isMobileSidebarOpen} onClose={toggleMobileSidebar} />
+      <MobileSidebar 
+        isOpen={isMobileSidebarOpen} 
+        onClose={toggleMobileSidebar}
+        userLevel={profile?.jannah_points ? Math.floor(profile.jannah_points / 1000) + 1 : 1}
+        currentPoints={profile?.jannah_points || 0}
+        nextLevelPoints={1000}
+        isMember={false}
+      />
     </>
   );
 };
