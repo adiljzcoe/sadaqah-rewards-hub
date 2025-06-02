@@ -14,35 +14,115 @@ interface PrayerLocation {
   country: string;
   lat: number;
   lng: number;
-  isActive: boolean;
+  timezone: string;
+  population: number; // Muslim population in millions
+}
+
+interface RegionalPrayer {
+  region: string;
+  prayer: string;
+  count: number;
+  cities: string[];
 }
 
 const WorldPrayerVisualization = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [audioEnabled, setAudioEnabled] = useState(false);
+  const [regionalPrayers, setRegionalPrayers] = useState<RegionalPrayer[]>([]);
   const [activeLocations, setActiveLocations] = useState<string[]>([]);
 
   const prayerLocations: PrayerLocation[] = [
-    { id: 'mecca', city: 'Mecca', country: 'Saudi Arabia', lat: 21.4225, lng: 39.8262, isActive: false },
-    { id: 'medina', city: 'Medina', country: 'Saudi Arabia', lat: 24.4683, lng: 39.6142, isActive: false },
-    { id: 'istanbul', city: 'Istanbul', country: 'Turkey', lat: 41.0082, lng: 28.9784, isActive: false },
-    { id: 'cairo', city: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, isActive: false },
-    { id: 'jakarta', city: 'Jakarta', country: 'Indonesia', lat: -6.2088, lng: 106.8456, isActive: false },
-    { id: 'karachi', city: 'Karachi', country: 'Pakistan', lat: 24.8607, lng: 67.0011, isActive: false },
-    { id: 'dhaka', city: 'Dhaka', country: 'Bangladesh', lat: 23.8103, lng: 90.4125, isActive: false },
-    { id: 'casablanca', city: 'Casablanca', country: 'Morocco', lat: 33.5731, lng: -7.5898, isActive: false },
+    { id: 'mecca', city: 'Mecca', country: 'Saudi Arabia', lat: 21.4225, lng: 39.8262, timezone: 'Asia/Riyadh', population: 2 },
+    { id: 'medina', city: 'Medina', country: 'Saudi Arabia', lat: 24.4683, lng: 39.6142, timezone: 'Asia/Riyadh', population: 1.5 },
+    { id: 'istanbul', city: 'Istanbul', country: 'Turkey', lat: 41.0082, lng: 28.9784, timezone: 'Europe/Istanbul', population: 12 },
+    { id: 'cairo', city: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, timezone: 'Africa/Cairo', population: 18 },
+    { id: 'jakarta', city: 'Jakarta', country: 'Indonesia', lat: -6.2088, lng: 106.8456, timezone: 'Asia/Jakarta', population: 25 },
+    { id: 'karachi', city: 'Karachi', country: 'Pakistan', lat: 24.8607, lng: 67.0011, timezone: 'Asia/Karachi', population: 20 },
+    { id: 'dhaka', city: 'Dhaka', country: 'Bangladesh', lat: 23.8103, lng: 90.4125, timezone: 'Asia/Dhaka', population: 15 },
+    { id: 'casablanca', city: 'Casablanca', country: 'Morocco', lat: 33.5731, lng: -7.5898, timezone: 'Africa/Casablanca', population: 8 },
+    { id: 'london', city: 'London', country: 'UK', lat: 51.5074, lng: -0.1278, timezone: 'Europe/London', population: 1.5 },
+    { id: 'newyork', city: 'New York', country: 'USA', lat: 40.7128, lng: -74.0060, timezone: 'America/New_York', population: 2 },
+    { id: 'kualalumpur', city: 'Kuala Lumpur', country: 'Malaysia', lat: 3.1390, lng: 101.6869, timezone: 'Asia/Kuala_Lumpur', population: 5 },
+    { id: 'lagos', city: 'Lagos', country: 'Nigeria', lat: 6.5244, lng: 3.3792, timezone: 'Africa/Lagos', population: 12 },
   ];
+
+  // Calculate which prayer is happening at each location
+  const getCurrentPrayerForLocation = (timezone: string) => {
+    try {
+      const now = new Date();
+      const localTime = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false
+      }).format(now);
+      
+      const [hour, minute] = localTime.split(':').map(Number);
+      const currentMinutes = hour * 60 + minute;
+
+      // Simplified prayer times (in reality these would be calculated based on sun position)
+      const prayerTimes = {
+        fajr: { start: 5 * 60, end: 6 * 60 + 30, name: 'Fajr' },
+        dhuhr: { start: 12 * 60, end: 14 * 60, name: 'Dhuhr' },
+        asr: { start: 15 * 60, end: 17 * 60, name: 'Asr' },
+        maghrib: { start: 18 * 60, end: 19 * 60 + 30, name: 'Maghrib' },
+        isha: { start: 20 * 60, end: 21 * 60 + 30, name: 'Isha' }
+      };
+
+      for (const [key, prayer] of Object.entries(prayerTimes)) {
+        if (currentMinutes >= prayer.start && currentMinutes <= prayer.end) {
+          return prayer.name;
+        }
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const updatePrayerData = () => {
+    const activePrayers: RegionalPrayer[] = [];
+    const activeLocationIds: string[] = [];
+    
+    // Group by prayer type
+    const prayerGroups: { [key: string]: { cities: string[], totalPopulation: number } } = {};
+
+    prayerLocations.forEach(location => {
+      const currentPrayer = getCurrentPrayerForLocation(location.timezone);
+      if (currentPrayer) {
+        activeLocationIds.push(location.id);
+        
+        if (!prayerGroups[currentPrayer]) {
+          prayerGroups[currentPrayer] = { cities: [], totalPopulation: 0 };
+        }
+        
+        prayerGroups[currentPrayer].cities.push(`${location.city}, ${location.country}`);
+        prayerGroups[currentPrayer].totalPopulation += location.population;
+      }
+    });
+
+    // Convert to regional prayers array
+    Object.entries(prayerGroups).forEach(([prayer, data]) => {
+      activePrayers.push({
+        region: data.cities.length > 1 ? 'Multiple Regions' : data.cities[0].split(',')[1].trim(),
+        prayer,
+        count: Math.floor(data.totalPopulation * 1000000), // Convert to actual population
+        cities: data.cities
+      });
+    });
+
+    setRegionalPrayers(activePrayers);
+    setActiveLocations(activeLocationIds);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-      // Simulate active prayers
-      const activeIds: string[] = [];
-      prayerLocations.forEach(location => {
-        if (Math.random() < 0.3) activeIds.push(location.id);
-      });
-      setActiveLocations(activeIds);
-    }, 4000);
+      updatePrayerData();
+    }, 30000); // Update every 30 seconds
+
+    // Initial update
+    updatePrayerData();
 
     return () => clearInterval(timer);
   }, []);
@@ -71,6 +151,26 @@ const WorldPrayerVisualization = () => {
       playAdhanSound();
     }
   }, [activeLocations]);
+
+  const formatPrayerCount = (count: number) => {
+    if (count >= 1000000) {
+      return (count / 1000000).toFixed(1) + 'M';
+    } else if (count >= 1000) {
+      return (count / 1000).toFixed(0) + 'K';
+    }
+    return count.toString();
+  };
+
+  const getPrayerEmoji = (prayer: string) => {
+    switch (prayer.toLowerCase()) {
+      case 'fajr': return '🌅';
+      case 'dhuhr': return '☀️';
+      case 'asr': return '🌤️';
+      case 'maghrib': return '🌅';
+      case 'isha': return '🌙';
+      default: return '🕌';
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -114,6 +214,51 @@ const WorldPrayerVisualization = () => {
       {/* Live Prayer Counter */}
       <LivePrayerCounter />
 
+      {/* Real-time Prayer Breakdown */}
+      {regionalPrayers.length > 0 && (
+        <Card className="bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 border-2 border-green-200">
+          <CardContent className="p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Globe className="h-6 w-6 text-green-600 animate-pulse" />
+              Live Prayer Times Around the World
+            </h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {regionalPrayers.map((prayer, index) => (
+                <div key={index} className="bg-white rounded-lg border border-green-100 shadow-sm p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{getPrayerEmoji(prayer.prayer)}</span>
+                      <span className="font-bold text-lg text-gray-900">{prayer.prayer}</span>
+                    </div>
+                    <Badge className="bg-green-100 text-green-800">
+                      {formatPrayerCount(prayer.count)} praying
+                    </Badge>
+                  </div>
+                  
+                  <div className="text-sm text-gray-600">
+                    <p className="font-medium mb-1">Active in:</p>
+                    <ul className="space-y-1">
+                      {prayer.cities.slice(0, 3).map((city, cityIndex) => (
+                        <li key={cityIndex} className="flex items-center gap-1">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          {city}
+                        </li>
+                      ))}
+                      {prayer.cities.length > 3 && (
+                        <li className="text-green-600 font-medium">
+                          +{prayer.cities.length - 3} more regions
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Main Visualization */}
       <Card className="overflow-hidden relative min-h-[400px] bg-gradient-to-br from-slate-900 via-blue-900 to-green-900">
         <CardContent className="p-0 relative h-[400px]">
@@ -134,6 +279,7 @@ const WorldPrayerVisualization = () => {
               const x = ((location.lng + 180) / 360) * 100;
               const y = ((90 - location.lat) / 180) * 100;
               const isActive = activeLocations.includes(location.id);
+              const currentPrayer = getCurrentPrayerForLocation(location.timezone);
               
               return (
                 <div key={location.id} className="absolute">
@@ -178,8 +324,8 @@ const WorldPrayerVisualization = () => {
                     }}
                   />
                   
-                  {/* City Label for Active Prayers */}
-                  {isActive && (
+                  {/* Prayer Label for Active Prayers */}
+                  {isActive && currentPrayer && (
                     <div
                       className="absolute bg-green-600 text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap animate-fade-in shadow-xl z-30"
                       style={{
@@ -188,7 +334,7 @@ const WorldPrayerVisualization = () => {
                         transform: 'translate(-50%, -140%)',
                       }}
                     >
-                      🕌 {location.city} - Adhan Now
+                      {getPrayerEmoji(currentPrayer)} {currentPrayer} - {location.city}
                     </div>
                   )}
                 </div>
@@ -211,35 +357,6 @@ const WorldPrayerVisualization = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Currently Active Prayers */}
-      {activeLocations.length > 0 && (
-        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-          <CardContent className="p-4">
-            <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <Globe className="h-5 w-5 text-green-600 animate-pulse" />
-              Prayer in Progress - Join in Spirit
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {activeLocations.map(locationId => {
-                const location = prayerLocations.find(l => l.id === locationId);
-                if (!location) return null;
-                
-                return (
-                  <div key={locationId} className="flex items-center gap-3 bg-white p-3 rounded-lg border border-green-100 shadow-sm">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                    <div>
-                      <div className="font-medium text-gray-900">{location.city}</div>
-                      <div className="text-sm text-gray-600">{location.country}</div>
-                    </div>
-                    <Heart className="h-4 w-4 text-green-500 ml-auto animate-pulse" fill="currentColor" />
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };
