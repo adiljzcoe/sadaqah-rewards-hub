@@ -33,6 +33,7 @@ const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const GiftCards = lazy(() => import("./pages/GiftCards"));
 const MasjidCommunity = lazy(() => import("./pages/MasjidCommunity"));
 const ZakatCalculator = lazy(() => import("./pages/ZakatCalculator"));
+const Qurbani = lazy(() => import("./pages/Qurbani"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -77,6 +78,7 @@ function App() {
                           <Route path="/live" element={<LiveFeed />} />
                           <Route path="/gift-cards" element={<GiftCards />} />
                           <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+                          <Route path="/qurbani" element={<Qurbani />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={

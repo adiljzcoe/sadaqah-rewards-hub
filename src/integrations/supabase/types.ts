@@ -879,6 +879,243 @@ export type Database = {
           },
         ]
       }
+      qurbani_animals: {
+        Row: {
+          age_range: string | null
+          animal_name: string
+          animal_type: Database["public"]["Enums"]["animal_type"]
+          availability_count: number | null
+          charity_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          is_halal_certified: boolean | null
+          location_id: string | null
+          price_per_share: number
+          total_shares: number
+          updated_at: string
+          weight_range: string | null
+        }
+        Insert: {
+          age_range?: string | null
+          animal_name: string
+          animal_type: Database["public"]["Enums"]["animal_type"]
+          availability_count?: number | null
+          charity_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_halal_certified?: boolean | null
+          location_id?: string | null
+          price_per_share: number
+          total_shares?: number
+          updated_at?: string
+          weight_range?: string | null
+        }
+        Update: {
+          age_range?: string | null
+          animal_name?: string
+          animal_type?: Database["public"]["Enums"]["animal_type"]
+          availability_count?: number | null
+          charity_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_halal_certified?: boolean | null
+          location_id?: string | null
+          price_per_share?: number
+          total_shares?: number
+          updated_at?: string
+          weight_range?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qurbani_animals_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qurbani_animals_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "qurbani_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qurbani_locations: {
+        Row: {
+          charity_id: string | null
+          coordinates: unknown | null
+          country: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          local_currency: string | null
+          name: string
+          region: string | null
+          updated_at: string
+        }
+        Insert: {
+          charity_id?: string | null
+          coordinates?: unknown | null
+          country: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          local_currency?: string | null
+          name: string
+          region?: string | null
+          updated_at?: string
+        }
+        Update: {
+          charity_id?: string | null
+          coordinates?: unknown | null
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          local_currency?: string | null
+          name?: string
+          region?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qurbani_locations_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qurbani_orders: {
+        Row: {
+          animal_id: string | null
+          beneficiaries_fed: number | null
+          charity_id: string | null
+          created_at: string
+          distribution_complete: boolean | null
+          id: string
+          location_id: string | null
+          order_type: string | null
+          payment_intent_id: string | null
+          recipient_name: string | null
+          shares_purchased: number
+          slaughter_date: string | null
+          special_instructions: string | null
+          status: Database["public"]["Enums"]["qurbani_status"] | null
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          animal_id?: string | null
+          beneficiaries_fed?: number | null
+          charity_id?: string | null
+          created_at?: string
+          distribution_complete?: boolean | null
+          id?: string
+          location_id?: string | null
+          order_type?: string | null
+          payment_intent_id?: string | null
+          recipient_name?: string | null
+          shares_purchased?: number
+          slaughter_date?: string | null
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["qurbani_status"] | null
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          animal_id?: string | null
+          beneficiaries_fed?: number | null
+          charity_id?: string | null
+          created_at?: string
+          distribution_complete?: boolean | null
+          id?: string
+          location_id?: string | null
+          order_type?: string | null
+          payment_intent_id?: string | null
+          recipient_name?: string | null
+          shares_purchased?: number
+          slaughter_date?: string | null
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["qurbani_status"] | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qurbani_orders_animal_id_fkey"
+            columns: ["animal_id"]
+            isOneToOne: false
+            referencedRelation: "qurbani_animals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qurbani_orders_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qurbani_orders_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "qurbani_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qurbani_settings: {
+        Row: {
+          created_at: string
+          general_markup_percentage: number | null
+          id: string
+          is_active: boolean | null
+          preorder_start_date: string
+          qurbani_end_date: string
+          qurbani_start_date: string
+          season_year: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          general_markup_percentage?: number | null
+          id?: string
+          is_active?: boolean | null
+          preorder_start_date: string
+          qurbani_end_date: string
+          qurbani_start_date: string
+          season_year: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          general_markup_percentage?: number | null
+          id?: string
+          is_active?: boolean | null
+          preorder_start_date?: string
+          qurbani_end_date?: string
+          qurbani_start_date?: string
+          season_year?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string | null
@@ -938,6 +1175,7 @@ export type Database = {
       }
     }
     Enums: {
+      animal_type: "sheep" | "goat" | "cow" | "buffalo" | "camel"
       campaign_status: "draft" | "active" | "paused" | "completed" | "cancelled"
       donation_status:
         | "pending"
@@ -945,6 +1183,12 @@ export type Database = {
         | "failed"
         | "refunded"
         | "sent_to_charity"
+      qurbani_status:
+        | "preorder"
+        | "confirmed"
+        | "slaughtered"
+        | "distributed"
+        | "completed"
       user_role:
         | "user"
         | "admin"
@@ -1066,6 +1310,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      animal_type: ["sheep", "goat", "cow", "buffalo", "camel"],
       campaign_status: ["draft", "active", "paused", "completed", "cancelled"],
       donation_status: [
         "pending",
@@ -1073,6 +1318,13 @@ export const Constants = {
         "failed",
         "refunded",
         "sent_to_charity",
+      ],
+      qurbani_status: [
+        "preorder",
+        "confirmed",
+        "slaughtered",
+        "distributed",
+        "completed",
       ],
       user_role: [
         "user",
