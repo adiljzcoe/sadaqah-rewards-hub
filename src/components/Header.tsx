@@ -12,14 +12,6 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
 import { 
-  NavigationMenu, 
-  NavigationMenuContent, 
-  NavigationMenuItem, 
-  NavigationMenuLink, 
-  NavigationMenuList, 
-  NavigationMenuTrigger 
-} from '@/components/ui/navigation-menu';
-import { 
   Heart, 
   User, 
   Settings, 
@@ -30,14 +22,9 @@ import {
   Users, 
   Gift,
   Coins,
-  Crown,
-  Radio,
-  Info,
-  BookOpen,
-  HelpCircle
+  Crown
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/lib/utils';
 import MobileSidebar from './MobileSidebar';
 
 const Header = () => {
@@ -49,26 +36,6 @@ const Header = () => {
     signOut();
     navigate('/');
   };
-
-  const donationLinks = [
-    { title: "Water Wells", href: "/water-wells", description: "Provide clean water access" },
-    { title: "Build Mosques", href: "/build-mosque", description: "Support mosque construction" },
-    { title: "Support Orphans", href: "/orphanages", description: "Help children in need" },
-    { title: "Emergency Campaigns", href: "/campaigns", description: "Urgent relief efforts" },
-    { title: "Gift Donations", href: "/gift-donations", description: "Send Islamic gift cards" },
-  ];
-
-  const communityLinks = [
-    { title: "Live Feed", href: "/live", description: "See real-time donations" },
-    { title: "Leaderboards", href: "/leaderboards", description: "Community rankings" },
-    { title: "Charity Partners", href: "/charities", description: "Our verified partners" },
-  ];
-
-  const aboutLinks = [
-    { title: "About Us", href: "/about", description: "Our mission and values" },
-    { title: "Why Donate?", href: "/why-donate", description: "Impact of your donations" },
-    { title: "Blog", href: "/blog", description: "News and updates" },
-  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -84,85 +51,18 @@ const Header = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList>
-              {/* Donations Dropdown */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-700 hover:text-green-600">
-                  <Gift className="h-4 w-4 mr-2" />
-                  Donate
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {donationLinks.map((link) => (
-                      <NavigationMenuLink key={link.href} asChild>
-                        <Link
-                          to={link.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">{link.title}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {link.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {/* Community Dropdown */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-700 hover:text-green-600">
-                  <Users className="h-4 w-4 mr-2" />
-                  Community
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
-                    {communityLinks.map((link) => (
-                      <NavigationMenuLink key={link.href} asChild>
-                        <Link
-                          to={link.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">{link.title}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {link.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {/* About Dropdown */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-gray-700 hover:text-green-600">
-                  <Info className="h-4 w-4 mr-2" />
-                  About
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
-                    {aboutLinks.map((link) => (
-                      <NavigationMenuLink key={link.href} asChild>
-                        <Link
-                          to={link.href}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">{link.title}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {link.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+          {/* Desktop Navigation - Simple Links */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            <Link to="/campaigns" className="text-gray-700 hover:text-green-600 transition-colors">
+              Donate
+            </Link>
+            <Link to="/leaderboards" className="text-gray-700 hover:text-green-600 transition-colors">
+              Community
+            </Link>
+            <Link to="/about" className="text-gray-700 hover:text-green-600 transition-colors">
+              About
+            </Link>
+          </nav>
 
           {/* Right side - User menu or Auth buttons */}
           <div className="flex items-center space-x-4">
