@@ -35,6 +35,7 @@ const ZakatCalculator = lazy(() => import("./pages/ZakatCalculator"));
 const Qurbani = lazy(() => import("./pages/Qurbani"));
 const RamadanCalendar = lazy(() => import("./pages/RamadanCalendar"));
 const DhikrCommunity = lazy(() => import("./pages/DhikrCommunity"));
+const QuranReader = lazy(() => import("./pages/QuranReader"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -82,6 +83,7 @@ function App() {
                           <Route path="/qurbani" element={<Qurbani />} />
                           <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
                           <Route path="/dhikr-community" element={<DhikrCommunity />} />
+                          <Route path="/quran-reader" element={<QuranReader />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={

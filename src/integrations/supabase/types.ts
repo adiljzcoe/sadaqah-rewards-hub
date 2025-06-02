@@ -1077,6 +1077,80 @@ export type Database = {
           },
         ]
       }
+      quran_surahs: {
+        Row: {
+          created_at: string
+          id: string
+          name_arabic: string
+          name_english: string
+          name_transliteration: string
+          revelation_place: string
+          surah_number: number
+          total_verses: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name_arabic: string
+          name_english: string
+          name_transliteration: string
+          revelation_place: string
+          surah_number: number
+          total_verses: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name_arabic?: string
+          name_english?: string
+          name_transliteration?: string
+          revelation_place?: string
+          surah_number?: number
+          total_verses?: number
+        }
+        Relationships: []
+      }
+      quran_verses: {
+        Row: {
+          created_at: string
+          id: string
+          jannah_points_reward: number
+          surah_id: string
+          text_arabic: string
+          text_translation: string
+          text_transliteration: string
+          verse_number: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          jannah_points_reward?: number
+          surah_id: string
+          text_arabic: string
+          text_translation: string
+          text_transliteration: string
+          verse_number: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          jannah_points_reward?: number
+          surah_id?: string
+          text_arabic?: string
+          text_translation?: string
+          text_transliteration?: string
+          verse_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quran_verses_surah_id_fkey"
+            columns: ["surah_id"]
+            isOneToOne: false
+            referencedRelation: "quran_surahs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       qurbani_animals: {
         Row: {
           age_range: string | null
@@ -1494,6 +1568,38 @@ export type Database = {
             columns: ["achievement_id"]
             isOneToOne: false
             referencedRelation: "dhikr_achievements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_verse_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          jannah_points_earned: number
+          user_id: string
+          verse_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          jannah_points_earned?: number
+          user_id: string
+          verse_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          jannah_points_earned?: number
+          user_id?: string
+          verse_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_verse_progress_verse_id_fkey"
+            columns: ["verse_id"]
+            isOneToOne: false
+            referencedRelation: "quran_verses"
             referencedColumns: ["id"]
           },
         ]
