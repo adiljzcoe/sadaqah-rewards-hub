@@ -1,8 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Shield, Gift, Calendar, ArrowRight, CheckCircle, Users, MessageCircle, Flower } from 'lucide-react';
+import MobileNativeDonationButton from './MobileNativeDonationButton';
+import { useMobileFeatures } from '@/hooks/useMobileFeatures';
 
 const donationTypes = [
   { 
@@ -74,6 +75,8 @@ const DonationWidget = () => {
 
   console.log('DonationWidget rendered, selectedType:', selectedType);
   console.log('Available donation types:', donationTypes);
+
+  const { isNative } = useMobileFeatures();
 
   return (
     <Card className="p-6 bg-white border border-gray-200 shadow-lg">
@@ -347,6 +350,20 @@ const DonationWidget = () => {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/10 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </Button>
+
+      {/* Mobile Native Features - Show only on mobile app */}
+      {isNative && (
+        <div className="mb-6">
+          <MobileNativeDonationButton
+            amount={customAmount ? Number(customAmount) : selectedAmount}
+            campaignName={selectedType === 'honoring' && memoryPerson ? `Honoring ${memoryPerson}` : 'Emergency Relief'}
+            onSuccess={(paymentToken) => {
+              console.log('Native payment successful:', paymentToken);
+              // Handle successful payment here
+            }}
+          />
+        </div>
+      )}
 
       {/* Security notice */}
       <div className="mt-4 text-center">
