@@ -954,6 +954,54 @@ export type Database = {
           },
         ]
       }
+      live_streams: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          is_live: boolean | null
+          scheduled_end: string | null
+          scheduled_start: string | null
+          stream_url: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+          viewer_count: number | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_live?: boolean | null
+          scheduled_end?: string | null
+          scheduled_start?: string | null
+          stream_url: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+          viewer_count?: number | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_live?: boolean | null
+          scheduled_end?: string | null
+          scheduled_start?: string | null
+          stream_url?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+          viewer_count?: number | null
+        }
+        Relationships: []
+      }
       matching_pool: {
         Row: {
           business_partner_id: string | null
@@ -1580,6 +1628,73 @@ export type Database = {
           year?: number
         }
         Relationships: []
+      }
+      stream_chat_messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          message_type: string | null
+          stream_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          message_type?: string | null
+          stream_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          message_type?: string | null
+          stream_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stream_chat_messages_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "live_streams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stream_reactions: {
+        Row: {
+          created_at: string | null
+          id: string
+          reaction_type: string
+          stream_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          reaction_type: string
+          stream_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          reaction_type?: string
+          stream_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stream_reactions_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "live_streams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscribers: {
         Row: {

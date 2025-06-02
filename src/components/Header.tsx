@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -352,5 +351,19 @@ const Header = () => {
     </header>
   );
 };
+
+// Navigation items for the main application
+export const navigationItems = [
+  { name: "Home", path: "/" },
+  { name: "Why Donate", path: "/why-donate" },
+  { name: "My Jannah", path: "/my-jannah" },
+  { name: "My Ummah", path: "/my-ummah" },
+  { name: "Live TV", path: "/live-tv" },
+  { name: "Quran", path: "/quran-reader" },
+  { name: "Sadaqah Coins", path: "/sadaqah-coins" },
+  { name: "Namaz Times", path: "/namaz-times" },
+  { name: "Charity Partners", path: "/charity-partners" },
+  { name: "Admin Dashboard", path: "/admin-dashboard" },
+];
 
 export default Header;
