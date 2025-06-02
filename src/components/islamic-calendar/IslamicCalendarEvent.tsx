@@ -64,7 +64,12 @@ const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) =>
         </div>
         
         <CardTitle className="text-xl mb-2 line-clamp-2">
-          {event.title}
+          <Link 
+            to={`/islamic-calendar/${event.slug}`}
+            className="hover:text-blue-600 transition-colors cursor-pointer"
+          >
+            {event.title}
+          </Link>
         </CardTitle>
         
         <div className="flex items-center gap-4 text-sm text-gray-600">
