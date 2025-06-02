@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Send, Heart, ThumbsUp, Clap, MessageCircle } from 'lucide-react';
+import { Send, Heart, ThumbsUp, HandClap, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -60,7 +60,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
         .from('stream_chat_messages')
         .select(`
           *,
-          profiles:user_id (
+          profiles!inner (
             full_name
           )
         `)
@@ -72,6 +72,20 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
       setMessages(data || []);
     } catch (error) {
       console.error('Error fetching messages:', error);
+      // Fallback: fetch messages without profile data
+      try {
+        const { data, error: fallbackError } = await supabase
+          .from('stream_chat_messages')
+          .select('*')
+          .eq('stream_id', streamId)
+          .order('created_at', { ascending: true })
+          .limit(100);
+
+        if (fallbackError) throw fallbackError;
+        setMessages(data || []);
+      } catch (fallbackErr) {
+        console.error('Fallback fetch also failed:', fallbackErr);
+      }
     }
   };
 
