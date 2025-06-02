@@ -1,11 +1,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, Star, Moon, Sun, ExternalLink } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Calendar, Clock, ArrowRight, Bell } from 'lucide-react';
 
 interface IslamicCalendarEventProps {
   event: {
@@ -13,128 +12,95 @@ interface IslamicCalendarEventProps {
     title: string;
     description: string;
     date: string;
-    type: 'prayer' | 'fasting' | 'celebration' | 'worship' | 'pilgrimage' | 'commemoration';
-    significance: 'high' | 'medium' | 'low';
-    countdown?: number;
-    isToday?: boolean;
-    isUpcoming?: boolean;
+    countdown: number;
+    type: string;
+    significance: string;
     color: string;
     icon: string;
-    gregorianDate: Date;
+    isToday: boolean;
+    isUpcoming: boolean;
     slug: string;
   };
 }
 
 const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) => {
-  const getTypeIcon = () => {
-    switch (event.type) {
-      case 'prayer': return <Star className="h-5 w-5" />;
-      case 'fasting': return <Moon className="h-5 w-5" />;
-      case 'celebration': return <Sun className="h-5 w-5" />;
-      case 'worship': return <Calendar className="h-5 w-5" />;
-      case 'pilgrimage': return <Clock className="h-5 w-5" />;
-      case 'commemoration': return <Calendar className="h-5 w-5" />;
-      default: return <Calendar className="h-5 w-5" />;
-    }
+  const getCountdownText = () => {
+    if (event.countdown === 0) return 'Today!';
+    if (event.countdown === 1) return 'Tomorrow';
+    if (event.countdown > 0) return `${event.countdown} days`;
+    return 'Past';
   };
 
-  const getSignificanceColor = () => {
-    switch (event.significance) {
-      case 'high': return 'border-l-red-500 bg-gradient-to-r from-red-50 to-rose-50';
-      case 'medium': return 'border-l-yellow-500 bg-gradient-to-r from-yellow-50 to-amber-50';
-      case 'low': return 'border-l-green-500 bg-gradient-to-r from-green-50 to-emerald-50';
-      default: return 'border-l-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50';
-    }
+  const getCountdownColor = () => {
+    if (event.countdown === 0) return 'text-yellow-600 font-bold';
+    if (event.countdown <= 7) return 'text-orange-600 font-semibold';
+    if (event.countdown <= 30) return 'text-blue-600';
+    return 'text-gray-600';
   };
-
-  const formatCountdown = (days: number) => {
-    if (days === 0) return "Today!";
-    if (days === 1) return "Tomorrow";
-    if (days < 7) return `${days} days`;
-    if (days < 30) return `${Math.floor(days / 7)} weeks`;
-    return `${Math.floor(days / 30)} months`;
-  };
-
-  const isPast = event.countdown !== undefined && event.countdown < 0;
-  const daysUntil = event.countdown || 0;
 
   return (
-    <Card className={cn(
-      "overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg border-l-4",
-      getSignificanceColor(),
-      event.isToday && "ring-2 ring-yellow-400 shadow-xl animate-pulse",
-      event.isUpcoming && "ring-1 ring-blue-400",
-      isPast && "opacity-60"
-    )}>
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            <div className={cn(
-              "p-2 rounded-full text-white",
-              event.color
-            )}>
-              {getTypeIcon()}
-            </div>
-            <div>
-              <h3 className="font-bold text-lg text-gray-900">{event.title}</h3>
-              <p className="text-sm text-gray-600">{event.date}</p>
-              <p className="text-xs text-gray-500">
-                {event.gregorianDate.toLocaleDateString('en-US', { 
-                  weekday: 'short',
-                  month: 'short', 
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
-              </p>
-            </div>
-          </div>
-          
-          {event.countdown !== undefined && !isPast && (
-            <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-              {formatCountdown(daysUntil)}
-            </Badge>
-          )}
-          
-          {isPast && (
-            <Badge variant="outline" className="bg-gray-100 text-gray-500">
-              Past
+    <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 ${
+      event.isToday ? 'ring-2 ring-yellow-400 shadow-lg' : 
+      event.isUpcoming ? 'border-orange-300' : ''
+    }`}>
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="text-6xl">{event.icon}</div>
+      </div>
+
+      <CardHeader className="relative">
+        <div className="flex items-start justify-between mb-2">
+          <Badge 
+            variant="outline" 
+            className={`${event.color} text-white border-0 font-medium`}
+          >
+            {event.type}
+          </Badge>
+          {event.isToday && (
+            <Badge className="bg-yellow-500 text-white animate-pulse">
+              🌟 Today
             </Badge>
           )}
         </div>
+        
+        <CardTitle className="text-xl mb-2 line-clamp-2">
+          {event.title}
+        </CardTitle>
+        
+        <div className="flex items-center gap-4 text-sm text-gray-600">
+          <div className="flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <span>{event.date}</span>
+          </div>
+          <div className={`flex items-center gap-1 ${getCountdownColor()}`}>
+            <Clock className="h-4 w-4" />
+            <span>{getCountdownText()}</span>
+          </div>
+        </div>
+      </CardHeader>
 
-        <p className="text-gray-700 mb-4">{event.description}</p>
+      <CardContent className="relative space-y-4">
+        <p className="text-gray-700 text-sm line-clamp-3 leading-relaxed">
+          {event.description}
+        </p>
 
         <div className="flex items-center justify-between">
-          <Badge 
-            variant={event.isToday ? "default" : "secondary"}
-            className={cn(
-              "capitalize",
-              event.isToday && "bg-gradient-to-r from-yellow-400 to-orange-400 text-white animate-bounce"
-            )}
-          >
-            {event.type.replace('_', ' ')}
+          <Badge variant="secondary" className="text-xs">
+            {event.significance} significance
           </Badge>
           
-          {event.isToday && (
-            <span className="text-lg font-bold text-yellow-600 animate-bounce">
-              🌟 Today! 🌟
-            </span>
-          )}
-          
-          {event.isUpcoming && !event.isToday && (
-            <span className="text-sm font-medium text-blue-600">
-              🔔 Coming Soon
-            </span>
-          )}
-        </div>
-
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <Link to={`/islamic-calendar/${event.slug}`}>
-            <Button className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600">
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Celebrate & Donate
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm">
+              <Bell className="h-4 w-4" />
             </Button>
-          </Link>
+            
+            <Button asChild size="sm" className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700">
+              <Link to={`/islamic-calendar/${event.slug}`}>
+                <span>Celebrate</span>
+                <ArrowRight className="h-4 w-4 ml-1" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

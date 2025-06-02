@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, List } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import IslamicCalendarEvent from './IslamicCalendarEvent';
 import CountdownTimer from './CountdownTimer';
 import { getUpcomingIslamicEvents, getDaysUntilEvent, getCurrentIslamicDate, formatIslamicDate } from '@/utils/islamicCalendar';
@@ -76,6 +77,29 @@ const IslamicCalendarGrid = () => {
               day: 'numeric' 
             })}
           </p>
+        </CardContent>
+      </Card>
+
+      {/* Quick Navigation to All Events */}
+      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-indigo-800 mb-2">
+                Browse All Islamic Events & Celebrations
+              </h3>
+              <p className="text-indigo-600">
+                Click on any event below to see its full celebration page with donation options, 
+                traditions, and ways to help the community celebrate together.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <List className="h-5 w-5 text-indigo-600" />
+              <span className="text-sm font-medium text-indigo-600">
+                {filteredEvents.length} Events Available
+              </span>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
