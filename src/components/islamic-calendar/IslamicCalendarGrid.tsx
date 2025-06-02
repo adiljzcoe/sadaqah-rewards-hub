@@ -1,95 +1,55 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import IslamicCalendarEvent from './IslamicCalendarEvent';
 import CountdownTimer from './CountdownTimer';
+import { getUpcomingIslamicEvents, getDaysUntilEvent, getCurrentIslamicDate, formatIslamicDate } from '@/utils/islamicCalendar';
 
 const IslamicCalendarGrid = () => {
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedType, setSelectedType] = useState<string>('all');
+  
+  const islamicEvents = useMemo(() => getUpcomingIslamicEvents(), []);
+  const currentIslamicDate = useMemo(() => getCurrentIslamicDate(), []);
+  
+  // Filter events happening in the next 30 days for upcoming section
+  const upcomingEvents = useMemo(() => {
+    const now = new Date();
+    return islamicEvents
+      .filter(event => {
+        const daysUntil = getDaysUntilEvent(event.gregorianDate);
+        return daysUntil >= 0 && daysUntil <= 30;
+      })
+      .map(event => ({
+        ...event,
+        countdown: getDaysUntilEvent(event.gregorianDate),
+        isToday: getDaysUntilEvent(event.gregorianDate) === 0,
+        isUpcoming: getDaysUntilEvent(event.gregorianDate) <= 7 && getDaysUntilEvent(event.gregorianDate) > 0
+      }))
+      .sort((a, b) => a.countdown - b.countdown);
+  }, [islamicEvents]);
 
-  // Mock data - this would come from your database
-  const islamicEvents = [
-    {
-      id: '1',
-      title: 'Jumu\'ah Prayer',
-      description: 'The blessed Friday congregational prayer. A time for community gathering and spiritual reflection.',
-      date: 'Every Friday',
-      type: 'prayer' as const,
-      significance: 'high' as const,
-      countdown: 2,
-      isUpcoming: true,
-      color: 'bg-emerald-500',
-      icon: '🕌'
-    },
-    {
-      id: '2',
-      title: 'Laylat al-Qadr',
-      description: 'The Night of Power - better than a thousand months. Search for it in the last 10 nights of Ramadan.',
-      date: 'Last 10 nights of Ramadan',
-      type: 'worship' as const,
-      significance: 'high' as const,
-      countdown: 45,
-      color: 'bg-purple-600',
-      icon: '✨'
-    },
-    {
-      id: '3',
-      title: 'Eid al-Fitr',
-      description: 'The Festival of Breaking the Fast. Celebration after the holy month of Ramadan.',
-      date: '1st Shawwal',
-      type: 'celebration' as const,
-      significance: 'high' as const,
-      countdown: 47,
-      color: 'bg-pink-500',
-      icon: '🎉'
-    },
-    {
-      id: '4',
-      title: 'Day of Arafah',
-      description: 'The most important day of Hajj. Fasting is highly recommended for those not performing Hajj.',
-      date: '9th Dhul Hijjah',
-      type: 'fasting' as const,
-      significance: 'high' as const,
-      countdown: 120,
-      color: 'bg-blue-600',
-      icon: '🕌'
-    },
-    {
-      id: '5',
-      title: 'Eid al-Adha',
-      description: 'The Festival of Sacrifice. Commemorating Ibrahim\'s willingness to sacrifice his son.',
-      date: '10th Dhul Hijjah',
-      type: 'celebration' as const,
-      significance: 'high' as const,
-      countdown: 121,
-      color: 'bg-red-500',
-      icon: '🐑'
-    },
-    {
-      id: '6',
-      title: 'Ashura',
-      description: 'The 10th day of Muharram. A day of fasting and reflection.',
-      date: '10th Muharram',
-      type: 'fasting' as const,
-      significance: 'medium' as const,
-      countdown: 280,
-      color: 'bg-indigo-600',
-      icon: '🌙'
-    }
-  ];
-
-  const upcomingEvents = islamicEvents
-    .filter(event => event.countdown !== undefined && event.countdown <= 7)
-    .sort((a, b) => (a.countdown || 0) - (b.countdown || 0));
-
-  const filteredEvents = selectedType === 'all' 
-    ? islamicEvents 
-    : islamicEvents.filter(event => event.type === selectedType);
+  // Filter events for the main grid
+  const filteredEvents = useMemo(() => {
+    const filtered = selectedType === 'all' 
+      ? islamicEvents 
+      : islamicEvents.filter(event => event.type === selectedType);
+    
+    return filtered.map(event => ({
+      ...event,
+      countdown: getDaysUntilEvent(event.gregorianDate),
+      isToday: getDaysUntilEvent(event.gregorianDate) === 0,
+      isUpcoming: getDaysUntilEvent(event.gregorianDate) <= 7 && getDaysUntilEvent(event.gregorianDate) > 0,
+      date: event.gregorianDate.toLocaleDateString('en-US', { 
+        month: 'long', 
+        day: 'numeric', 
+        year: 'numeric' 
+      })
+    }));
+  }, [islamicEvents, selectedType]);
 
   const eventTypes = [
     { value: 'all', label: 'All Events', icon: '📅' },
@@ -102,6 +62,22 @@ const IslamicCalendarGrid = () => {
 
   return (
     <div className="space-y-8">
+      {/* Current Islamic Date */}
+      <Card className="bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 text-white">
+        <CardContent className="p-6 text-center">
+          <h2 className="text-2xl font-bold mb-2">Today's Islamic Date</h2>
+          <p className="text-xl">{formatIslamicDate(currentIslamicDate)}</p>
+          <p className="text-sm opacity-90 mt-2">
+            {new Date().toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </p>
+        </CardContent>
+      </Card>
+
       {/* Upcoming Events Highlights */}
       {upcomingEvents.length > 0 && (
         <Card className="bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600 text-white">
@@ -109,11 +85,14 @@ const IslamicCalendarGrid = () => {
             <CardTitle className="flex items-center gap-2 text-2xl">
               <Calendar className="h-6 w-6" />
               Upcoming Sacred Days
+              <Badge className="bg-white/20 text-white ml-2">
+                {upcomingEvents.length} events
+              </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {upcomingEvents.map((event) => (
+              {upcomingEvents.slice(0, 6).map((event) => (
                 <CountdownTimer key={event.id} event={event} />
               ))}
             </div>
@@ -158,7 +137,7 @@ const IslamicCalendarGrid = () => {
                 <ChevronLeft className="h-4 w-4" />
               </Button>
               <Badge variant="outline" className="px-3 py-1">
-                Dhul Hijjah 1445
+                {currentIslamicDate.monthName} {currentIslamicDate.year} AH
               </Badge>
               <Button variant="outline" size="sm">
                 <ChevronRight className="h-4 w-4" />

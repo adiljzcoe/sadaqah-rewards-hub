@@ -13,47 +13,44 @@ interface CountdownTimerProps {
     color: string;
     icon: string;
     type: string;
+    gregorianDate: Date;
   };
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ event }) => {
   const [timeLeft, setTimeLeft] = useState({
-    days: event.countdown || 0,
-    hours: Math.floor(Math.random() * 24),
-    minutes: Math.floor(Math.random() * 60),
-    seconds: Math.floor(Math.random() * 60)
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        let { days, hours, minutes, seconds } = prev;
-        
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else if (days > 0) {
-          days--;
-          hours = 23;
-          minutes = 59;
-          seconds = 59;
-        }
-        
-        return { days, hours, minutes, seconds };
-      });
-    }, 1000);
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const targetTime = event.gregorianDate.getTime();
+      const difference = targetTime - now;
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        setTimeLeft({ days, hours, minutes, seconds });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [event.gregorianDate]);
 
+  const isToday = timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
   const isUrgent = timeLeft.days === 0 && timeLeft.hours < 24;
-  const isToday = timeLeft.days === 0;
 
   return (
     <Card className={cn(
@@ -72,31 +69,44 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ event }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <div className="bg-white/20 rounded-lg p-2">
-            <div className="text-xl font-bold">{timeLeft.days}</div>
-            <div className="text-xs opacity-80">Days</div>
+        {isToday ? (
+          <div className="text-center">
+            <div className="text-2xl font-bold text-yellow-300 animate-bounce">
+              🌟 TODAY! 🌟
+            </div>
+            <p className="text-sm opacity-90 mt-2">The blessed day is here!</p>
           </div>
-          <div className="bg-white/20 rounded-lg p-2">
-            <div className="text-xl font-bold">{timeLeft.hours}</div>
-            <div className="text-xs opacity-80">Hours</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-2">
-            <div className="text-xl font-bold">{timeLeft.minutes}</div>
-            <div className="text-xs opacity-80">Min</div>
-          </div>
-          <div className="bg-white/20 rounded-lg p-2">
-            <div className="text-xl font-bold">{timeLeft.seconds}</div>
-            <div className="text-xs opacity-80">Sec</div>
-          </div>
-        </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-4 gap-2 text-center">
+              <div className="bg-white/20 rounded-lg p-2">
+                <div className="text-xl font-bold">{timeLeft.days}</div>
+                <div className="text-xs opacity-80">Days</div>
+              </div>
+              <div className="bg-white/20 rounded-lg p-2">
+                <div className="text-xl font-bold">{timeLeft.hours}</div>
+                <div className="text-xs opacity-80">Hours</div>
+              </div>
+              <div className="bg-white/20 rounded-lg p-2">
+                <div className="text-xl font-bold">{timeLeft.minutes}</div>
+                <div className="text-xs opacity-80">Min</div>
+              </div>
+              <div className="bg-white/20 rounded-lg p-2">
+                <div className="text-xl font-bold">{timeLeft.seconds}</div>
+                <div className="text-xs opacity-80">Sec</div>
+              </div>
+            </div>
 
-        {isToday && (
-          <div className="mt-3 text-center">
-            <Badge className="bg-yellow-400 text-yellow-900 animate-bounce">
-              🌟 Today is the day! 🌟
-            </Badge>
-          </div>
+            <div className="mt-3 text-center">
+              <p className="text-sm opacity-90">
+                {event.gregorianDate.toLocaleDateString('en-US', { 
+                  weekday: 'long', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
+              </p>
+            </div>
+          </>
         )}
       </CardContent>
     </Card>

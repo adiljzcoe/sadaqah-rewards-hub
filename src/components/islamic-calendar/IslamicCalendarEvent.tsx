@@ -18,6 +18,7 @@ interface IslamicCalendarEventProps {
     isUpcoming?: boolean;
     color: string;
     icon: string;
+    gregorianDate: Date;
   };
 }
 
@@ -50,12 +51,16 @@ const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) =>
     return `${Math.floor(days / 30)} months`;
   };
 
+  const isPast = event.countdown !== undefined && event.countdown < 0;
+  const daysUntil = event.countdown || 0;
+
   return (
     <Card className={cn(
       "overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg border-l-4",
       getSignificanceColor(),
-      event.isToday && "ring-2 ring-gold-400 shadow-xl",
-      event.isUpcoming && "animate-pulse"
+      event.isToday && "ring-2 ring-yellow-400 shadow-xl animate-pulse",
+      event.isUpcoming && "ring-1 ring-blue-400",
+      isPast && "opacity-60"
     )}>
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
@@ -69,12 +74,26 @@ const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) =>
             <div>
               <h3 className="font-bold text-lg text-gray-900">{event.title}</h3>
               <p className="text-sm text-gray-600">{event.date}</p>
+              <p className="text-xs text-gray-500">
+                {event.gregorianDate.toLocaleDateString('en-US', { 
+                  weekday: 'short',
+                  month: 'short', 
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </p>
             </div>
           </div>
           
-          {event.countdown !== undefined && (
+          {event.countdown !== undefined && !isPast && (
             <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-              {formatCountdown(event.countdown)}
+              {formatCountdown(daysUntil)}
+            </Badge>
+          )}
+          
+          {isPast && (
+            <Badge variant="outline" className="bg-gray-100 text-gray-500">
+              Past
             </Badge>
           )}
         </div>
@@ -86,15 +105,21 @@ const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) =>
             variant={event.isToday ? "default" : "secondary"}
             className={cn(
               "capitalize",
-              event.isToday && "bg-gradient-to-r from-yellow-400 to-orange-400 text-white"
+              event.isToday && "bg-gradient-to-r from-yellow-400 to-orange-400 text-white animate-bounce"
             )}
           >
-            {event.type}
+            {event.type.replace('_', ' ')}
           </Badge>
           
           {event.isToday && (
             <span className="text-lg font-bold text-yellow-600 animate-bounce">
               🌟 Today! 🌟
+            </span>
+          )}
+          
+          {event.isUpcoming && !event.isToday && (
+            <span className="text-sm font-medium text-blue-600">
+              🔔 Coming Soon
             </span>
           )}
         </div>
