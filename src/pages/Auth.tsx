@@ -7,14 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { Github } from 'lucide-react';
+import { Github, Shield } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user } = useAuth();
+  const { signIn, signUp, signInWithGoogle, signInWithGitHub, fakeAdminLogin, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +35,11 @@ const Auth = () => {
     setLoading(true);
     await signUp(email, password, fullName);
     setLoading(false);
+  };
+
+  const handleFakeAdminLogin = () => {
+    fakeAdminLogin();
+    navigate('/admin');
   };
 
   return (
@@ -168,6 +173,30 @@ const Auth = () => {
               >
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
+              </Button>
+            </div>
+
+            {/* Fake Admin Login for Testing */}
+            <div className="mt-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Development Only
+                  </span>
+                </div>
+              </div>
+              
+              <Button
+                variant="outline"
+                onClick={handleFakeAdminLogin}
+                className="w-full mt-4 bg-yellow-50 text-yellow-800 border-yellow-300 hover:bg-yellow-100"
+                disabled={loading}
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Test Admin Login
               </Button>
             </div>
           </div>

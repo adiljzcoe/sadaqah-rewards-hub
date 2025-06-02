@@ -15,11 +15,15 @@ const AdminDashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Check if user is admin
+  // Check if user is admin or fake admin
+  const isFakeAdmin = user?.id === 'fake-admin-id';
+  
   const { data: userProfile, isLoading: profileLoading } = useQuery({
     queryKey: ['user-profile', user?.id],
     queryFn: async () => {
-      if (!user?.id) return null;
+      if (!user?.id || isFakeAdmin) {
+        return { role: 'admin', full_name: 'Test Admin', email: 'admin@test.com' };
+      }
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -35,6 +39,15 @@ const AdminDashboard = () => {
   const { data: stats } = useQuery({
     queryKey: ['admin-stats'],
     queryFn: async () => {
+      if (isFakeAdmin) {
+        return {
+          users: 1247,
+          donations: 3456,
+          charities: 89,
+          totalRaised: 125000
+        };
+      }
+      
       const [usersRes, donationsRes, charitiesRes, totalRaisedRes] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('donations').select('*', { count: 'exact', head: true }),
@@ -58,6 +71,35 @@ const AdminDashboard = () => {
   const { data: recentDonations } = useQuery({
     queryKey: ['recent-donations'],
     queryFn: async () => {
+      if (isFakeAdmin) {
+        return [
+          {
+            id: '1',
+            amount: 100,
+            status: 'completed',
+            created_at: new Date().toISOString(),
+            profiles: { full_name: 'John Doe', email: 'john@example.com' },
+            charities: { name: 'Children\'s Hospital' }
+          },
+          {
+            id: '2',
+            amount: 250,
+            status: 'completed',
+            created_at: new Date().toISOString(),
+            profiles: { full_name: 'Jane Smith', email: 'jane@example.com' },
+            charities: { name: 'Water Wells Foundation' }
+          },
+          {
+            id: '3',
+            amount: 75,
+            status: 'pending',
+            created_at: new Date().toISOString(),
+            profiles: { full_name: 'Ahmad M.', email: 'ahmad@example.com' },
+            charities: { name: 'Orphanage Support' }
+          }
+        ];
+      }
+      
       const { data, error } = await supabase
         .from('donations')
         .select(`
@@ -77,6 +119,38 @@ const AdminDashboard = () => {
   const { data: users } = useQuery({
     queryKey: ['all-users'],
     queryFn: async () => {
+      if (isFakeAdmin) {
+        return [
+          {
+            id: '1',
+            full_name: 'Ahmad M.',
+            email: 'ahmad@example.com',
+            role: 'user',
+            jannah_points: 5632,
+            total_donated: 1200,
+            created_at: '2024-01-15T00:00:00Z'
+          },
+          {
+            id: '2',
+            full_name: 'Sarah Johnson',
+            email: 'sarah@example.com',
+            role: 'user',
+            jannah_points: 3401,
+            total_donated: 850,
+            created_at: '2024-02-20T00:00:00Z'
+          },
+          {
+            id: '3',
+            full_name: 'Test Admin',
+            email: 'admin@test.com',
+            role: 'admin',
+            jannah_points: 0,
+            total_donated: 0,
+            created_at: '2024-01-01T00:00:00Z'
+          }
+        ];
+      }
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -91,6 +165,38 @@ const AdminDashboard = () => {
   const { data: charities } = useQuery({
     queryKey: ['all-charities'],
     queryFn: async () => {
+      if (isFakeAdmin) {
+        return [
+          {
+            id: '1',
+            name: 'Children\'s Hospital Foundation',
+            category: 'healthcare',
+            country: 'United Kingdom',
+            verified: true,
+            total_raised: 45000,
+            created_at: '2024-01-10T00:00:00Z'
+          },
+          {
+            id: '2',
+            name: 'Water Wells International',
+            category: 'water',
+            country: 'Kenya',
+            verified: true,
+            total_raised: 32000,
+            created_at: '2024-01-15T00:00:00Z'
+          },
+          {
+            id: '3',
+            name: 'Orphanage Support Network',
+            category: 'children',
+            country: 'Bangladesh',
+            verified: false,
+            total_raised: 18500,
+            created_at: '2024-02-01T00:00:00Z'
+          }
+        ];
+      }
+      
       const { data, error } = await supabase
         .from('charities')
         .select('*')
@@ -113,9 +219,16 @@ const AdminDashboard = () => {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-          Administrator
-        </Badge>
+        <div className="flex items-center space-x-2">
+          <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+            Administrator
+          </Badge>
+          {isFakeAdmin && (
+            <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
+              Test Mode
+            </Badge>
+          )}
+        </div>
       </div>
 
       {/* Stats Overview */}
