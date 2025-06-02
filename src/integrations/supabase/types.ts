@@ -190,6 +190,131 @@ export type Database = {
         }
         Relationships: []
       }
+      charity_allocations: {
+        Row: {
+          allocation_percentage: number
+          charity_id: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          allocation_percentage: number
+          charity_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          allocation_percentage?: number
+          charity_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_allocations_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      disbursements: {
+        Row: {
+          amount: number
+          charity_id: string
+          created_at: string
+          created_by: string | null
+          disbursement_date: string
+          id: string
+          notes: string | null
+          reference_number: string | null
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          charity_id: string
+          created_at?: string
+          created_by?: string | null
+          disbursement_date?: string
+          id?: string
+          notes?: string | null
+          reference_number?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          charity_id?: string
+          created_at?: string
+          created_by?: string | null
+          disbursement_date?: string
+          id?: string
+          notes?: string | null
+          reference_number?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disbursements_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disbursements_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      donation_disbursements: {
+        Row: {
+          amount: number
+          created_at: string
+          disbursement_id: string
+          donation_id: string
+          id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          disbursement_id: string
+          donation_id: string
+          id?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          disbursement_id?: string
+          donation_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donation_disbursements_disbursement_id_fkey"
+            columns: ["disbursement_id"]
+            isOneToOne: false
+            referencedRelation: "disbursements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "donation_disbursements_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: false
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       donations: {
         Row: {
           amount: number
@@ -197,6 +322,8 @@ export type Database = {
           campaign_id: string | null
           charity_id: string | null
           created_at: string | null
+          disbursed_amount: number | null
+          disbursement_status: string | null
           id: string
           jannah_points_earned: number | null
           message: string | null
@@ -212,6 +339,8 @@ export type Database = {
           campaign_id?: string | null
           charity_id?: string | null
           created_at?: string | null
+          disbursed_amount?: number | null
+          disbursement_status?: string | null
           id?: string
           jannah_points_earned?: number | null
           message?: string | null
@@ -227,6 +356,8 @@ export type Database = {
           campaign_id?: string | null
           charity_id?: string | null
           created_at?: string | null
+          disbursed_amount?: number | null
+          disbursement_status?: string | null
           id?: string
           jannah_points_earned?: number | null
           message?: string | null
@@ -262,6 +393,7 @@ export type Database = {
       }
       gift_card_products: {
         Row: {
+          assigned_charity_id: string | null
           category: string
           color: string | null
           created_at: string
@@ -273,10 +405,12 @@ export type Database = {
           max_amount: number | null
           min_amount: number | null
           name: string
+          product_type: string | null
           sort_order: number | null
           updated_at: string
         }
         Insert: {
+          assigned_charity_id?: string | null
           category: string
           color?: string | null
           created_at?: string
@@ -288,10 +422,12 @@ export type Database = {
           max_amount?: number | null
           min_amount?: number | null
           name: string
+          product_type?: string | null
           sort_order?: number | null
           updated_at?: string
         }
         Update: {
+          assigned_charity_id?: string | null
           category?: string
           color?: string | null
           created_at?: string
@@ -303,10 +439,19 @@ export type Database = {
           max_amount?: number | null
           min_amount?: number | null
           name?: string
+          product_type?: string | null
           sort_order?: number | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "gift_card_products_assigned_charity_id_fkey"
+            columns: ["assigned_charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       matching_pool: {
         Row: {

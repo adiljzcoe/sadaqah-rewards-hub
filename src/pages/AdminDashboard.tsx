@@ -24,6 +24,7 @@ import EmailMarketing from "@/components/admin/EmailMarketing";
 import MobileAdminHeader from "@/components/admin/MobileAdminHeader";
 import MobileAdminNav from "@/components/admin/MobileAdminNav";
 import { useIsMobile } from "@/hooks/use-mobile";
+import DisbursementManagement from "@/components/admin/DisbursementManagement";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -94,6 +95,7 @@ const AdminDashboard = () => {
               {activeTab === "overview" && <DashboardCharts />}
               {activeTab === "products" && <ProductManagement />}
               {activeTab === "gift-cards" && <GiftCardManagement />}
+              {activeTab === "disbursements" && <DisbursementManagement />}
               {activeTab === "affiliates" && <AffiliateSystem />}
               {activeTab === "marketing" && <EmailMarketing />}
             </CardContent>
@@ -137,7 +139,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
               Overview
@@ -149,6 +151,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="gift-cards" className="flex items-center gap-2">
               <Gift className="h-4 w-4" />
               Gift Cards
+            </TabsTrigger>
+            <TabsTrigger value="disbursements" className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              Disbursements
             </TabsTrigger>
             <TabsTrigger value="affiliates" className="flex items-center gap-2">
               <UserCheck className="h-4 w-4" />
@@ -170,6 +176,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="gift-cards">
             <GiftCardManagement />
+          </TabsContent>
+
+          <TabsContent value="disbursements">
+            <DisbursementManagement />
           </TabsContent>
 
           <TabsContent value="affiliates">

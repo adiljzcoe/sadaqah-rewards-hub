@@ -25,13 +25,23 @@ interface GiftCardProduct {
   max_amount: number;
   is_active: boolean;
   sort_order: number;
+  product_type: string;
+  assigned_charity_id: string | null;
   created_at: string;
   updated_at: string;
+  charities?: { name: string };
+}
+
+interface Charity {
+  id: string;
+  name: string;
+  verified: boolean;
 }
 
 const GiftCardManagement = () => {
   const { toast } = useToast();
   const [products, setProducts] = useState<GiftCardProduct[]>([]);
+  const [charities, setCharities] = useState<Charity[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [editingProduct, setEditingProduct] = useState<GiftCardProduct | null>(null);
@@ -44,24 +54,39 @@ const GiftCardManagement = () => {
     color: 'bg-blue-500',
     min_amount: 1000,
     max_amount: 100000,
-    sort_order: 0
+    sort_order: 0,
+    product_type: 'shared',
+    assigned_charity_id: null as string | null
   });
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchData = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch products with charity info
+      const { data: productsData, error: productsError } = await supabase
         .from('gift_card_products')
-        .select('*')
+        .select(`
+          *,
+          charities (name)
+        `)
         .order('sort_order', { ascending: true });
 
-      if (error) throw error;
-      setProducts(data || []);
+      if (productsError) throw productsError;
+      setProducts(productsData || []);
+
+      // Fetch charities
+      const { data: charitiesData, error: charitiesError } = await supabase
+        .from('charities')
+        .select('id, name, verified')
+        .eq('verified', true);
+
+      if (charitiesError) throw charitiesError;
+      setCharities(charitiesData || []);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching data:', error);
       toast({
         title: "Error",
         description: "Failed to load gift card products.",
@@ -74,9 +99,14 @@ const GiftCardManagement = () => {
 
   const handleCreateProduct = async () => {
     try {
+      const productData = {
+        ...newProduct,
+        assigned_charity_id: newProduct.product_type === 'charity_specific' ? newProduct.assigned_charity_id : null
+      };
+
       const { error } = await supabase
         .from('gift_card_products')
-        .insert([newProduct]);
+        .insert([productData]);
 
       if (error) throw error;
 
@@ -95,9 +125,11 @@ const GiftCardManagement = () => {
         color: 'bg-blue-500',
         min_amount: 1000,
         max_amount: 100000,
-        sort_order: 0
+        sort_order: 0,
+        product_type: 'shared',
+        assigned_charity_id: null
       });
-      fetchProducts();
+      fetchData();
     } catch (error) {
       console.error('Error creating product:', error);
       toast({
@@ -122,7 +154,7 @@ const GiftCardManagement = () => {
         description: "Product updated successfully.",
       });
 
-      fetchProducts();
+      fetchData();
     } catch (error) {
       console.error('Error updating product:', error);
       toast({
@@ -149,7 +181,7 @@ const GiftCardManagement = () => {
         description: "Product deleted successfully.",
       });
 
-      fetchProducts();
+      fetchData();
     } catch (error) {
       console.error('Error deleting product:', error);
       toast({
@@ -212,6 +244,7 @@ const GiftCardManagement = () => {
                 </Select>
               </div>
             </div>
+
             <div>
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -222,6 +255,39 @@ const GiftCardManagement = () => {
                 rows={3}
               />
             </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="product_type">Product Type</Label>
+                <Select value={newProduct.product_type} onValueChange={(value) => setNewProduct({ ...newProduct, product_type: value, assigned_charity_id: value === 'shared' ? null : newProduct.assigned_charity_id })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="shared">Shared (Split among charities)</SelectItem>
+                    <SelectItem value="charity_specific">Charity Specific</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              {newProduct.product_type === 'charity_specific' && (
+                <div>
+                  <Label htmlFor="assigned_charity">Assigned Charity</Label>
+                  <Select value={newProduct.assigned_charity_id || ''} onValueChange={(value) => setNewProduct({ ...newProduct, assigned_charity_id: value })}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select charity" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {charities.map((charity) => (
+                        <SelectItem key={charity.id} value={charity.id}>
+                          {charity.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="icon">Icon</Label>
@@ -265,6 +331,7 @@ const GiftCardManagement = () => {
                 />
               </div>
             </div>
+
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="min_amount">Min Amount (pence)</Label>
@@ -296,6 +363,7 @@ const GiftCardManagement = () => {
                 />
               </div>
             </div>
+
             <div className="flex gap-2 pt-4">
               <Button onClick={handleCreateProduct}>Create Product</Button>
               <Button variant="outline" onClick={() => setIsCreating(false)}>Cancel</Button>
@@ -314,6 +382,7 @@ const GiftCardManagement = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Product</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Amount Range</TableHead>
                 <TableHead>Status</TableHead>
@@ -332,8 +401,16 @@ const GiftCardManagement = () => {
                       <div>
                         <div className="font-medium">{product.name}</div>
                         <div className="text-sm text-muted-foreground">{product.description}</div>
+                        {product.charities && (
+                          <div className="text-xs text-blue-600">→ {product.charities.name}</div>
+                        )}
                       </div>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={product.product_type === 'shared' ? 'default' : 'secondary'}>
+                      {product.product_type === 'shared' ? 'Shared' : 'Charity Specific'}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline">{product.category}</Badge>
