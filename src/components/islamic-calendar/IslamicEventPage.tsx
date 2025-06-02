@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Calendar, Heart, Gift, Users, Star, Clock } from 'lucide-react';
+import { Calendar, Heart, Gift, Users, Star, Clock, Sparkles, PartyPopper } from 'lucide-react';
 import { getEventBySlug, getDaysUntilEvent, formatIslamicDate } from '@/utils/islamicCalendar';
 import CountdownTimer from './CountdownTimer';
 
@@ -40,6 +40,18 @@ const IslamicEventPage = () => {
       case 'commemoration': return '🕌';
       default: return <Calendar className="h-6 w-6" />;
     }
+  };
+
+  const handleCelebrate = () => {
+    // Create a celebration effect
+    const celebrateText = isToday 
+      ? `🎉 Celebrating ${event.title} today! 🎉` 
+      : `✨ May Allah bless this sacred day of ${event.title} ✨`;
+    
+    alert(celebrateText);
+    
+    // You could also trigger confetti, sound effects, or other celebration animations here
+    console.log(`Celebrating ${event.title}!`);
   };
 
   return (
@@ -89,7 +101,20 @@ const IslamicEventPage = () => {
               )}
             </div>
             
-            <p className="text-xl leading-relaxed">{event.description}</p>
+            <p className="text-xl leading-relaxed mb-6">{event.description}</p>
+
+            {/* Celebration Button in Hero */}
+            <div className="flex gap-4">
+              <Button 
+                onClick={handleCelebrate}
+                size="lg"
+                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+              >
+                <PartyPopper className="h-5 w-5 mr-2" />
+                {isToday ? 'Celebrate Now!' : 'Prepare to Celebrate!'}
+                <Sparkles className="h-5 w-5 ml-2" />
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -100,13 +125,64 @@ const IslamicEventPage = () => {
             {!isPast && (
               <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600 rounded-2xl p-1">
                 <div className="bg-white rounded-xl p-6">
-                  <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-                    {isToday ? 'Celebrating Today!' : 'Time Remaining'}
+                  <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 flex items-center justify-center gap-2">
+                    <Clock className="h-6 w-6" />
+                    {isToday ? '🎉 Celebrating Today! 🎉' : 'Sacred Countdown'}
                   </h2>
                   <CountdownTimer event={event} />
+                  
+                  {/* Enhanced Celebration Button */}
+                  <div className="mt-6 text-center">
+                    <Button 
+                      onClick={handleCelebrate}
+                      size="lg"
+                      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse"
+                    >
+                      <Heart className="h-5 w-5 mr-2" />
+                      {isToday ? 'Join the Celebration!' : 'Express Your Joy!'}
+                      <Sparkles className="h-5 w-5 ml-2" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
+
+            {/* Spiritual Preparation Card */}
+            <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-amber-800">
+                  <Star className="h-5 w-5" />
+                  Spiritual Preparation
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-amber-700 mb-4">
+                  Prepare your heart and soul for this blessed occasion. Every moment leading to {event.title} is an opportunity for spiritual growth and connection with Allah.
+                </p>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl mb-2">🤲</div>
+                    <p className="font-semibold text-amber-800">Make Dua</p>
+                    <p className="text-sm text-amber-600">Increase your prayers</p>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl mb-2">📖</div>
+                    <p className="font-semibold text-amber-800">Read Quran</p>
+                    <p className="text-sm text-amber-600">Reflect on verses</p>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl mb-2">💝</div>
+                    <p className="font-semibold text-amber-800">Give Charity</p>
+                    <p className="text-sm text-amber-600">Share your blessings</p>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl mb-2">👥</div>
+                    <p className="font-semibold text-amber-800">Connect</p>
+                    <p className="text-sm text-amber-600">Strengthen bonds</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Detailed Description */}
             <Card>
@@ -225,6 +301,13 @@ const IslamicEventPage = () => {
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
+                <Button 
+                  onClick={handleCelebrate}
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Celebrate Together
+                </Button>
                 <Button variant="outline" className="w-full">
                   <Users className="h-4 w-4 mr-2" />
                   Share with Community
