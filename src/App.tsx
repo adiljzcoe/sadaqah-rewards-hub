@@ -1,4 +1,3 @@
-
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -31,6 +30,7 @@ const BusinessProfile = lazy(() => import("./pages/BusinessProfile"));
 const Auth = lazy(() => import("./pages/Auth"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const GiftDonations = lazy(() => import("./pages/GiftDonations"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,6 +72,7 @@ function App() {
                           <Route path="/campaigns" element={<Campaigns />} />
                           <Route path="/leaderboards" element={<Leaderboards />} />
                           <Route path="/live" element={<LiveFeed />} />
+                          <Route path="/gift-donations" element={<GiftDonations />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={
