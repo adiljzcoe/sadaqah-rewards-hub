@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Send, Heart, ThumbsUp, Clap, MessageCircle } from 'lucide-react';
+import { Send, Heart, ThumbsUp, Hand, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -59,7 +60,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
         .from('stream_chat_messages')
         .select(`
           *,
-          profiles!stream_chat_messages_user_id_fkey (
+          profiles (
             full_name
           )
         `)
