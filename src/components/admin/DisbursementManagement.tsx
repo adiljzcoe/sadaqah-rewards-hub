@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,6 +27,7 @@ interface Donation {
   amount: number;
   disbursed_amount: number;
   disbursement_status: string;
+  status: string;
   created_at: string;
   charity_id?: string;
   charities?: { name: string };
