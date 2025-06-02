@@ -1,8 +1,10 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Star, Moon, Sun } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calendar, Clock, Star, Moon, Sun, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface IslamicCalendarEventProps {
@@ -11,7 +13,7 @@ interface IslamicCalendarEventProps {
     title: string;
     description: string;
     date: string;
-    type: 'prayer' | 'fasting' | 'celebration' | 'worship' | 'pilgrimage';
+    type: 'prayer' | 'fasting' | 'celebration' | 'worship' | 'pilgrimage' | 'commemoration';
     significance: 'high' | 'medium' | 'low';
     countdown?: number;
     isToday?: boolean;
@@ -19,6 +21,7 @@ interface IslamicCalendarEventProps {
     color: string;
     icon: string;
     gregorianDate: Date;
+    slug: string;
   };
 }
 
@@ -30,6 +33,7 @@ const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) =>
       case 'celebration': return <Sun className="h-5 w-5" />;
       case 'worship': return <Calendar className="h-5 w-5" />;
       case 'pilgrimage': return <Clock className="h-5 w-5" />;
+      case 'commemoration': return <Calendar className="h-5 w-5" />;
       default: return <Calendar className="h-5 w-5" />;
     }
   };
@@ -122,6 +126,15 @@ const IslamicCalendarEvent: React.FC<IslamicCalendarEventProps> = ({ event }) =>
               🔔 Coming Soon
             </span>
           )}
+        </div>
+
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <Link to={`/islamic-calendar/${event.slug}`}>
+            <Button className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600">
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Celebrate & Donate
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

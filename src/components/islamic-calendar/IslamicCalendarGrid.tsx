@@ -57,7 +57,8 @@ const IslamicCalendarGrid = () => {
     { value: 'fasting', label: 'Fasting', icon: '🌙' },
     { value: 'celebration', label: 'Celebrations', icon: '🎉' },
     { value: 'worship', label: 'Worship', icon: '📿' },
-    { value: 'pilgrimage', label: 'Pilgrimage', icon: '🕋' }
+    { value: 'pilgrimage', label: 'Pilgrimage', icon: '🕋' },
+    { value: 'commemoration', label: 'Commemoration', icon: '🕌' }
   ];
 
   return (
@@ -102,7 +103,7 @@ const IslamicCalendarGrid = () => {
 
       {/* Filter Tabs */}
       <Tabs value={selectedType} onValueChange={setSelectedType} className="w-full">
-        <TabsList className="grid grid-cols-6 w-full">
+        <TabsList className="grid grid-cols-7 w-full">
           {eventTypes.map((type) => (
             <TabsTrigger 
               key={type.value} 

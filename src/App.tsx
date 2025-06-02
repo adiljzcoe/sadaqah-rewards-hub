@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import LiveTV from './pages/LiveTV';
 import RamadanCalendar from './pages/RamadanCalendar';
 import IslamicCalendar from './pages/IslamicCalendar';
+import IslamicEventPage from './components/islamic-calendar/IslamicEventPage';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/live-tv" element={<LiveTV />} />
             <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
             <Route path="/islamic-calendar" element={<IslamicCalendar />} />
+            <Route path="/islamic-calendar/:slug" element={<IslamicEventPage />} />
             <Route
               path="/profile"
               element={
