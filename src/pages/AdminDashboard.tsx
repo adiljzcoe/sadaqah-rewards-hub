@@ -1,10 +1,23 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { Shield, BarChart3, Database, Users, DollarSign, Settings, Activity, TrendingUp, Globe, MousePointer, Target } from 'lucide-react';
+import { 
+  Shield, 
+  BarChart3, 
+  Database, 
+  Users, 
+  DollarSign, 
+  Settings, 
+  Activity, 
+  TrendingUp, 
+  Globe, 
+  MousePointer, 
+  Target,
+  Mail,
+  Bell
+} from 'lucide-react';
 
 // Import all the admin components
 import SimpleDataSeeder from '@/components/admin/SimpleDataSeeder';
