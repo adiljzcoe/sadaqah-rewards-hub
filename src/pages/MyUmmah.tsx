@@ -1,13 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MapPin, Navigation, Clock, Users, Globe, Heart, Map } from 'lucide-react';
+import { MapPin, Navigation, Clock, Users, Globe, Heart, Map, Activity } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import WorldAdhanMap from '@/components/ummah/WorldAdhanMap';
 import MosqueList from '@/components/ummah/MosqueList';
 import CommunityPrayerTab from '@/components/ummah/CommunityPrayerTab';
+import UmmahPulse from '@/components/ummah/UmmahPulse';
 
 const MyUmmah = () => {
   const { toast } = useToast();
@@ -94,6 +96,11 @@ const MyUmmah = () => {
           </p>
         </div>
 
+        {/* Ummah Pulse - Featured at the top */}
+        <div className="mb-8">
+          <UmmahPulse />
+        </div>
+
         {/* Global Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-green-600 to-emerald-600 text-white">
@@ -178,17 +185,60 @@ const MyUmmah = () => {
         </Card>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="global" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+        <Tabs defaultValue="pulse" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto">
+            <TabsTrigger value="pulse" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Live Pulse
+            </TabsTrigger>
             <TabsTrigger value="global" className="flex items-center gap-2">
               <Map className="h-4 w-4" />
               Global Map
             </TabsTrigger>
             <TabsTrigger value="community" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              Prayer Community
+              Prayer Groups
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="pulse" className="space-y-6">
+            <div className="text-center space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900">Feel the Pulse of the Ummah</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Experience the spiritual energy flowing through our global community in real-time. 
+                See what fellow Muslims are doing right now and join the collective worship.
+              </p>
+            </div>
+            
+            {/* Additional pulse-related content can go here */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-gradient-to-br from-green-50 to-emerald-50">
+                <CardContent className="p-6 text-center">
+                  <Heart className="h-12 w-12 text-green-600 mx-auto mb-4" fill="currentColor" />
+                  <h3 className="font-bold text-lg mb-2">Join the Energy</h3>
+                  <p className="text-gray-600 mb-4">
+                    Add your spiritual activities to the global pulse and feel connected with Muslims worldwide.
+                  </p>
+                  <Button className="bg-green-600 hover:bg-green-700">
+                    Start Worship
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50">
+                <CardContent className="p-6 text-center">
+                  <Activity className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                  <h3 className="font-bold text-lg mb-2">Live Updates</h3>
+                  <p className="text-gray-600 mb-4">
+                    Watch as the spiritual energy of our Ummah flows and grows throughout the day.
+                  </p>
+                  <Button variant="outline" className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                    Watch Live
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           <TabsContent value="global" className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
