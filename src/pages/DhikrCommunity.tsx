@@ -1,16 +1,38 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, Calendar, Trophy, BookOpen, Play, Pause, Volume2 } from 'lucide-react';
+import { Heart, Users, Calendar, Trophy, BookOpen, Play, Pause, Volume2, Plus, Award, Star, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 const DhikrCommunity = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('community');
+  const [activeTab, setActiveTab] = useState('live-dhikr');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [personalCount, setPersonalCount] = useState(0);
+  const [collectiveCount, setCollectiveCount] = useState(47289);
+  const [selectedDhikr, setSelectedDhikr] = useState('Subhan Allah');
+  const [recentAwards, setRecentAwards] = useState([]);
+
+  // Simulate collective count increasing
+  useEffect(() => {
+    if (isPlaying) {
+      const interval = setInterval(() => {
+        setCollectiveCount(prev => prev + Math.floor(Math.random() * 5) + 1);
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [isPlaying]);
+
+  const dhikrOptions = [
+    'Subhan Allah',
+    'Alhamdulillah',
+    'Allahu Akbar',
+    'La ilaha illa Allah',
+    'Astaghfirullah',
+    'La hawla wa la quwwata illa billah'
+  ];
 
   const dhikrSessions = [
     {
@@ -44,6 +66,32 @@ const DhikrCommunity = () => {
     weeklyStreak: 5,
     favoriteAzkar: "Subhan Allah",
     totalCount: 2847
+  };
+
+  const liveParticipants = [
+    { name: "Ahmed K.", count: 247, location: "London" },
+    { name: "Fatima S.", count: 189, location: "Dubai" },
+    { name: "Omar M.", count: 156, location: "Istanbul" },
+    { name: "Aisha R.", count: 134, location: "Cairo" },
+    { name: "You", count: personalCount, location: "Your Location" }
+  ];
+
+  const awards = [
+    "Mashallah! Beautiful recitation! 🌟",
+    "Barakallahu feek! Keep going! ✨",
+    "Subhanallah! Amazing dedication! 🏆",
+    "May Allah reward you! 💎",
+    "Excellence in remembrance! 🎖️"
+  ];
+
+  const handleDhikrClick = () => {
+    setPersonalCount(prev => prev + 1);
+    
+    // Show random award every 10 dhikrs
+    if ((personalCount + 1) % 10 === 0) {
+      const randomAward = awards[Math.floor(Math.random() * awards.length)];
+      setRecentAwards(prev => [randomAward, ...prev.slice(0, 2)]);
+    }
   };
 
   return (
@@ -114,7 +162,11 @@ const DhikrCommunity = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="live-dhikr" className="flex items-center gap-2">
+              <Zap className="h-4 w-4" />
+              Live Dhikr
+            </TabsTrigger>
             <TabsTrigger value="community" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Community
@@ -128,6 +180,114 @@ const DhikrCommunity = () => {
               Tracker
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="live-dhikr">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Collective Counter */}
+              <Card className="lg:col-span-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="h-5 w-5 text-red-500 animate-pulse" />
+                    Global Dhikr Counter
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center space-y-6">
+                  <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl p-8">
+                    <div className="text-6xl font-bold text-green-700 mb-2 animate-pulse">
+                      {collectiveCount.toLocaleString()}
+                    </div>
+                    <div className="text-green-600 text-lg">Total Community Dhikr Today</div>
+                    <div className="text-sm text-gray-500 mt-2">
+                      🌍 Live from around the world
+                    </div>
+                  </div>
+
+                  {/* Dhikr Selection */}
+                  <div className="space-y-4">
+                    <div className="text-lg font-semibold">Choose Your Dhikr:</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {dhikrOptions.map((dhikr) => (
+                        <Button
+                          key={dhikr}
+                          variant={selectedDhikr === dhikr ? "default" : "outline"}
+                          onClick={() => setSelectedDhikr(dhikr)}
+                          className={selectedDhikr === dhikr ? "bg-green-600 hover:bg-green-700" : ""}
+                        >
+                          {dhikr}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Personal Counter */}
+                  <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl p-6">
+                    <div className="text-3xl font-bold text-blue-700 mb-2">
+                      {personalCount}
+                    </div>
+                    <div className="text-blue-600">Your Count Today</div>
+                    
+                    <Button
+                      size="lg"
+                      onClick={handleDhikrClick}
+                      className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
+                    >
+                      <Plus className="h-5 w-5 mr-2" />
+                      {selectedDhikr}
+                    </Button>
+                  </div>
+
+                  {/* Awards Display */}
+                  {recentAwards.length > 0 && (
+                    <div className="space-y-2">
+                      {recentAwards.map((award, index) => (
+                        <div 
+                          key={index}
+                          className="bg-gradient-to-r from-yellow-100 to-orange-100 p-3 rounded-lg border-2 border-yellow-300 animate-bounce"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Award className="h-5 w-5 text-yellow-600" />
+                            <span className="font-semibold text-yellow-800">{award}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Live Participants */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-blue-600" />
+                    Live Participants
+                    <Badge className="bg-red-500 animate-pulse">LIVE</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {liveParticipants.map((participant, index) => (
+                    <div 
+                      key={index} 
+                      className={`flex items-center justify-between p-3 rounded-lg ${
+                        participant.name === 'You' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'
+                      }`}
+                    >
+                      <div>
+                        <div className={`font-medium ${participant.name === 'You' ? 'text-green-700' : ''}`}>
+                          {participant.name}
+                        </div>
+                        <div className="text-xs text-gray-500">{participant.location}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-lg">{participant.count}</div>
+                        <div className="text-xs text-gray-500">dhikr</div>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           <TabsContent value="community">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
