@@ -45,6 +45,57 @@ export type Database = {
         }
         Relationships: []
       }
+      batch_disbursements: {
+        Row: {
+          activity_score_at_time: number
+          allocation_percentage: number
+          amount: number
+          batch_id: string
+          charity_id: string
+          created_at: string
+          id: string
+          project_type: string | null
+          trust_rating_at_time: number
+        }
+        Insert: {
+          activity_score_at_time: number
+          allocation_percentage: number
+          amount: number
+          batch_id: string
+          charity_id: string
+          created_at?: string
+          id?: string
+          project_type?: string | null
+          trust_rating_at_time: number
+        }
+        Update: {
+          activity_score_at_time?: number
+          allocation_percentage?: number
+          amount?: number
+          batch_id?: string
+          charity_id?: string
+          created_at?: string
+          id?: string
+          project_type?: string | null
+          trust_rating_at_time?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "batch_disbursements_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "disbursement_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "batch_disbursements_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_partners: {
         Row: {
           company_name: string
@@ -356,6 +407,50 @@ export type Database = {
           {
             foreignKeyName: "charity_feed_posts_verified_by_fkey"
             columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      disbursement_batches: {
+        Row: {
+          batch_date: string
+          calculation_snapshot: Json | null
+          charity_count: number
+          created_at: string
+          created_by: string | null
+          id: string
+          notes: string | null
+          status: string | null
+          total_amount: number
+        }
+        Insert: {
+          batch_date?: string
+          calculation_snapshot?: Json | null
+          charity_count?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          status?: string | null
+          total_amount?: number
+        }
+        Update: {
+          batch_date?: string
+          calculation_snapshot?: Json | null
+          charity_count?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          status?: string | null
+          total_amount?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disbursement_batches_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -740,6 +835,50 @@ export type Database = {
         }
         Relationships: []
       }
+      project_funds: {
+        Row: {
+          charity_id: string
+          created_at: string
+          id: string
+          last_disbursement_date: string | null
+          project_type: string
+          remaining_balance: number | null
+          total_allocated: number | null
+          total_disbursed: number | null
+          updated_at: string
+        }
+        Insert: {
+          charity_id: string
+          created_at?: string
+          id?: string
+          last_disbursement_date?: string | null
+          project_type: string
+          remaining_balance?: number | null
+          total_allocated?: number | null
+          total_disbursed?: number | null
+          updated_at?: string
+        }
+        Update: {
+          charity_id?: string
+          created_at?: string
+          id?: string
+          last_disbursement_date?: string | null
+          project_type?: string
+          remaining_balance?: number | null
+          total_allocated?: number | null
+          total_disbursed?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_funds_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_achievements: {
         Row: {
           achievement_id: string | null
@@ -784,6 +923,10 @@ export type Database = {
       calculate_charity_allocations: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      create_bulk_disbursement: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       get_user_role: {
         Args: { user_uuid?: string }
