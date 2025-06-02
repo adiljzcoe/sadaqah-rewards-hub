@@ -1,13 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift } from 'lucide-react';
+import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift, Settings } from 'lucide-react';
 import Header from '@/components/Header';
 import GoldCoin3D from '@/components/GoldCoin3D';
 import ProjectContributions from '@/components/ProjectContributions';
+import CommunicationPreferences from '@/components/CommunicationPreferences';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -215,9 +217,10 @@ const Profile = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="donations" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="donations">Donation History</TabsTrigger>
             <TabsTrigger value="achievements">Achievements</TabsTrigger>
+            <TabsTrigger value="communication">Communication</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           
@@ -270,29 +273,21 @@ const Profile = () => {
               </div>
             </Card>
           </TabsContent>
+
+          <TabsContent value="communication">
+            <Card className="p-6">
+              <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Settings className="h-5 w-5 text-gray-600" />
+                Communication Preferences
+              </h3>
+              <CommunicationPreferences />
+            </Card>
+          </TabsContent>
           
           <TabsContent value="settings">
             <Card className="p-6">
               <h3 className="text-xl font-bold mb-6">Account Settings</h3>
               <div className="space-y-6">
-                <div>
-                  <h4 className="font-semibold mb-3">Notification Preferences</h4>
-                  <div className="space-y-2">
-                    <label className="flex items-center space-x-3">
-                      <input type="checkbox" defaultChecked className="rounded" />
-                      <span>Email notifications for donation confirmations</span>
-                    </label>
-                    <label className="flex items-center space-x-3">
-                      <input type="checkbox" defaultChecked className="rounded" />
-                      <span>Weekly leaderboard updates</span>
-                    </label>
-                    <label className="flex items-center space-x-3">
-                      <input type="checkbox" className="rounded" />
-                      <span>Campaign updates from charities</span>
-                    </label>
-                  </div>
-                </div>
-                
                 <div>
                   <h4 className="font-semibold mb-3">Privacy Settings</h4>
                   <div className="space-y-2">
