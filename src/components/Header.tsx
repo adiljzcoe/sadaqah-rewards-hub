@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -17,6 +17,11 @@ import MobileSidebar from './MobileSidebar';
 const Header = () => {
   const location = useLocation();
   const isMember = true; // VIP status
+  
+  // State for controlling dropdown visibility
+  const [donateOpen, setDonateOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
+  const [rewardsOpen, setRewardsOpen] = useState(false);
 
   // User level data - this would come from your user context/state management
   const userLevel = 12;
@@ -41,12 +46,10 @@ const Header = () => {
       {/* Final Fantasy inspired crystalline background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
       <div className="absolute top-0 left-0 w-full h-full">
-        {/* Crystal-like light effects */}
         <div className="absolute top-2 left-10 w-20 h-8 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
         <div className="absolute top-4 right-32 w-16 h-6 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
         <div className="absolute top-1 left-1/3 w-24 h-10 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
         <div className="absolute top-3 right-1/4 w-18 h-7 bg-cyan-400/25 rounded-full blur-sm animate-pulse delay-700 shadow-cyan-300/60"></div>
-        {/* Additional magical sparkles */}
         <div className="absolute top-6 left-20 w-2 h-2 bg-cyan-300 rounded-full animate-pulse shadow-lg shadow-cyan-300/80"></div>
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
@@ -55,7 +58,6 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and User with proper z-index layering */}
           <div className="flex items-center space-x-3 relative">
-            {/* Logo - Highest z-index */}
             <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-20">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
@@ -64,15 +66,12 @@ const Header = () => {
               />
             </Link>
 
-            {/* User Section with FF styling */}
             <div className="flex items-center flex-shrink-0 relative z-10">
-              {/* Unified Guardian User Button */}
               <div className="flex items-center">
                 <Link to="/profile">
                   {isMember ? (
                     <Button className="relative overflow-hidden rounded-xl px-2 py-1.5 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
                       <div className="flex items-center space-x-1.5">
-                        {/* Left side - Guardian + User */}
                         <div className="flex items-center">
                           <span className="text-xs mr-1 drop-shadow-sm">🛡️</span>
                           <div className="flex flex-col">
@@ -81,12 +80,9 @@ const Header = () => {
                           </div>
                         </div>
                         
-                        {/* Divider */}
                         <div className="w-px h-5 bg-amber-300/40"></div>
                         
-                        {/* Right side - Level + Points */}
                         <div className="flex flex-col space-y-0.5">
-                          {/* Level bar */}
                           <div className="flex items-center space-x-1">
                             <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
                             <div className="relative w-8 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
@@ -94,11 +90,9 @@ const Header = () => {
                                 className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
                                 style={{ width: `${progress}%` }}
                               ></div>
-                              {/* Gold XP bar inner glow */}
                               <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-amber-200/20 rounded-full"></div>
                             </div>
                           </div>
-                          {/* Points */}
                           <div className="flex items-center">
                             <Star className="h-2 w-2 text-yellow-200 mr-0.5 drop-shadow-sm" />
                             <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
@@ -106,7 +100,6 @@ const Header = () => {
                         </div>
                       </div>
                       
-                      {/* Enhanced magical shine effect */}
                       <div className="absolute top-1 left-2 w-8 h-3 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
                     </Button>
@@ -121,8 +114,8 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Navigation with Dropdown Menus */}
-          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-10">
+          {/* Navigation with Hover Dropdown Menus */}
+          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-40">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
@@ -135,15 +128,25 @@ const Header = () => {
               }`}></span>
             </Link>
 
-            {/* Donate Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1">
-                <span>Donate</span>
-                <ChevronDown className="h-4 w-4" />
+            {/* Donate Dropdown with Hover */}
+            <DropdownMenu open={donateOpen} onOpenChange={setDonateOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setDonateOpen(true)}
+                onMouseLeave={() => setDonateOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Donate</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 border border-cyan-400/30 shadow-2xl z-[9999]">
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setDonateOpen(true)}
+                onMouseLeave={() => setDonateOpen(false)}
+              >
                 <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-cyan-300 mb-3">Quick Actions</h3>
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Quick Actions</h3>
                   <DropdownMenuItem asChild>
                     <Link to="/campaigns" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
                       <Heart className="h-5 w-5 mr-3" />
@@ -184,15 +187,25 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Community Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1">
-                <span>Community</span>
-                <ChevronDown className="h-4 w-4" />
+            {/* Community Dropdown with Hover */}
+            <DropdownMenu open={communityOpen} onOpenChange={setCommunityOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setCommunityOpen(true)}
+                onMouseLeave={() => setCommunityOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Community</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 border border-purple-400/30 shadow-2xl z-[9999]">
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setCommunityOpen(true)}
+                onMouseLeave={() => setCommunityOpen(false)}
+              >
                 <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-purple-300 mb-3">Connect & Compete</h3>
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Connect & Compete</h3>
                   <DropdownMenuItem asChild>
                     <Link to="/leaderboards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white">
                       <Trophy className="h-5 w-5 mr-3" />
@@ -224,15 +237,25 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Rewards Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1">
-                <span>Rewards</span>
-                <ChevronDown className="h-4 w-4" />
+            {/* Rewards Dropdown with Hover */}
+            <DropdownMenu open={rewardsOpen} onOpenChange={setRewardsOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setRewardsOpen(true)}
+                onMouseLeave={() => setRewardsOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Rewards</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-80 bg-gradient-to-br from-slate-900 via-amber-900 to-orange-900 border border-amber-400/30 shadow-2xl z-[9999]">
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setRewardsOpen(true)}
+                onMouseLeave={() => setRewardsOpen(false)}
+              >
                 <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-amber-300 mb-3">Rewards & Benefits</h3>
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Rewards & Benefits</h3>
                   <DropdownMenuItem asChild>
                     <Link to="/coins" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-white">
                       <Coins className="h-5 w-5 mr-3" />
@@ -276,7 +299,7 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Mobile Menu - Replace the old button with the new MobileSidebar */}
+          {/* Mobile Menu */}
           <div className="md:hidden relative z-20">
             <MobileSidebar 
               userLevel={userLevel}
