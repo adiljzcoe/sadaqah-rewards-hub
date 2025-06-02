@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Navigation, Clock, Users, Phone, Globe, Search } from 'lucide-react';
+import { MapPin, Navigation, Clock, Users, Globe, Heart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import AdhanMap from '@/components/ummah/AdhanMap';
+import WorldAdhanMap from '@/components/ummah/WorldAdhanMap';
 import MosqueList from '@/components/ummah/MosqueList';
 
 const MyUmmah = () => {
@@ -25,7 +25,7 @@ const MyUmmah = () => {
           setLoading(false);
           toast({
             title: "Location Found! 📍",
-            description: "Now showing nearby mosques and prayer communities.",
+            description: "Now showing your connection to the global Ummah.",
           });
         },
         (error) => {
@@ -33,7 +33,7 @@ const MyUmmah = () => {
           setLoading(false);
           toast({
             title: "Location Access Denied",
-            description: "Please enable location access to find nearby mosques.",
+            description: "You can still view the global prayer map.",
             variant: "destructive",
           });
         }
@@ -59,25 +59,25 @@ const MyUmmah = () => {
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-            <Users className="h-10 w-10 text-green-600" />
+            <Globe className="h-10 w-10 text-green-600" />
             My Ummah
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Connect with your local Muslim community. Find nearby mosques, prayer times, 
-            and join congregational prayers with fellow believers.
+            Experience the beauty of our global Muslim community. Watch as the call to prayer 
+            ripples across the world, connecting hearts from Mecca to every corner of the earth.
           </p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Global Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-green-600 to-emerald-600 text-white">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-green-100">Nearby Mosques</p>
-                  <p className="text-3xl font-bold">12</p>
+                  <p className="text-green-100">Active Prayers</p>
+                  <p className="text-3xl font-bold">1.8B+</p>
                 </div>
-                <MapPin className="h-8 w-8 text-green-200" />
+                <Heart className="h-8 w-8 text-green-200" />
               </div>
             </CardContent>
           </Card>
@@ -86,10 +86,10 @@ const MyUmmah = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-100">Active Communities</p>
-                  <p className="text-3xl font-bold">8</p>
+                  <p className="text-blue-100">Countries</p>
+                  <p className="text-3xl font-bold">195</p>
                 </div>
-                <Users className="h-8 w-8 text-blue-200" />
+                <Globe className="h-8 w-8 text-blue-200" />
               </div>
             </CardContent>
           </Card>
@@ -98,10 +98,10 @@ const MyUmmah = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-100">Next Jamaat</p>
-                  <p className="text-3xl font-bold">2h 15m</p>
+                  <p className="text-purple-100">Mosques Worldwide</p>
+                  <p className="text-3xl font-bold">3.6M+</p>
                 </div>
-                <Clock className="h-8 w-8 text-purple-200" />
+                <Users className="h-8 w-8 text-purple-200" />
               </div>
             </CardContent>
           </Card>
@@ -110,10 +110,10 @@ const MyUmmah = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-orange-100">Distance</p>
-                  <p className="text-3xl font-bold">0.3 mi</p>
+                  <p className="text-orange-100">Time Zones</p>
+                  <p className="text-3xl font-bold">24</p>
                 </div>
-                <Navigation className="h-8 w-8 text-orange-200" />
+                <Clock className="h-8 w-8 text-orange-200" />
               </div>
             </CardContent>
           </Card>
@@ -131,11 +131,11 @@ const MyUmmah = () => {
             <div className="flex items-center gap-4">
               {userLocation ? (
                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                  Location: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+                  Connected to global Ummah from: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
                 </Badge>
               ) : (
                 <Badge variant="outline" className="bg-gray-50 text-gray-700">
-                  Location not detected
+                  Location not detected - viewing global map
                 </Badge>
               )}
               <Button 
@@ -145,7 +145,7 @@ const MyUmmah = () => {
                 size="sm"
               >
                 <Navigation className="h-4 w-4 mr-2" />
-                {loading ? 'Getting Location...' : 'Update Location'}
+                {loading ? 'Connecting...' : 'Update Location'}
               </Button>
             </div>
           </CardContent>
@@ -153,24 +153,51 @@ const MyUmmah = () => {
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Map Section */}
+          {/* World Map Section */}
           <div className="lg:col-span-2">
-            <Card>
+            <WorldAdhanMap />
+          </div>
+
+          {/* Local Mosques */}
+          <div className="lg:col-span-1">
+            <Card className="mb-6">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5 text-blue-600" />
-                  Adhan Map - Nearby Mosques
+                  <MapPin className="h-5 w-5 text-blue-600" />
+                  Local Connection
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <AdhanMap userLocation={userLocation} />
+                <p className="text-gray-600 mb-4">
+                  While you watch prayers across the globe, don't forget your local mosque community.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                    <Users className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <div className="font-medium">Find Your Mosque</div>
+                      <div className="text-sm text-gray-600">Connect with local community</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                    <Clock className="h-5 w-5 text-green-600" />
+                    <div>
+                      <div className="font-medium">Local Prayer Times</div>
+                      <div className="text-sm text-gray-600">Never miss a prayer</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                    <Heart className="h-5 w-5 text-purple-600" />
+                    <div>
+                      <div className="font-medium">Community Events</div>
+                      <div className="text-sm text-gray-600">Join local gatherings</div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Mosque List */}
-          <div className="lg:col-span-1">
-            <MosqueList userLocation={userLocation} />
+            {userLocation && <MosqueList userLocation={userLocation} />}
           </div>
         </div>
       </div>
