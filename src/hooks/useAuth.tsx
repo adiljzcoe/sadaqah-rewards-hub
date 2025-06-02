@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,6 +14,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<{ error: any }>;
   signInWithGitHub: () => Promise<{ error: any }>;
   fakeAdminLogin: () => void;
+  fakeUserLogin: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -75,6 +77,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     toast({
       title: "Fake Admin Login",
       description: "You are now logged in as a test admin.",
+    });
+  };
+
+  // Fake user login for testing
+  const fakeUserLogin = () => {
+    const fakeUser = {
+      id: '00000000-0000-0000-0000-000000000002', // Different UUID for user
+      email: 'testuser@example.com',
+      user_metadata: { full_name: 'Test User' },
+      app_metadata: {},
+      aud: 'authenticated',
+      created_at: new Date().toISOString(),
+    } as User;
+
+    const fakeSession = {
+      access_token: 'fake-user-token',
+      refresh_token: 'fake-user-refresh',
+      expires_in: 3600,
+      token_type: 'bearer',
+      user: fakeUser,
+    } as Session;
+
+    setUser(fakeUser);
+    setSession(fakeSession);
+    
+    toast({
+      title: "Test User Login",
+      description: "You are now logged in as a test user.",
     });
   };
 
@@ -189,6 +219,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signInWithGoogle,
     signInWithGitHub,
     fakeAdminLogin,
+    fakeUserLogin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

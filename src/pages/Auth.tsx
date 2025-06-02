@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -7,14 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { Github, Shield } from 'lucide-react';
+import { Github, Shield, User } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle, signInWithGitHub, fakeAdminLogin, user } = useAuth();
+  const { signIn, signUp, signInWithGoogle, signInWithGitHub, fakeAdminLogin, fakeUserLogin, user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +39,11 @@ const Auth = () => {
   const handleFakeAdminLogin = () => {
     fakeAdminLogin();
     navigate('/admin');
+  };
+
+  const handleFakeUserLogin = () => {
+    fakeUserLogin();
+    navigate('/');
   };
 
   return (
@@ -176,7 +180,7 @@ const Auth = () => {
               </Button>
             </div>
 
-            {/* Fake Admin Login for Testing */}
+            {/* Test Login Section */}
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -184,20 +188,32 @@ const Auth = () => {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Development Only
+                    Test Accounts
                   </span>
                 </div>
               </div>
               
-              <Button
-                variant="outline"
-                onClick={handleFakeAdminLogin}
-                className="w-full mt-4 bg-yellow-50 text-yellow-800 border-yellow-300 hover:bg-yellow-100"
-                disabled={loading}
-              >
-                <Shield className="h-4 w-4 mr-2" />
-                Test Admin Login
-              </Button>
+              <div className="mt-4 space-y-2">
+                <Button
+                  variant="outline"
+                  onClick={handleFakeUserLogin}
+                  className="w-full bg-blue-50 text-blue-800 border-blue-300 hover:bg-blue-100"
+                  disabled={loading}
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Test User Login
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={handleFakeAdminLogin}
+                  className="w-full bg-yellow-50 text-yellow-800 border-yellow-300 hover:bg-yellow-100"
+                  disabled={loading}
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Test Admin Login
+                </Button>
+              </div>
             </div>
           </div>
         </CardContent>
