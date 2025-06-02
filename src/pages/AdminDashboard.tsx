@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,7 +15,8 @@ import {
   Mail,
   UserCheck,
   Sparkles,
-  ShoppingBag
+  ShoppingBag,
+  Database
 } from "lucide-react";
 import DashboardCharts from "@/components/admin/DashboardCharts";
 import ProductManagement from "@/components/admin/ProductManagement";
@@ -25,6 +27,7 @@ import MobileAdminHeader from "@/components/admin/MobileAdminHeader";
 import MobileAdminNav from "@/components/admin/MobileAdminNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import DisbursementManagement from "@/components/admin/DisbursementManagement";
+import DataSeeder from "@/components/admin/DataSeeder";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -98,6 +101,7 @@ const AdminDashboard = () => {
               {activeTab === "disbursements" && <DisbursementManagement />}
               {activeTab === "affiliates" && <AffiliateSystem />}
               {activeTab === "marketing" && <EmailMarketing />}
+              {activeTab === "test-data" && <DataSeeder />}
             </CardContent>
           </Card>
         </div>
@@ -139,7 +143,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
               Overview
@@ -163,6 +167,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="marketing" className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
               Marketing
+            </TabsTrigger>
+            <TabsTrigger value="test-data" className="flex items-center gap-2">
+              <Database className="h-4 w-4" />
+              Test Data
             </TabsTrigger>
           </TabsList>
 
@@ -188,6 +196,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="marketing">
             <EmailMarketing />
+          </TabsContent>
+
+          <TabsContent value="test-data">
+            <DataSeeder />
           </TabsContent>
         </Tabs>
       </div>
