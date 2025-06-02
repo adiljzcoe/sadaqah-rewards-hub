@@ -267,7 +267,13 @@ const Header = () => {
 
       {/* Mobile Sidebar */}
       {isMobileMenuOpen && (
-        <MobileSidebar onClose={() => setIsMobileMenuOpen(false)} />
+        <MobileSidebar 
+          userLevel={5}
+          currentPoints={250}
+          nextLevelPoints={500}
+          isMember={true}
+          onClose={() => setIsMobileMenuOpen(false)} 
+        />
       )}
     </header>
   );
