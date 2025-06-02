@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { Shield, BarChart3, Database, Users, DollarSign, Settings, Activity, TrendingUp, Globe, MousePointer } from 'lucide-react';
+import { Shield, BarChart3, Database, Users, DollarSign, Settings, Activity, TrendingUp, Globe, MousePointer, Target } from 'lucide-react';
 
 // Import all the admin components
 import SimpleDataSeeder from '@/components/admin/SimpleDataSeeder';
@@ -21,6 +21,7 @@ import FinancialManagement from '@/components/admin/FinancialManagement';
 import UTMAnalytics from '@/components/admin/UTMAnalytics';
 import ScalabilityMonitoring from '@/components/admin/ScalabilityMonitoring';
 import ComplianceAndSecurity from '@/components/admin/ComplianceAndSecurity';
+import GrowthOpportunities from '@/components/admin/GrowthOpportunities';
 
 const AdminDashboard = () => {
   const { user, fakeAdminLogin } = useAuth();
@@ -86,7 +87,7 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 gap-2 h-auto p-2">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-9 gap-2 h-auto p-2">
             <TabsTrigger value="overview" className="flex flex-col items-center gap-1 p-3">
               <BarChart3 className="h-4 w-4" />
               <span className="text-xs">Overview</span>
@@ -110,6 +111,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="compliance" className="flex flex-col items-center gap-1 p-3">
               <Shield className="h-4 w-4" />
               <span className="text-xs">Compliance</span>
+            </TabsTrigger>
+            <TabsTrigger value="growth" className="flex flex-col items-center gap-1 p-3">
+              <Target className="h-4 w-4" />
+              <span className="text-xs">Growth</span>
             </TabsTrigger>
             <TabsTrigger value="management" className="flex flex-col items-center gap-1 p-3">
               <Users className="h-4 w-4" />
@@ -192,6 +197,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="compliance">
             <ComplianceAndSecurity />
+          </TabsContent>
+
+          <TabsContent value="growth">
+            <GrowthOpportunities />
           </TabsContent>
 
           <TabsContent value="management" className="space-y-6">
