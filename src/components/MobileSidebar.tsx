@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -167,7 +166,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               )}
             </div>
 
-            {/* Community Section */}
+            {/* Community Section - Updated to include Masjid */}
             <div className="space-y-1">
               <button 
                 onClick={() => toggleSection('community')}
@@ -182,6 +181,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               
               {isCommunityOpen && (
                 <div className="ml-8 space-y-1">
+                  <Link to="/masjid-community" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-indigo-500/20 text-sm text-gray-300 hover:text-indigo-300 transition-colors">
+                    <Building className="h-4 w-4 text-indigo-400" />
+                    <span>Masjid Community</span>
+                  </Link>
                   <Link to="/leaderboards" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-amber-500/20 text-sm text-gray-300 hover:text-amber-300 transition-colors">
                     <Trophy className="h-4 w-4 text-amber-400" />
                     <span>Leaderboards</span>

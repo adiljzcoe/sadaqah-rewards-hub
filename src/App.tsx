@@ -1,4 +1,3 @@
-
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -8,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
+import MasjidCommunity from "@/components/MasjidCommunity";
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -79,6 +79,11 @@ function App() {
                           <Route path="/profile" element={
                             <ProtectedRoute>
                               <Profile />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/masjid-community" element={
+                            <ProtectedRoute>
+                              <MasjidCommunity />
                             </ProtectedRoute>
                           } />
                           <Route path="/build-mosque" element={

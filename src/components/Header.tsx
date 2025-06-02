@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -187,7 +186,7 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Community Dropdown with Hover */}
+            {/* Community Dropdown with Hover - Updated to include Masjid */}
             <DropdownMenu open={communityOpen} onOpenChange={setCommunityOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -206,6 +205,15 @@ const Header = () => {
               >
                 <div className="p-4 space-y-3">
                   <h3 className="text-lg font-bold text-gray-800 mb-3">Connect & Compete</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/masjid-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white">
+                      <Building className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Masjid Community</div>
+                        <p className="text-sm text-indigo-200">Represent your local mosque</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/leaderboards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white">
                       <Trophy className="h-5 w-5 mr-3" />
