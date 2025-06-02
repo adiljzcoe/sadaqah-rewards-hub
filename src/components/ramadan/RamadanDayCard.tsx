@@ -36,10 +36,10 @@ const RamadanDayCard = ({ day, isCompleted }: RamadanDayCardProps) => {
       return;
     }
 
-    // Check if user has enough Sadaqah coins
+    // Check if user has enough Sadaqah coins and get current jannah_points
     const { data: profile } = await supabase
       .from('profiles')
-      .select('sadaqah_coins')
+      .select('sadaqah_coins, jannah_points')
       .eq('id', user.id)
       .single();
 
