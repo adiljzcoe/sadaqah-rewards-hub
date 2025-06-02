@@ -928,6 +928,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      enable_rls_for_seeding_tables: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       get_user_role: {
         Args: { user_uuid?: string }
         Returns: Database["public"]["Enums"]["user_role"]
