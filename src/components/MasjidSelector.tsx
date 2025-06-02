@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { MapPin, Search, Users, Star, CheckCircle, Building } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 
 interface Masjid {
@@ -41,55 +40,46 @@ const MasjidSelector = ({ onMasjidSelected, currentMasjidId }: MasjidSelectorPro
 
   const fetchMasjids = async () => {
     try {
-      // Using direct query since the tables might not be in types yet
-      const { data, error } = await supabase
-        .rpc('get_verified_masjids');
-
-      if (error) {
-        console.error('RPC error, falling back to direct query:', error);
-        // Fallback to test data if tables don't exist yet
-        const testMasjids: Masjid[] = [
-          {
-            id: '1',
-            name: 'Central London Mosque',
-            address: '146 Park Rd, London NW8 7RG',
-            city: 'London',
-            country: 'UK',
-            imam_name: 'Imam Ahmed Hassan',
-            logo_url: '',
-            total_referrals: 245,
-            verified: true,
-            referral_code: 'CLMLON'
-          },
-          {
-            id: '2',
-            name: 'East London Mosque',
-            address: '82-92 Whitechapel Rd, London E1 1JQ',
-            city: 'London',
-            country: 'UK',
-            imam_name: 'Imam Muhammad Khan',
-            logo_url: '',
-            total_referrals: 189,
-            verified: true,
-            referral_code: 'ELMLON'
-          },
-          {
-            id: '3',
-            name: 'Birmingham Central Mosque',
-            address: '180 Belgrave Rd, Birmingham B12 0XS',
-            city: 'Birmingham',
-            country: 'UK',
-            imam_name: 'Imam Ali Rahman',
-            logo_url: '',
-            total_referrals: 156,
-            verified: true,
-            referral_code: 'BCMBIR'
-          }
-        ];
-        setMasjids(testMasjids);
-      } else {
-        setMasjids(data || []);
-      }
+      // Using test data since the database tables are not set up yet
+      const testMasjids: Masjid[] = [
+        {
+          id: '1',
+          name: 'Central London Mosque',
+          address: '146 Park Rd, London NW8 7RG',
+          city: 'London',
+          country: 'UK',
+          imam_name: 'Imam Ahmed Hassan',
+          logo_url: '',
+          total_referrals: 245,
+          verified: true,
+          referral_code: 'CLMLON'
+        },
+        {
+          id: '2',
+          name: 'East London Mosque',
+          address: '82-92 Whitechapel Rd, London E1 1JQ',
+          city: 'London',
+          country: 'UK',
+          imam_name: 'Imam Muhammad Khan',
+          logo_url: '',
+          total_referrals: 189,
+          verified: true,
+          referral_code: 'ELMLON'
+        },
+        {
+          id: '3',
+          name: 'Birmingham Central Mosque',
+          address: '180 Belgrave Rd, Birmingham B12 0XS',
+          city: 'Birmingham',
+          country: 'UK',
+          imam_name: 'Imam Ali Rahman',
+          logo_url: '',
+          total_referrals: 156,
+          verified: true,
+          referral_code: 'BCMBIR'
+        }
+      ];
+      setMasjids(testMasjids);
     } catch (error) {
       console.error('Error fetching masjids:', error);
       toast({
@@ -236,12 +226,6 @@ const MasjidSelector = ({ onMasjidSelected, currentMasjidId }: MasjidSelectorPro
       </CardContent>
     </Card>
   );
-};
-
-// Create RPC function for getting verified masjids
-const createGetVerifiedMasjidsFunction = async () => {
-  const { error } = await supabase.rpc('create_get_verified_masjids_function');
-  if (error) console.error('Error creating function:', error);
 };
 
 export default MasjidSelector;
