@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Send, Eye, CheckCircle, AlertCircle, Star, TrendingUp, Clock, Calculator, DollarSign } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import DataSeeder from './DataSeeder';
 
 interface Charity {
   id: string;
@@ -242,6 +243,9 @@ const DisbursementManagement = () => {
           {isProcessing ? 'Processing...' : 'Calculate Disbursements'}
         </Button>
       </div>
+
+      {/* Add Data Seeder Component */}
+      <DataSeeder />
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
