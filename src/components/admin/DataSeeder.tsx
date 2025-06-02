@@ -75,17 +75,14 @@ const DataSeeder = () => {
     ];
 
     try {
-      // Use upsert with conflict resolution on name
+      // Use regular insert instead of upsert
       const { data: insertedCharities, error } = await supabase
         .from('charities')
-        .upsert(charities, { 
-          onConflict: 'name',
-          ignoreDuplicates: false 
-        })
+        .insert(charities)
         .select();
 
       if (error) {
-        console.error('❌ Bulk upsert failed:', error);
+        console.error('❌ Insert failed:', error);
         throw error;
       }
 
@@ -111,14 +108,6 @@ const DataSeeder = () => {
     }));
 
     try {
-      // Clear existing allocations first
-      const charityIds = charities.map(c => c.id);
-      await supabase
-        .from('charity_allocations')
-        .delete()
-        .in('charity_id', charityIds);
-
-      // Insert new allocations
       const { data, error } = await supabase
         .from('charity_allocations')
         .insert(allocations)
@@ -188,11 +177,11 @@ const DataSeeder = () => {
     try {
       console.log('🚀 Starting data seeding process...');
       
-      // Use fake admin login first
+      // Use fake admin login
       fakeAdminLogin();
       
-      // Add a longer delay to ensure auth state updates
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Wait for auth state to update
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       toast({
         title: "Starting Data Seeding",
@@ -325,7 +314,7 @@ const DataSeeder = () => {
 
         <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
           <p className="text-sm text-yellow-700">
-            ⚠️ If seeding fails due to RLS policies, the database permissions may need adjustment.
+            ⚠️ If seeding still fails, try clearing data first, then seeding fresh data.
           </p>
         </div>
       </CardContent>
