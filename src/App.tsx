@@ -10,6 +10,23 @@ import RamadanCalendar from './pages/RamadanCalendar';
 import IslamicCalendar from './pages/IslamicCalendar';
 import IslamicEventPage from './components/islamic-calendar/IslamicEventPage';
 import AdhanCommunity from './pages/AdhanCommunity';
+import NamazTimes from './pages/NamazTimes';
+import QuranReader from './pages/QuranReader';
+import ZakatCalculator from './pages/ZakatCalculator';
+import DuaWall from './pages/DuaWall';
+import Campaigns from './pages/Campaigns';
+import BuildMosque from './pages/BuildMosque';
+import WaterWells from './pages/WaterWells';
+import Orphanages from './pages/Orphanages';
+import Qurbani from './pages/Qurbani';
+import MasjidCommunity from './pages/MasjidCommunity';
+import MyUmmah from './pages/MyUmmah';
+import Leaderboards from './pages/Leaderboards';
+import DhikrCommunity from './pages/DhikrCommunity';
+import SadaqahCoins from './pages/SadaqahCoins';
+import MyJannah from './pages/MyJannah';
+import Membership from './pages/Membership';
+import GiftCards from './pages/GiftCards';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -21,13 +38,43 @@ function App() {
       <Router>
         <div className="min-h-screen bg-background">
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            
+            {/* Islamic Life Routes */}
             <Route path="/live-tv" element={<LiveTV />} />
             <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
             <Route path="/islamic-calendar" element={<IslamicCalendar />} />
             <Route path="/islamic-calendar/:slug" element={<IslamicEventPage />} />
             <Route path="/adhan-community" element={<AdhanCommunity />} />
+            
+            {/* Tools Routes */}
+            <Route path="/namaz-times" element={<NamazTimes />} />
+            <Route path="/quran-reader" element={<QuranReader />} />
+            <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+            <Route path="/dua-wall" element={<DuaWall />} />
+            
+            {/* Donation Routes */}
+            <Route path="/campaigns" element={<Campaigns />} />
+            <Route path="/build-mosque" element={<BuildMosque />} />
+            <Route path="/water-wells" element={<WaterWells />} />
+            <Route path="/orphanages" element={<Orphanages />} />
+            <Route path="/qurbani" element={<Qurbani />} />
+            
+            {/* Community Routes */}
+            <Route path="/masjid-community" element={<MasjidCommunity />} />
+            <Route path="/my-ummah" element={<MyUmmah />} />
+            <Route path="/leaderboards" element={<Leaderboards />} />
+            <Route path="/dhikr-community" element={<DhikrCommunity />} />
+            
+            {/* Rewards Routes */}
+            <Route path="/sadaqah-coins" element={<SadaqahCoins />} />
+            <Route path="/my-jannah" element={<MyJannah />} />
+            <Route path="/membership" element={<Membership />} />
+            <Route path="/gift-cards" element={<GiftCards />} />
+            
+            {/* Protected Routes */}
             <Route
               path="/profile"
               element={
@@ -44,6 +91,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin-dashboard"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* Catch all route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
