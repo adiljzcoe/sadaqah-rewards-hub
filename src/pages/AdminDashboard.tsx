@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
@@ -8,8 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Users, DollarSign, Trophy, Building2, Activity, TrendingUp } from 'lucide-react';
+import { Users, DollarSign, Trophy, Building2, Activity, TrendingUp, BarChart3, Mail, Package, UserCheck, Calendar } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
+import DashboardCharts from '@/components/admin/DashboardCharts';
+import ProductManagement from '@/components/admin/ProductManagement';
+import EmailMarketing from '@/components/admin/EmailMarketing';
+import AffiliateSystem from '@/components/admin/AffiliateSystem';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -44,7 +47,10 @@ const AdminDashboard = () => {
           users: 1247,
           donations: 3456,
           charities: 89,
-          totalRaised: 125000
+          totalRaised: 125000,
+          memberships: 856,
+          affiliates: 127,
+          conversionRate: 2.7
         };
       }
       
@@ -61,7 +67,10 @@ const AdminDashboard = () => {
         users: usersRes.count || 0,
         donations: donationsRes.count || 0,
         charities: charitiesRes.count || 0,
-        totalRaised: totalRaised
+        totalRaised: totalRaised,
+        memberships: 856, // Mock data for now
+        affiliates: 127, // Mock data for now
+        conversionRate: 2.7 // Mock data for now
       };
     },
     enabled: userProfile?.role === 'admin',
@@ -231,7 +240,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Overview */}
+      {/* Enhanced Stats Overview */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -240,9 +249,7 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.users || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              +12% from last month
-            </p>
+            <p className="text-xs text-muted-foreground">+12% from last month</p>
           </CardContent>
         </Card>
         
@@ -253,45 +260,67 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">£{stats?.totalRaised?.toLocaleString() || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              +20% from last month
-            </p>
+            <p className="text-xs text-muted-foreground">+20% from last month</p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Donations</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Active Memberships</CardTitle>
+            <UserCheck className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.donations || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              +8% from last month
-            </p>
+            <div className="text-2xl font-bold">{stats?.memberships || 0}</div>
+            <p className="text-xs text-muted-foreground">+5% from last month</p>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Partner Charities</CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Affiliate Partners</CardTitle>
+            <Trophy className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.charities || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              +2 new this month
-            </p>
+            <div className="text-2xl font-bold">{stats?.affiliates || 0}</div>
+            <p className="text-xs text-muted-foreground">+8 new this month</p>
           </CardContent>
         </Card>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="charities">Charities</TabsTrigger>
-          <TabsTrigger value="donations">Donations</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-8">
+          <TabsTrigger value="overview" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger value="users" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Users
+          </TabsTrigger>
+          <TabsTrigger value="products" className="flex items-center gap-2">
+            <Package className="h-4 w-4" />
+            Products
+          </TabsTrigger>
+          <TabsTrigger value="charities" className="flex items-center gap-2">
+            <Building2 className="h-4 w-4" />
+            Charities
+          </TabsTrigger>
+          <TabsTrigger value="email" className="flex items-center gap-2">
+            <Mail className="h-4 w-4" />
+            Email
+          </TabsTrigger>
+          <TabsTrigger value="affiliates" className="flex items-center gap-2">
+            <Trophy className="h-4 w-4" />
+            Affiliates
+          </TabsTrigger>
+          <TabsTrigger value="seasonal" className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            Seasonal
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
@@ -329,6 +358,10 @@ const AdminDashboard = () => {
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+        
+        <TabsContent value="analytics" className="space-y-4">
+          <DashboardCharts />
         </TabsContent>
         
         <TabsContent value="users" className="space-y-4">
@@ -370,6 +403,10 @@ const AdminDashboard = () => {
           </Card>
         </TabsContent>
         
+        <TabsContent value="products" className="space-y-4">
+          <ProductManagement />
+        </TabsContent>
+        
         <TabsContent value="charities" className="space-y-4">
           <Card>
             <CardHeader>
@@ -405,6 +442,33 @@ const AdminDashboard = () => {
                   ))}
                 </TableBody>
               </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="email" className="space-y-4">
+          <EmailMarketing />
+        </TabsContent>
+        
+        <TabsContent value="affiliates" className="space-y-4">
+          <AffiliateSystem />
+        </TabsContent>
+        
+        <TabsContent value="seasonal" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Seasonal Campaigns</CardTitle>
+              <CardDescription>Manage Ramadan and Qurbani special campaigns</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-8">
+                <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Seasonal Campaign Management</h3>
+                <p className="text-muted-foreground mb-4">
+                  Set up and manage special campaigns for Ramadan, Qurbani, and other Islamic occasions
+                </p>
+                <Button>Create Seasonal Campaign</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
