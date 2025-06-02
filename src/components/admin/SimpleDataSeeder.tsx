@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Database, Sprout, Users, Heart } from 'lucide-react';
+import { Database, Sprout, Users, Heart, MessageCircle } from 'lucide-react';
+import DuaDataSeeder from './DuaDataSeeder';
 
 const SimpleDataSeeder = () => {
   const { toast } = useToast();
@@ -175,72 +175,77 @@ const SimpleDataSeeder = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Database className="h-5 w-5" />
-          Simple Test Data Seeder
-        </CardTitle>
-        <CardDescription>
-          Create basic test data without authentication complexity.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <h4 className="font-medium flex items-center gap-2">
-              <Sprout className="h-4 w-4 text-green-600" />
-              What will be created:
-            </h4>
-            <ul className="text-sm text-muted-foreground space-y-1">
-              <li className="flex items-center gap-2">
-                <Users className="h-3 w-3" />
-                2 sample charities with basic data
-              </li>
-              <li className="flex items-center gap-2">
-                <Heart className="h-3 w-3" />
-                2 sample donations for testing
-              </li>
-            </ul>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Database className="h-5 w-5" />
+            Simple Test Data Seeder
+          </CardTitle>
+          <CardDescription>
+            Create basic test data without authentication complexity.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <h4 className="font-medium flex items-center gap-2">
+                <Sprout className="h-4 w-4 text-green-600" />
+                What will be created:
+              </h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li className="flex items-center gap-2">
+                  <Users className="h-3 w-3" />
+                  2 sample charities with basic data
+                </li>
+                <li className="flex items-center gap-2">
+                  <Heart className="h-3 w-3" />
+                  2 sample donations for testing
+                </li>
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <Button 
+                onClick={handleSimpleSeeding} 
+                disabled={isSeeding}
+                className="w-full"
+                size="sm"
+              >
+                <Sprout className="h-4 w-4 mr-2" />
+                {isSeeding ? 'Creating...' : 'Create Test Data'}
+              </Button>
+              <Button 
+                onClick={handleClearData} 
+                disabled={isSeeding}
+                variant="outline"
+                className="w-full"
+                size="sm"
+              >
+                <Database className="h-4 w-4 mr-2" />
+                {isSeeding ? 'Clearing...' : 'Clear All Data'}
+              </Button>
+            </div>
           </div>
-          <div className="space-y-3">
-            <Button 
-              onClick={handleSimpleSeeding} 
-              disabled={isSeeding}
-              className="w-full"
-              size="sm"
-            >
-              <Sprout className="h-4 w-4 mr-2" />
-              {isSeeding ? 'Creating...' : 'Create Test Data'}
-            </Button>
-            <Button 
-              onClick={handleClearData} 
-              disabled={isSeeding}
-              variant="outline"
-              className="w-full"
-              size="sm"
-            >
-              <Database className="h-4 w-4 mr-2" />
-              {isSeeding ? 'Clearing...' : 'Clear All Data'}
-            </Button>
-          </div>
-        </div>
-        
-        {isSeeding && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-700">
-              🔄 Processing... Check the console for detailed logs.
+          
+          {isSeeding && (
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-700">
+                🔄 Processing... Check the console for detailed logs.
+              </p>
+            </div>
+          )}
+
+          <div className="mt-4 p-3 bg-green-50 rounded-lg">
+            <p className="text-sm text-green-700">
+              ✅ RLS temporarily disabled for seeding. Data operations should work smoothly now.
             </p>
           </div>
-        )}
+        </CardContent>
+      </Card>
 
-        <div className="mt-4 p-3 bg-green-50 rounded-lg">
-          <p className="text-sm text-green-700">
-            ✅ RLS temporarily disabled for seeding. Data operations should work smoothly now.
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+      {/* Du'a Data Seeder */}
+      <DuaDataSeeder />
+    </div>
   );
 };
 
