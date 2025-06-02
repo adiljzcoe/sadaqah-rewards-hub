@@ -27,6 +27,8 @@ import GiftCardManagement from '@/components/admin/GiftCardManagement';
 import DisbursementManagement from '@/components/admin/DisbursementManagement';
 import EmailMarketing from '@/components/admin/EmailMarketing';
 import AffiliateSystem from '@/components/admin/AffiliateSystem';
+import PushNotifications from '@/components/admin/PushNotifications';
+import MarketingCampaigns from '@/components/admin/MarketingCampaigns';
 
 // Import new enterprise components
 import RealTimeMonitoring from '@/components/admin/RealTimeMonitoring';
@@ -35,6 +37,9 @@ import UTMAnalytics from '@/components/admin/UTMAnalytics';
 import ScalabilityMonitoring from '@/components/admin/ScalabilityMonitoring';
 import ComplianceAndSecurity from '@/components/admin/ComplianceAndSecurity';
 import GrowthOpportunities from '@/components/admin/GrowthOpportunities';
+import AdvancedUserManagement from '@/components/admin/AdvancedUserManagement';
+import CharityVerification from '@/components/admin/CharityVerification';
+import SMSNotifications from '@/components/admin/SMSNotifications';
 
 const AdminDashboard = () => {
   const { user, fakeAdminLogin } = useAuth();
@@ -100,7 +105,7 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-9 gap-2 h-auto p-2">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-12 gap-2 h-auto p-2">
             <TabsTrigger value="overview" className="flex flex-col items-center gap-1 p-3">
               <BarChart3 className="h-4 w-4" />
               <span className="text-xs">Overview</span>
@@ -129,13 +134,25 @@ const AdminDashboard = () => {
               <Target className="h-4 w-4" />
               <span className="text-xs">Growth</span>
             </TabsTrigger>
-            <TabsTrigger value="management" className="flex flex-col items-center gap-1 p-3">
+            <TabsTrigger value="users" className="flex flex-col items-center gap-1 p-3">
               <Users className="h-4 w-4" />
-              <span className="text-xs">Management</span>
+              <span className="text-xs">Users</span>
             </TabsTrigger>
-            <TabsTrigger value="data" className="flex flex-col items-center gap-1 p-3">
-              <Database className="h-4 w-4" />
-              <span className="text-xs">Data</span>
+            <TabsTrigger value="charity" className="flex flex-col items-center gap-1 p-3">
+              <Shield className="h-4 w-4" />
+              <span className="text-xs">Charity</span>
+            </TabsTrigger>
+            <TabsTrigger value="email" className="flex flex-col items-center gap-1 p-3">
+              <Mail className="h-4 w-4" />
+              <span className="text-xs">Email</span>
+            </TabsTrigger>
+            <TabsTrigger value="sms" className="flex flex-col items-center gap-1 p-3">
+              <Bell className="h-4 w-4" />
+              <span className="text-xs">SMS</span>
+            </TabsTrigger>
+            <TabsTrigger value="management" className="flex flex-col items-center gap-1 p-3">
+              <Settings className="h-4 w-4" />
+              <span className="text-xs">Management</span>
             </TabsTrigger>
           </TabsList>
 
@@ -216,6 +233,22 @@ const AdminDashboard = () => {
             <GrowthOpportunities />
           </TabsContent>
 
+          <TabsContent value="users">
+            <AdvancedUserManagement />
+          </TabsContent>
+
+          <TabsContent value="charity">
+            <CharityVerification />
+          </TabsContent>
+
+          <TabsContent value="email">
+            <EmailMarketing />
+          </TabsContent>
+
+          <TabsContent value="sms">
+            <SMSNotifications />
+          </TabsContent>
+
           <TabsContent value="management" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <ProductManagement />
@@ -223,12 +256,12 @@ const AdminDashboard = () => {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <DisbursementManagement />
-              <EmailMarketing />
+              <PushNotifications />
             </div>
-            <AffiliateSystem />
-          </TabsContent>
-
-          <TabsContent value="data">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <AffiliateSystem />
+              <MarketingCampaigns />
+            </div>
             <SimpleDataSeeder />
           </TabsContent>
         </Tabs>
