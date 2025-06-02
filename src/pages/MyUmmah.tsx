@@ -1,17 +1,19 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Navigation, Clock, Users, Globe, Heart } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { MapPin, Navigation, Clock, Users, Globe, Heart, Map } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import WorldAdhanMap from '@/components/ummah/WorldAdhanMap';
 import MosqueList from '@/components/ummah/MosqueList';
+import CommunityPrayerTab from '@/components/ummah/CommunityPrayerTab';
 
 const MyUmmah = () => {
   const { toast } = useToast();
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [currentPrayer, setCurrentPrayer] = useState<string | null>(null);
 
   const getCurrentLocation = () => {
     setLoading(true);
@@ -48,9 +50,33 @@ const MyUmmah = () => {
     }
   };
 
+  // Calculate current prayer for user's timezone
+  const calculateCurrentPrayer = () => {
+    const now = new Date();
+    const hour = now.getHours();
+    
+    if (hour >= 5 && hour < 7) return 'Fajr';
+    if (hour >= 12 && hour < 15) return 'Dhuhr';
+    if (hour >= 15 && hour < 18) return 'Asr';
+    if (hour >= 18 && hour < 20) return 'Maghrib';
+    if (hour >= 20 && hour < 22) return 'Isha';
+    
+    return null;
+  };
+
   useEffect(() => {
     // Auto-request location on page load
     getCurrentLocation();
+    
+    // Set current prayer
+    setCurrentPrayer(calculateCurrentPrayer());
+    
+    // Update current prayer every minute
+    const interval = setInterval(() => {
+      setCurrentPrayer(calculateCurrentPrayer());
+    }, 60000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -63,8 +89,8 @@ const MyUmmah = () => {
             My Ummah
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Experience the beauty of our global Muslim community. Watch as the call to prayer 
-            ripples across the world, connecting hearts from Mecca to every corner of the earth.
+            Experience the beauty of our global Muslim community. Connect with fellow believers 
+            whether through watching global prayers or joining virtual prayer groups.
           </p>
         </div>
 
@@ -151,55 +177,74 @@ const MyUmmah = () => {
           </CardContent>
         </Card>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* World Map Section */}
-          <div className="lg:col-span-2">
-            <WorldAdhanMap />
-          </div>
+        {/* Main Tabs */}
+        <Tabs defaultValue="global" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+            <TabsTrigger value="global" className="flex items-center gap-2">
+              <Map className="h-4 w-4" />
+              Global Map
+            </TabsTrigger>
+            <TabsTrigger value="community" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Prayer Community
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Local Mosques */}
-          <div className="lg:col-span-1">
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-blue-600" />
-                  Local Connection
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">
-                  While you watch prayers across the globe, don't forget your local mosque community.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                    <Users className="h-5 w-5 text-blue-600" />
-                    <div>
-                      <div className="font-medium">Find Your Mosque</div>
-                      <div className="text-sm text-gray-600">Connect with local community</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                    <Clock className="h-5 w-5 text-green-600" />
-                    <div>
-                      <div className="font-medium">Local Prayer Times</div>
-                      <div className="text-sm text-gray-600">Never miss a prayer</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                    <Heart className="h-5 w-5 text-purple-600" />
-                    <div>
-                      <div className="font-medium">Community Events</div>
-                      <div className="text-sm text-gray-600">Join local gatherings</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="global" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* World Map Section */}
+              <div className="lg:col-span-2">
+                <WorldAdhanMap />
+              </div>
 
-            {userLocation && <MosqueList userLocation={userLocation} />}
-          </div>
-        </div>
+              {/* Local Mosques */}
+              <div className="lg:col-span-1">
+                <Card className="mb-6">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MapPin className="h-5 w-5 text-blue-600" />
+                      Local Connection
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 mb-4">
+                      While you watch prayers across the globe, don't forget your local mosque community.
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                        <Users className="h-5 w-5 text-blue-600" />
+                        <div>
+                          <div className="font-medium">Find Your Mosque</div>
+                          <div className="text-sm text-gray-600">Connect with local community</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                        <Clock className="h-5 w-5 text-green-600" />
+                        <div>
+                          <div className="font-medium">Local Prayer Times</div>
+                          <div className="text-sm text-gray-600">Never miss a prayer</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                        <Heart className="h-5 w-5 text-purple-600" />
+                        <div>
+                          <div className="font-medium">Community Events</div>
+                          <div className="text-sm text-gray-600">Join local gatherings</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {userLocation && <MosqueList userLocation={userLocation} />}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="community">
+            <CommunityPrayerTab currentPrayer={currentPrayer} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
