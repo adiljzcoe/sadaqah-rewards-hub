@@ -1,0 +1,113 @@
+
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from './useAuth';
+import { useToast } from './use-toast';
+
+export function useDonations() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const { data: donations, isLoading } = useQuery({
+    queryKey: ['donations', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      
+      const { data, error } = await supabase
+        .from('donations')
+        .select(`
+          *,
+          charities(name, logo_url),
+          campaigns(title)
+        `)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user?.id,
+  });
+
+  const createDonation = useMutation({
+    mutationFn: async (donationData: {
+      charity_id: string;
+      campaign_id?: string;
+      amount: number;
+      message?: string;
+      anonymous?: boolean;
+    }) => {
+      if (!user?.id) throw new Error('Must be logged in to donate');
+
+      // Calculate points and coins
+      const jannahPoints = Math.floor(donationData.amount * 10); // 10 points per £1
+      const sadaqahCoins = Math.floor(donationData.amount * 5); // 5 coins per £1
+
+      const { data, error } = await supabase
+        .from('donations')
+        .insert({
+          ...donationData,
+          user_id: user.id,
+          jannah_points_earned: jannahPoints,
+          sadaqah_coins_earned: sadaqahCoins,
+          status: 'completed', // In real app, this would be 'pending' until payment processed
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Update user profile with new points and coins
+      await supabase
+        .from('profiles')
+        .update({
+          jannah_points: profile.jannah_points + jannahPoints,
+          sadaqah_coins: profile.sadaqah_coins + sadaqahCoins,
+          total_donated: profile.total_donated + donationData.amount,
+          donation_count: profile.donation_count + 1,
+          last_donation_date: new Date().toISOString(),
+        })
+        .eq('id', user.id);
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['donations', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
+      toast({
+        title: "Donation successful! 🎉",
+        description: "Thank you for your generosity. Your donation has been processed.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Donation failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user?.id,
+  });
+
+  return {
+    donations,
+    isLoading,
+    createDonation: createDonation.mutate,
+    isCreatingDonation: createDonation.isPending,
+  };
+}
