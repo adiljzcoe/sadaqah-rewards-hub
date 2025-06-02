@@ -1,6 +1,4 @@
-
 import React from 'react';
-import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
 import DonationWidget from '@/components/DonationWidget';
@@ -108,7 +106,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
-      <Header />
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
