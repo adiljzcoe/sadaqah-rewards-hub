@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Send, Eye, CheckCircle, AlertCircle } from 'lucide-react';
+import { Plus, Send, Eye, CheckCircle, AlertCircle, Star, TrendingUp, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -18,6 +18,11 @@ interface Charity {
   name: string;
   category: string;
   verified: boolean;
+  trust_rating: number;
+  activity_score: number;
+  last_activity_date: string;
+  total_posts: number;
+  verified_posts: number;
 }
 
 interface Donation {
@@ -45,8 +50,16 @@ interface CharityAllocation {
   id: string;
   charity_id: string;
   allocation_percentage: number;
+  calculated_percentage: number;
+  trust_weight: number;
+  activity_weight: number;
+  manual_override: boolean;
   is_active: boolean;
-  charities: { name: string };
+  charities: { 
+    name: string;
+    trust_rating: number;
+    activity_score: number;
+  };
 }
 
 const DisbursementManagement = () => {
@@ -70,7 +83,7 @@ const DisbursementManagement = () => {
 
   const fetchData = async () => {
     try {
-      // Fetch charities
+      // Fetch charities with trust ratings
       const { data: charitiesData, error: charitiesError } = await supabase
         .from('charities')
         .select('*')
@@ -105,12 +118,16 @@ const DisbursementManagement = () => {
       if (disbursementsError) throw disbursementsError;
       setDisbursements(disbursementsData || []);
 
-      // Fetch charity allocations
+      // Fetch charity allocations with trust data
       const { data: allocationsData, error: allocationsError } = await supabase
         .from('charity_allocations')
         .select(`
           *,
-          charities (name)
+          charities (
+            name,
+            trust_rating,
+            activity_score
+          )
         `)
         .eq('is_active', true);
 
@@ -135,7 +152,7 @@ const DisbursementManagement = () => {
         .from('disbursements')
         .insert([{
           ...newDisbursement,
-          amount: parseFloat(newDisbursement.amount)
+          amount: parseFloat(newDisbursement.amount) * 100 // Convert to pence
         }]);
 
       if (error) throw error;
@@ -163,26 +180,23 @@ const DisbursementManagement = () => {
     }
   };
 
-  const updateAllocationPercentage = async (id: string, percentage: number) => {
+  const recalculateAllocations = async () => {
     try {
-      const { error } = await supabase
-        .from('charity_allocations')
-        .update({ allocation_percentage: percentage })
-        .eq('id', id);
-
+      const { error } = await supabase.rpc('calculate_charity_allocations');
+      
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Allocation percentage updated.",
+        description: "Charity allocations recalculated based on trust ratings.",
       });
 
       fetchData();
     } catch (error) {
-      console.error('Error updating allocation:', error);
+      console.error('Error recalculating allocations:', error);
       toast({
         title: "Error",
-        description: "Failed to update allocation.",
+        description: "Failed to recalculate allocations.",
         variant: "destructive",
       });
     }
@@ -197,24 +211,36 @@ const DisbursementManagement = () => {
   );
 
   const totalAllocations = allocations.reduce((sum, allocation) => 
-    sum + allocation.allocation_percentage, 0
+    sum + (allocation.calculated_percentage || allocation.allocation_percentage), 0
   );
+
+  const getTrustBadgeColor = (rating: number) => {
+    if (rating >= 8) return 'bg-green-500';
+    if (rating >= 6) return 'bg-yellow-500';
+    return 'bg-red-500';
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Disbursement Management</h2>
-          <p className="text-muted-foreground">Manage charity disbursements and allocations</p>
+          <h2 className="text-2xl font-bold">Trust-Based Disbursement Management</h2>
+          <p className="text-muted-foreground">Manage charity disbursements based on trust ratings and activity</p>
         </div>
-        <Button onClick={() => setIsCreatingDisbursement(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Create Disbursement
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={recalculateAllocations} variant="outline" className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            Recalculate Trust Allocations
+          </Button>
+          <Button onClick={() => setIsCreatingDisbursement(true)} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Create Disbursement
+          </Button>
+        </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Summary Cards with Trust Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -230,8 +256,8 @@ const DisbursementManagement = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Pending Donations</p>
-                <p className="text-2xl font-bold">{pendingDonations.length}</p>
+                <p className="text-sm text-muted-foreground">Active Charities</p>
+                <p className="text-2xl font-bold">{charities.length}</p>
               </div>
               <Eye className="h-8 w-8 text-blue-600" />
             </div>
@@ -241,24 +267,152 @@ const DisbursementManagement = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
+                <p className="text-sm text-muted-foreground">Avg Trust Rating</p>
+                <p className="text-2xl font-bold">
+                  {charities.length > 0 
+                    ? (charities.reduce((sum, c) => sum + (c.trust_rating || 5), 0) / charities.length).toFixed(1)
+                    : '0.0'
+                  }
+                </p>
+              </div>
+              <Star className="h-8 w-8 text-yellow-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-sm text-muted-foreground">Total Allocations</p>
-                <p className="text-2xl font-bold">{totalAllocations}%</p>
-                {totalAllocations !== 100 && (
+                <p className="text-2xl font-bold">{totalAllocations.toFixed(1)}%</p>
+                {Math.abs(totalAllocations - 100) > 1 && (
                   <p className="text-sm text-red-600">Should equal 100%</p>
                 )}
               </div>
-              <CheckCircle className={`h-8 w-8 ${totalAllocations === 100 ? 'text-green-600' : 'text-red-600'}`} />
+              <CheckCircle className={`h-8 w-8 ${Math.abs(totalAllocations - 100) <= 1 ? 'text-green-600' : 'text-red-600'}`} />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs defaultValue="pending" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+      <Tabs defaultValue="allocations" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="allocations">Trust-Based Allocations</TabsTrigger>
           <TabsTrigger value="pending">Pending Donations</TabsTrigger>
           <TabsTrigger value="disbursements">Disbursements</TabsTrigger>
-          <TabsTrigger value="allocations">Charity Allocations</TabsTrigger>
+          <TabsTrigger value="ratings">Charity Ratings</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="allocations">
+          <Card>
+            <CardHeader>
+              <CardTitle>Trust-Based Charity Allocations</CardTitle>
+              <CardDescription>
+                Allocation percentages calculated based on trust ratings and activity scores. 
+                Higher trust and activity = larger share of donations.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Charity</TableHead>
+                    <TableHead>Trust Rating</TableHead>
+                    <TableHead>Activity Score</TableHead>
+                    <TableHead>Calculated %</TableHead>
+                    <TableHead>Manual %</TableHead>
+                    <TableHead>Override</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {allocations.map((allocation) => (
+                    <TableRow key={allocation.id}>
+                      <TableCell className="font-medium">{allocation.charities.name}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${getTrustBadgeColor(allocation.charities.trust_rating)}`}></div>
+                          <span>{allocation.charities.trust_rating?.toFixed(1) || '5.0'}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>{allocation.charities.activity_score?.toFixed(0) || '0'}%</TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">
+                          {allocation.calculated_percentage?.toFixed(1) || '0.0'}%
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Input
+                          type="number"
+                          value={allocation.allocation_percentage}
+                          className="w-20"
+                          min="0"
+                          max="100"
+                          step="0.1"
+                          disabled={!allocation.manual_override}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={allocation.manual_override ? 'default' : 'secondary'}>
+                          {allocation.manual_override ? 'Manual' : 'Auto'}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="ratings">
+          <Card>
+            <CardHeader>
+              <CardTitle>Charity Trust Ratings & Activity</CardTitle>
+              <CardDescription>Monitor charity performance and activity levels</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Charity</TableHead>
+                    <TableHead>Trust Rating</TableHead>
+                    <TableHead>Activity Score</TableHead>
+                    <TableHead>Total Posts</TableHead>
+                    <TableHead>Verified Posts</TableHead>
+                    <TableHead>Last Activity</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {charities.map((charity) => (
+                    <TableRow key={charity.id}>
+                      <TableCell className="font-medium">{charity.name}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className={`w-3 h-3 rounded-full ${getTrustBadgeColor(charity.trust_rating || 5)}`}></div>
+                          <span className="font-mono">{(charity.trust_rating || 5).toFixed(1)}/10</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{charity.activity_score || 0}%</Badge>
+                      </TableCell>
+                      <TableCell>{charity.total_posts || 0}</TableCell>
+                      <TableCell>{charity.verified_posts || 0}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <Clock className="h-3 w-3" />
+                          {charity.last_activity_date 
+                            ? new Date(charity.last_activity_date).toLocaleDateString()
+                            : 'Never'
+                          }
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="pending">
           <Card>
@@ -335,49 +489,6 @@ const DisbursementManagement = () => {
             </CardContent>
           </Card>
         </TabsContent>
-
-        <TabsContent value="allocations">
-          <Card>
-            <CardHeader>
-              <CardTitle>Charity Allocation Rules</CardTitle>
-              <CardDescription>Configure how shared donations are split between charities</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Charity</TableHead>
-                    <TableHead>Allocation %</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {allocations.map((allocation) => (
-                    <TableRow key={allocation.id}>
-                      <TableCell>{allocation.charities.name}</TableCell>
-                      <TableCell>
-                        <Input
-                          type="number"
-                          value={allocation.allocation_percentage}
-                          onChange={(e) => updateAllocationPercentage(allocation.id, parseFloat(e.target.value) || 0)}
-                          className="w-20"
-                          min="0"
-                          max="100"
-                          step="0.1"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={allocation.is_active ? 'default' : 'secondary'}>
-                          {allocation.is_active ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
       {/* Create Disbursement Modal */}
@@ -397,7 +508,10 @@ const DisbursementManagement = () => {
                 <SelectContent>
                   {charities.map((charity) => (
                     <SelectItem key={charity.id} value={charity.id}>
-                      {charity.name}
+                      <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${getTrustBadgeColor(charity.trust_rating || 5)}`}></div>
+                        {charity.name} (Trust: {(charity.trust_rating || 5).toFixed(1)})
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>

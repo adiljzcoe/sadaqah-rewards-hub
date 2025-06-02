@@ -147,72 +147,143 @@ export type Database = {
       }
       charities: {
         Row: {
+          activity_score: number | null
           category: string | null
           country: string | null
           created_at: string | null
           description: string | null
           id: string
+          last_activity_date: string | null
           logo_url: string | null
           name: string
           registration_number: string | null
+          total_posts: number | null
           total_raised: number | null
+          trust_rating: number | null
           updated_at: string | null
           verified: boolean | null
+          verified_posts: number | null
           website_url: string | null
         }
         Insert: {
+          activity_score?: number | null
           category?: string | null
           country?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          last_activity_date?: string | null
           logo_url?: string | null
           name: string
           registration_number?: string | null
+          total_posts?: number | null
           total_raised?: number | null
+          trust_rating?: number | null
           updated_at?: string | null
           verified?: boolean | null
+          verified_posts?: number | null
           website_url?: string | null
         }
         Update: {
+          activity_score?: number | null
           category?: string | null
           country?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          last_activity_date?: string | null
           logo_url?: string | null
           name?: string
           registration_number?: string | null
+          total_posts?: number | null
           total_raised?: number | null
+          trust_rating?: number | null
           updated_at?: string | null
           verified?: boolean | null
+          verified_posts?: number | null
           website_url?: string | null
         }
         Relationships: []
       }
+      charity_activity_metrics: {
+        Row: {
+          activity_score: number | null
+          charity_id: string
+          created_at: string
+          id: string
+          posts_count: number | null
+          total_likes: number | null
+          total_views: number | null
+          verified_posts_count: number | null
+          week_start_date: string
+        }
+        Insert: {
+          activity_score?: number | null
+          charity_id: string
+          created_at?: string
+          id?: string
+          posts_count?: number | null
+          total_likes?: number | null
+          total_views?: number | null
+          verified_posts_count?: number | null
+          week_start_date: string
+        }
+        Update: {
+          activity_score?: number | null
+          charity_id?: string
+          created_at?: string
+          id?: string
+          posts_count?: number | null
+          total_likes?: number | null
+          total_views?: number | null
+          verified_posts_count?: number | null
+          week_start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_activity_metrics_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       charity_allocations: {
         Row: {
+          activity_weight: number | null
           allocation_percentage: number
+          calculated_percentage: number | null
           charity_id: string
           created_at: string
           id: string
           is_active: boolean | null
+          manual_override: boolean | null
+          trust_weight: number | null
           updated_at: string
         }
         Insert: {
+          activity_weight?: number | null
           allocation_percentage: number
+          calculated_percentage?: number | null
           charity_id: string
           created_at?: string
           id?: string
           is_active?: boolean | null
+          manual_override?: boolean | null
+          trust_weight?: number | null
           updated_at?: string
         }
         Update: {
+          activity_weight?: number | null
           allocation_percentage?: number
+          calculated_percentage?: number | null
           charity_id?: string
           created_at?: string
           id?: string
           is_active?: boolean | null
+          manual_override?: boolean | null
+          trust_weight?: number | null
           updated_at?: string
         }
         Relationships: [
@@ -221,6 +292,72 @@ export type Database = {
             columns: ["charity_id"]
             isOneToOne: false
             referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      charity_feed_posts: {
+        Row: {
+          charity_id: string
+          content: string
+          created_at: string
+          id: string
+          likes_count: number | null
+          location: string | null
+          media_urls: string[] | null
+          post_type: string | null
+          title: string
+          updated_at: string
+          verification_status: string | null
+          verified_at: string | null
+          verified_by: string | null
+          views_count: number | null
+        }
+        Insert: {
+          charity_id: string
+          content: string
+          created_at?: string
+          id?: string
+          likes_count?: number | null
+          location?: string | null
+          media_urls?: string[] | null
+          post_type?: string | null
+          title: string
+          updated_at?: string
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          views_count?: number | null
+        }
+        Update: {
+          charity_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          likes_count?: number | null
+          location?: string | null
+          media_urls?: string[] | null
+          post_type?: string | null
+          title?: string
+          updated_at?: string
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+          views_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_feed_posts_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "charity_feed_posts_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -644,6 +781,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_charity_allocations: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       get_user_role: {
         Args: { user_uuid?: string }
         Returns: Database["public"]["Enums"]["user_role"]
@@ -652,7 +793,12 @@ export type Database = {
     Enums: {
       campaign_status: "draft" | "active" | "paused" | "completed" | "cancelled"
       donation_status: "pending" | "completed" | "failed" | "refunded"
-      user_role: "user" | "admin" | "charity_partner" | "business_partner"
+      user_role:
+        | "user"
+        | "admin"
+        | "charity_partner"
+        | "business_partner"
+        | "charity_admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -770,7 +916,13 @@ export const Constants = {
     Enums: {
       campaign_status: ["draft", "active", "paused", "completed", "cancelled"],
       donation_status: ["pending", "completed", "failed", "refunded"],
-      user_role: ["user", "admin", "charity_partner", "business_partner"],
+      user_role: [
+        "user",
+        "admin",
+        "charity_partner",
+        "business_partner",
+        "charity_admin",
+      ],
     },
   },
 } as const
