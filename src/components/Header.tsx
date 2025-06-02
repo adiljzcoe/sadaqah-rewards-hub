@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -5,12 +6,11 @@ import { Progress } from '@/components/ui/progress';
 import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { getUserRank, getNextRank } from '@/utils/rankSystem';
 import MobileSidebar from './MobileSidebar';
 
@@ -31,18 +31,9 @@ const Header = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Charity logos for the flying plane with matching backgrounds
-  const charityLogos = [
-    { name: 'One Nation', logo: '/lovable-uploads/06a0c139-e89f-4071-98fb-da09f757e1eb.png', bgColor: 'bg-blue-600' },
-    { name: 'Human Appeal', logo: '/lovable-uploads/fe60c231-8422-4bf0-83e7-47b219d91e70.png', bgColor: 'bg-orange-500' },
-    { name: 'Muslim Global Relief', logo: '/lovable-uploads/051509ed-1b47-49b2-8b42-123906f123c6.png', bgColor: 'bg-green-600' },
-    { name: 'Islamic Help', logo: '/lovable-uploads/49be05e7-6fbc-418e-a4a2-d602629d4036.png', bgColor: 'bg-purple-600' },
-    { name: 'Muslim Aid', logo: '/lovable-uploads/b32b5f9f-a787-4187-a2ca-4df4318d3a47.png', bgColor: 'bg-red-600' }
-  ];
-
   // Debug log to check if component renders
   React.useEffect(() => {
-    console.log('🛩️ Header component rendered - biplane should be flying!');
+    console.log('🛩️ Header component rendered - mega menu should work!');
   }, []);
 
   return (
@@ -130,7 +121,7 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Navigation with Premium Mega Menu */}
+          {/* Navigation with Dropdown Menus */}
           <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-10">
             <Link 
               to="/" 
@@ -144,226 +135,125 @@ const Header = () => {
               }`}></span>
             </Link>
 
-            {/* Premium Donate Mega Menu */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 data-[state=open]:bg-transparent data-[state=open]:text-cyan-300">
-                    Donate
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-[800px] p-8 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-xl border border-cyan-400/30 shadow-2xl rounded-2xl ring-1 ring-cyan-300/20 z-[9999]">
-                      <div className="grid grid-cols-3 gap-8">
-                        {/* Quick Actions */}
-                        <div className="space-y-4">
-                          <h3 className="text-xl font-bold text-cyan-300 mb-4 flex items-center">
-                            <Heart className="h-5 w-5 mr-2 text-red-400" />
-                            Quick Actions
-                          </h3>
-                          <div className="space-y-3">
-                            <Link to="/campaigns" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 transition-all duration-300 border border-emerald-400 hover:border-emerald-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mr-3">
-                                <Heart className="h-5 w-5 text-white" />
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-emerald-200">Active Campaigns</div>
-                                <p className="text-sm text-slate-300 group-hover:text-emerald-300">Support urgent causes worldwide</p>
-                              </div>
-                            </Link>
-                            
-                            <Link to="/build-mosque" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all duration-300 border border-blue-400 hover:border-blue-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-                                <Building className="h-5 w-5 text-white" />
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-blue-200">Build a Mosque</div>
-                                <p className="text-sm text-slate-300 group-hover:text-blue-300">Fund mosque construction projects</p>
-                              </div>
-                            </Link>
-                          </div>
-                        </div>
-
-                        {/* Essential Causes */}
-                        <div className="space-y-4">
-                          <h3 className="text-xl font-bold text-purple-300 mb-4 flex items-center">
-                            <Users className="h-5 w-5 mr-2 text-purple-400" />
-                            Essential Causes
-                          </h3>
-                          <div className="space-y-3">
-                            <Link to="/water-wells" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 transition-all duration-300 border border-cyan-400 hover:border-cyan-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center mr-3">
-                                <span className="text-white text-lg">💧</span>
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-cyan-200">Water Wells</div>
-                                <p className="text-sm text-slate-300 group-hover:text-cyan-300">Provide clean water access</p>
-                              </div>
-                            </Link>
-                            
-                            <Link to="/orphanages" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 transition-all duration-300 border border-pink-400 hover:border-pink-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center mr-3">
-                                <span className="text-white text-lg">👶</span>
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-pink-200">Orphanages</div>
-                                <p className="text-sm text-slate-300 group-hover:text-pink-300">Support orphan care & education</p>
-                              </div>
-                            </Link>
-                          </div>
-                        </div>
-
-                        {/* Trust & Transparency */}
-                        <div className="space-y-4">
-                          <h3 className="text-xl font-bold text-amber-300 mb-4 flex items-center">
-                            <Shield className="h-5 w-5 mr-2 text-amber-400" />
-                            Trust & Partners
-                          </h3>
-                          <div className="space-y-3">
-                            <Link to="/charities" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all duration-300 border border-violet-400 hover:border-violet-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-violet-500 rounded-lg flex items-center justify-center mr-3">
-                                <Users className="h-5 w-5 text-white" />
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-violet-200">Charity Partners</div>
-                                <p className="text-sm text-slate-300 group-hover:text-violet-300">Browse trusted organizations</p>
-                              </div>
-                            </Link>
-                            
-                            <Link to="/why-donate" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 transition-all duration-300 border border-orange-400 hover:border-orange-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
-                                <Shield className="h-5 w-5 text-white" />
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-orange-200">Why Donate With Us</div>
-                                <p className="text-sm text-slate-300 group-hover:text-orange-300">100% transparent distribution</p>
-                              </div>
-                            </Link>
-                          </div>
-                        </div>
+            {/* Donate Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1">
+                <span>Donate</span>
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-80 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 border border-cyan-400/30 shadow-2xl z-[9999]">
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-cyan-300 mb-3">Quick Actions</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/campaigns" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
+                      <Heart className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Active Campaigns</div>
+                        <p className="text-sm text-emerald-200">Support urgent causes worldwide</p>
                       </div>
-                      
-                      {/* Bottom CTA */}
-                      <div className="mt-8 pt-6 border-t border-cyan-400/20">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="text-lg font-semibold text-white">Start Making an Impact Today</h4>
-                            <p className="text-sm text-slate-300">Join thousands of donors changing lives worldwide</p>
-                          </div>
-                          <Button className="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                            Donate Now
-                          </Button>
-                        </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/build-mosque" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white">
+                      <Building className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Build a Mosque</div>
+                        <p className="text-sm text-blue-200">Fund mosque construction projects</p>
                       </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
-            {/* Premium Community Mega Menu */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 data-[state=open]:bg-transparent data-[state=open]:text-cyan-300">
-                    Community
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-[600px] p-8 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 backdrop-blur-xl border border-purple-400/30 shadow-2xl rounded-2xl ring-1 ring-purple-300/20 z-[9999]">
-                      <div className="grid grid-cols-2 gap-8">
-                        <div className="space-y-4">
-                          <h3 className="text-xl font-bold text-purple-300 mb-4 flex items-center">
-                            <Trophy className="h-5 w-5 mr-2 text-purple-400" />
-                            Compete & Connect
-                          </h3>
-                          <div className="space-y-3">
-                            <Link to="/leaderboards" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 transition-all duration-300 border border-amber-400 hover:border-amber-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center mr-3">
-                                <Trophy className="h-5 w-5 text-white" />
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-amber-200">Leaderboards</div>
-                                <p className="text-sm text-slate-300 group-hover:text-amber-300">Top donors & recognition</p>
-                              </div>
-                            </Link>
-                            
-                            <Link to="/live" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 transition-all duration-300 border border-red-400 hover:border-red-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center mr-3">
-                                <span className="text-white text-lg">🔴</span>
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-red-200">Live Feed</div>
-                                <p className="text-sm text-slate-300 group-hover:text-red-300">Real-time updates & stories</p>
-                              </div>
-                            </Link>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <h3 className="text-xl font-bold text-cyan-300 mb-4 flex items-center">
-                            <BookOpen className="h-5 w-5 mr-2 text-cyan-400" />
-                            Stories & Insights
-                          </h3>
-                          <div className="space-y-3">
-                            <Link to="/blog" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 transition-all duration-300 border border-indigo-400 hover:border-indigo-300">
-                              <div className="flex-shrink-0 w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
-                                <BookOpen className="h-5 w-5 text-white" />
-                              </div>
-                              <div>
-                                <div className="font-semibold text-white group-hover:text-indigo-200">Blog & Stories</div>
-                                <p className="text-sm text-slate-300 group-hover:text-indigo-300">Impact stories & insights</p>
-                              </div>
-                            </Link>
-                          </div>
-                        </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/water-wells" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white">
+                      <span className="text-lg mr-3">💧</span>
+                      <div>
+                        <div className="font-semibold">Water Wells</div>
+                        <p className="text-sm text-cyan-200">Provide clean water access</p>
                       </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
-            {/* Premium Rewards Mega Menu */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 data-[state=open]:bg-transparent data-[state=open]:text-cyan-300">
-                    Rewards
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-[500px] p-8 bg-gradient-to-br from-slate-900 via-amber-900 to-orange-900 backdrop-blur-xl border border-amber-400/30 shadow-2xl rounded-2xl ring-1 ring-amber-300/20 z-[9999]">
-                      <div className="space-y-6">
-                        <h3 className="text-xl font-bold text-amber-300 mb-4 flex items-center">
-                          <Gift className="h-5 w-5 mr-2 text-amber-400" />
-                          Rewards & Benefits
-                        </h3>
-                        
-                        <div className="space-y-4">
-                          <Link to="/coins" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 transition-all duration-300 border border-yellow-400 hover:border-yellow-300">
-                            <div className="flex-shrink-0 w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
-                              <Coins className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                              <div className="font-semibold text-white group-hover:text-yellow-200">Sadaqah Coins</div>
-                              <p className="text-sm text-slate-300 group-hover:text-yellow-300">Purchase coins & unlock exclusive rewards</p>
-                            </div>
-                          </Link>
-                          
-                          <Link to="/membership" className="group flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 border border-purple-400 hover:border-purple-300">
-                            <div className="flex-shrink-0 w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
-                              <Shield className="h-5 w-5 text-white" />
-                            </div>
-                            <div>
-                              <div className="font-semibold text-white group-hover:text-purple-200">Membership Tiers</div>
-                              <p className="text-sm text-slate-300 group-hover:text-purple-300">Upgrade for multiplied points & exclusive benefits</p>
-                            </div>
-                          </Link>
-                        </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/orphanages" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
+                      <span className="text-lg mr-3">👶</span>
+                      <div>
+                        <div className="font-semibold">Orphanages</div>
+                        <p className="text-sm text-pink-200">Support orphan care & education</p>
                       </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Community Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1">
+                <span>Community</span>
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-80 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 border border-purple-400/30 shadow-2xl z-[9999]">
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-purple-300 mb-3">Connect & Compete</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/leaderboards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white">
+                      <Trophy className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Leaderboards</div>
+                        <p className="text-sm text-amber-200">Top donors & recognition</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/live" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white">
+                      <span className="text-lg mr-3">🔴</span>
+                      <div>
+                        <div className="font-semibold">Live Feed</div>
+                        <p className="text-sm text-red-200">Real-time updates & stories</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/blog" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white">
+                      <BookOpen className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Blog & Stories</div>
+                        <p className="text-sm text-indigo-200">Impact stories & insights</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Rewards Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1">
+                <span>Rewards</span>
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-80 bg-gradient-to-br from-slate-900 via-amber-900 to-orange-900 border border-amber-400/30 shadow-2xl z-[9999]">
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-amber-300 mb-3">Rewards & Benefits</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/coins" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-white">
+                      <Coins className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Sadaqah Coins</div>
+                        <p className="text-sm text-yellow-200">Purchase coins & unlock rewards</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/membership" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white">
+                      <Shield className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Membership Tiers</div>
+                        <p className="text-sm text-purple-200">Upgrade for multiplied points</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <Link 
               to="/about" 
