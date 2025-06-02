@@ -1,4 +1,3 @@
-
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -35,6 +34,7 @@ const MasjidCommunity = lazy(() => import("./pages/MasjidCommunity"));
 const ZakatCalculator = lazy(() => import("./pages/ZakatCalculator"));
 const Qurbani = lazy(() => import("./pages/Qurbani"));
 const RamadanCalendar = lazy(() => import("./pages/RamadanCalendar"));
+const DhikrCommunity = lazy(() => import("./pages/DhikrCommunity"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -81,6 +81,7 @@ function App() {
                           <Route path="/zakat-calculator" element={<ZakatCalculator />} />
                           <Route path="/qurbani" element={<Qurbani />} />
                           <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
+                          <Route path="/dhikr-community" element={<DhikrCommunity />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={

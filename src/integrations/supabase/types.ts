@@ -413,6 +413,204 @@ export type Database = {
           },
         ]
       }
+      dhikr_achievements: {
+        Row: {
+          badge_color: string | null
+          badge_icon: string | null
+          created_at: string
+          description: string | null
+          id: string
+          jannah_points_reward: number | null
+          requirement_type: string
+          requirement_value: number
+          title: string
+        }
+        Insert: {
+          badge_color?: string | null
+          badge_icon?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          jannah_points_reward?: number | null
+          requirement_type: string
+          requirement_value: number
+          title: string
+        }
+        Update: {
+          badge_color?: string | null
+          badge_icon?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          jannah_points_reward?: number | null
+          requirement_type?: string
+          requirement_value?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      dhikr_counts: {
+        Row: {
+          count_increment: number
+          created_at: string
+          dhikr_type: string
+          event_id: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          count_increment?: number
+          created_at?: string
+          dhikr_type: string
+          event_id?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          count_increment?: number
+          created_at?: string
+          dhikr_type?: string
+          event_id?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dhikr_counts_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "dhikr_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dhikr_events: {
+        Row: {
+          bonus_multiplier: number | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          dhikr_type: string
+          end_time: string
+          id: string
+          is_active: boolean | null
+          is_recurring: boolean | null
+          jannah_points_reward: number | null
+          recurrence_pattern: string | null
+          start_time: string
+          target_count: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bonus_multiplier?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          dhikr_type: string
+          end_time: string
+          id?: string
+          is_active?: boolean | null
+          is_recurring?: boolean | null
+          jannah_points_reward?: number | null
+          recurrence_pattern?: string | null
+          start_time: string
+          target_count?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          bonus_multiplier?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          dhikr_type?: string
+          end_time?: string
+          id?: string
+          is_active?: boolean | null
+          is_recurring?: boolean | null
+          jannah_points_reward?: number | null
+          recurrence_pattern?: string | null
+          start_time?: string
+          target_count?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      dhikr_participation: {
+        Row: {
+          dhikr_count: number
+          event_id: string | null
+          id: string
+          joined_at: string
+          last_dhikr_at: string | null
+          total_points_earned: number | null
+          user_id: string | null
+        }
+        Insert: {
+          dhikr_count?: number
+          event_id?: string | null
+          id?: string
+          joined_at?: string
+          last_dhikr_at?: string | null
+          total_points_earned?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          dhikr_count?: number
+          event_id?: string | null
+          id?: string
+          joined_at?: string
+          last_dhikr_at?: string | null
+          total_points_earned?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dhikr_participation_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "dhikr_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dhikr_subscriptions: {
+        Row: {
+          created_at: string
+          event_id: string | null
+          id: string
+          notification_enabled: boolean | null
+          reminder_minutes: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          notification_enabled?: boolean | null
+          reminder_minutes?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          notification_enabled?: boolean | null
+          reminder_minutes?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dhikr_subscriptions_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "dhikr_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       disbursement_batches: {
         Row: {
           batch_date: string
@@ -1267,6 +1465,35 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_dhikr_achievements: {
+        Row: {
+          achievement_id: string | null
+          earned_at: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          achievement_id?: string | null
+          earned_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          achievement_id?: string | null
+          earned_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_dhikr_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "dhikr_achievements"
             referencedColumns: ["id"]
           },
         ]
