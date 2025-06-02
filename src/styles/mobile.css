@@ -1,0 +1,98 @@
+
+/* Mobile-specific styles for better touch interactions */
+
+/* Improve touch targets */
+@media (max-width: 768px) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better spacing for mobile */
+  .mobile-spacing {
+    padding: 1rem;
+  }
+
+  /* Scroll optimization */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+
+  /* Table responsiveness */
+  .mobile-table {
+    font-size: 0.875rem;
+  }
+
+  .mobile-table th,
+  .mobile-table td {
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+
+  /* Card improvements */
+  .mobile-card {
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  /* Button improvements */
+  .mobile-button {
+    min-height: 44px;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+
+  /* Form improvements */
+  .mobile-input {
+    min-height: 44px;
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  /* Navigation improvements */
+  .mobile-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Landscape orientation optimizations */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .landscape-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .landscape-compact {
+    padding: 0.5rem;
+  }
+}
+
+/* Dark mode support for mobile */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  .mobile-nav {
+    background: rgba(0, 0, 0, 0.95);
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .ios-scroll-fix {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .ios-input-fix {
+    transform: translateZ(0);
+  }
+}
+
+/* Android specific optimizations */
+@media (max-width: 768px) {
+  .android-tap-highlight {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+}

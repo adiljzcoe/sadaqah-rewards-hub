@@ -13,14 +13,19 @@ import DashboardCharts from '@/components/admin/DashboardCharts';
 import ProductManagement from '@/components/admin/ProductManagement';
 import EmailMarketing from '@/components/admin/EmailMarketing';
 import AffiliateSystem from '@/components/admin/AffiliateSystem';
+import MobileAdminNav from '@/components/admin/MobileAdminNav';
+import MobileAdminHeader from '@/components/admin/MobileAdminHeader';
+import { useMobileFeatures } from '@/hooks/use-mobile-features';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
+  const { isMobile } = useMobileFeatures();
 
   // Check if user is admin or fake admin
   const isFakeAdmin = user?.id === 'fake-admin-id';
   
+  // Get user profile
   const { data: userProfile, isLoading: profileLoading } = useQuery({
     queryKey: ['user-profile', user?.id],
     queryFn: async () => {
@@ -68,9 +73,9 @@ const AdminDashboard = () => {
         donations: donationsRes.count || 0,
         charities: charitiesRes.count || 0,
         totalRaised: totalRaised,
-        memberships: 856, // Mock data for now
-        affiliates: 127, // Mock data for now
-        conversionRate: 2.7 // Mock data for now
+        memberships: 856,
+        affiliates: 127,
+        conversionRate: 2.7
       };
     },
     enabled: userProfile?.role === 'admin',
@@ -226,102 +231,125 @@ const AdminDashboard = () => {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <div className="flex items-center space-x-2">
-          <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-            Administrator
-          </Badge>
-          {isFakeAdmin && (
-            <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-              Test Mode
-            </Badge>
-          )}
-        </div>
-      </div>
+      {/* Mobile Navigation */}
+      <MobileAdminNav 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+        isAdmin={userProfile?.role === 'admin'} 
+        isFakeAdmin={isFakeAdmin}
+      />
 
-      {/* Enhanced Stats Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats?.users || 0}</div>
-            <p className="text-xs text-muted-foreground">+12% from last month</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Raised</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">£{stats?.totalRaised?.toLocaleString() || 0}</div>
-            <p className="text-xs text-muted-foreground">+20% from last month</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Memberships</CardTitle>
-            <UserCheck className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats?.memberships || 0}</div>
-            <p className="text-xs text-muted-foreground">+5% from last month</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Affiliate Partners</CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats?.affiliates || 0}</div>
-            <p className="text-xs text-muted-foreground">+8 new this month</p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Mobile Header */}
+      <MobileAdminHeader 
+        stats={stats} 
+        activeTab={activeTab} 
+        isFakeAdmin={isFakeAdmin}
+      />
+
+      {/* Desktop Header */}
+      {!isMobile && (
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <div className="flex items-center space-x-2">
+            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+              Administrator
+            </Badge>
+            {isFakeAdmin && (
+              <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-300">
+                Test Mode
+              </Badge>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Stats Overview - Desktop Only */}
+      {!isMobile && (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats?.users || 0}</div>
+              <p className="text-xs text-muted-foreground">+12% from last month</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Raised</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">£{stats?.totalRaised?.toLocaleString() || 0}</div>
+              <p className="text-xs text-muted-foreground">+20% from last month</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Memberships</CardTitle>
+              <UserCheck className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats?.memberships || 0}</div>
+              <p className="text-xs text-muted-foreground">+5% from last month</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Affiliate Partners</CardTitle>
+              <Trophy className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats?.affiliates || 0}</div>
+              <p className="text-xs text-muted-foreground">+8 new this month</p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-8">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="analytics" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            Analytics
-          </TabsTrigger>
-          <TabsTrigger value="users" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Users
-          </TabsTrigger>
-          <TabsTrigger value="products" className="flex items-center gap-2">
-            <Package className="h-4 w-4" />
-            Products
-          </TabsTrigger>
-          <TabsTrigger value="charities" className="flex items-center gap-2">
-            <Building2 className="h-4 w-4" />
-            Charities
-          </TabsTrigger>
-          <TabsTrigger value="email" className="flex items-center gap-2">
-            <Mail className="h-4 w-4" />
-            Email
-          </TabsTrigger>
-          <TabsTrigger value="affiliates" className="flex items-center gap-2">
-            <Trophy className="h-4 w-4" />
-            Affiliates
-          </TabsTrigger>
-          <TabsTrigger value="seasonal" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            Seasonal
-          </TabsTrigger>
-        </TabsList>
+        {/* Desktop Tabs */}
+        {!isMobile && (
+          <TabsList className="grid w-full grid-cols-8">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Analytics
+            </TabsTrigger>
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Users
+            </TabsTrigger>
+            <TabsTrigger value="products" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              Products
+            </TabsTrigger>
+            <TabsTrigger value="charities" className="flex items-center gap-2">
+              <Building2 className="h-4 w-4" />
+              Charities
+            </TabsTrigger>
+            <TabsTrigger value="email" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Email
+            </TabsTrigger>
+            <TabsTrigger value="affiliates" className="flex items-center gap-2">
+              <Trophy className="h-4 w-4" />
+              Affiliates
+            </TabsTrigger>
+            <TabsTrigger value="seasonal" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Seasonal
+            </TabsTrigger>
+          </TabsList>
+        )}
         
         <TabsContent value="overview" className="space-y-4">
           <Card>
@@ -330,32 +358,34 @@ const AdminDashboard = () => {
               <CardDescription>Latest charitable contributions</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Donor</TableHead>
-                    <TableHead>Charity</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentDonations?.map((donation) => (
-                    <TableRow key={donation.id}>
-                      <TableCell>{donation.profiles?.full_name || 'Anonymous'}</TableCell>
-                      <TableCell>{donation.charities?.name}</TableCell>
-                      <TableCell>£{Number(donation.amount).toFixed(2)}</TableCell>
-                      <TableCell>
-                        <Badge variant={donation.status === 'completed' ? 'default' : 'secondary'}>
-                          {donation.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{new Date(donation.created_at).toLocaleDateString()}</TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Donor</TableHead>
+                      <TableHead>Charity</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Date</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {recentDonations?.map((donation) => (
+                      <TableRow key={donation.id}>
+                        <TableCell>{donation.profiles?.full_name || 'Anonymous'}</TableCell>
+                        <TableCell>{donation.charities?.name}</TableCell>
+                        <TableCell>£{Number(donation.amount).toFixed(2)}</TableCell>
+                        <TableCell>
+                          <Badge variant={donation.status === 'completed' ? 'default' : 'secondary'}>
+                            {donation.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{new Date(donation.created_at).toLocaleDateString()}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -371,34 +401,36 @@ const AdminDashboard = () => {
               <CardDescription>Manage platform users and their roles</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Jannah Points</TableHead>
-                    <TableHead>Total Donated</TableHead>
-                    <TableHead>Joined</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users?.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell>{user.full_name}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.role === 'admin' ? 'destructive' : 'default'}>
-                          {user.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{user.jannah_points}</TableCell>
-                      <TableCell>£{Number(user.total_donated || 0).toFixed(2)}</TableCell>
-                      <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Role</TableHead>
+                      <TableHead>Jannah Points</TableHead>
+                      <TableHead>Total Donated</TableHead>
+                      <TableHead>Joined</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {users?.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell>{user.full_name}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                          <Badge variant={user.role === 'admin' ? 'destructive' : 'default'}>
+                            {user.role}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{user.jannah_points}</TableCell>
+                        <TableCell>£{Number(user.total_donated || 0).toFixed(2)}</TableCell>
+                        <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -414,34 +446,36 @@ const AdminDashboard = () => {
               <CardDescription>Manage partner charities and verification status</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Country</TableHead>
-                    <TableHead>Verified</TableHead>
-                    <TableHead>Total Raised</TableHead>
-                    <TableHead>Added</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {charities?.map((charity) => (
-                    <TableRow key={charity.id}>
-                      <TableCell className="font-medium">{charity.name}</TableCell>
-                      <TableCell>{charity.category}</TableCell>
-                      <TableCell>{charity.country}</TableCell>
-                      <TableCell>
-                        <Badge variant={charity.verified ? 'default' : 'secondary'}>
-                          {charity.verified ? 'Verified' : 'Pending'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>£{Number(charity.total_raised || 0).toLocaleString()}</TableCell>
-                      <TableCell>{new Date(charity.created_at).toLocaleDateString()}</TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Country</TableHead>
+                      <TableHead>Verified</TableHead>
+                      <TableHead>Total Raised</TableHead>
+                      <TableHead>Added</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {charities?.map((charity) => (
+                      <TableRow key={charity.id}>
+                        <TableCell className="font-medium">{charity.name}</TableCell>
+                        <TableCell>{charity.category}</TableCell>
+                        <TableCell>{charity.country}</TableCell>
+                        <TableCell>
+                          <Badge variant={charity.verified ? 'default' : 'secondary'}>
+                            {charity.verified ? 'Verified' : 'Pending'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>£{Number(charity.total_raised || 0).toLocaleString()}</TableCell>
+                        <TableCell>{new Date(charity.created_at).toLocaleDateString()}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
