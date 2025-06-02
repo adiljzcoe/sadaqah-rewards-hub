@@ -15,15 +15,16 @@ const DhikrCommunity = () => {
   const [selectedDhikr, setSelectedDhikr] = useState('Subhan Allah');
   const [recentAwards, setRecentAwards] = useState([]);
 
-  // Simulate collective count increasing
+  // Simulate collective count increasing automatically (background activity)
   useEffect(() => {
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        setCollectiveCount(prev => prev + Math.floor(Math.random() * 5) + 1);
-      }, 2000);
-      return () => clearInterval(interval);
-    }
-  }, [isPlaying]);
+    const interval = setInterval(() => {
+      // Random background increase from other users
+      if (Math.random() > 0.3) { // 70% chance of background activity
+        setCollectiveCount(prev => prev + Math.floor(Math.random() * 3) + 1);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const dhikrOptions = [
     'Subhan Allah',
@@ -85,7 +86,9 @@ const DhikrCommunity = () => {
   ];
 
   const handleDhikrClick = () => {
+    // Increase both personal and collective count
     setPersonalCount(prev => prev + 1);
+    setCollectiveCount(prev => prev + 1);
     
     // Show random award every 10 dhikrs
     if ((personalCount + 1) % 10 === 0) {
