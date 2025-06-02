@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Database, Seedling, Users, Heart } from 'lucide-react';
+import { Database, Sprout, Users, Heart } from 'lucide-react';
 
 const DataSeeder = () => {
   const { toast } = useToast();
@@ -230,7 +229,7 @@ const DataSeeder = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <h4 className="font-medium flex items-center gap-2">
-              <Seedling className="h-4 w-4 text-green-600" />
+              <Sprout className="h-4 w-4 text-green-600" />
               What will be created:
             </h4>
             <ul className="text-sm text-muted-foreground space-y-1">
@@ -255,7 +254,7 @@ const DataSeeder = () => {
               className="w-full"
               size="sm"
             >
-              <Seedling className="h-4 w-4 mr-2" />
+              <Sprout className="h-4 w-4 mr-2" />
               {isSeeding ? 'Seeding...' : 'Seed Test Data'}
             </Button>
             <Button 
