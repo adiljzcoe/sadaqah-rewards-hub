@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Book, Star, Trophy, List } from 'lucide-react';
+import { Book, Star, Trophy, List, Globe } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import SurahList from '@/components/quran/SurahList';
 import SurahReader from '@/components/quran/SurahReader';
 import QuranProgress from '@/components/quran/QuranProgress';
+import KhatmsLeaderboard from '@/components/quran/KhatmsLeaderboard';
 
 const QuranReader = () => {
   const { user } = useAuth();
@@ -39,7 +40,7 @@ const QuranReader = () => {
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="surahs" className="flex items-center gap-2">
               <List className="h-4 w-4" />
               Surahs
@@ -51,6 +52,10 @@ const QuranReader = () => {
             <TabsTrigger value="progress" className="flex items-center gap-2">
               <Trophy className="h-4 w-4" />
               Progress
+            </TabsTrigger>
+            <TabsTrigger value="khatms" className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              Khatms
             </TabsTrigger>
           </TabsList>
 
@@ -77,6 +82,10 @@ const QuranReader = () => {
 
           <TabsContent value="progress">
             <QuranProgress />
+          </TabsContent>
+
+          <TabsContent value="khatms">
+            <KhatmsLeaderboard />
           </TabsContent>
         </Tabs>
       </div>
