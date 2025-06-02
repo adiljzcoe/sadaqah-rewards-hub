@@ -30,6 +30,7 @@ const CharityProfile = lazy(() => import("./pages/CharityProfile"));
 const BusinessProfile = lazy(() => import("./pages/BusinessProfile"));
 const Auth = lazy(() => import("./pages/Auth"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const GiftCards = lazy(() => import("./pages/GiftCards"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -72,6 +73,7 @@ function App() {
                           <Route path="/campaigns" element={<Campaigns />} />
                           <Route path="/leaderboards" element={<Leaderboards />} />
                           <Route path="/live" element={<LiveFeed />} />
+                          <Route path="/gift-cards" element={<GiftCards />} />
                           
                           {/* Protected Routes */}
                           <Route path="/profile" element={
