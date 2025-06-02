@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -56,6 +55,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
 
   const fetchMessages = async () => {
     try {
+      // First try with profiles join
       const { data, error } = await supabase
         .from('stream_chat_messages')
         .select(`
@@ -68,13 +68,10 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
         .order('created_at', { ascending: true })
         .limit(100);
 
-      if (error) throw error;
-      setMessages(data || []);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-      // Fallback: fetch messages without profile data
-      try {
-        const { data, error: fallbackError } = await supabase
+      if (error) {
+        console.error('Error fetching messages with profiles:', error);
+        // Fallback: fetch messages without profile data
+        const { data: fallbackData, error: fallbackError } = await supabase
           .from('stream_chat_messages')
           .select('*')
           .eq('stream_id', streamId)
@@ -82,10 +79,20 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
           .limit(100);
 
         if (fallbackError) throw fallbackError;
+        
+        // Transform fallback data to match interface
+        const transformedData = fallbackData?.map(msg => ({
+          ...msg,
+          profiles: null
+        })) || [];
+        
+        setMessages(transformedData);
+      } else {
         setMessages(data || []);
-      } catch (fallbackErr) {
-        console.error('Fallback fetch also failed:', fallbackErr);
       }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      setMessages([]);
     }
   };
 
