@@ -132,6 +132,7 @@ const StickyDonationWidget = () => {
   const [friendName, setFriendName] = useState('');
   const [friendEmail, setFriendEmail] = useState('');
   const [friendMobile, setFriendMobile] = useState('');
+  const [selectedGiftCause, setSelectedGiftCause] = useState('clean-water');
   const [selectedBlessing, setSelectedBlessing] = useState('general');
   const [customMessage, setCustomMessage] = useState('');
 
@@ -279,7 +280,7 @@ const StickyDonationWidget = () => {
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
-              {/* Gift Section - Enhanced and tidied up */}
+              {/* Gift Section - Enhanced with cause selection and solid backgrounds */}
               {activeTab === 'gift' && (
                 <div className="mb-3 p-3 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl">
                   <div className="flex items-center mb-2">
@@ -288,36 +289,54 @@ const StickyDonationWidget = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    {/* Friend's Contact Details - Compact with colored backgrounds */}
+                    {/* Friend's Contact Details - Compact with solid background colors */}
                     <div className="grid grid-cols-3 gap-2">
                       <Input
                         type="text"
                         placeholder="Friend's Name"
                         value={friendName}
                         onChange={(e) => setFriendName(e.target.value)}
-                        className="text-xs bg-blue-100 border border-blue-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-blue-700"
+                        className="text-xs bg-blue-200 border border-blue-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-blue-800"
                       />
                       <Input
                         type="email"
                         placeholder="Email Address"
                         value={friendEmail}
                         onChange={(e) => setFriendEmail(e.target.value)}
-                        className="text-xs bg-green-100 border border-green-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-green-700"
+                        className="text-xs bg-green-200 border border-green-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-green-800"
                       />
                       <Input
                         type="tel"
                         placeholder="Mobile Number"
                         value={friendMobile}
                         onChange={(e) => setFriendMobile(e.target.value)}
-                        className="text-xs bg-purple-100 border border-purple-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-purple-700"
+                        className="text-xs bg-purple-200 border border-purple-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-purple-800"
                       />
                     </div>
 
-                    {/* Blessing Selection and Personal Note - Same Row */}
-                    <div className="grid grid-cols-2 gap-2">
+                    {/* Cause Selection, Blessing Selection and Personal Note - Same Row */}
+                    <div className="grid grid-cols-3 gap-2">
+                      <div>
+                        <Select value={selectedGiftCause} onValueChange={setSelectedGiftCause}>
+                          <SelectTrigger className="text-xs bg-orange-200 border border-orange-300 text-orange-800 w-full rounded-lg h-8">
+                            <SelectValue placeholder="Choose a cause" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white border border-orange-300 shadow-lg z-[100] rounded-lg max-h-48 overflow-y-auto">
+                            {memoryCauses.map((cause) => (
+                              <SelectItem key={cause.id} value={cause.id} className="bg-white hover:bg-orange-50 text-orange-800 rounded-lg">
+                                <div>
+                                  <div className="font-medium text-xs">{cause.name}</div>
+                                  <div className="text-xs text-orange-600">{cause.description}</div>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
                       <div>
                         <Select value={selectedBlessing} onValueChange={setSelectedBlessing}>
-                          <SelectTrigger className="text-xs bg-white border border-pink-300 text-pink-800 w-full rounded-lg h-8">
+                          <SelectTrigger className="text-xs bg-pink-200 border border-pink-300 text-pink-800 w-full rounded-lg h-8">
                             <SelectValue placeholder="Choose a blessing" />
                           </SelectTrigger>
                           <SelectContent className="bg-white border border-pink-300 shadow-lg z-[100] rounded-lg max-h-48 overflow-y-auto">
@@ -337,7 +356,7 @@ const StickyDonationWidget = () => {
                           value={customMessage}
                           onChange={(e) => setCustomMessage(e.target.value)}
                           maxLength={100}
-                          className="text-xs bg-white border border-pink-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8"
+                          className="text-xs bg-yellow-200 border border-yellow-300 rounded-lg focus:ring-1 focus:ring-pink-500 focus:border-pink-500 text-gray-900 h-8 placeholder:text-yellow-800"
                         />
                       </div>
                     </div>
@@ -351,7 +370,7 @@ const StickyDonationWidget = () => {
 
                     {/* Preview of Selected Message */}
                     {selectedBlessingDetails && (
-                      <div className="bg-white/70 p-2 rounded-lg border border-pink-200">
+                      <div className="bg-white p-2 rounded-lg border border-pink-200">
                         <div className="text-xs text-pink-700 italic">"{selectedBlessingDetails.message}"</div>
                       </div>
                     )}
