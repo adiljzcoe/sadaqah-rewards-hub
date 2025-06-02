@@ -17,9 +17,10 @@ interface DuaCardProps {
     is_anonymous: boolean;
     ameen_count: number;
     created_at: string;
+    user_id: string;
     profiles?: {
       full_name: string;
-    };
+    } | null;
     user_has_said_ameen?: boolean;
   };
   onAmeenUpdate: (duaId: string, newCount: number, userHasAmeen: boolean) => void;

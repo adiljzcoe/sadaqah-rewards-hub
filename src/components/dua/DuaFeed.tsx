@@ -18,9 +18,10 @@ interface Dua {
   is_anonymous: boolean;
   ameen_count: number;
   created_at: string;
+  user_id: string;
   profiles?: {
     full_name: string;
-  };
+  } | null;
   user_has_said_ameen?: boolean;
 }
 
@@ -61,7 +62,10 @@ const DuaFeed: React.FC = () => {
 
   const fetchDuas = async () => {
     try {
-      let query = supabase
+      console.log('Fetching duas...');
+      
+      // First, fetch duas without profiles to avoid relation issues
+      const { data: duasData, error: duasError } = await supabase
         .from('duas')
         .select(`
           id,
@@ -72,40 +76,56 @@ const DuaFeed: React.FC = () => {
           is_anonymous,
           ameen_count,
           created_at,
-          user_id,
-          profiles:user_id (
-            full_name
-          )
+          user_id
         `)
         .order('created_at', { ascending: false });
 
-      const { data, error } = await query;
-
-      if (error) {
-        console.error('Error fetching duas:', error);
-        throw error;
+      if (duasError) {
+        console.error('Error fetching duas:', duasError);
+        throw duasError;
       }
 
+      if (!duasData) {
+        setDuas([]);
+        return;
+      }
+
+      // Get unique user IDs to fetch profiles
+      const userIds = [...new Set(duasData.map(dua => dua.user_id))];
+      
+      // Fetch profiles separately
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .in('id', userIds);
+
+      // Create a map of user_id to profile
+      const profilesMap = new Map();
+      profilesData?.forEach(profile => {
+        profilesMap.set(profile.id, profile);
+      });
+
       // Check if user has said ameen for each dua
-      if (user && data) {
-        const duaIds = data.map(dua => dua.id);
+      let userAmeenDuaIds = new Set();
+      if (user && duasData.length > 0) {
+        const duaIds = duasData.map(dua => dua.id);
         const { data: ameenData } = await supabase
           .from('dua_ameens')
           .select('dua_id')
           .eq('user_id', user.id)
           .in('dua_id', duaIds);
 
-        const userAmeenDuaIds = new Set(ameenData?.map(a => a.dua_id) || []);
-        
-        const duasWithAmeenStatus = data.map(dua => ({
-          ...dua,
-          user_has_said_ameen: userAmeenDuaIds.has(dua.id)
-        }));
-
-        setDuas(duasWithAmeenStatus);
-      } else {
-        setDuas(data || []);
+        userAmeenDuaIds = new Set(ameenData?.map(a => a.dua_id) || []);
       }
+
+      // Combine the data
+      const duasWithProfiles = duasData.map(dua => ({
+        ...dua,
+        profiles: profilesMap.get(dua.user_id) || null,
+        user_has_said_ameen: userAmeenDuaIds.has(dua.id)
+      }));
+
+      setDuas(duasWithProfiles);
     } catch (error) {
       console.error('Error fetching duas:', error);
       toast({
