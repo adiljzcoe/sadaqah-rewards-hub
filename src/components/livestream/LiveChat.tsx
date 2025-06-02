@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,41 +56,27 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
 
   const fetchMessages = async () => {
     try {
-      // First try with profiles join
+      // Fetch messages without profiles to avoid RLS issues
       const { data, error } = await supabase
         .from('stream_chat_messages')
-        .select(`
-          *,
-          profiles (
-            full_name
-          )
-        `)
+        .select('*')
         .eq('stream_id', streamId)
         .order('created_at', { ascending: true })
         .limit(100);
 
       if (error) {
-        console.error('Error fetching messages with profiles:', error);
-        // Fallback: fetch messages without profile data
-        const { data: fallbackData, error: fallbackError } = await supabase
-          .from('stream_chat_messages')
-          .select('*')
-          .eq('stream_id', streamId)
-          .order('created_at', { ascending: true })
-          .limit(100);
-
-        if (fallbackError) throw fallbackError;
-        
-        // Transform fallback data to match interface
-        const transformedData = fallbackData?.map(msg => ({
-          ...msg,
-          profiles: null
-        })) || [];
-        
-        setMessages(transformedData);
-      } else {
-        setMessages(data || []);
+        console.error('Error fetching messages:', error);
+        setMessages([]);
+        return;
       }
+
+      // Transform data to match interface and add placeholder profile data
+      const transformedData: ChatMessage[] = (data || []).map(msg => ({
+        ...msg,
+        profiles: null // We'll handle names differently to avoid RLS issues
+      }));
+      
+      setMessages(transformedData);
     } catch (error) {
       console.error('Error fetching messages:', error);
       setMessages([]);
@@ -166,12 +153,17 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
 
   const formatMessageText = (message: ChatMessage) => {
     if (message.message_type === 'join') {
-      return `${message.profiles?.full_name || 'Someone'} joined the stream`;
+      return `Someone joined the stream`;
     }
     if (message.message_type === 'leave') {
-      return `${message.profiles?.full_name || 'Someone'} left the stream`;
+      return `Someone left the stream`;
     }
     return message.message;
+  };
+
+  const getDisplayName = (message: ChatMessage) => {
+    // Use a simple fallback since we're avoiding RLS issues
+    return message.profiles?.full_name || 'Anonymous';
   };
 
   useEffect(() => {
@@ -190,7 +182,7 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
         },
         (payload) => {
           console.log('New message:', payload);
-          fetchMessages(); // Refresh to get profile data
+          fetchMessages(); // Refresh messages
         }
       )
       .subscribe();
@@ -263,14 +255,14 @@ const LiveChat: React.FC<LiveChatProps> = ({ streamId, streamTitle }) => {
               >
                 {message.message_type === 'text' && (
                   <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-lg">
-                    {message.profiles?.full_name?.charAt(0).toUpperCase() || '?'}
+                    {getDisplayName(message).charAt(0).toUpperCase()}
                   </div>
                 )}
                 <div>
                   {message.message_type === 'text' && (
                     <div className="flex items-center">
                       <span className="font-semibold text-sm">
-                        {message.profiles?.full_name || 'Anonymous'}
+                        {getDisplayName(message)}
                       </span>
                       <span className="text-xs text-gray-500 ml-2">
                         {formatTime(message.created_at)}
