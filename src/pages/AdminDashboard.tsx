@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,11 +23,11 @@ import AffiliateSystem from "@/components/admin/AffiliateSystem";
 import EmailMarketing from "@/components/admin/EmailMarketing";
 import MobileAdminHeader from "@/components/admin/MobileAdminHeader";
 import MobileAdminNav from "@/components/admin/MobileAdminNav";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   const stats = [
     {
@@ -64,7 +63,7 @@ const AdminDashboard = () => {
   if (isMobile) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <MobileAdminHeader />
+        <MobileAdminHeader activeTab={activeTab} />
         <div className="px-4 py-6 space-y-6">
           {/* Mobile Stats Grid */}
           <div className="grid grid-cols-2 gap-4">
