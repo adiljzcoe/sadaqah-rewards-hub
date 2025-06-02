@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -31,12 +32,11 @@ interface MobileSidebarProps {
   currentPoints: number;
   nextLevelPoints: number;
   isMember: boolean;
-  isOpen: boolean;
-  onClose: () => void;
 }
 
-const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember, isOpen, onClose }: MobileSidebarProps) => {
+const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: MobileSidebarProps) => {
   const location = useLocation();
+  const [isOpen, setIsOpen] = React.useState(false);
   const [isDonateOpen, setIsDonateOpen] = React.useState(false);
   const [isCommunityOpen, setIsCommunityOpen] = React.useState(false);
   const [isRewardsOpen, setIsRewardsOpen] = React.useState(false);
@@ -45,7 +45,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember, is
   const isActive = (path: string) => location.pathname === path;
 
   const handleLinkClick = () => {
-    onClose();
+    setIsOpen(false);
   };
 
   const toggleSection = (section: string) => {
@@ -63,9 +63,26 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember, is
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-80 p-0">
-        <div className="flex flex-col h-full">
+    <div className="relative z-[200]">
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0 ml-2 z-[200]"
+          >
+            <Menu className="h-5 w-5 drop-shadow-sm" />
+          </Button>
+        </SheetTrigger>
+        
+        <SheetContent 
+          side="right" 
+          className="w-[320px] bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-l border-cyan-400/30 shadow-2xl text-white p-0 overflow-y-auto z-[300]"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Navigation Menu</SheetTitle>
+          </SheetHeader>
+
           {/* User Profile Header */}
           <div className="p-6 border-b border-cyan-400/20">
             <div className="p-4 rounded-xl bg-gradient-to-r from-amber-600/20 to-yellow-600/20 border border-amber-400/30">
@@ -93,13 +110,13 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember, is
             </div>
           </div>
 
-          {/* Main Navigation */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
+          {/* Navigation Menu */}
+          <div className="flex-1 p-4 space-y-2">
             {/* Home */}
             <Link 
               to="/" 
               onClick={handleLinkClick}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${
+              className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
                 isActive('/') ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30' : 'hover:bg-slate-800/50 text-white'
               }`}
             >
@@ -212,7 +229,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember, is
             <Link 
               to="/about" 
               onClick={handleLinkClick}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${
+              className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
                 isActive('/about') ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30' : 'hover:bg-slate-800/50 text-white'
               }`}
             >
@@ -229,30 +246,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember, is
                 </Button>
               </div>
             )}
-
-            {/* Masjid Community */}
-            <Link
-              to="/masjid-community"
-              className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
-              onClick={onClose}
-            >
-              <Building className="h-5 w-5" />
-              <span>🕌 Masjid Community</span>
-            </Link>
-          </nav>
-
-          {/* Footer */}
-          <div className="flex items-center justify-between p-4 border-t border-cyan-400/20">
-            <div className="flex items-center space-x-3">
-              <span className="text-sm text-cyan-300">Version 1.0</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <span className="text-sm text-cyan-300">© 2023 Masjid App</span>
-            </div>
           </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
 

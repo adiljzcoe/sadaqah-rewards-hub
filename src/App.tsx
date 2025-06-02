@@ -6,10 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
-import { ThemeProvider } from "@/hooks/use-theme";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Header from "@/components/Header";
-import MasjidCommunity from '@/pages/MasjidCommunity';
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -48,48 +46,90 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <ThemeProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AuthProvider>
-              <div className="flex flex-col min-h-screen">
-                <Header />
-                <Suspense fallback={
-                  <div className="flex items-center justify-center min-h-screen">
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
-                  </div>
-                }>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/why-donate" element={<WhyDonate />} />
-                    <Route path="/water-wells" element={<WaterWells />} />
-                    <Route path="/orphanages" element={<Orphanages />} />
-                    <Route path="/build-mosque" element={<BuildMosque />} />
-                    <Route path="/campaigns" element={<Campaigns />} />
-                    <Route path="/leaderboards" element={<Leaderboards />} />
-                    <Route path="/live-feed" element={<LiveFeed />} />
-                    <Route path="/sadaqah-coins" element={<SadaqahCoins />} />
-                    <Route path="/my-jannah" element={<MyJannah />} />
-                    <Route path="/charity-partners" element={<CharityPartnersPublic />} />
-                    <Route path="/charity/:id" element={<CharityProfile />} />
-                    <Route path="/business/:id" element={<BusinessProfile />} />
-                    <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/gift-cards" element={<GiftCards />} />
-                    <Route path="/membership" element={<Membership />} />
-                    <Route path="/masjid-community" element={<ProtectedRoute><MasjidCommunity /></ProtectedRoute>} />
-                    <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-              </div>
-            </AuthProvider>
-          </BrowserRouter>
-        </ThemeProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <div className="flex flex-col min-h-screen">
+              <Suspense fallback={
+                <div className="flex items-center justify-center min-h-screen">
+                  <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+                </div>
+              }>
+                <Routes>
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="*" element={
+                    <>
+                      <Header />
+                      <main className="flex-1">
+                        <Routes>
+                          <Route path="/" element={<Index />} />
+                          <Route path="/about" element={<About />} />
+                          <Route path="/blog" element={<Blog />} />
+                          <Route path="/why-donate" element={<WhyDonate />} />
+                          <Route path="/charities" element={<CharityPartnersPublic />} />
+                          <Route path="/charity/:id" element={<CharityProfile />} />
+                          <Route path="/business/:id" element={<BusinessProfile />} />
+                          <Route path="/campaigns" element={<Campaigns />} />
+                          <Route path="/leaderboards" element={<Leaderboards />} />
+                          <Route path="/live" element={<LiveFeed />} />
+                          <Route path="/gift-cards" element={<GiftCards />} />
+                          
+                          {/* Protected Routes */}
+                          <Route path="/profile" element={
+                            <ProtectedRoute>
+                              <Profile />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/build-mosque" element={
+                            <ProtectedRoute>
+                              <BuildMosque />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/water-wells" element={
+                            <ProtectedRoute>
+                              <WaterWells />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/orphanages" element={
+                            <ProtectedRoute>
+                              <Orphanages />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/my-jannah" element={
+                            <ProtectedRoute>
+                              <MyJannah />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/coins" element={
+                            <ProtectedRoute>
+                              <SadaqahCoins />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/membership" element={
+                            <ProtectedRoute>
+                              <Membership />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/checkout" element={
+                            <ProtectedRoute>
+                              <Checkout />
+                            </ProtectedRoute>
+                          } />
+                          
+                          {/* Admin Routes */}
+                          <Route path="/admin" element={<AdminDashboard />} />
+                          
+                          <Route path="*" element={<NotFound />} />
+                        </Routes>
+                      </main>
+                    </>
+                  } />
+                </Routes>
+              </Suspense>
+            </div>
+          </AuthProvider>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );
