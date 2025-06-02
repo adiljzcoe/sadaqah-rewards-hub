@@ -1116,6 +1116,125 @@ export type Database = {
         }
         Relationships: []
       }
+      ramadan_calendar_days: {
+        Row: {
+          background_color: string | null
+          bonus_points: number | null
+          created_at: string
+          day_number: number
+          description: string | null
+          dua_text: string | null
+          dua_translation: string | null
+          icon_name: string | null
+          id: string
+          is_active: boolean | null
+          sadaqah_coin_cost: number
+          special_reward: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          background_color?: string | null
+          bonus_points?: number | null
+          created_at?: string
+          day_number: number
+          description?: string | null
+          dua_text?: string | null
+          dua_translation?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          sadaqah_coin_cost?: number
+          special_reward?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          background_color?: string | null
+          bonus_points?: number | null
+          created_at?: string
+          day_number?: number
+          description?: string | null
+          dua_text?: string | null
+          dua_translation?: string | null
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean | null
+          sadaqah_coin_cost?: number
+          special_reward?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ramadan_calendar_progress: {
+        Row: {
+          bonus_points_earned: number | null
+          calendar_day_id: string | null
+          completed_at: string
+          created_at: string
+          id: string
+          sadaqah_coins_spent: number
+          user_id: string | null
+        }
+        Insert: {
+          bonus_points_earned?: number | null
+          calendar_day_id?: string | null
+          completed_at?: string
+          created_at?: string
+          id?: string
+          sadaqah_coins_spent: number
+          user_id?: string | null
+        }
+        Update: {
+          bonus_points_earned?: number | null
+          calendar_day_id?: string | null
+          completed_at?: string
+          created_at?: string
+          id?: string
+          sadaqah_coins_spent?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ramadan_calendar_progress_calendar_day_id_fkey"
+            columns: ["calendar_day_id"]
+            isOneToOne: false
+            referencedRelation: "ramadan_calendar_days"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ramadan_calendar_settings: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          ramadan_end_date: string
+          ramadan_start_date: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          ramadan_end_date: string
+          ramadan_start_date: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          ramadan_end_date?: string
+          ramadan_start_date?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string | null
