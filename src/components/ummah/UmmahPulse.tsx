@@ -7,26 +7,17 @@ import { Progress } from '@/components/ui/progress';
 import { 
   Heart, 
   BookOpen, 
-  Users, 
   Coins, 
-  HandHeart, 
   Moon, 
   Star,
   Globe,
   Activity,
-  TrendingUp
+  TrendingUp,
+  Zap,
+  Award
 } from 'lucide-react';
-
-interface SpiritualActivity {
-  id: string;
-  type: 'prayer' | 'dhikr' | 'quran' | 'charity' | 'dua' | 'fasting' | 'learning';
-  description: string;
-  count: number;
-  emoji: string;
-  color: string;
-  lastUpdated: Date;
-  trending: boolean;
-}
+import { useSpiritualActivities } from '@/hooks/useSpiritualActivities';
+import { useToast } from '@/hooks/use-toast';
 
 interface VibeLevel {
   level: number;
@@ -36,64 +27,11 @@ interface VibeLevel {
 }
 
 const UmmahPulse = () => {
-  const [activities, setActivities] = useState<SpiritualActivity[]>([]);
+  const { activities, totalParticipants, recordSpiritualActivity } = useSpiritualActivities();
   const [vibeLevel, setVibeLevel] = useState<VibeLevel>({ level: 75, description: 'High Spiritual Energy', color: 'text-green-600', bgColor: 'bg-green-100' });
-  const [totalParticipants, setTotalParticipants] = useState(0);
+  const { toast } = useToast();
 
-  const spiritualActivities = [
-    { type: 'prayer', emoji: '🤲', baseCount: 150, variance: 50, color: 'text-green-600' },
-    { type: 'dhikr', emoji: '🌙', baseCount: 80, variance: 30, color: 'text-blue-600' },
-    { type: 'quran', emoji: '📖', baseCount: 60, variance: 25, color: 'text-purple-600' },
-    { type: 'charity', emoji: '💰', baseCount: 40, variance: 20, color: 'text-orange-600' },
-    { type: 'dua', emoji: '🤲', baseCount: 120, variance: 40, color: 'text-indigo-600' },
-    { type: 'fasting', emoji: '🌅', baseCount: 25, variance: 15, color: 'text-yellow-600' },
-    { type: 'learning', emoji: '🎓', baseCount: 35, variance: 15, color: 'text-pink-600' }
-  ];
-
-  const getActivityDescription = (type: string, count: number) => {
-    const descriptions = {
-      prayer: [
-        `${count} believers just finished prayer`,
-        `${count} hearts connected in salah`,
-        `${count} souls in communion with Allah`
-      ],
-      dhikr: [
-        `${count} people are making dhikr`,
-        `${count} hearts remembering Allah`,
-        `${count} tongues reciting His names`
-      ],
-      quran: [
-        `${count} reading Qur'an`,
-        `${count} souls absorbing divine guidance`,
-        `${count} hearts with the Book of Allah`
-      ],
-      charity: [
-        `${count} people just gave charity`,
-        `${count} hearts opened for giving`,
-        `${count} hands extended in generosity`
-      ],
-      dua: [
-        `${count} making du'a right now`,
-        `${count} hearts calling upon Allah`,
-        `${count} voices raised in supplication`
-      ],
-      fasting: [
-        `${count} fasting for Allah`,
-        `${count} souls purifying through fasting`,
-        `${count} hearts strengthening faith`
-      ],
-      learning: [
-        `${count} learning about Islam`,
-        `${count} minds seeking knowledge`,
-        `${count} hearts growing in wisdom`
-      ]
-    };
-    
-    const options = descriptions[type as keyof typeof descriptions] || [`${count} engaging in worship`];
-    return options[Math.floor(Math.random() * options.length)];
-  };
-
-  const calculateVibeLevel = (activities: SpiritualActivity[]) => {
+  const calculateVibeLevel = (activities: any[]) => {
     const total = activities.reduce((sum, activity) => sum + activity.count, 0);
     const level = Math.min(100, Math.max(20, (total / 10) + Math.random() * 20));
     
@@ -108,52 +46,36 @@ const UmmahPulse = () => {
     }
   };
 
-  const generateActivities = () => {
-    const newActivities: SpiritualActivity[] = [];
-    let total = 0;
-
-    spiritualActivities.forEach((template, index) => {
-      const count = template.baseCount + Math.floor(Math.random() * template.variance);
-      const isTrending = Math.random() > 0.7;
-      
-      total += count;
-      
-      newActivities.push({
-        id: `${template.type}_${Date.now()}_${index}`,
-        type: template.type as any,
-        description: getActivityDescription(template.type, count),
-        count,
-        emoji: template.emoji,
-        color: template.color,
-        lastUpdated: new Date(),
-        trending: isTrending
-      });
-    });
-
-    // Sort by count descending and add some randomness
-    newActivities.sort((a, b) => b.count - a.count);
-    
-    setActivities(newActivities);
-    setTotalParticipants(total);
-    setVibeLevel(calculateVibeLevel(newActivities));
-  };
-
   useEffect(() => {
-    // Initial generation
-    generateActivities();
-
-    // Update every 3-5 seconds for live feel
-    const interval = setInterval(() => {
-      generateActivities();
-    }, 3000 + Math.random() * 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+    if (activities.length > 0) {
+      setVibeLevel(calculateVibeLevel(activities));
+    }
+  }, [activities]);
 
   const getVibeIcon = () => {
     if (vibeLevel.level >= 80) return <Heart className="h-6 w-6 animate-pulse" fill="currentColor" />;
     if (vibeLevel.level >= 60) return <Star className="h-6 w-6 animate-pulse" />;
     return <Activity className="h-6 w-6" />;
+  };
+
+  const handleJoinActivity = (activity: any) => {
+    // Record the spiritual activity and award Jannah points
+    recordSpiritualActivity(activity.type, activity.jannahPointsAwarded);
+    
+    toast({
+      title: `Joined ${activity.tag} activity! 🌟`,
+      description: `You're now part of the global ${activity.type} community. Keep up the blessed work!`,
+    });
+  };
+
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'prayer': return <Heart className="h-4 w-4" />;
+      case 'dhikr': return <Moon className="h-4 w-4" />;
+      case 'quran': return <BookOpen className="h-4 w-4" />;
+      case 'charity': return <Coins className="h-4 w-4" />;
+      default: return <Star className="h-4 w-4" />;
+    }
   };
 
   return (
@@ -166,7 +88,7 @@ const UmmahPulse = () => {
           </div>
           <div>
             <h2 className="text-2xl font-bold">Ummah Pulse</h2>
-            <p className="text-sm text-purple-200">Live Spiritual Activity Across the Globe</p>
+            <p className="text-sm text-purple-200">Live Spiritual Activity & Jannah Points Integration</p>
           </div>
         </CardTitle>
       </CardHeader>
@@ -199,7 +121,7 @@ const UmmahPulse = () => {
           </div>
         </div>
 
-        {/* Live Activities */}
+        {/* Live Activities with Jannah Points */}
         <div className="space-y-3">
           <h3 className="font-semibold flex items-center gap-2">
             <Activity className="h-5 w-5 text-green-400 animate-pulse" />
@@ -214,11 +136,20 @@ const UmmahPulse = () => {
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{activity.emoji}</span>
-                  <div>
-                    <p className="font-medium text-white">{activity.description}</p>
-                    <p className="text-xs text-purple-200">
-                      Updated {Math.floor((Date.now() - activity.lastUpdated.getTime()) / 1000)}s ago
-                    </p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-medium text-white">{activity.description}</p>
+                      <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs">
+                        #{activity.tag}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-purple-200">
+                      <span>Updated {Math.floor((Date.now() - activity.lastUpdated.getTime()) / 1000)}s ago</span>
+                      <span className="flex items-center gap-1">
+                        <Award className="h-3 w-3" />
+                        +{activity.jannahPointsAwarded} Jannah Points
+                      </span>
+                    </div>
                   </div>
                 </div>
                 
@@ -226,30 +157,69 @@ const UmmahPulse = () => {
                   {activity.trending && (
                     <TrendingUp className="h-4 w-4 text-green-400" />
                   )}
-                  <Badge className="bg-white/20 text-white border-0">
-                    {activity.count}
-                  </Badge>
+                  <div className="text-right">
+                    <Badge className="bg-white/20 text-white border-0 mb-1">
+                      {activity.count}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      onClick={() => handleJoinActivity(activity)}
+                      className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-xs px-2 py-1 h-auto"
+                    >
+                      <Zap className="h-3 w-3 mr-1" />
+                      Join
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
+        {/* Jannah Points Integration Info */}
+        <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg p-4 border border-yellow-400/30">
+          <div className="flex items-center gap-2 mb-2">
+            <Award className="h-5 w-5 text-yellow-400" />
+            <span className="font-bold text-yellow-100">Jannah Points System</span>
+          </div>
+          <p className="text-sm text-yellow-200 mb-3">
+            Join real-time spiritual activities and earn Jannah points! Each activity type awards different points based on its spiritual value.
+          </p>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex justify-between">
+              <span className="text-yellow-300">🤲 Prayer:</span>
+              <span className="text-white font-semibold">50 pts</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-yellow-300">💰 Charity:</span>
+              <span className="text-white font-semibold">75 pts</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-yellow-300">📖 Qur'an:</span>
+              <span className="text-white font-semibold">30 pts</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-yellow-300">🌅 Fasting:</span>
+              <span className="text-white font-semibold">100 pts</span>
+            </div>
+          </div>
+        </div>
+
         {/* Call to Action */}
         <div className="text-center space-y-3 pt-4 border-t border-white/20">
-          <p className="text-purple-200">Join the global spiritual energy!</p>
+          <p className="text-purple-200">Join the global spiritual energy and earn blessed rewards!</p>
           <div className="flex gap-2 justify-center flex-wrap">
             <Button size="sm" className="bg-green-600 hover:bg-green-700 border-0">
               <Heart className="h-4 w-4 mr-1" />
-              Join Prayer
+              Start Dhikr (+25 pts)
             </Button>
             <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
               <BookOpen className="h-4 w-4 mr-1" />
-              Read Qur'an
+              Read Qur'an (+30 pts)
             </Button>
             <Button size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
               <Coins className="h-4 w-4 mr-1" />
-              Give Charity
+              Give Charity (+75 pts)
             </Button>
           </div>
         </div>
