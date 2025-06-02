@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Heart, Send, Users, MessageCircle, Star, Clock } from 'lucide-react';
+import { Heart, Send, Users, MessageCircle, Star, Clock, Lock, Crown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -32,10 +31,40 @@ const DuaWall = () => {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isPaidMember, setIsPaidMember] = useState(false);
+  const [checkingSubscription, setCheckingSubscription] = useState(true);
+
+  // Check subscription status
+  useEffect(() => {
+    const checkSubscription = async () => {
+      if (!user) {
+        setCheckingSubscription(false);
+        return;
+      }
+
+      try {
+        // Mock subscription check - replace with actual subscription logic
+        // For now, we'll assume users with certain conditions are paid members
+        const mockIsPaid = user.email?.includes('premium') || user.user_metadata?.subscription === 'premium';
+        setIsPaidMember(!!mockIsPaid);
+      } catch (error) {
+        console.error('Error checking subscription:', error);
+        setIsPaidMember(false);
+      } finally {
+        setCheckingSubscription(false);
+      }
+    };
+
+    checkSubscription();
+  }, [user]);
 
   const fetchDuas = async () => {
+    if (!isPaidMember) {
+      setLoading(false);
+      return;
+    }
+
     try {
-      // For now, we'll use a mock implementation until the database types are updated
       console.log('Fetching duas...');
       
       // Mock data for demonstration
@@ -179,8 +208,10 @@ const DuaWall = () => {
   };
 
   useEffect(() => {
-    fetchDuas();
-  }, [user]);
+    if (!checkingSubscription) {
+      fetchDuas();
+    }
+  }, [user, isPaidMember, checkingSubscription]);
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -194,6 +225,86 @@ const DuaWall = () => {
     return date.toLocaleDateString();
   };
 
+  // Show loading state while checking subscription
+  if (checkingSubscription) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Checking access...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show premium required message for non-paid members
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
+              <MessageCircle className="h-10 w-10 text-blue-600" />
+              Du'a Wall
+            </h1>
+          </div>
+
+          <Card className="max-w-2xl mx-auto text-center py-12">
+            <CardContent>
+              <Lock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Authentication Required</h3>
+              <p className="text-gray-500 mb-6">Please log in to access the Du'a Wall community feature.</p>
+              <Button onClick={() => window.location.href = '/auth'} className="bg-blue-600 hover:bg-blue-700">
+                Sign In
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isPaidMember) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
+              <MessageCircle className="h-10 w-10 text-blue-600" />
+              Du'a Wall
+            </h1>
+          </div>
+
+          <Card className="max-w-2xl mx-auto text-center py-12">
+            <CardContent>
+              <Crown className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">Premium Feature</h3>
+              <p className="text-gray-500 mb-6">
+                The Du'a Wall is an exclusive feature for premium members. Join our community to share prayers 
+                and support fellow believers with your Ameen.
+              </p>
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <h4 className="font-semibold text-yellow-800 mb-2">Premium Benefits Include:</h4>
+                <ul className="text-sm text-yellow-700 space-y-1">
+                  <li>• Share and read community prayers</li>
+                  <li>• Support others with Ameen responses</li>
+                  <li>• Anonymous posting option</li>
+                  <li>• Connect with believers worldwide</li>
+                </ul>
+              </div>
+              <Button onClick={() => window.location.href = '/membership'} className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
+                <Crown className="h-4 w-4 mr-2" />
+                Upgrade to Premium
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
       <div className="container mx-auto px-4 py-8">
@@ -202,6 +313,10 @@ const DuaWall = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
             <MessageCircle className="h-10 w-10 text-blue-600" />
             Du'a Wall
+            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+              <Crown className="h-3 w-3 mr-1" />
+              Premium
+            </Badge>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Share your prayers with the community and support others with your Ameen. 
