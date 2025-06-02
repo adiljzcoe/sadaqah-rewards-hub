@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -73,26 +72,45 @@ const DisbursementManagement = () => {
 
   const fetchData = async () => {
     try {
+      console.log('🔄 Fetching disbursement data...');
+      
       // Fetch charities with trust ratings
       const { data: charitiesData, error: charitiesError } = await supabase
         .from('charities')
         .select('*')
         .eq('verified', true);
 
-      if (charitiesError) throw charitiesError;
+      if (charitiesError) {
+        console.error('❌ Error fetching charities:', charitiesError);
+        throw charitiesError;
+      }
+      
+      console.log('✅ Charities fetched:', charitiesData?.length || 0);
       setCharities(charitiesData || []);
 
-      // Fetch pending donations
+      // Fetch pending donations - updated query to be more explicit
       const { data: donationsData, error: donationsError } = await supabase
         .from('donations')
         .select(`
           *,
           charities (name)
         `)
-        .in('disbursement_status', ['pending', 'partial'])
-        .eq('status', 'completed');
+        .eq('status', 'completed')
+        .in('disbursement_status', ['pending', 'partial']);
 
-      if (donationsError) throw donationsError;
+      if (donationsError) {
+        console.error('❌ Error fetching donations:', donationsError);
+        throw donationsError;
+      }
+      
+      console.log('✅ Pending donations fetched:', donationsData?.length || 0);
+      console.log('💰 Donation amounts:', donationsData?.map(d => ({
+        id: d.id.substring(0, 8),
+        amount: d.amount,
+        disbursed: d.disbursed_amount || 0,
+        status: d.disbursement_status
+      })));
+      
       setPendingDonations(donationsData || []);
 
       // Fetch disbursement batches
@@ -105,11 +123,16 @@ const DisbursementManagement = () => {
         .order('created_at', { ascending: false })
         .limit(20);
 
-      if (batchesError) throw batchesError;
+      if (batchesError) {
+        console.error('❌ Error fetching batches:', batchesError);
+        throw batchesError;
+      }
+      
+      console.log('✅ Disbursement batches fetched:', batchesData?.length || 0);
       setDisbursementBatches(batchesData || []);
 
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('❌ Error fetching data:', error);
       toast({
         title: "Error",
         description: "Failed to load disbursement data.",
@@ -121,11 +144,17 @@ const DisbursementManagement = () => {
   };
 
   const handleBulkDisbursement = async () => {
+    console.log('🚀 Starting bulk disbursement process...');
     setIsProcessing(true);
     try {
       const { data, error } = await supabase.rpc('create_bulk_disbursement');
       
-      if (error) throw error;
+      if (error) {
+        console.error('❌ RPC Error:', error);
+        throw error;
+      }
+
+      console.log('✅ Bulk disbursement result:', data);
 
       if (!data) {
         toast({
@@ -143,7 +172,7 @@ const DisbursementManagement = () => {
 
       fetchData();
     } catch (error) {
-      console.error('Error creating bulk disbursement:', error);
+      console.error('❌ Error creating bulk disbursement:', error);
       toast({
         title: "Error",
         description: "Failed to create bulk disbursement.",
@@ -182,9 +211,13 @@ const DisbursementManagement = () => {
     return <div className="flex items-center justify-center p-8">Loading...</div>;
   }
 
-  const totalPendingAmount = pendingDonations.reduce((sum, donation) => 
-    sum + (donation.amount - (donation.disbursed_amount || 0)), 0
-  );
+  const totalPendingAmount = pendingDonations.reduce((sum, donation) => {
+    const remaining = donation.amount - (donation.disbursed_amount || 0);
+    console.log(`💰 Donation ${donation.id.substring(0, 8)}: £${donation.amount/100} - £${(donation.disbursed_amount || 0)/100} = £${remaining/100}`);
+    return sum + remaining;
+  }, 0);
+
+  console.log('💰 Total pending amount:', totalPendingAmount, 'pence (£' + (totalPendingAmount / 100).toFixed(2) + ')');
 
   const getTrustBadgeColor = (rating: number) => {
     if (rating >= 8) return 'bg-green-500';
@@ -201,7 +234,7 @@ const DisbursementManagement = () => {
         </div>
         <Button 
           onClick={handleBulkDisbursement} 
-          disabled={isProcessing || totalPendingAmount <= 0}
+          disabled={isProcessing}
           className="flex items-center gap-2"
           size="lg"
         >
