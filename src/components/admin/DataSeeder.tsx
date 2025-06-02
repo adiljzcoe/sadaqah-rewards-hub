@@ -130,7 +130,7 @@ const DataSeeder = () => {
         user_id: userId,
         charity_id: charity.id,
         amount: amount,
-        status: 'completed', // Use the enum value directly
+        status: 'completed',
         disbursement_status: 'pending',
         disbursed_amount: 0,
         anonymous: Math.random() > 0.7,
@@ -180,22 +180,36 @@ const DataSeeder = () => {
     try {
       console.log('🚀 Starting comprehensive data seeding process...');
       
-      // First, check if data already exists
-      const { data: existingCharities } = await supabase
-        .from('charities')
-        .select('id')
-        .limit(1);
+      // Check for existing data more comprehensively
+      const [charitiesCheck, donationsCheck, allocationsCheck] = await Promise.all([
+        supabase.from('charities').select('id').limit(1),
+        supabase.from('donations').select('id').limit(1),
+        supabase.from('charity_allocations').select('id').limit(1)
+      ]);
 
-      if (existingCharities && existingCharities.length > 0) {
-        toast({
-          title: "Data Already Exists",
-          description: "Test data has already been seeded. Clear the database first if you want to reseed.",
-          variant: "destructive"
+      const hasExistingData = (
+        (charitiesCheck.data && charitiesCheck.data.length > 0) ||
+        (donationsCheck.data && donationsCheck.data.length > 0) ||
+        (allocationsCheck.data && allocationsCheck.data.length > 0)
+      );
+
+      if (hasExistingData) {
+        console.log('⚠️ Existing data detected, but proceeding with seeding anyway...');
+        console.log('📊 Data counts:', {
+          charities: charitiesCheck.data?.length || 0,
+          donations: donationsCheck.data?.length || 0,
+          allocations: allocationsCheck.data?.length || 0
         });
-        return;
+        
+        // Show warning but allow seeding anyway
+        toast({
+          title: "Existing Data Detected",
+          description: "Some data exists. This will add more test data to the existing records.",
+          variant: "default"
+        });
       }
 
-      // Seed charities first
+      // Proceed with seeding regardless
       console.log('🏢 Creating charities...');
       const charities = await seedCharities();
       
