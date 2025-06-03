@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
@@ -101,15 +101,18 @@ function App() {
                       <Route path="/my-ummah" element={<MyUmmah />} />
                       <Route path="/dhikr-community" element={<DhikrCommunity />} />
                       
+                      {/* Admin Routes - both /admin and /admin-dashboard work */}
+                      <Route path="/admin" element={<Navigate to="/admin-dashboard" replace />} />
+                      <Route path="/admin-dashboard" element={
+                        <ProtectedRoute>
+                          <AdminDashboard />
+                        </ProtectedRoute>
+                      } />
+                      
                       {/* Protected Routes */}
                       <Route path="/profile" element={
                         <ProtectedRoute>
                           <Profile />
-                        </ProtectedRoute>
-                      } />
-                      <Route path="/admin-dashboard" element={
-                        <ProtectedRoute>
-                          <AdminDashboard />
                         </ProtectedRoute>
                       } />
                       <Route path="/my-jannah" element={
