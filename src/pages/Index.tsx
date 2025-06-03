@@ -1,3 +1,4 @@
+
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
@@ -8,6 +9,7 @@ import LiveFeed from '@/components/LiveFeed';
 import UserStats from '@/components/UserStats';
 import PersonalLeagueWidget from '@/components/PersonalLeagueWidget';
 import FloatingDonationWidget from '@/components/FloatingDonationWidget';
+import FloatingLoginWidget from '@/components/FloatingLoginWidget';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
 import CharityFeedSection from '@/components/CharityFeedSection';
@@ -267,6 +269,7 @@ const Index = () => {
 
       <FloatingDonationButton />
       <FloatingDonationWidget />
+      <FloatingLoginWidget />
     </div>
   );
 };

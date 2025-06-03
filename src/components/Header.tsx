@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -117,24 +116,6 @@ const Header = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
                   </div>
                 </Link>
-              </div>
-            )}
-
-            {/* Show fake login buttons only when not logged in */}
-            {!user && (
-              <div className="flex items-center space-x-2 relative z-40">
-                <Button 
-                  onClick={fakeUserLogin}
-                  className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1"
-                >
-                  Fake User Login
-                </Button>
-                <Button 
-                  onClick={fakeAdminLogin}
-                  className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1"
-                >
-                  Fake Admin Login
-                </Button>
               </div>
             )}
           </div>
