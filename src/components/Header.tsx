@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, ShoppingCart, Crown } from 'lucide-react';
+import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, ShoppingCart, Crown, Code, UserCog, LogIn, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
@@ -27,6 +28,8 @@ const Header = () => {
   const [rewardsOpen, setRewardsOpen] = useState(false);
   const [islamicOpen, setIslamicOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [userLoginOpen, setUserLoginOpen] = useState(false);
+  const [developerOpen, setDeveloperOpen] = useState(false);
 
   // User level data - this would come from your user context/state management
   const userLevel = 12;
@@ -47,6 +50,18 @@ const Header = () => {
     console.log('User logged in:', !!user);
     console.log('User object:', user);
   }, [user]);
+
+  const handleFakeLogin = (type: 'admin' | 'user') => {
+    if (type === 'admin') {
+      fakeAdminLogin();
+    } else {
+      fakeUserLogin();
+    }
+  };
+
+  const handleSignOut = () => {
+    signOut();
+  };
 
   return (
     <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30 z-50">
@@ -452,6 +467,143 @@ const Header = () => {
                       <div>
                         <div className="font-semibold">Gift Cards</div>
                         <p className="text-sm text-pink-200">Give the gift of giving</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* User Login Dropdown */}
+            <DropdownMenu open={userLoginOpen} onOpenChange={setUserLoginOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setUserLoginOpen(true)}
+                onMouseLeave={() => setUserLoginOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <User className="h-4 w-4" />
+                  <span>Account</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setUserLoginOpen(true)}
+                onMouseLeave={() => setUserLoginOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">User Account</h3>
+                  {user ? (
+                    <DropdownMenuItem asChild>
+                      <button
+                        onClick={handleSignOut}
+                        className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white w-full"
+                      >
+                        <LogOut className="h-5 w-5 mr-3" />
+                        <div>
+                          <div className="font-semibold">Sign Out</div>
+                          <p className="text-sm text-red-200">Log out current user</p>
+                        </div>
+                      </button>
+                    </DropdownMenuItem>
+                  ) : (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <button
+                          onClick={() => handleFakeLogin('user')}
+                          className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white w-full"
+                        >
+                          <User className="h-5 w-5 mr-3" />
+                          <div>
+                            <div className="font-semibold">Test User Login</div>
+                            <p className="text-sm text-blue-200">Login as a test user</p>
+                          </div>
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <button
+                          onClick={() => handleFakeLogin('admin')}
+                          className="flex items-center p-3 rounded-lg bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white w-full"
+                        >
+                          <Shield className="h-5 w-5 mr-3" />
+                          <div>
+                            <div className="font-semibold">Test Admin Login</div>
+                            <p className="text-sm text-orange-200">Login as a test admin</p>
+                          </div>
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link
+                          to="/auth"
+                          className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white"
+                        >
+                          <LogIn className="h-5 w-5 mr-3" />
+                          <div>
+                            <div className="font-semibold">Real Login</div>
+                            <p className="text-sm text-purple-200">Go to authentication page</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Developer Dropdown */}
+            <DropdownMenu open={developerOpen} onOpenChange={setDeveloperOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setDeveloperOpen(true)}
+                onMouseLeave={() => setDeveloperOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <Code className="h-4 w-4" />
+                  <span>Dev</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setDeveloperOpen(true)}
+                onMouseLeave={() => setDeveloperOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Developer Tools</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin-dashboard" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white">
+                      <UserCog className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Admin Dashboard</div>
+                        <p className="text-sm text-red-200">Admin control panel</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white">
+                      <User className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Profile Settings</div>
+                        <p className="text-sm text-blue-200">User profile management</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/checkout" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white">
+                      <span className="text-lg mr-3">💳</span>
+                      <div>
+                        <div className="font-semibold">Checkout</div>
+                        <p className="text-sm text-green-200">Payment processing</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/charity-partners" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white">
+                      <Building className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Charity Partners</div>
+                        <p className="text-sm text-indigo-200">Partner organizations</p>
                       </div>
                     </Link>
                   </DropdownMenuItem>
