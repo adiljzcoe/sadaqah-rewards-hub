@@ -351,44 +351,42 @@ const InMemoryOfWidget = () => {
         }
         
         .enhanced-gold-text {
-          background: linear-gradient(135deg, #8b6914, #d4af37, #ffd700, #d4af37, #8b6914);
-          background-size: 200% 200%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: goldTextShimmer 3s ease-in-out infinite;
-          text-shadow: 2px 2px 4px rgba(139,105,20,0.8);
+          color: #2c1810;
+          text-shadow: 
+            2px 2px 0px #8b6914,
+            3px 3px 0px #ffd700,
+            4px 4px 0px #b8860b,
+            5px 5px 6px rgba(0,0,0,0.8);
           font-weight: 900;
           letter-spacing: 0.5px;
         }
         
         .readable-dark-text {
-          color: #2d3748;
-          text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-          font-weight: 700;
-        }
-        
-        .readable-gold-text {
-          color: #8b6914;
-          text-shadow: 1px 1px 2px rgba(255,255,255,0.9);
-          font-weight: 700;
+          color: #1a202c;
+          text-shadow: 
+            1px 1px 0px #ffffff,
+            2px 2px 0px rgba(255,255,255,0.8),
+            3px 3px 4px rgba(0,0,0,0.6);
+          font-weight: 800;
         }
         
         .message-text {
-          color: #744210;
-          text-shadow: 1px 1px 2px rgba(255,255,255,0.9);
-          font-weight: 600;
+          color: #2d1b0a;
+          text-shadow: 
+            1px 1px 0px #ffffff,
+            2px 2px 0px rgba(255,255,255,0.9),
+            3px 3px 4px rgba(0,0,0,0.5);
+          font-weight: 700;
           font-style: italic;
         }
         
         .date-text {
-          background: linear-gradient(135deg, #8b6914, #d4af37, #ffd700);
-          background-size: 200% 200%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-shadow: 1px 1px 2px rgba(139,105,20,0.6);
-          font-weight: 800;
+          color: #1a365d;
+          text-shadow: 
+            1px 1px 0px #ffd700,
+            2px 2px 0px #b8860b,
+            3px 3px 4px rgba(0,0,0,0.6);
+          font-weight: 900;
           letter-spacing: 0.3px;
         }
         
