@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CartProvider } from './hooks/useCart';
@@ -15,6 +16,7 @@ import NamazTimes from './pages/NamazTimes';
 import QuranReader from './pages/QuranReader';
 import ZakatCalculator from './pages/ZakatCalculator';
 import DuaWall from './pages/DuaWall';
+import DuasLibrary from './pages/DuasLibrary';
 import Campaigns from './pages/Campaigns';
 import BuildMosque from './pages/BuildMosque';
 import WaterWells from './pages/WaterWells';
@@ -62,6 +64,7 @@ function App() {
               <Route path="/quran-reader" element={<QuranReader />} />
               <Route path="/zakat-calculator" element={<ZakatCalculator />} />
               <Route path="/dua-wall" element={<DuaWall />} />
+              <Route path="/duas-library" element={<DuasLibrary />} />
               <Route path="/pray-for-palestine" element={<PrayForPalestine />} />
               
               {/* Donation Routes */}

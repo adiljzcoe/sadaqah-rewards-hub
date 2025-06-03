@@ -853,6 +853,92 @@ export type Database = {
           },
         ]
       }
+      dua_categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
+      dua_donations: {
+        Row: {
+          amount: number
+          created_at: string | null
+          donor_name: string | null
+          donor_user_id: string | null
+          dua_id: string | null
+          id: string
+          is_anonymous: boolean | null
+          jannah_points_earned: number | null
+          message: string | null
+          on_behalf_of: string | null
+          payment_status: string | null
+          sadaqah_coins_earned: number | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          donor_name?: string | null
+          donor_user_id?: string | null
+          dua_id?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          jannah_points_earned?: number | null
+          message?: string | null
+          on_behalf_of?: string | null
+          payment_status?: string | null
+          sadaqah_coins_earned?: number | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          donor_name?: string | null
+          donor_user_id?: string | null
+          dua_id?: string | null
+          id?: string
+          is_anonymous?: boolean | null
+          jannah_points_earned?: number | null
+          message?: string | null
+          on_behalf_of?: string | null
+          payment_status?: string | null
+          sadaqah_coins_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dua_donations_dua_id_fkey"
+            columns: ["dua_id"]
+            isOneToOne: false
+            referencedRelation: "duas_library"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       duas: {
         Row: {
           ameen_count: number | null
@@ -891,6 +977,71 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      duas_library: {
+        Row: {
+          arabic_text: string
+          benefits: string | null
+          category_id: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          recitation_count: number | null
+          recommended_donation_amount: number | null
+          reference: string | null
+          tags: string[] | null
+          title: string
+          translation: string
+          transliteration: string | null
+          updated_at: string | null
+          when_to_recite: string | null
+        }
+        Insert: {
+          arabic_text: string
+          benefits?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          recitation_count?: number | null
+          recommended_donation_amount?: number | null
+          reference?: string | null
+          tags?: string[] | null
+          title: string
+          translation: string
+          transliteration?: string | null
+          updated_at?: string | null
+          when_to_recite?: string | null
+        }
+        Update: {
+          arabic_text?: string
+          benefits?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          recitation_count?: number | null
+          recommended_donation_amount?: number | null
+          reference?: string | null
+          tags?: string[] | null
+          title?: string
+          translation?: string
+          transliteration?: string | null
+          updated_at?: string | null
+          when_to_recite?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "duas_library_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "dua_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       fundraising_campaigns: {
         Row: {
