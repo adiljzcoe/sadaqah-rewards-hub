@@ -6,7 +6,6 @@ import FloatingDonationButton from '@/components/FloatingDonationButton';
 import CharityPartners from '@/components/CharityPartners';
 import LiveFeed from '@/components/LiveFeed';
 import UserStats from '@/components/UserStats';
-import PersonalLeagueWidget from '@/components/PersonalLeagueWidget';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
 import CharityFeedSection from '@/components/CharityFeedSection';
@@ -143,9 +142,6 @@ const Index = () => {
           <div className="space-y-6 max-w-full overflow-x-hidden pl-4 pr-2">
             <div className="hover-lift">
               <UserStats />
-            </div>
-            <div className="hover-lift">
-              <PersonalLeagueWidget />
             </div>
             <div className="hover-lift">
               <AchievementSystem />
