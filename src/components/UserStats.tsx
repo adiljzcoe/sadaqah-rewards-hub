@@ -116,10 +116,10 @@ const UserStats = () => {
   return (
     <div className="w-full -mx-6 -mt-6">
       {/* Classic Gold Certificate - Wider with balanced margins */}
-      <div className="mx-6 text-center mb-8">
-        <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-6 shadow-2xl"
+      <div className="mx-6 text-center mb-8 pt-8">
+        <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-4 shadow-2xl"
              style={{
-               border: '8px solid transparent',
+               border: '6px solid transparent',
                borderImage: `
                  repeating-conic-gradient(
                    from 0deg at 50% 50%,
@@ -127,7 +127,7 @@ const UserStats = () => {
                    #daa520 15deg 30deg,
                    #ffd700 30deg 45deg,
                    #b8860b 45deg 60deg
-                 ) 8`,
+                 ) 6`,
                background: 'linear-gradient(135deg, #f9d71c 0%, #daa520 25%, #ffd700 50%, #b8860b 75%, #daa520 100%)',
                boxShadow: 'inset 0 0 20px rgba(184, 134, 11, 0.3), 0 20px 40px rgba(0,0,0,0.3)'
              }}>
@@ -145,13 +145,13 @@ const UserStats = () => {
           </div>
           
           {/* Ornate Corner Decorations with Islamic star patterns */}
-          <div className="absolute top-3 left-3 text-amber-800 text-xl font-bold">✧</div>
-          <div className="absolute top-3 right-3 text-amber-800 text-xl font-bold">✧</div>
-          <div className="absolute bottom-3 left-3 text-amber-800 text-xl font-bold">✧</div>
-          <div className="absolute bottom-3 right-3 text-amber-800 text-xl font-bold">✧</div>
+          <div className="absolute top-2 left-2 text-amber-800 text-lg font-bold">✧</div>
+          <div className="absolute top-2 right-2 text-amber-800 text-lg font-bold">✧</div>
+          <div className="absolute bottom-2 left-2 text-amber-800 text-lg font-bold">✧</div>
+          <div className="absolute bottom-2 right-2 text-amber-800 text-lg font-bold">✧</div>
           
           {/* Inner decorative border with Islamic geometric pattern */}
-          <div className="absolute inset-3 border border-amber-800 opacity-70"
+          <div className="absolute inset-2 border border-amber-800 opacity-70"
                style={{
                  borderImage: `repeating-linear-gradient(
                    45deg, 
@@ -168,37 +168,37 @@ const UserStats = () => {
           </div>
           
           {/* Certificate Header */}
-          <div className="mb-4">
-            <div className="text-2xl font-bold mb-2 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+          <div className="mb-3">
+            <div className="text-xl font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
               Certificate of Excellence
             </div>
-            <div className="text-xs uppercase tracking-[0.2em] mb-2 text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
+            <div className="text-xs uppercase tracking-[0.15em] mb-1 text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
               This is to certify that
             </div>
-            <div className="w-12 h-px bg-amber-800 mx-auto"></div>
+            <div className="w-10 h-px bg-amber-800 mx-auto"></div>
           </div>
 
           {/* Main Content */}
-          <div className="mb-4 space-y-3">
-            <div className="text-3xl font-bold mb-2 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+          <div className="mb-3 space-y-2">
+            <div className="text-2xl font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
               Ahmad M.
               {isMember && (
-                <Badge className="ml-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm">
-                  <Crown className="h-4 w-4 mr-1" />
+                <Badge className="ml-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm">
+                  <Crown className="h-3 w-3 mr-1" />
                   VIP
                 </Badge>
               )}
             </div>
             
-            <div className="text-xs mb-3 text-amber-800 max-w-xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'serif' }}>
+            <div className="text-xs mb-2 text-amber-800 max-w-xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'serif' }}>
               has demonstrated outstanding commitment and excellence in<br />
               <span className="font-bold text-sm">Charitable Giving and Community Service</span>
             </div>
 
             {/* Rank Badge - Centered */}
-            <div className="relative inline-block mb-3">
-              <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl bg-gradient-to-r ${currentRank.gradient} border-3 border-amber-800 transform hover:rotate-6 transition-transform duration-300`}>
-                <span className="text-xl">{currentRank.icon}</span>
+            <div className="relative inline-block mb-2">
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl bg-gradient-to-r ${currentRank.gradient} border-2 border-amber-800 transform hover:rotate-6 transition-transform duration-300`}>
+                <span className="text-lg">{currentRank.icon}</span>
               </div>
               <Badge className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-lg border border-amber-800`}>
                 <Shield className="h-3 w-3 mr-1" />
@@ -207,8 +207,8 @@ const UserStats = () => {
             </div>
 
             {/* Points Display */}
-            <div className="mb-3">
-              <div className="text-3xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="mb-2">
+              <div className="text-2xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
                 {currentPoints.toLocaleString()}
               </div>
               <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
@@ -218,10 +218,10 @@ const UserStats = () => {
           </div>
 
           {/* Date and Signature Area */}
-          <div className="border-t-2 border-amber-800 pt-3 mt-3">
+          <div className="border-t-2 border-amber-800 pt-2 mt-2">
             <div className="flex justify-between items-end max-w-2xl mx-auto">
               <div className="text-left">
-                <div className="border-b border-amber-800 w-20 mb-1"></div>
+                <div className="border-b border-amber-800 w-16 mb-1"></div>
                 <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
                   Date
                 </div>
@@ -229,7 +229,7 @@ const UserStats = () => {
               
               {/* Center Seal */}
               <div className="text-center">
-                <div className="w-10 h-10 rounded-full border-2 border-amber-800 flex items-center justify-center mb-1 bg-gradient-to-br from-yellow-300 to-amber-400">
+                <div className="w-8 h-8 rounded-full border-2 border-amber-800 flex items-center justify-center mb-1 bg-gradient-to-br from-yellow-300 to-amber-400">
                   <div className="text-sm">🏆</div>
                 </div>
                 <div className="text-xs text-amber-800 font-bold" style={{ fontFamily: 'serif' }}>
@@ -238,14 +238,14 @@ const UserStats = () => {
               </div>
               
               <div className="text-right">
-                <div className="border-b border-amber-800 w-20 mb-1"></div>
+                <div className="border-b border-amber-800 w-16 mb-1"></div>
                 <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
                   Signature
                 </div>
               </div>
             </div>
             
-            <div className="text-center mt-3">
+            <div className="text-center mt-2">
               <div className="text-lg font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif' }}>
                 Donate Feels Great
               </div>
