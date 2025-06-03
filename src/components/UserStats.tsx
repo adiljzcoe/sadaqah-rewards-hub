@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -200,13 +201,23 @@ const UserStats = () => {
               </Badge>
             </div>
 
-            {/* Points Display */}
-            <div className="mb-2">
-              <div className="text-2xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
-                {currentPoints.toLocaleString()}
+            {/* Points and Donations Display */}
+            <div className="mb-2 grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                  {currentPoints.toLocaleString()}
+                </div>
+                <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
+                  Jannah Points Earned
+                </div>
               </div>
-              <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
-                Jannah Points Earned
+              <div className="text-center">
+                <div className="text-2xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                  {totalDonations}
+                </div>
+                <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
+                  Total Donations
+                </div>
               </div>
             </div>
           </div>
@@ -241,7 +252,7 @@ const UserStats = () => {
             
             <div className="text-center mt-2">
               <div className="text-lg font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif' }}>
-                Donate Feels Great
+                Held tight to the rope of Allah swt
               </div>
               <div className="text-xs text-amber-800 font-medium" style={{ fontFamily: 'serif' }}>
                 Community Foundation
@@ -272,17 +283,6 @@ const UserStats = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/50 to-transparent animate-shimmer"></div>
             </div>
           )}
-
-          {/* Total Donations */}
-          <div className="game-card p-4 bg-gradient-to-r from-pink-50 to-red-50">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Heart className="h-6 w-6 text-red-500 animate-subtle-pulse" />
-                <span className="font-bold text-red-800 text-lg">Total Donations</span>
-              </div>
-              <span className="text-2xl font-black text-red-600 animate-points-pop">{totalDonations}</span>
-            </div>
-          </div>
 
           {/* Weekly Goal */}
           <div className="game-card p-4">
