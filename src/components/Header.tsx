@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles } from 'lucide-react';
+import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, ShoppingCart } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
@@ -14,10 +13,12 @@ import {
 import { getUserRank, getNextRank } from '@/utils/rankSystem';
 import MobileSidebar from './MobileSidebar';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 const Header = () => {
   const location = useLocation();
   const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
+  const { totalItems, totalAmount } = useCart();
   const isMember = true; // VIP status
   
   // State for controlling dropdown visibility
@@ -473,14 +474,30 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Mobile Menu */}
-          <div className="md:hidden relative z-20">
-            <MobileSidebar 
-              userLevel={userLevel}
-              currentPoints={currentPoints}
-              nextLevelPoints={nextLevelPoints}
-              isMember={isMember}
-            />
+          {/* Right Section - Cart and Mobile Menu */}
+          <div className="flex items-center space-x-3">
+            {/* Checkout Button - Only show when there are items */}
+            {totalItems > 0 && (
+              <Link to="/checkout">
+                <Button className="relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-xl ring-2 ring-green-400/30 hover:ring-green-300/50">
+                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  <span className="hidden sm:inline">Checkout</span>
+                  <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full animate-pulse">
+                    {totalItems}
+                  </Badge>
+                </Button>
+              </Link>
+            )}
+
+            {/* Mobile Menu */}
+            <div className="md:hidden relative z-20">
+              <MobileSidebar 
+                userLevel={userLevel}
+                currentPoints={currentPoints}
+                nextLevelPoints={nextLevelPoints}
+                isMember={isMember}
+              />
+            </div>
           </div>
         </div>
       </div>
