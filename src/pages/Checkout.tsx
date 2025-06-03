@@ -428,11 +428,11 @@ const Checkout = () => {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {membershipTiers.map((tier) => (
                           <div 
                             key={tier.id}
-                            className={`relative cursor-pointer rounded-lg border p-3 transition-all text-sm ${
+                            className={`relative cursor-pointer rounded-lg border p-2 sm:p-3 transition-all text-sm ${
                               selectedMembership === tier.id 
                                 ? 'border-purple-500 bg-purple-100 scale-105 shadow-lg' 
                                 : 'border-gray-200 hover:border-purple-300'
@@ -447,16 +447,16 @@ const Checkout = () => {
                             </Badge>
                             
                             <div className="text-center">
-                              <div className="text-xs md:text-sm font-bold">{tier.name}</div>
-                              <div className="mb-2">
+                              <div className="text-xs sm:text-sm font-bold">{tier.name}</div>
+                              <div className="mb-1 sm:mb-2">
                                 <div className="text-xs text-gray-500 line-through">£{tier.originalPrice}</div>
-                                <div className="text-lg md:text-xl font-bold text-purple-600">£{tier.price}</div>
+                                <div className="text-sm sm:text-lg md:text-xl font-bold text-purple-600">£{tier.price}</div>
                                 <div className="text-xs text-green-600 font-semibold">
                                   Save £{(tier.originalPrice - tier.price).toFixed(2)}!
                                 </div>
                               </div>
-                              <div className="text-xs md:text-sm text-green-600 font-semibold">{tier.multiplier}x Multiplier!</div>
-                              <div className="mt-2 space-y-1 hidden md:block">
+                              <div className="text-xs sm:text-sm text-green-600 font-semibold">{tier.multiplier}x Multiplier!</div>
+                              <div className="mt-1 sm:mt-2 space-y-1 hidden sm:block">
                                 {tier.features.slice(0, 2).map((feature, idx) => (
                                   <div key={idx} className="text-xs text-gray-600 flex items-center">
                                     <Star className="h-2 w-2 text-yellow-500 mr-1" />
