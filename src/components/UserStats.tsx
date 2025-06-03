@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -114,79 +115,109 @@ const UserStats = () => {
 
   return (
     <div className="w-full -mx-6 -mt-6">
-      {/* Classic Gold Certificate - Full Width */}
-      <div className="text-center mb-8">
-        <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-16 border-8 border-amber-700 shadow-2xl"
+      {/* Classic Gold Certificate - With Margins and Islamic Pattern */}
+      <div className="mx-4 mr-6 text-center mb-8">
+        <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-8 shadow-2xl"
              style={{
-               borderStyle: 'double',
+               border: '12px solid transparent',
+               borderImage: `
+                 repeating-linear-gradient(
+                   45deg,
+                   #b8860b 0px,
+                   #b8860b 8px,
+                   #daa520 8px,
+                   #daa520 16px,
+                   #b8860b 16px,
+                   #b8860b 24px,
+                   #ffd700 24px,
+                   #ffd700 32px
+                 ) 12`,
                background: 'linear-gradient(135deg, #f9d71c 0%, #daa520 25%, #ffd700 50%, #b8860b 75%, #daa520 100%)',
                boxShadow: 'inset 0 0 20px rgba(184, 134, 11, 0.3), 0 20px 40px rgba(0,0,0,0.3)'
              }}>
           
-          {/* Ornate Corner Decorations */}
-          <div className="absolute top-4 left-4 text-amber-800 text-3xl font-bold">◊</div>
-          <div className="absolute top-4 right-4 text-amber-800 text-3xl font-bold">◊</div>
-          <div className="absolute bottom-4 left-4 text-amber-800 text-3xl font-bold">◊</div>
-          <div className="absolute bottom-4 right-4 text-amber-800 text-3xl font-bold">◊</div>
+          {/* Islamic Geometric Pattern Overlay */}
+          <div className="absolute inset-0 opacity-10"
+               style={{
+                 backgroundImage: `
+                   radial-gradient(circle at 25% 25%, #b8860b 2px, transparent 2px),
+                   radial-gradient(circle at 75% 75%, #b8860b 2px, transparent 2px),
+                   radial-gradient(circle at 25% 75%, #b8860b 1px, transparent 1px),
+                   radial-gradient(circle at 75% 25%, #b8860b 1px, transparent 1px)
+                 `,
+                 backgroundSize: '40px 40px, 40px 40px, 20px 20px, 20px 20px'
+               }}>
+          </div>
           
-          {/* Decorative border lines */}
-          <div className="absolute inset-8 border-2 border-amber-800 border-dashed opacity-60"></div>
+          {/* Ornate Corner Decorations with Islamic Motifs */}
+          <div className="absolute top-2 left-2 text-amber-800 text-2xl font-bold">✦</div>
+          <div className="absolute top-2 right-2 text-amber-800 text-2xl font-bold">✦</div>
+          <div className="absolute bottom-2 left-2 text-amber-800 text-2xl font-bold">✦</div>
+          <div className="absolute bottom-2 right-2 text-amber-800 text-2xl font-bold">✦</div>
+          
+          {/* Inner decorative border with Islamic pattern */}
+          <div className="absolute inset-4 border-2 border-amber-800 opacity-60"
+               style={{
+                 borderStyle: 'solid',
+                 borderImage: `repeating-linear-gradient(45deg, #b8860b 0, #b8860b 4px, transparent 4px, transparent 8px) 2`
+               }}>
+          </div>
           
           {/* Certificate Header */}
-          <div className="mb-10">
-            <div className="text-4xl font-bold mb-4 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+          <div className="mb-6">
+            <div className="text-3xl font-bold mb-3 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
               Certificate of Excellence
             </div>
-            <div className="text-sm uppercase tracking-[0.2em] mb-3 text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
+            <div className="text-xs uppercase tracking-[0.2em] mb-2 text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
               This is to certify that
             </div>
-            <div className="w-24 h-px bg-amber-800 mx-auto"></div>
+            <div className="w-16 h-px bg-amber-800 mx-auto"></div>
           </div>
 
           {/* Main Content */}
-          <div className="mb-10 space-y-6">
-            <div className="text-5xl font-bold mb-4 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+          <div className="mb-6 space-y-4">
+            <div className="text-4xl font-bold mb-3 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
               Ahmad M.
               {isMember && (
-                <Badge className="ml-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg">
-                  <Crown className="h-5 w-5 mr-2" />
+                <Badge className="ml-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm">
+                  <Crown className="h-4 w-4 mr-1" />
                   VIP
                 </Badge>
               )}
             </div>
             
-            <div className="text-sm mb-6 text-amber-800 max-w-2xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'serif' }}>
+            <div className="text-xs mb-4 text-amber-800 max-w-xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'serif' }}>
               has demonstrated outstanding commitment and excellence in<br />
-              <span className="font-bold text-lg">Charitable Giving and Community Service</span>
+              <span className="font-bold text-sm">Charitable Giving and Community Service</span>
             </div>
 
             {/* Rank Badge - Centered */}
-            <div className="relative inline-block mb-6">
-              <div className={`w-24 h-24 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-xl bg-gradient-to-r ${currentRank.gradient} border-4 border-amber-800 transform hover:rotate-6 transition-transform duration-300`}>
-                <span className="text-3xl">{currentRank.icon}</span>
+            <div className="relative inline-block mb-4">
+              <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl bg-gradient-to-r ${currentRank.gradient} border-3 border-amber-800 transform hover:rotate-6 transition-transform duration-300`}>
+                <span className="text-2xl">{currentRank.icon}</span>
               </div>
-              <Badge className={`absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-lg border-2 border-amber-800`}>
+              <Badge className={`absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-lg border border-amber-800`}>
                 <Shield className="h-3 w-3 mr-1" />
                 {currentRank.name}
               </Badge>
             </div>
 
             {/* Points Display */}
-            <div className="mb-8">
-              <div className="text-5xl font-black mb-3 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="mb-4">
+              <div className="text-4xl font-black mb-2 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
                 {currentPoints.toLocaleString()}
               </div>
-              <div className="text-lg font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
+              <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
                 Jannah Points Earned
               </div>
             </div>
           </div>
 
           {/* Date and Signature Area */}
-          <div className="border-t-2 border-amber-800 pt-8 mt-8">
-            <div className="flex justify-between items-end max-w-3xl mx-auto">
+          <div className="border-t-2 border-amber-800 pt-4 mt-4">
+            <div className="flex justify-between items-end max-w-2xl mx-auto">
               <div className="text-left">
-                <div className="border-b-2 border-amber-800 w-36 mb-2"></div>
+                <div className="border-b border-amber-800 w-24 mb-1"></div>
                 <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
                   Date
                 </div>
@@ -194,8 +225,8 @@ const UserStats = () => {
               
               {/* Center Seal */}
               <div className="text-center">
-                <div className="w-16 h-16 rounded-full border-3 border-amber-800 flex items-center justify-center mb-3 bg-gradient-to-br from-yellow-300 to-amber-400">
-                  <div className="text-2xl">🏆</div>
+                <div className="w-12 h-12 rounded-full border-2 border-amber-800 flex items-center justify-center mb-2 bg-gradient-to-br from-yellow-300 to-amber-400">
+                  <div className="text-lg">🏆</div>
                 </div>
                 <div className="text-xs text-amber-800 font-bold" style={{ fontFamily: 'serif' }}>
                   Official Seal
@@ -203,18 +234,18 @@ const UserStats = () => {
               </div>
               
               <div className="text-right">
-                <div className="border-b-2 border-amber-800 w-36 mb-2"></div>
+                <div className="border-b border-amber-800 w-24 mb-1"></div>
                 <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
                   Signature
                 </div>
               </div>
             </div>
             
-            <div className="text-center mt-6">
+            <div className="text-center mt-4">
               <div className="text-lg font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif' }}>
                 Donate Feels Great
               </div>
-              <div className="text-sm text-amber-800 font-medium" style={{ fontFamily: 'serif' }}>
+              <div className="text-xs text-amber-800 font-medium" style={{ fontFamily: 'serif' }}>
                 Community Foundation
               </div>
             </div>
