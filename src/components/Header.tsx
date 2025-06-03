@@ -74,32 +74,50 @@ const Header = () => {
               />
             </Link>
 
-            {/* Golden User Plaque - Show different content based on login status */}
+            {/* High-Quality Golden User Plaque */}
             {user ? (
-              // Logged in user plaque
-              <div className="flex items-center bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl px-4 py-2 shadow-lg">
-                <div className="flex items-center space-x-2 text-white">
-                  <Crown className="h-5 w-5" />
-                  <span className="font-bold text-sm">Ahmad M.</span>
-                  <span className="font-bold text-sm">LV {userLevel}</span>
-                  <div className="flex items-center space-x-1 ml-2">
-                    <Star className="h-4 w-4" />
-                    <span className="font-bold text-sm">{currentPoints.toLocaleString()} pts</span>
+              // Logged in user plaque with brilliant golden finish
+              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-6 py-3 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02]">
+                {/* Inner glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/30 via-transparent to-orange-200/20 rounded-2xl"></div>
+                {/* Top highlight */}
+                <div className="absolute top-1 left-2 right-2 h-1 bg-gradient-to-r from-transparent via-yellow-200/60 to-transparent rounded-full"></div>
+                
+                <div className="relative flex items-center space-x-3 text-white">
+                  <Crown className="h-6 w-6 text-yellow-100 drop-shadow-lg" />
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold text-base text-yellow-50 drop-shadow-md">Ahmad M.</span>
+                    <span className="font-bold text-base text-yellow-50 drop-shadow-md">LV {userLevel}</span>
+                  </div>
+                  <div className="flex items-center space-x-2 ml-4 bg-white/20 rounded-lg px-3 py-1 backdrop-blur-sm">
+                    <Star className="h-5 w-5 text-yellow-100 drop-shadow-md" />
+                    <span className="font-bold text-sm text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} pts</span>
                   </div>
                 </div>
+                
+                {/* Subtle shine animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-pulse opacity-30 rounded-2xl"></div>
               </div>
             ) : (
-              // Non-logged in membership plaque
+              // Non-logged in membership plaque with same brilliant finish
               <Link to="/membership">
-                <div className="flex items-center bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
-                  <div className="flex items-center space-x-2 text-white">
-                    <Crown className="h-5 w-5" />
-                    <span className="font-bold text-sm">Membership</span>
-                    <div className="flex items-center space-x-1 ml-2">
-                      <Shield className="h-4 w-4" />
-                      <span className="font-bold text-sm">Join Now</span>
+                <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-6 py-3 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  {/* Inner glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/30 via-transparent to-orange-200/20 rounded-2xl"></div>
+                  {/* Top highlight */}
+                  <div className="absolute top-1 left-2 right-2 h-1 bg-gradient-to-r from-transparent via-yellow-200/60 to-transparent rounded-full"></div>
+                  
+                  <div className="relative flex items-center space-x-3 text-white">
+                    <Crown className="h-6 w-6 text-yellow-100 drop-shadow-lg" />
+                    <span className="font-bold text-base text-yellow-50 drop-shadow-md">Membership</span>
+                    <div className="flex items-center space-x-2 ml-2 bg-white/20 rounded-lg px-3 py-1 backdrop-blur-sm">
+                      <Shield className="h-5 w-5 text-yellow-100 drop-shadow-md" />
+                      <span className="font-bold text-sm text-yellow-50 drop-shadow-md">Join Now</span>
                     </div>
                   </div>
+                  
+                  {/* Subtle shine animation */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-pulse opacity-30 rounded-2xl"></div>
                 </div>
               </Link>
             )}
