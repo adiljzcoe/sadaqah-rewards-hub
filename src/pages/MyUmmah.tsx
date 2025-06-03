@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -101,7 +100,7 @@ const MyUmmah = () => {
         <div className="mb-8">
           <UmmahPulse />
         </div>
-
+        
         {/* Global Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gradient-to-br from-green-600 to-emerald-600 text-white">

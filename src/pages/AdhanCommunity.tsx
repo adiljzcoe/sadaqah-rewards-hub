@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Header from '@/components/Header';
 import AdhanUploader from '@/components/islamic-calendar/AdhanUploader';
 import { Toaster } from '@/components/ui/toaster';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,8 +8,6 @@ import { Mic, Users, Heart, Trophy, Calendar } from 'lucide-react';
 const AdhanCommunity = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-blue-50/20">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
