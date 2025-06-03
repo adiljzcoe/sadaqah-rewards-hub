@@ -115,7 +115,7 @@ const UserStats = () => {
   return (
     <div className="w-full">
       {/* Classic Gold Certificate - Wider with balanced margins */}
-      <div className="text-center mb-8 pt-8">
+      <div className="text-center mb-8 pt-3">
         <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-4 shadow-2xl"
              style={{
                border: '6px solid transparent',
