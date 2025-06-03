@@ -1,4 +1,3 @@
-
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
@@ -9,7 +8,6 @@ import UnifiedLiveFeed from '@/components/UnifiedLiveFeed';
 import UserStats from '@/components/UserStats';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
-import CharityFeedSection from '@/components/CharityFeedSection';
 import CampaignsCarousel from '@/components/CampaignsCarousel';
 import FundraisersCarousel from '@/components/FundraisersCarousel';
 import InMemoryOfWidget from '@/components/InMemoryOfWidget';
@@ -121,11 +119,6 @@ const Index = () => {
             {/* Live Impact Feed moved here - below the charity ticker */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <UnifiedLiveFeed />
-            </div>
-            
-            {/* Charity Feed Section - Right below live impact feed */}
-            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
-              <CharityFeedSection />
             </div>
 
             {/* Business Advertisement between feed sections */}
