@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { UserStats } from '@/components/UserStats';
+import UserStats from '@/components/UserStats';
 import { useAuth } from '@/hooks/useAuth';
 import MobileSidebar from '@/components/MobileSidebar';
 import CurrencySelector from '@/components/CurrencySelector';
@@ -24,13 +24,24 @@ const Header = () => {
     navigate('/');
   };
 
+  // Mock data for MobileSidebar props
+  const userLevel = 12;
+  const currentPoints = 5632;
+  const nextLevelPoints = 6000;
+  const isMember = false;
+
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo and Mobile Menu */}
           <div className="flex items-center gap-4">
-            <MobileSidebar />
+            <MobileSidebar 
+              userLevel={userLevel}
+              currentPoints={currentPoints}
+              nextLevelPoints={nextLevelPoints}
+              isMember={isMember}
+            />
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
                 <Heart className="h-5 w-5 text-white" />
