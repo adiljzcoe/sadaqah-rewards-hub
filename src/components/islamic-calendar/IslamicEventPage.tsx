@@ -1,9 +1,10 @@
-
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import DonationWidget from '@/components/DonationWidget';
 import NotificationScheduler from './NotificationScheduler';
+import CelebrationEffects from './CelebrationEffects';
+import CelebrationBanner from './CelebrationBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -55,20 +56,37 @@ const IslamicEventPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
+      {/* Celebration Effects - Always Active */}
+      <CelebrationEffects />
+      
+      {/* Special Banner for Today's Events */}
+      <CelebrationBanner eventTitle={event.title} isToday={isToday} />
+      
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
+      <div className={`container mx-auto px-4 py-8 ${isToday ? 'pt-24' : ''}`}>
+        {/* Enhanced Hero Section with Extra Celebration Elements */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 text-white mb-8">
+          {/* Background celebration pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-4 left-4 w-8 h-8 border-2 border-yellow-300 rounded-full animate-ping" />
+            <div className="absolute top-8 right-8 w-6 h-6 border-2 border-pink-300 rounded-full animate-pulse" />
+            <div className="absolute bottom-4 left-8 w-10 h-10 border-2 border-green-300 rotate-45 animate-spin" style={{ animationDuration: '8s' }} />
+            <div className="absolute bottom-8 right-4 w-8 h-8 border-2 border-blue-300 rounded-full animate-bounce" />
+          </div>
+          
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="relative z-10 p-8 md:p-12">
             <div className="flex items-center gap-4 mb-6">
-              <div className={`p-4 rounded-full text-4xl ${event.color}`}>
+              <div className={`p-4 rounded-full text-4xl ${event.color} ${isToday ? 'animate-celebration-bounce' : ''}`}>
                 {typeof getTypeIcon() === 'string' ? getTypeIcon() : <span className="text-white">{getTypeIcon()}</span>}
               </div>
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-2">{event.title}</h1>
+                <h1 className={`text-4xl md:text-5xl font-bold mb-2 ${isToday ? 'animate-pulse' : ''}`}>
+                  {event.title}
+                  {isToday && <span className="ml-4 animate-bounce">🌟</span>}
+                </h1>
                 <p className="text-xl opacity-90">{formatIslamicDate(event.islamicDate)}</p>
                 <p className="text-lg opacity-80">
                   {event.gregorianDate.toLocaleDateString('en-US', { 
@@ -89,8 +107,10 @@ const IslamicEventPage = () => {
                 {event.significance} significance
               </Badge>
               {isToday && (
-                <Badge className="text-lg px-4 py-2 bg-yellow-500 text-white animate-bounce">
+                <Badge className="text-lg px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white animate-bounce shadow-lg">
+                  <Sparkles className="h-4 w-4 mr-2" />
                   🌟 Today! 🌟
+                  <Sparkles className="h-4 w-4 ml-2" />
                 </Badge>
               )}
               {isUpcoming && (
@@ -103,12 +123,16 @@ const IslamicEventPage = () => {
             
             <p className="text-xl leading-relaxed mb-6">{event.description}</p>
 
-            {/* Celebration Button in Hero */}
+            {/* Enhanced Celebration Button in Hero */}
             <div className="flex gap-4">
               <Button 
                 onClick={handleCelebrate}
                 size="lg"
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                className={`${
+                  isToday 
+                    ? 'bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 hover:from-yellow-500 hover:via-pink-600 hover:to-purple-700 animate-pulse shadow-2xl' 
+                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600'
+                } text-white font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
               >
                 <PartyPopper className="h-5 w-5 mr-2" />
                 {isToday ? 'Celebrate Now!' : 'Prepare to Celebrate!'}
@@ -123,11 +147,12 @@ const IslamicEventPage = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Countdown */}
             {!isPast && (
-              <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600 rounded-2xl p-1">
+              <div className={`${isToday ? 'bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600' : 'bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600'} rounded-2xl p-1`}>
                 <div className="bg-white rounded-xl p-6">
                   <h2 className="text-2xl font-bold mb-4 text-center text-gray-800 flex items-center justify-center gap-2">
                     <Clock className="h-6 w-6" />
                     {isToday ? '🎉 Celebrating Today! 🎉' : 'Sacred Countdown'}
+                    {isToday && <Sparkles className="h-6 w-6 animate-spin text-yellow-500" />}
                   </h2>
                   <CountdownTimer event={event} />
                   
@@ -136,7 +161,11 @@ const IslamicEventPage = () => {
                     <Button 
                       onClick={handleCelebrate}
                       size="lg"
-                      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 animate-pulse"
+                      className={`${
+                        isToday 
+                          ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-600 hover:via-purple-700 hover:to-indigo-700 animate-pulse shadow-2xl' 
+                          : 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700'
+                      } text-white font-bold px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
                     >
                       <Heart className="h-5 w-5 mr-2" />
                       {isToday ? 'Join the Celebration!' : 'Express Your Joy!'}
