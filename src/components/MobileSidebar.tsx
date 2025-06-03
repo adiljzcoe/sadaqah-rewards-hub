@@ -40,39 +40,39 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   };
 
   const islamicPages = [
-    { name: "Islamic Calendar", path: "/islamic-calendar", icon: Calendar, description: "Sacred days & celebrations" },
-    { name: "Ramadan Calendar", path: "/ramadan-calendar", icon: Moon, description: "Track your Ramadan journey" },
-    { name: "Adhan Community", path: "/adhan-community", icon: Mic, description: "Share beautiful Adhan recordings" },
-    { name: "Live TV", path: "/live-tv", icon: Tv, description: "Islamic channels & content" },
-    { name: "Dhikr Community", path: "/dhikr-community", icon: Sparkles, description: "Spiritual remembrance together" },
+    { name: "Islamic Calendar", path: "/islamic-calendar", icon: Calendar, description: "Sacred days & celebrations", gradient: "from-emerald-600 to-green-600" },
+    { name: "Ramadan Calendar", path: "/ramadan-calendar", icon: Moon, description: "Track your Ramadan journey", gradient: "from-purple-600 to-indigo-600" },
+    { name: "Adhan Community", path: "/adhan-community", icon: Mic, description: "Share beautiful Adhan recordings", gradient: "from-blue-600 to-cyan-600" },
+    { name: "Live TV", path: "/live-tv", icon: Tv, description: "Islamic channels & content", gradient: "from-red-600 to-pink-600" },
+    { name: "Dhikr Community", path: "/dhikr-community", icon: Sparkles, description: "Spiritual remembrance together", gradient: "from-purple-600 to-pink-600" },
   ];
 
   const toolsPages = [
-    { name: "Prayer Times", path: "/namaz-times", icon: Clock, description: "Accurate prayer times worldwide" },
-    { name: "Quran Reader", path: "/quran-reader", icon: BookOpen, description: "Read & track progress" },
-    { name: "Zakat Calculator", path: "/zakat-calculator", icon: Coins, description: "Calculate your Zakat" },
-    { name: "Dua Wall", path: "/dua-wall", icon: Heart, description: "Share & support prayers" },
+    { name: "Prayer Times", path: "/namaz-times", icon: Clock, description: "Accurate prayer times worldwide", gradient: "from-indigo-600 to-blue-600" },
+    { name: "Quran Reader", path: "/quran-reader", icon: BookOpen, description: "Read & track progress", gradient: "from-emerald-600 to-green-600" },
+    { name: "Zakat Calculator", path: "/zakat-calculator", icon: Coins, description: "Calculate your Zakat", gradient: "from-yellow-600 to-orange-600" },
+    { name: "Dua Wall", path: "/dua-wall", icon: Heart, description: "Share & support prayers", gradient: "from-pink-600 to-rose-600" },
   ];
 
   const donatePages = [
-    { name: "Active Campaigns", path: "/campaigns", icon: Heart, description: "Support urgent causes worldwide" },
-    { name: "Build a Mosque", path: "/build-mosque", icon: Building, description: "Fund mosque construction" },
-    { name: "Water Wells", path: "/water-wells", icon: "💧", description: "Provide clean water access" },
-    { name: "Orphanages", path: "/orphanages", icon: "👶", description: "Support orphan care & education" },
-    { name: "Qurbani", path: "/qurbani", icon: "🐄", description: "Sacrifice & share blessings" },
+    { name: "Active Campaigns", path: "/campaigns", icon: Heart, description: "Support urgent causes worldwide", gradient: "from-emerald-600 to-green-600" },
+    { name: "Build a Mosque", path: "/build-mosque", icon: Building, description: "Fund mosque construction", gradient: "from-blue-600 to-indigo-600" },
+    { name: "Water Wells", path: "/water-wells", icon: "💧", description: "Provide clean water access", gradient: "from-cyan-600 to-blue-600" },
+    { name: "Orphanages", path: "/orphanages", icon: "👶", description: "Support orphan care & education", gradient: "from-pink-600 to-rose-600" },
+    { name: "Qurbani", path: "/qurbani", icon: "🐄", description: "Sacrifice & share blessings", gradient: "from-orange-600 to-red-600" },
   ];
 
   const communityPages = [
-    { name: "Masjid Community", path: "/masjid-community", icon: Building, description: "Represent your local mosque" },
-    { name: "My Ummah", path: "/my-ummah", icon: Users, description: "Global Muslim community" },
-    { name: "Leaderboards", path: "/leaderboards", icon: Trophy, description: "Top donors & recognition" },
+    { name: "Masjid Community", path: "/masjid-community", icon: Building, description: "Represent your local mosque", gradient: "from-indigo-600 to-purple-600" },
+    { name: "My Ummah", path: "/my-ummah", icon: Users, description: "Global Muslim community", gradient: "from-emerald-600 to-green-600" },
+    { name: "Leaderboards", path: "/leaderboards", icon: Trophy, description: "Top donors & recognition", gradient: "from-amber-600 to-yellow-600" },
   ];
 
   const rewardsPages = [
-    { name: "Sadaqah Coins", path: "/sadaqah-coins", icon: Coins, description: "Purchase coins & unlock rewards" },
-    { name: "My Jannah", path: "/my-jannah", icon: Building, description: "Build your paradise" },
-    { name: "Membership Tiers", path: "/membership", icon: Shield, description: "Upgrade for multiplied points" },
-    { name: "Gift Cards", path: "/gift-cards", icon: Gift, description: "Give the gift of giving" },
+    { name: "Sadaqah Coins", path: "/sadaqah-coins", icon: Coins, description: "Purchase coins & unlock rewards", gradient: "from-yellow-600 to-amber-600" },
+    { name: "My Jannah", path: "/my-jannah", icon: Building, description: "Build your paradise", gradient: "from-emerald-600 to-green-600" },
+    { name: "Membership Tiers", path: "/membership", icon: Shield, description: "Upgrade for multiplied points", gradient: "from-purple-600 to-indigo-600" },
+    { name: "Gift Cards", path: "/gift-cards", icon: Gift, description: "Give the gift of giving", gradient: "from-pink-600 to-rose-600" },
   ];
 
   const renderPageItem = (page: any) => {
@@ -83,16 +83,16 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         key={page.path}
         to={page.path}
         onClick={handleLinkClick}
-        className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+        className={`flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r ${page.gradient} hover:shadow-xl`}
       >
         {IconComponent ? (
-          <IconComponent className="h-5 w-5 mr-3 text-gray-600" />
+          <IconComponent className="h-5 w-5 mr-3" />
         ) : (
           <span className="text-lg mr-3">{page.icon}</span>
         )}
-        <div>
-          <div className="font-medium text-gray-900">{page.name}</div>
-          <p className="text-sm text-gray-500">{page.description}</p>
+        <div className="flex-1">
+          <div className="font-semibold text-white">{page.name}</div>
+          <p className="text-xs text-white/80 leading-tight">{page.description}</p>
         </div>
       </Link>
     );
@@ -105,74 +105,90 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-80 p-0 bg-white">
-        <SheetHeader className="p-4 border-b">
-          <SheetTitle className="text-left">Navigation</SheetTitle>
+      <SheetContent side="left" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+        <SheetHeader className="p-4 border-b border-white/10">
+          <SheetTitle className="text-left text-white font-bold text-xl">Navigation</SheetTitle>
         </SheetHeader>
         
         <div className="flex flex-col h-full">
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
             
             {/* Home */}
             <Link 
               to="/" 
               onClick={handleLinkClick}
-              className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors font-medium text-gray-900"
+              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
+              <span className="text-lg mr-3">🏠</span>
               Home
             </Link>
 
             {/* Islamic Life Section */}
             <Collapsible open={islamicOpen} onOpenChange={setIslamicOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                <span className="font-medium text-gray-900">Islamic Life</span>
-                {islamicOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <span className="text-lg mr-3">🕌</span>
+                  <span>Islamic Life</span>
+                </div>
+                {islamicOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 ml-4">
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
                 {islamicPages.map(renderPageItem)}
               </CollapsibleContent>
             </Collapsible>
 
             {/* Tools Section */}
             <Collapsible open={toolsOpen} onOpenChange={setToolsOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                <span className="font-medium text-gray-900">Tools</span>
-                {toolsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <span className="text-lg mr-3">🛠️</span>
+                  <span>Tools</span>
+                </div>
+                {toolsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 ml-4">
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
                 {toolsPages.map(renderPageItem)}
               </CollapsibleContent>
             </Collapsible>
 
             {/* Donate Section */}
             <Collapsible open={donateOpen} onOpenChange={setDonateOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                <span className="font-medium text-gray-900">Donate</span>
-                {donateOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <span className="text-lg mr-3">💝</span>
+                  <span>Donate</span>
+                </div>
+                {donateOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 ml-4">
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
                 {donatePages.map(renderPageItem)}
               </CollapsibleContent>
             </Collapsible>
 
             {/* Community Section */}
             <Collapsible open={communityOpen} onOpenChange={setCommunityOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                <span className="font-medium text-gray-900">Community</span>
-                {communityOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <span className="text-lg mr-3">👥</span>
+                  <span>Community</span>
+                </div>
+                {communityOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 ml-4">
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
                 {communityPages.map(renderPageItem)}
               </CollapsibleContent>
             </Collapsible>
 
             {/* Rewards Section */}
             <Collapsible open={rewardsOpen} onOpenChange={setRewardsOpen}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
-                <span className="font-medium text-gray-900">Rewards</span>
-                {rewardsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <span className="text-lg mr-3">🏆</span>
+                  <span>Rewards</span>
+                </div>
+                {rewardsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 ml-4">
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
                 {rewardsPages.map(renderPageItem)}
               </CollapsibleContent>
             </Collapsible>
@@ -182,27 +198,27 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <Link 
                 to="/membership" 
                 onClick={handleLinkClick}
-                className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-cyan-600 text-white hover:from-indigo-700 hover:to-cyan-700 transition-colors"
+                className="flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-yellow-300/60 ring-2 ring-amber-400/30"
               >
-                <Shield className="h-5 w-5 mr-3" />
-                <span className="font-medium">Become a Member</span>
+                <Shield className="h-6 w-6 mr-3" />
+                <span>Become a Member</span>
               </Link>
             )}
           </div>
 
           {/* User Stats at Bottom */}
           {isMember && (
-            <div className="p-4 border-t bg-gray-50">
+            <div className="p-4 border-t border-white/10 bg-gradient-to-r from-slate-800/80 to-indigo-800/80">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium">Level {userLevel}</span>
+                  <span className="text-sm font-bold text-white">Level {userLevel}</span>
                   <div className="flex-1">
                     <Progress value={progress} className="h-2" />
                   </div>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 text-yellow-500" />
-                  <span className="text-sm font-medium">{currentPoints.toLocaleString()} points</span>
+                  <Star className="h-4 w-4 text-yellow-400" />
+                  <span className="text-sm font-bold text-white">{currentPoints.toLocaleString()} points</span>
                 </div>
               </div>
             </div>
