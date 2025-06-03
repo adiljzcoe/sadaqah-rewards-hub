@@ -3,11 +3,20 @@ import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Globe, ChevronDown } from 'lucide-react';
+import { Globe, ChevronDown, Loader2 } from 'lucide-react';
 import { useLocationCurrency } from '@/hooks/useLocationCurrency';
 
 const CurrencySelector = () => {
-  const { locationInfo, setCurrency, availableCurrencies } = useLocationCurrency();
+  const { locationInfo, loading, setCurrency, availableCurrencies } = useLocationCurrency();
+
+  if (loading) {
+    return (
+      <Button variant="outline" size="sm" className="flex items-center gap-2" disabled>
+        <Loader2 className="h-4 w-4 animate-spin" />
+        <span>Loading...</span>
+      </Button>
+    );
+  }
 
   if (!locationInfo) return null;
 

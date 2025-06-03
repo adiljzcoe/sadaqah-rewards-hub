@@ -50,49 +50,49 @@ export const useLocationCurrency = () => {
   useEffect(() => {
     const detectLocation = async () => {
       try {
+        // Check if we have stored location first
+        const stored = localStorage.getItem('userLocation');
+        if (stored) {
+          const parsedLocation = JSON.parse(stored);
+          setLocationInfo(parsedLocation);
+          setLoading(false);
+          return;
+        }
+
         // Try to get location from IP geolocation
         const response = await fetch('https://ipapi.co/json/');
         if (!response.ok) throw new Error('Failed to fetch location');
         
         const data = await response.json();
-        const countryCode = data.country_code;
+        const countryCode = data.country_code || 'GB';
         const currencyCode = countryCurrencyMap[countryCode] || 'GBP';
         
         const locationData: LocationInfo = {
-          country: data.country_name,
+          country: data.country_name || 'United Kingdom',
           countryCode: countryCode,
           currency: currencyData[currencyCode],
           timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
         };
 
         setLocationInfo(locationData);
-        
-        // Store in localStorage for future visits
         localStorage.setItem('userLocation', JSON.stringify(locationData));
         
       } catch (err) {
         console.error('Error detecting location:', err);
         
-        // Fallback: try to get from localStorage or use browser locale
-        const stored = localStorage.getItem('userLocation');
-        if (stored) {
-          setLocationInfo(JSON.parse(stored));
-        } else {
-          // Ultimate fallback based on browser locale
-          const locale = navigator.language;
-          const countryCode = locale.includes('-') ? locale.split('-')[1] : 'GB';
-          const currencyCode = countryCurrencyMap[countryCode] || 'GBP';
-          
-          const fallbackLocation: LocationInfo = {
-            country: 'Unknown',
-            countryCode: countryCode,
-            currency: currencyData[currencyCode],
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          };
-          
-          setLocationInfo(fallbackLocation);
-        }
+        // Fallback based on browser locale
+        const locale = navigator.language;
+        const countryCode = locale.includes('-') ? locale.split('-')[1] : 'GB';
+        const currencyCode = countryCurrencyMap[countryCode] || 'GBP';
         
+        const fallbackLocation: LocationInfo = {
+          country: 'United Kingdom',
+          countryCode: countryCode,
+          currency: currencyData[currencyCode],
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
+        
+        setLocationInfo(fallbackLocation);
         setError('Could not detect precise location, using fallback');
       } finally {
         setLoading(false);
@@ -104,21 +104,29 @@ export const useLocationCurrency = () => {
 
   const convertFromGBP = (amountInPence: number): number => {
     if (!locationInfo) return amountInPence;
-    return Math.round(amountInPence * locationInfo.currency.rate);
+    const convertedPence = amountInPence * locationInfo.currency.rate;
+    return Math.round(convertedPence);
   };
 
   const formatCurrency = (amountInPence: number): string => {
     if (!locationInfo) return `£${(amountInPence / 100).toFixed(2)}`;
     
-    const convertedAmount = convertFromGBP(amountInPence);
+    const convertedPence = convertFromGBP(amountInPence);
     const { symbol, code } = locationInfo.currency;
     
-    // Handle currencies that don't use decimal places (like JPY, KRW)
+    // For currencies that typically don't use decimals or have different formatting
     if (['PKR', 'BDT', 'INR'].includes(code)) {
-      return `${symbol}${convertedAmount.toLocaleString()}`;
+      // These currencies often display without decimals for large amounts
+      const amount = convertedPence / 100;
+      if (amount >= 100) {
+        return `${symbol}${Math.round(amount).toLocaleString()}`;
+      }
+      return `${symbol}${amount.toFixed(2)}`;
     }
     
-    return `${symbol}${(convertedAmount / 100).toFixed(2)}`;
+    // Standard decimal formatting for most currencies
+    const amount = convertedPence / 100;
+    return `${symbol}${amount.toFixed(2)}`;
   };
 
   const setCurrency = (currencyCode: string) => {
