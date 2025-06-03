@@ -23,6 +23,12 @@ export class PushNotificationService {
         return false;
       }
 
+      // Check if we're in a secure context
+      if (!window.isSecureContext) {
+        console.warn('Push notifications require HTTPS or localhost');
+        return false;
+      }
+
       // Register service worker
       this.registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/'
@@ -47,6 +53,7 @@ export class PushNotificationService {
       // Check if we're in a secure context
       if (!window.isSecureContext) {
         console.warn('Push notifications require HTTPS or localhost');
+        throw new Error('Push notifications require HTTPS or localhost');
       }
       
       // Force the permission request - this should trigger the browser popup
@@ -87,7 +94,7 @@ export class PushNotificationService {
       // Check current permission status
       if (Notification.permission === 'denied') {
         console.error('Notification permission is denied');
-        throw new Error('Notification permission denied');
+        throw new Error('Notification permission denied. Please enable notifications in your browser settings.');
       }
 
       // ALWAYS request permission explicitly to trigger popup
@@ -159,6 +166,13 @@ export class PushNotificationService {
 
   async isSubscribed(): Promise<boolean> {
     try {
+      if (!this.registration) {
+        const initialized = await this.initialize();
+        if (!initialized) {
+          return false;
+        }
+      }
+
       if (!this.registration) {
         return false;
       }

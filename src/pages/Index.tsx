@@ -17,6 +17,7 @@ import BusinessAdvert from '@/components/BusinessAdvert';
 import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
+import PushNotificationWidget from '@/components/PushNotificationWidget';
 
 const Index = () => {
   // Mock data for campaigns
@@ -101,6 +102,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
       <StickyDonationWidget />
+      
+      {/* Push Notification Widget - Add at the top */}
+      <div className="container mx-auto px-4 py-4">
+        <PushNotificationWidget />
+      </div>
       
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">
