@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -44,7 +45,8 @@ const Header = () => {
   // Debug log to check if component renders
   React.useEffect(() => {
     console.log('🛩️ Header component rendered - mega menu should work!');
-  }, []);
+    console.log('User logged in:', !!user);
+  }, [user]);
 
   return (
     <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30 z-50">
@@ -59,11 +61,11 @@ const Header = () => {
         <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
       </div>
       
-      <div className="relative z-10 container mx-auto px-3 py-3">
+      <div className="relative z-20 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
-          {/* Left Section - Logo and User with proper z-index layering */}
-          <div className="flex items-center space-x-4 relative">
-            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-20">
+          {/* Left Section - Logo and User with FIXED z-index */}
+          <div className="flex items-center space-x-6 relative z-50">
+            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-30">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
                 alt="Your Jannah Logo" 
@@ -71,12 +73,12 @@ const Header = () => {
               />
             </Link>
 
-            {/* Golden User Plaque - Main Header */}
+            {/* Golden User Plaque - FIXED POSITIONING AND Z-INDEX */}
             {user && (
-              <div className="flex items-center flex-shrink-0 relative z-10">
-                <Link to="/profile">
-                  <div className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50 cursor-pointer">
-                    <div className="flex items-center space-x-4">
+              <div className="flex items-center flex-shrink-0 relative z-50">
+                <Link to="/profile" className="block">
+                  <div className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50 cursor-pointer z-50">
+                    <div className="flex items-center space-x-4 relative z-50">
                       <div className="flex items-center">
                         <span className="text-xl mr-3 drop-shadow-sm">🛡️</span>
                         <div className="flex flex-col">
@@ -120,7 +122,7 @@ const Header = () => {
 
             {/* Show fake login buttons only when not logged in */}
             {!user && (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 relative z-40">
                 <Button 
                   onClick={fakeUserLogin}
                   className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1"
@@ -465,7 +467,7 @@ const Header = () => {
           </nav>
 
           {/* Right Section - Cart and Mobile Menu */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 relative z-40">
             {/* Checkout Button - Only show when there are items */}
             {totalItems > 0 && (
               <Link to="/checkout">
@@ -480,7 +482,7 @@ const Header = () => {
             )}
 
             {/* Mobile Menu */}
-            <div className="md:hidden relative z-20">
+            <div className="md:hidden relative z-30">
               <MobileSidebar 
                 userLevel={userLevel}
                 currentPoints={currentPoints}
