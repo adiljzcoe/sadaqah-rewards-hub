@@ -1,0 +1,144 @@
+
+import { useState, useEffect } from 'react';
+
+export interface CurrencyInfo {
+  code: string;
+  symbol: string;
+  name: string;
+  rate: number; // Exchange rate from GBP
+}
+
+export interface LocationInfo {
+  country: string;
+  countryCode: string;
+  currency: CurrencyInfo;
+  timezone: string;
+}
+
+const currencyData: Record<string, CurrencyInfo> = {
+  GBP: { code: 'GBP', symbol: '£', name: 'British Pound', rate: 1 },
+  USD: { code: 'USD', symbol: '$', name: 'US Dollar', rate: 1.27 },
+  EUR: { code: 'EUR', symbol: '€', name: 'Euro', rate: 1.17 },
+  CAD: { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar', rate: 1.71 },
+  AUD: { code: 'AUD', symbol: 'A$', name: 'Australian Dollar', rate: 1.95 },
+  SAR: { code: 'SAR', symbol: 'ر.س', name: 'Saudi Riyal', rate: 4.76 },
+  AED: { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham', rate: 4.67 },
+  MYR: { code: 'MYR', symbol: 'RM', name: 'Malaysian Ringgit', rate: 5.68 },
+  PKR: { code: 'PKR', symbol: '₨', name: 'Pakistani Rupee', rate: 352 },
+  BDT: { code: 'BDT', symbol: '৳', name: 'Bangladeshi Taka', rate: 152 },
+  INR: { code: 'INR', symbol: '₹', name: 'Indian Rupee', rate: 106 },
+  TRY: { code: 'TRY', symbol: '₺', name: 'Turkish Lira', rate: 43.5 },
+};
+
+const countryCurrencyMap: Record<string, string> = {
+  GB: 'GBP', US: 'USD', CA: 'CAD', AU: 'AUD', NZ: 'AUD',
+  DE: 'EUR', FR: 'EUR', IT: 'EUR', ES: 'EUR', NL: 'EUR', BE: 'EUR',
+  AT: 'EUR', PT: 'EUR', IE: 'EUR', FI: 'EUR', LU: 'EUR', GR: 'EUR',
+  SA: 'SAR', AE: 'AED', QA: 'SAR', KW: 'SAR', BH: 'SAR', OM: 'SAR',
+  MY: 'MYR', SG: 'USD', BN: 'MYR',
+  PK: 'PKR', BD: 'BDT', IN: 'INR',
+  TR: 'TRY', EG: 'USD', MA: 'USD', DZ: 'USD', TN: 'USD',
+  ID: 'USD', TH: 'USD', VN: 'USD', PH: 'USD',
+  NG: 'USD', GH: 'USD', KE: 'USD', ZA: 'USD',
+};
+
+export const useLocationCurrency = () => {
+  const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const detectLocation = async () => {
+      try {
+        // Try to get location from IP geolocation
+        const response = await fetch('https://ipapi.co/json/');
+        if (!response.ok) throw new Error('Failed to fetch location');
+        
+        const data = await response.json();
+        const countryCode = data.country_code;
+        const currencyCode = countryCurrencyMap[countryCode] || 'GBP';
+        
+        const locationData: LocationInfo = {
+          country: data.country_name,
+          countryCode: countryCode,
+          currency: currencyData[currencyCode],
+          timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
+
+        setLocationInfo(locationData);
+        
+        // Store in localStorage for future visits
+        localStorage.setItem('userLocation', JSON.stringify(locationData));
+        
+      } catch (err) {
+        console.error('Error detecting location:', err);
+        
+        // Fallback: try to get from localStorage or use browser locale
+        const stored = localStorage.getItem('userLocation');
+        if (stored) {
+          setLocationInfo(JSON.parse(stored));
+        } else {
+          // Ultimate fallback based on browser locale
+          const locale = navigator.language;
+          const countryCode = locale.includes('-') ? locale.split('-')[1] : 'GB';
+          const currencyCode = countryCurrencyMap[countryCode] || 'GBP';
+          
+          const fallbackLocation: LocationInfo = {
+            country: 'Unknown',
+            countryCode: countryCode,
+            currency: currencyData[currencyCode],
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          };
+          
+          setLocationInfo(fallbackLocation);
+        }
+        
+        setError('Could not detect precise location, using fallback');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    detectLocation();
+  }, []);
+
+  const convertFromGBP = (amountInPence: number): number => {
+    if (!locationInfo) return amountInPence;
+    return Math.round(amountInPence * locationInfo.currency.rate);
+  };
+
+  const formatCurrency = (amountInPence: number): string => {
+    if (!locationInfo) return `£${(amountInPence / 100).toFixed(2)}`;
+    
+    const convertedAmount = convertFromGBP(amountInPence);
+    const { symbol, code } = locationInfo.currency;
+    
+    // Handle currencies that don't use decimal places (like JPY, KRW)
+    if (['PKR', 'BDT', 'INR'].includes(code)) {
+      return `${symbol}${convertedAmount.toLocaleString()}`;
+    }
+    
+    return `${symbol}${(convertedAmount / 100).toFixed(2)}`;
+  };
+
+  const setCurrency = (currencyCode: string) => {
+    if (currencyData[currencyCode] && locationInfo) {
+      const updatedLocation = {
+        ...locationInfo,
+        currency: currencyData[currencyCode]
+      };
+      setLocationInfo(updatedLocation);
+      localStorage.setItem('userLocation', JSON.stringify(updatedLocation));
+    }
+  };
+
+  return {
+    locationInfo,
+    loading,
+    error,
+    convertFromGBP,
+    formatCurrency,
+    setCurrency,
+    availableCurrencies: currencyData,
+  };
+};

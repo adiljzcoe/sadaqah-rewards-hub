@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useLocationCurrency } from '@/hooks/useLocationCurrency';
 import { Heart, Gift, User } from 'lucide-react';
 
 interface DuaDonationDialogProps {
@@ -27,6 +27,7 @@ interface DuaDonationDialogProps {
 const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { formatCurrency } = useLocationCurrency();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     amount: '',
@@ -108,7 +109,7 @@ const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) 
 
       toast({
         title: "Donation Successful! 🤲",
-        description: `Your donation of £${formData.amount} for "${dua.title}" has been recorded. May Allah accept your charity.`,
+        description: `Your donation of ${formatCurrency(amountInPence)} for "${dua.title}" has been recorded. May Allah accept your charity.`,
       });
 
       onOpenChange(false);
@@ -168,7 +169,7 @@ const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Donation Amount */}
             <div>
-              <Label htmlFor="amount">Donation Amount (£)</Label>
+              <Label htmlFor="amount">Donation Amount</Label>
               <Input
                 id="amount"
                 type="number"
@@ -180,7 +181,7 @@ const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) 
                 required
               />
               <p className="text-sm text-gray-600 mt-1">
-                Minimum donation: £0.50
+                Recommended: {formatCurrency(dua.recommended_donation_amount)} • Minimum: £0.50
               </p>
             </div>
 
@@ -241,7 +242,7 @@ const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) 
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <span>Amount:</span>
-                    <span className="font-semibold">£{formData.amount || '0.00'}</span>
+                    <span className="font-semibold">{formatCurrency(Math.round((parseFloat(formData.amount) || 0) * 100))}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Jannah Points:</span>
@@ -276,7 +277,7 @@ const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) 
               ) : (
                 <>
                   <Gift className="h-4 w-4 mr-2" />
-                  Donate £{formData.amount || '0.00'}
+                  Donate {formatCurrency(Math.round((parseFloat(formData.amount) || 0) * 100))}
                 </>
               )}
             </Button>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Building, Droplets, GraduationCap, Home, AlertCircle } from 'lucide-react';
 import DonationWidget from '@/components/DonationWidget';
+import { useLocationCurrency } from '@/hooks/useLocationCurrency';
 
 interface ZakatDistributionProps {
   zakatAmount: number | null;
@@ -66,6 +66,7 @@ const zakatFunds = [
 ];
 
 const ZakatDistribution = ({ zakatAmount, calculationData }: ZakatDistributionProps) => {
+  const { formatCurrency } = useLocationCurrency();
   const [distributions, setDistributions] = useState(
     zakatFunds.reduce((acc, fund) => ({
       ...acc,
@@ -116,11 +117,6 @@ const ZakatDistribution = ({ zakatAmount, calculationData }: ZakatDistributionPr
     );
   }
 
-  const currency = calculationData?.currency || 'GBP';
-  const currencySymbol = currency === 'GBP' ? '£' : 
-                         currency === 'USD' ? '$' : 
-                         currency === 'EUR' ? '€' : 'ر.س';
-
   return (
     <div className="space-y-6">
       {/* Distribution Summary */}
@@ -136,7 +132,7 @@ const ZakatDistribution = ({ zakatAmount, calculationData }: ZakatDistributionPr
         <CardContent>
           <div className="bg-green-50 p-4 rounded-lg mb-4">
             <p className="text-lg font-semibold text-green-800">
-              Total Zakat Amount: {currencySymbol}{zakatAmount.toFixed(2)}
+              Total Zakat Amount: {formatCurrency(Math.round(zakatAmount * 100))}
             </p>
             <p className="text-sm text-green-600">
               Calculated from {calculationData?.year} Islamic year
@@ -184,7 +180,7 @@ const ZakatDistribution = ({ zakatAmount, calculationData }: ZakatDistributionPr
                   
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <p className="font-semibold">{currencySymbol}{amount.toFixed(2)}</p>
+                      <p className="font-semibold">{formatCurrency(Math.round(amount * 100))}</p>
                       <div className="flex items-center gap-2">
                         <Input
                           type="number"

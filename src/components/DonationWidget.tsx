@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Heart, CreditCard, Gift, Users } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
+import { useLocationCurrency } from '@/hooks/useLocationCurrency';
 
 interface DonationWidgetProps {
   campaignId?: string;
@@ -26,6 +27,7 @@ const DonationWidget = ({
   title = "Make a Donation",
   description = "Your generosity makes a real difference"
 }: DonationWidgetProps) => {
+  const { formatCurrency, convertFromGBP } = useLocationCurrency();
   const [amount, setAmount] = useState(defaultAmount.toString());
   const [customAmount, setCustomAmount] = useState('');
   const [donationType, setDonationType] = useState('one-time');
@@ -35,7 +37,8 @@ const DonationWidget = ({
 
   const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
 
-  const predefinedAmounts = [10, 25, 50, 100, 250, 500];
+  // Convert predefined amounts based on user's currency
+  const predefinedAmounts = [1000, 2500, 5000, 10000, 25000, 50000]; // in pence
 
   const handleAmountSelect = (value: string) => {
     trackClick(`amount-${value}`, 'amount_button');
@@ -119,17 +122,17 @@ const DonationWidget = ({
 
           {/* Amount Selection */}
           <div>
-            <Label htmlFor="amount">Donation Amount (£)</Label>
+            <Label htmlFor="amount">Donation Amount</Label>
             <div className="grid grid-cols-3 gap-2 mt-2 mb-3">
-              {predefinedAmounts.map((value) => (
+              {predefinedAmounts.map((amountInPence) => (
                 <Button
-                  key={value}
+                  key={amountInPence}
                   type="button"
-                  variant={amount === value.toString() && !isCustom ? "default" : "outline"}
-                  className="h-10"
-                  onClick={() => handleAmountSelect(value.toString())}
+                  variant={amount === amountInPence.toString() && !isCustom ? "default" : "outline"}
+                  className="h-10 text-xs"
+                  onClick={() => handleAmountSelect(amountInPence.toString())}
                 >
-                  £{value}
+                  {formatCurrency(amountInPence)}
                 </Button>
               ))}
             </div>
@@ -145,11 +148,11 @@ const DonationWidget = ({
             {isCustom && (
               <Input
                 type="number"
-                placeholder="Enter amount"
+                placeholder="Enter amount in pence/cents"
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
-                min="1"
-                step="0.01"
+                min="100"
+                step="100"
               />
             )}
           </div>
@@ -202,7 +205,7 @@ const DonationWidget = ({
             onClick={() => trackClick('donate-button', 'primary_cta')}
           >
             <CreditCard className="h-4 w-4 mr-2" />
-            Donate £{isCustom ? customAmount || '0' : amount}
+            Donate {isCustom ? formatCurrency(parseInt(customAmount) || 0) : formatCurrency(parseInt(amount) || 0)}
           </Button>
 
           <div className="text-center">
