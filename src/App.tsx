@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -103,7 +104,8 @@ function App() {
                           <Profile />
                         </ProtectedRoute>
                       } />
-                      <Route path="/admin" element={
+                      {/* Fixed admin route - was /admin but header links to /admin-dashboard */}
+                      <Route path="/admin-dashboard" element={
                         <ProtectedRoute>
                           <AdminDashboard />
                         </ProtectedRoute>
