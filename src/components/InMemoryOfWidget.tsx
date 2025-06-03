@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -154,7 +155,7 @@ const InMemoryOfWidget = () => {
 
   return (
     <>
-      {/* Enhanced CSS for more exquisite gold effects */}
+      {/* Ultra-Enhanced CSS for exquisite gold effects */}
       <style>{`
         .memorial-plaque {
           will-change: transform;
@@ -163,53 +164,35 @@ const InMemoryOfWidget = () => {
         }
         
         .gold-pin {
-          background: linear-gradient(135deg, 
-            #ffd700 0%, 
-            #ffed4e 15%, 
-            #ffffff 25%, 
-            #ffd700 35%, 
-            #b8860b 50%, 
-            #ffd700 65%, 
-            #ffffff 75%, 
-            #ffed4e 85%, 
-            #ffd700 100%
-          );
-          background-size: 200% 200%;
+          background: 
+            radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, transparent 30%),
+            radial-gradient(circle at 70% 70%, rgba(255,255,255,0.7) 0%, transparent 40%),
+            linear-gradient(135deg, 
+              #DAA520 0%, 
+              #FFD700 15%, 
+              #FFFACD 25%, 
+              #FFE55C 35%, 
+              #B8860B 45%, 
+              #CD853F 55%,
+              #FFD700 65%, 
+              #FFFACD 75%, 
+              #FFE55C 85%, 
+              #DAA520 100%
+            );
+          background-size: 100% 100%, 100% 100%, 400% 400%;
           box-shadow: 
-            0 3px 6px rgba(0,0,0,0.4),
-            inset 0 2px 4px rgba(255,255,255,0.8),
-            inset 0 -1px 2px rgba(184,134,11,0.6),
-            0 0 12px rgba(255,215,0,0.6);
-          border: 2px solid #b8860b;
-          animation: luxuriousGoldShimmer 4s ease-in-out infinite;
-        }
-        
-        .gold-plaque {
-          background: linear-gradient(135deg, 
-            #ffd700 0%, 
-            #ffed4e 20%, 
-            #ffffff 30%, 
-            #ffc107 40%, 
-            #b8860b 50%, 
-            #ffc107 60%, 
-            #ffffff 70%, 
-            #ffed4e 80%, 
-            #ffd700 100%
-          );
-          background-size: 300% 300%;
-          box-shadow: 
-            inset 0 4px 8px rgba(0,0,0,0.3),
-            inset 0 2px 4px rgba(255,255,255,0.8),
-            inset 0 -2px 4px rgba(184,134,11,0.7),
-            0 0 20px rgba(255,215,0,0.5),
-            0 4px 16px rgba(0,0,0,0.2);
-          border: 3px solid #b8860b;
+            0 4px 12px rgba(0,0,0,0.5),
+            inset 0 3px 6px rgba(255,255,255,0.9),
+            inset 0 -2px 4px rgba(184,134,11,0.8),
+            0 0 20px rgba(255,215,0,0.8),
+            0 2px 8px rgba(218,165,32,0.6);
+          border: 3px solid #B8860B;
           position: relative;
           overflow: hidden;
-          animation: premiumGoldFlow 6s ease-in-out infinite;
+          animation: royalGoldShimmer 5s ease-in-out infinite;
         }
         
-        .gold-plaque::before {
+        .gold-pin::before {
           content: '';
           position: absolute;
           top: -50%;
@@ -217,106 +200,232 @@ const InMemoryOfWidget = () => {
           width: 200%;
           height: 200%;
           background: linear-gradient(45deg, 
+            transparent 35%, 
+            rgba(255,255,255,0.95) 50%, 
+            transparent 65%
+          );
+          animation: goldPinGloss 2.5s ease-in-out infinite;
+          pointer-events: none;
+        }
+        
+        .gold-plaque {
+          background: 
+            radial-gradient(ellipse at 25% 25%, rgba(255,255,255,0.8) 0%, transparent 50%),
+            radial-gradient(ellipse at 75% 75%, rgba(255,255,255,0.6) 0%, transparent 40%),
+            linear-gradient(135deg, 
+              #B8860B 0%, 
+              #DAA520 10%, 
+              #FFD700 20%, 
+              #FFFACD 30%, 
+              #FFE55C 40%, 
+              #FFA500 50%, 
+              #FFE55C 60%, 
+              #FFFACD 70%, 
+              #FFD700 80%, 
+              #DAA520 90%, 
+              #B8860B 100%
+            );
+          background-size: 100% 100%, 100% 100%, 500% 500%;
+          box-shadow: 
+            inset 0 6px 12px rgba(0,0,0,0.4),
+            inset 0 3px 6px rgba(255,255,255,0.9),
+            inset 0 -3px 6px rgba(184,134,11,0.8),
+            0 0 30px rgba(255,215,0,0.7),
+            0 6px 20px rgba(0,0,0,0.3),
+            0 2px 8px rgba(218,165,32,0.5);
+          border: 4px solid #8B4513;
+          position: relative;
+          overflow: hidden;
+          animation: luxuriousGoldFlow 8s ease-in-out infinite;
+        }
+        
+        .gold-plaque::before {
+          content: '';
+          position: absolute;
+          top: -100%;
+          left: -100%;
+          width: 300%;
+          height: 300%;
+          background: 
+            conic-gradient(from 0deg at 50% 50%, 
+              transparent 0deg, 
+              rgba(255,255,255,0.8) 60deg, 
+              rgba(255,255,255,0.95) 90deg,
+              rgba(255,255,255,0.8) 120deg,
+              transparent 180deg,
+              transparent 360deg
+            );
+          animation: magnificentGoldGloss 4s linear infinite;
+          pointer-events: none;
+        }
+        
+        .gold-plaque::after {
+          content: '';
+          position: absolute;
+          top: 10%;
+          left: 10%;
+          right: 10%;
+          bottom: 10%;
+          background: linear-gradient(45deg, 
             transparent 40%, 
-            rgba(255,255,255,0.8) 50%, 
+            rgba(255,255,255,0.4) 50%, 
             transparent 60%
           );
-          animation: goldGlossWave 3s ease-in-out infinite;
+          animation: subtleGoldWave 6s ease-in-out infinite reverse;
           pointer-events: none;
+          border-radius: inherit;
         }
         
         .marble-texture {
           background: 
-            linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #ffffff 50%, #e9ecef 75%, #f8f9fa 100%),
-            radial-gradient(circle at 25% 25%, rgba(255,255,255,0.9) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(0,0,0,0.08) 0%, transparent 40%),
-            radial-gradient(circle at 50% 50%, rgba(255,255,255,0.7) 0%, transparent 60%);
+            radial-gradient(circle at 20% 30%, rgba(255,255,255,0.9) 0%, transparent 60%),
+            radial-gradient(circle at 80% 20%, rgba(240,240,240,0.8) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(250,250,250,0.7) 0%, transparent 40%),
+            linear-gradient(135deg, 
+              #F8F8FF 0%, 
+              #F0F8FF 15%, 
+              #FFFFFF 30%, 
+              #F5F5F5 45%, 
+              #E6E6FA 60%, 
+              #F0F8FF 75%, 
+              #FFFFFF 90%, 
+              #F8F8FF 100%
+            ),
+            linear-gradient(45deg, 
+              rgba(220,220,220,0.3) 0%, 
+              transparent 25%, 
+              rgba(200,200,200,0.2) 50%, 
+              transparent 75%
+            );
+          background-size: 150% 150%, 120% 120%, 100% 100%, 100% 100%, 200% 200%;
           box-shadow: 
-            0 12px 40px rgba(0,0,0,0.2),
-            inset 0 2px 4px rgba(255,255,255,0.8),
-            inset 0 -1px 3px rgba(0,0,0,0.1);
-          border: 2px solid rgba(255,255,255,0.5);
+            0 15px 50px rgba(0,0,0,0.25),
+            inset 0 4px 8px rgba(255,255,255,0.9),
+            inset 0 -2px 6px rgba(0,0,0,0.15),
+            0 8px 25px rgba(0,0,0,0.1);
+          border: 3px solid rgba(255,255,255,0.7);
           position: relative;
+          overflow: hidden;
         }
         
         .marble-texture::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(45deg, 
-            transparent 30%, 
-            rgba(255,255,255,0.3) 50%, 
-            transparent 70%
-          );
-          animation: marbleShine 5s ease-in-out infinite;
+          background: 
+            linear-gradient(45deg, 
+              transparent 30%, 
+              rgba(255,255,255,0.5) 45%, 
+              rgba(255,255,255,0.8) 50%, 
+              rgba(255,255,255,0.5) 55%, 
+              transparent 70%
+            );
+          animation: marbleShine 7s ease-in-out infinite;
           pointer-events: none;
           border-radius: inherit;
         }
         
-        @keyframes luxuriousGoldShimmer {
+        @keyframes royalGoldShimmer {
           0%, 100% { 
-            background-position: 0% 50%;
-            filter: brightness(1) saturate(1.2);
-            transform: scale(1);
+            background-position: 0% 50%, 0% 0%, 0% 50%;
+            filter: brightness(1) saturate(1.4) hue-rotate(0deg);
+            transform: scale(1) rotate(0deg);
           }
           25% {
-            background-position: 25% 25%;
-            filter: brightness(1.4) saturate(1.6);
-            transform: scale(1.05);
+            background-position: 25% 25%, 50% 50%, 25% 25%;
+            filter: brightness(1.6) saturate(1.8) hue-rotate(5deg);
+            transform: scale(1.08) rotate(2deg);
           }
           50% { 
-            background-position: 100% 50%;
-            filter: brightness(1.8) saturate(2);
-            transform: scale(1.1);
+            background-position: 100% 50%, 100% 100%, 100% 50%;
+            filter: brightness(2.2) saturate(2.2) hue-rotate(10deg);
+            transform: scale(1.15) rotate(0deg);
           }
           75% {
-            background-position: 75% 75%;
-            filter: brightness(1.4) saturate(1.6);
-            transform: scale(1.05);
+            background-position: 75% 75%, 25% 75%, 75% 75%;
+            filter: brightness(1.6) saturate(1.8) hue-rotate(-5deg);
+            transform: scale(1.08) rotate(-2deg);
           }
         }
         
-        @keyframes premiumGoldFlow {
+        @keyframes luxuriousGoldFlow {
           0%, 100% { 
-            background-position: 0% 50%;
-            filter: brightness(1) saturate(1.3);
+            background-position: 0% 50%, 0% 0%, 0% 50%;
+            filter: brightness(1.2) saturate(1.6) contrast(1.1);
           }
           33% {
-            background-position: 50% 0%;
-            filter: brightness(1.5) saturate(1.8);
+            background-position: 50% 0%, 100% 50%, 50% 0%;
+            filter: brightness(1.8) saturate(2.1) contrast(1.3);
           }
           66% { 
-            background-position: 100% 100%;
-            filter: brightness(1.2) saturate(1.5);
+            background-position: 100% 100%, 50% 100%, 100% 100%;
+            filter: brightness(1.5) saturate(1.9) contrast(1.2);
           }
         }
         
-        @keyframes goldGlossWave {
+        @keyframes magnificentGoldGloss {
           0% {
+            transform: translateX(-150%) translateY(-150%) rotate(0deg);
+            opacity: 0;
+          }
+          25% {
+            opacity: 0.6;
+          }
+          50% {
+            transform: translateX(0%) translateY(0%) rotate(180deg);
+            opacity: 1;
+          }
+          75% {
+            opacity: 0.6;
+          }
+          100% {
+            transform: translateX(150%) translateY(150%) rotate(360deg);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes goldPinGloss {
+          0%, 100% {
             transform: translateX(-100%) translateY(-100%) rotate(45deg);
             opacity: 0;
           }
-          50% {
-            opacity: 1;
+          20% {
+            opacity: 0.3;
           }
-          100% {
-            transform: translateX(100%) translateY(100%) rotate(45deg);
-            opacity: 0;
+          50% {
+            transform: translateX(50%) translateY(50%) rotate(45deg);
+            opacity: 0.9;
+          }
+          80% {
+            opacity: 0.3;
+          }
+        }
+        
+        @keyframes subtleGoldWave {
+          0%, 100% {
+            transform: translateX(-50%) rotate(0deg);
+            opacity: 0.2;
+          }
+          50% {
+            transform: translateX(50%) rotate(180deg);
+            opacity: 0.6;
           }
         }
         
         @keyframes marbleShine {
           0%, 100% {
-            transform: translateX(-100%) rotate(45deg);
+            transform: translateX(-150%) rotate(45deg);
             opacity: 0;
+          }
+          25% {
+            opacity: 0.3;
           }
           50% {
-            transform: translateX(0%) rotate(45deg);
-            opacity: 0.6;
+            transform: translateX(50%) rotate(45deg);
+            opacity: 0.8;
           }
-          100% {
-            transform: translateX(100%) rotate(45deg);
-            opacity: 0;
+          75% {
+            opacity: 0.3;
           }
         }
         
@@ -351,18 +460,45 @@ const InMemoryOfWidget = () => {
         }
         
         .enhanced-gold-text {
-          background: linear-gradient(135deg, #b8860b, #ffd700, #ffed4e, #ffd700, #b8860b);
-          background-size: 200% 200%;
+          background: linear-gradient(135deg, 
+            #8B4513, 
+            #B8860B, 
+            #DAA520, 
+            #FFD700, 
+            #FFFACD, 
+            #FFD700, 
+            #DAA520, 
+            #B8860B, 
+            #8B4513
+          );
+          background-size: 300% 300%;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          animation: goldTextShimmer 3s ease-in-out infinite;
-          text-shadow: 0 1px 3px rgba(184,134,11,0.5);
+          animation: premiumGoldTextShimmer 4s ease-in-out infinite;
+          text-shadow: 
+            0 2px 4px rgba(184,134,11,0.6),
+            0 1px 2px rgba(218,165,32,0.4);
+          filter: drop-shadow(0 1px 3px rgba(139,69,19,0.5));
         }
         
-        @keyframes goldTextShimmer {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+        @keyframes premiumGoldTextShimmer {
+          0%, 100% { 
+            background-position: 0% 50%; 
+            filter: brightness(1.2) saturate(1.4);
+          }
+          25% {
+            background-position: 25% 25%;
+            filter: brightness(1.6) saturate(1.8);
+          }
+          50% { 
+            background-position: 100% 50%; 
+            filter: brightness(2) saturate(2.2);
+          }
+          75% {
+            background-position: 75% 75%;
+            filter: brightness(1.6) saturate(1.8);
+          }
         }
       `}</style>
 
@@ -402,13 +538,13 @@ const InMemoryOfWidget = () => {
                 >
                   {!memorial.isPlaceholder && (
                     <div className="marble-texture rounded-lg p-4 relative overflow-hidden">
-                      {/* Enhanced Corner Gold Pins */}
-                      <div className="gold-pin absolute top-3 left-3 w-4 h-4 rounded-full"></div>
-                      <div className="gold-pin absolute top-3 right-3 w-4 h-4 rounded-full"></div>
-                      <div className="gold-pin absolute bottom-3 left-3 w-4 h-4 rounded-full"></div>
-                      <div className="gold-pin absolute bottom-3 right-3 w-4 h-4 rounded-full"></div>
+                      {/* Ultra-Enhanced Corner Gold Pins */}
+                      <div className="gold-pin absolute top-3 left-3 w-5 h-5 rounded-full"></div>
+                      <div className="gold-pin absolute top-3 right-3 w-5 h-5 rounded-full"></div>
+                      <div className="gold-pin absolute bottom-3 left-3 w-5 h-5 rounded-full"></div>
+                      <div className="gold-pin absolute bottom-3 right-3 w-5 h-5 rounded-full"></div>
                       
-                      {/* Enhanced Inner Gold Plaque */}
+                      {/* Ultra-Enhanced Inner Gold Plaque */}
                       <div className="gold-plaque rounded-lg mx-2 my-2 p-4 relative">
                         {/* Memorial Header */}
                         <div className="text-center mb-3">
