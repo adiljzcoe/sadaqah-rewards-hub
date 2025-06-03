@@ -40,18 +40,7 @@ const Fundraising = () => {
       let query = supabase
         .from('fundraising_campaigns')
         .select(`
-          *,
-          profiles!fundraising_campaigns_created_by_fkey(full_name, avatar_url),
-          masjids(name, location),
-          fundraising_teams(
-            id,
-            team_name,
-            team_raised,
-            team_members(
-              id,
-              profiles!team_members_user_id_fkey(full_name, avatar_url)
-            )
-          )
+          *
         `)
         .eq('status', 'active');
 
@@ -76,6 +65,69 @@ const Fundraising = () => {
 
       const { data, error } = await query;
       if (error) throw error;
+
+      // Get additional data separately
+      for (const campaign of data || []) {
+        // Get creator profile
+        if (campaign.created_by) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('full_name, avatar_url')
+            .eq('id', campaign.created_by)
+            .single();
+          campaign.profiles = profile;
+        }
+
+        // Get masjid info
+        if (campaign.masjid_id) {
+          const { data: masjid } = await supabase
+            .from('masjids')
+            .select('name, location')
+            .eq('id', campaign.masjid_id)
+            .single();
+          campaign.masjids = masjid;
+        }
+
+        // Get teams if it's a team fundraiser
+        if (campaign.is_team_fundraiser) {
+          const { data: teams } = await supabase
+            .from('fundraising_teams')
+            .select(`
+              id,
+              team_name,
+              team_raised
+            `)
+            .eq('campaign_id', campaign.id);
+
+          if (teams && teams.length > 0) {
+            // Get team members for each team
+            for (const team of teams) {
+              const { data: members } = await supabase
+                .from('team_members')
+                .select('id, user_id')
+                .eq('team_id', team.id);
+
+              if (members && members.length > 0) {
+                const userIds = members.map(m => m.user_id).filter(Boolean);
+                const { data: profiles } = await supabase
+                  .from('profiles')
+                  .select('id, full_name, avatar_url')
+                  .in('id', userIds);
+
+                team.team_members = members.map(member => ({
+                  ...member,
+                  profiles: profiles?.find(p => p.id === member.user_id) || null
+                }));
+              } else {
+                team.team_members = [];
+              }
+            }
+          }
+
+          campaign.fundraising_teams = teams || [];
+        }
+      }
+
       return data;
     }
   });

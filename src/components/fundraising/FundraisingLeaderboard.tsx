@@ -21,14 +21,28 @@ const FundraisingLeaderboard = () => {
           raised_amount,
           target_amount,
           created_at,
-          profiles!fundraising_campaigns_created_by_fkey(full_name, avatar_url)
+          created_by
         `)
         .eq('status', 'active')
         .order('raised_amount', { ascending: false })
         .limit(10);
       
       if (error) throw error;
-      return data;
+
+      // Get profiles separately
+      const userIds = data?.map(campaign => campaign.created_by).filter(Boolean) || [];
+      if (userIds.length === 0) return data;
+
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url')
+        .in('id', userIds);
+
+      // Merge the data
+      return data?.map(campaign => ({
+        ...campaign,
+        profiles: profiles?.find(p => p.id === campaign.created_by) || null
+      }));
     }
   });
 
@@ -43,16 +57,46 @@ const FundraisingLeaderboard = () => {
           team_name,
           team_raised,
           team_target,
-          fundraising_campaigns(title),
-          team_members(
-            id,
-            profiles!team_members_user_id_fkey(full_name, avatar_url)
-          )
+          campaign_id
         `)
         .order('team_raised', { ascending: false })
         .limit(10);
       
       if (error) throw error;
+
+      // Get campaign titles and team members separately
+      for (const team of data || []) {
+        // Get campaign title
+        const { data: campaign } = await supabase
+          .from('fundraising_campaigns')
+          .select('title')
+          .eq('id', team.campaign_id)
+          .single();
+        
+        team.fundraising_campaigns = campaign;
+
+        // Get team members
+        const { data: members } = await supabase
+          .from('team_members')
+          .select('id, user_id')
+          .eq('team_id', team.id);
+
+        if (members && members.length > 0) {
+          const userIds = members.map(m => m.user_id).filter(Boolean);
+          const { data: profiles } = await supabase
+            .from('profiles')
+            .select('id, full_name, avatar_url')
+            .in('id', userIds);
+
+          team.team_members = members.map(member => ({
+            ...member,
+            profiles: profiles?.find(p => p.id === member.user_id) || null
+          }));
+        } else {
+          team.team_members = [];
+        }
+      }
+      
       return data;
     }
   });
@@ -65,7 +109,6 @@ const FundraisingLeaderboard = () => {
         .from('fundraising_campaigns')
         .select(`
           created_by,
-          profiles!fundraising_campaigns_created_by_fkey(full_name, avatar_url),
           raised_amount
         `)
         .eq('status', 'active');
@@ -77,7 +120,7 @@ const FundraisingLeaderboard = () => {
         const userId = campaign.created_by;
         if (!acc[userId]) {
           acc[userId] = {
-            user: campaign.profiles,
+            user_id: userId,
             total_raised: 0,
             campaign_count: 0
           };
@@ -87,9 +130,23 @@ const FundraisingLeaderboard = () => {
         return acc;
       }, {});
       
-      return Object.values(grouped)
+      const groupedArray = Object.values(grouped)
         .sort((a: any, b: any) => b.total_raised - a.total_raised)
         .slice(0, 10);
+
+      // Get user profiles
+      const userIds = groupedArray.map((item: any) => item.user_id).filter(Boolean);
+      if (userIds.length === 0) return groupedArray;
+
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url')
+        .in('id', userIds);
+
+      return groupedArray.map((item: any) => ({
+        ...item,
+        user: profiles?.find(p => p.id === item.user_id) || null
+      }));
     }
   });
 
