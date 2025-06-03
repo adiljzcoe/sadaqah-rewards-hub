@@ -115,50 +115,32 @@ const UserStats = () => {
 
   return (
     <div className="w-full -mx-6 -mt-6">
-      {/* Classic Gold Certificate - Wider with minimal right margin */}
-      <div className="ml-6 mr-2 text-center mb-8 pt-8">
+      {/* Classic Gold Certificate - Wider with balanced margins */}
+      <div className="mx-6 text-center mb-8 pt-8">
         <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-4 shadow-2xl"
              style={{
                border: '6px solid transparent',
                borderImage: `
-                 conic-gradient(
-                   from 0deg,
-                   #b8860b 0deg,
-                   #daa520 60deg,
-                   #ffd700 120deg,
-                   #b8860b 180deg,
-                   #daa520 240deg,
-                   #ffd700 300deg,
-                   #b8860b 360deg
+                 repeating-conic-gradient(
+                   from 0deg at 50% 50%,
+                   #b8860b 0deg 15deg,
+                   #daa520 15deg 30deg,
+                   #ffd700 30deg 45deg,
+                   #b8860b 45deg 60deg
                  ) 6`,
                background: 'linear-gradient(135deg, #f9d71c 0%, #daa520 25%, #ffd700 50%, #b8860b 75%, #daa520 100%)',
                boxShadow: 'inset 0 0 20px rgba(184, 134, 11, 0.3), 0 20px 40px rgba(0,0,0,0.3)'
              }}>
           
           {/* Islamic Geometric Pattern Overlay */}
-          <div className="absolute inset-0 opacity-10"
+          <div className="absolute inset-0 opacity-15"
                style={{
                  backgroundImage: `
-                   radial-gradient(circle at 25% 25%, #b8860b 2px, transparent 2px),
-                   radial-gradient(circle at 75% 75%, #daa520 2px, transparent 2px),
-                   conic-gradient(from 0deg at 50% 50%, 
-                     transparent 0deg,
-                     rgba(184, 134, 11, 0.3) 30deg,
-                     transparent 60deg,
-                     rgba(218, 165, 32, 0.3) 90deg,
-                     transparent 120deg,
-                     rgba(255, 215, 0, 0.3) 150deg,
-                     transparent 180deg,
-                     rgba(184, 134, 11, 0.3) 210deg,
-                     transparent 240deg,
-                     rgba(218, 165, 32, 0.3) 270deg,
-                     transparent 300deg,
-                     rgba(255, 215, 0, 0.3) 330deg,
-                     transparent 360deg
-                   )
+                   repeating-conic-gradient(from 0deg at 25% 25%, #b8860b 0deg 30deg, transparent 30deg 60deg),
+                   repeating-conic-gradient(from 45deg at 75% 75%, #daa520 0deg 30deg, transparent 30deg 60deg),
+                   repeating-linear-gradient(45deg, transparent 0px, transparent 10px, rgba(184, 134, 11, 0.1) 10px, rgba(184, 134, 11, 0.1) 20px)
                  `,
-                 backgroundSize: '40px 40px, 40px 40px, 80px 80px',
-                 backgroundPosition: '0 0, 20px 20px, 0 0'
+                 backgroundSize: '60px 60px, 60px 60px, 30px 30px'
                }}>
           </div>
           
@@ -171,12 +153,16 @@ const UserStats = () => {
           {/* Inner decorative border with Islamic geometric pattern */}
           <div className="absolute inset-2 border border-amber-800 opacity-70"
                style={{
-                 borderImage: `repeating-conic-gradient(
-                   from 0deg at center, 
-                   #b8860b 0deg 15deg, 
-                   transparent 15deg 30deg,
-                   #daa520 30deg 45deg,
-                   transparent 45deg 60deg
+                 borderImage: `repeating-linear-gradient(
+                   45deg, 
+                   #b8860b 0, 
+                   #b8860b 3px, 
+                   transparent 3px, 
+                   transparent 6px,
+                   #daa520 6px,
+                   #daa520 9px,
+                   transparent 9px,
+                   transparent 12px
                  ) 1`
                }}>
           </div>
