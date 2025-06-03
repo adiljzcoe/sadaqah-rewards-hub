@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Crown, Users, MessageCircle, Trophy, Star, Gift } from 'lucide-react';
@@ -18,7 +18,8 @@ const InMemoryOfWidget = () => {
     { name: 'Sister', amount: 4890, donations: 65, rank: 8 }
   ]);
 
-  const memorialMessages = [
+  // Memoize static data to prevent unnecessary re-renders
+  const memorialMessages = useMemo(() => [
     { person: 'Father', messages: ['I love you baba', 'Miss you every day', 'Your teachings guide me', 'Forever in my heart'] },
     { person: 'Mother', messages: ['I love you mama', 'Thank you for everything', 'Your love lives on', 'Missing your hugs'] },
     { person: 'Prophet Muhammad (PBUH)', messages: ['Following your example', 'Peace be upon you', 'Your mercy inspires us', 'Grateful for your guidance'] },
@@ -28,73 +29,93 @@ const InMemoryOfWidget = () => {
     { person: 'Deceased loved one', messages: ['Until we meet again', 'Your memory lives on', 'In loving memory', 'Forever remembered'] },
     { person: 'Sister', messages: ['Miss you so much', 'You were my best friend', 'Love you forever', 'Your smile lives on'] },
     { person: 'Brother', messages: ['My hero always', 'Miss our talks', 'You taught me strength', 'Love you bro'] }
-  ];
+  ], []);
 
-  const fakeUsers = [
+  const fakeUsers = useMemo(() => [
     'Ahmad M.', 'Sarah K.', 'Omar R.', 'Fatima S.', 'Yusuf A.', 'Aisha B.', 'Hassan M.', 'Khadija L.',
     'Ali T.', 'Zainab H.', 'Ibrahim K.', 'Maryam N.', 'Abdullah R.', 'Hafsa M.', 'Layla A.', 'Amara J.'
-  ];
+  ], []);
 
-  const donationAmounts = [25, 50, 75, 100, 150, 200, 250, 300];
+  const donationAmounts = useMemo(() => [25, 50, 75, 100, 150, 200, 250, 300], []);
 
-  // Generate memorial donations
+  // Optimized memorial generation function
+  const generateMemorialDonation = useCallback(() => {
+    const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+    const randomMemorial = memorialMessages[Math.floor(Math.random() * memorialMessages.length)];
+    const randomMessage = randomMemorial.messages[Math.floor(Math.random() * randomMemorial.messages.length)];
+    const randomAmount = donationAmounts[Math.floor(Math.random() * donationAmounts.length)];
+    
+    return {
+      id: Date.now() + Math.random(),
+      user: randomUser,
+      honoringOf: randomMemorial.person,
+      message: randomMessage,
+      amount: randomAmount,
+      timestamp: new Date(),
+      isExiting: false
+    };
+  }, [fakeUsers, memorialMessages, donationAmounts]);
+
+  // Generate memorial donations with better performance
   useEffect(() => {
-    const generateMemorialDonation = () => {
-      const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-      const randomMemorial = memorialMessages[Math.floor(Math.random() * memorialMessages.length)];
-      const randomMessage = randomMemorial.messages[Math.floor(Math.random() * randomMemorial.messages.length)];
-      const randomAmount = donationAmounts[Math.floor(Math.random() * donationAmounts.length)];
-      
-      const memorialDonation = {
-        id: Date.now() + Math.random(),
-        user: randomUser,
-        honoringOf: randomMemorial.person,
-        message: randomMessage,
-        amount: randomAmount,
-        timestamp: new Date(),
-        isExiting: false
-      };
+    let intervalId;
+    let timeoutId;
 
+    const updateMemorialFeed = (newDonation) => {
       setMemorialFeed(prev => {
-        // If we have 2 items, mark the oldest for exit
         if (prev.length >= 2) {
           const updatedFeed = prev.map((item, index) => 
             index === prev.length - 1 ? { ...item, isExiting: true } : item
           );
           
-          // Remove the exiting item after fade animation completes
-          setTimeout(() => {
+          timeoutId = setTimeout(() => {
             setMemorialFeed(current => {
               const filtered = current.filter(item => !item.isExiting);
-              return [memorialDonation, ...filtered];
+              return [newDonation, ...filtered.slice(0, 1)]; // Keep only 1 old item max
             });
-          }, 800); // Wait for fade out animation
+          }, 500); // Reduced animation time
           
           return updatedFeed;
         } else {
-          // If we have less than 2 items, just add the new one
-          return [memorialDonation, ...prev];
+          return [newDonation, ...prev];
         }
       });
       
-      // Update leaderboard
-      setTopMemorials(prev => prev.map(memorial => 
-        memorial.name === randomMemorial.person 
-          ? { ...memorial, amount: memorial.amount + randomAmount, donations: memorial.donations + 1 }
-          : memorial
-      ).sort((a, b) => b.amount - a.amount).map((memorial, index) => ({ ...memorial, rank: index + 1 })));
+      // Update leaderboard more efficiently
+      setTopMemorials(prev => {
+        const updated = [...prev];
+        const index = updated.findIndex(memorial => memorial.name === newDonation.honoringOf);
+        if (index !== -1) {
+          updated[index] = {
+            ...updated[index],
+            amount: updated[index].amount + newDonation.amount,
+            donations: updated[index].donations + 1
+          };
+        }
+        return updated.sort((a, b) => b.amount - a.amount).map((memorial, i) => ({ ...memorial, rank: i + 1 }));
+      });
     };
 
     // Generate initial donations
-    generateMemorialDonation();
-    setTimeout(() => generateMemorialDonation(), 2000);
+    const initial1 = generateMemorialDonation();
+    updateMemorialFeed(initial1);
     
-    const interval = setInterval(() => {
-      generateMemorialDonation();
-    }, 8000); // Slower rotation for better viewing
+    timeoutId = setTimeout(() => {
+      const initial2 = generateMemorialDonation();
+      updateMemorialFeed(initial2);
+    }, 1000);
+    
+    // Slower, less frequent updates for better mobile performance
+    intervalId = setInterval(() => {
+      const newDonation = generateMemorialDonation();
+      updateMemorialFeed(newDonation);
+    }, 12000); // Increased from 8 seconds
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [generateMemorialDonation]);
 
   // Ensure we always have exactly 2 items to display
   const getDisplayItems = () => {
@@ -145,7 +166,7 @@ const InMemoryOfWidget = () => {
 
       {/* Single Column Layout */}
       <div className="space-y-6">
-        {/* Live Honoring Feed - Memorial Bronze Plaques */}
+        {/* Live Honoring Feed - Memorial Limestone/Marble Plaques */}
         <div>
           <div className="flex items-center mb-4">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
@@ -165,131 +186,168 @@ const InMemoryOfWidget = () => {
                 } ${
                   memorial.isPlaceholder 
                     ? 'bg-gray-50 border border-gray-100' 
-                    : 'bg-gradient-to-br from-yellow-700 via-amber-600 to-yellow-800'
-                } rounded-xl border-4 border-amber-900 shadow-2xl relative overflow-hidden`}
+                    : 'bg-gradient-to-br from-gray-100 via-stone-100 to-gray-200'
+                } rounded-xl shadow-2xl relative overflow-hidden`}
                 style={{ 
                   minHeight: '130px',
                   transitionDelay: memorial.isExiting ? '0ms' : `${index * 200}ms`,
-                  boxShadow: memorial.isPlaceholder ? '' : '0 30px 60px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.3)'
+                  boxShadow: memorial.isPlaceholder ? '' : '0 25px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.6)'
                 }}
               >
                 {!memorial.isPlaceholder && (
                   <>
-                    {/* Enhanced Metallic Background with Multiple Layers */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-600 via-amber-700 to-yellow-800 rounded-lg" />
+                    {/* Limestone/Marble Outer Frame */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-stone-200 via-gray-100 to-stone-300 rounded-xl" />
                     
-                    {/* Secondary Metallic Layer */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/60 via-yellow-600/40 to-amber-800/80 rounded-lg" />
-                    
-                    {/* Enhanced Metallic Shine Effect */}
+                    {/* Marble Texture Effect */}
                     <div 
-                      className="absolute inset-0 opacity-50 rounded-lg"
+                      className="absolute inset-0 opacity-40 rounded-xl"
                       style={{
-                        background: 'linear-gradient(125deg, transparent 20%, rgba(255,255,255,0.9) 35%, rgba(255,255,255,0.6) 45%, rgba(255,255,255,0.3) 55%, transparent 70%)',
-                        animation: 'metallic-shine 6s ease-in-out infinite'
-                      }}
-                    />
-                    
-                    {/* Brushed Metal Texture - Enhanced */}
-                    <div 
-                      className="absolute inset-0 opacity-30 rounded-lg"
-                      style={{
-                        background: 'repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(255,255,255,0.15) 1px, rgba(255,255,255,0.15) 2px), repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.05) 1px, rgba(0,0,0,0.05) 2px)'
+                        background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.8) 0%, transparent 50%), radial-gradient(circle at 80% 60%, rgba(0,0,0,0.1) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(255,255,255,0.6) 0%, transparent 50%)'
                       }}
                     />
 
-                    {/* Decorative Pins on Edges */}
-                    {/* Top Pins */}
-                    <div className="absolute top-2 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 border-2 border-amber-900 shadow-lg" />
-                    <div className="absolute top-2 right-4 w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 border-2 border-amber-900 shadow-lg" />
-                    
-                    {/* Bottom Pins */}
-                    <div className="absolute bottom-2 left-4 w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 border-2 border-amber-900 shadow-lg" />
-                    <div className="absolute bottom-2 right-4 w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 border-2 border-amber-900 shadow-lg" />
+                    {/* Limestone Grain Texture */}
+                    <div 
+                      className="absolute inset-0 opacity-20 rounded-xl"
+                      style={{
+                        background: 'repeating-linear-gradient(45deg, transparent, transparent 1px, rgba(0,0,0,0.05) 1px, rgba(0,0,0,0.05) 2px), repeating-linear-gradient(-45deg, transparent, transparent 1px, rgba(255,255,255,0.1) 1px, rgba(255,255,255,0.1) 2px)'
+                      }}
+                    />
+
+                    {/* Enhanced Gold Pins with Better Positioning */}
+                    {/* Corner Pins */}
+                    <div className="absolute top-3 left-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite' }} />
+                    <div className="absolute top-3 right-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 0.5s' }} />
+                    <div className="absolute bottom-3 left-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 1s' }} />
+                    <div className="absolute bottom-3 right-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 1.5s' }} />
                     
                     {/* Side Pins */}
-                    <div className="absolute top-1/2 left-2 transform -translate-y-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 border-2 border-amber-900 shadow-lg" />
-                    <div className="absolute top-1/2 right-2 transform -translate-y-1/2 w-3 h-3 rounded-full bg-gradient-to-br from-yellow-400 to-amber-700 border-2 border-amber-900 shadow-lg" />
+                    <div className="absolute top-1/2 left-1.5 transform -translate-y-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 2s' }} />
+                    <div className="absolute top-1/2 right-1.5 transform -translate-y-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 2.5s' }} />
 
                     {/* Pin Highlights */}
-                    <div className="absolute top-2 left-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-80" />
-                    <div className="absolute top-2 right-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-80" />
-                    <div className="absolute bottom-2 left-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-80" />
-                    <div className="absolute bottom-2 right-4 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-80" />
-                    <div className="absolute top-1/2 left-2 transform -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-80" />
-                    <div className="absolute top-1/2 right-2 transform -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-80" />
+                    <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
+                    <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
+                    <div className="absolute bottom-3 left-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
+                    <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
+                    <div className="absolute top-1/2 left-1.5 transform -translate-y-1/2 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
+                    <div className="absolute top-1/2 right-1.5 transform -translate-y-1/2 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
                     
-                    {/* Memorial Plaque Content */}
-                    <div className="relative p-6 z-10">
-                      {/* Memorial Header */}
-                      <div className="text-center mb-4">
-                        <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-950 to-transparent mx-auto mb-3" />
-                        <div className="font-serif text-lg font-bold text-amber-950 mb-2 tracking-wide">
-                          {memorial.honoringOf}
-                        </div>
-                        <div className="font-serif text-sm text-amber-950 font-semibold tracking-wider">
-                          WE HONOR YOU
-                        </div>
-                      </div>
+                    {/* Inner Gold Plaque */}
+                    <div className="absolute inset-4 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-lg shadow-inner border-2 border-amber-700" style={{ animation: 'gold-plaque-gloss 6s ease-in-out infinite' }}>
+                      {/* Gold Plaque Shine Effect */}
+                      <div 
+                        className="absolute inset-0 opacity-30 rounded-lg"
+                        style={{
+                          background: 'linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.4) 60%, transparent 80%)',
+                          animation: 'gold-shine 8s ease-in-out infinite'
+                        }}
+                      />
                       
-                      {/* Donation Information */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="text-xs text-amber-950 font-medium">
-                          Donated by {memorial.user}
+                      {/* Gold Texture */}
+                      <div 
+                        className="absolute inset-0 opacity-25 rounded-lg"
+                        style={{
+                          background: 'repeating-linear-gradient(90deg, transparent, transparent 0.5px, rgba(255,255,255,0.1) 0.5px, rgba(255,255,255,0.1) 1px)'
+                        }}
+                      />
+
+                      {/* Memorial Plaque Content */}
+                      <div className="relative p-4 z-10 h-full flex flex-col justify-center">
+                        {/* Memorial Header */}
+                        <div className="text-center mb-3">
+                          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-900 to-transparent mx-auto mb-2" />
+                          <div className="font-serif text-base font-bold text-amber-900 mb-1 tracking-wide">
+                            {memorial.honoringOf}
+                          </div>
+                          <div className="font-serif text-xs text-amber-900 font-semibold tracking-wider">
+                            WE HONOR YOU
+                          </div>
                         </div>
-                        <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-200 px-3 py-1.5 rounded-full border-2 border-emerald-500 shadow-md">
-                          <SimpleGoldCoin size={16} className="mr-1.5" />
-                          <span className="text-sm font-bold text-emerald-800">£{memorial.amount}</span>
+                        
+                        {/* Donation Information */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="text-xs text-amber-900 font-medium">
+                            Donated by {memorial.user}
+                          </div>
+                          <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-200 px-2 py-1 rounded-full border border-emerald-500 shadow-md">
+                            <SimpleGoldCoin size={14} className="mr-1" />
+                            <span className="text-xs font-bold text-emerald-800">£{memorial.amount}</span>
+                          </div>
                         </div>
-                      </div>
-                      
-                      {/* Message in Enhanced Frame */}
-                      <div className="bg-gradient-to-r from-yellow-100/95 to-amber-100/95 rounded-lg px-4 py-3 border-2 border-amber-900 shadow-inner backdrop-blur-sm mb-3 relative">
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-lg" />
-                        <div className="text-sm italic text-amber-950 text-center font-medium flex items-center justify-center relative z-10">
-                          <Heart className="h-3 w-3 mr-2 text-red-800" />
-                          <span className="font-serif">"{memorial.message}"</span>
-                          <Heart className="h-3 w-3 ml-2 text-red-800" />
+                        
+                        {/* Message in Enhanced Frame */}
+                        <div className="bg-gradient-to-r from-yellow-100/95 to-amber-100/95 rounded-md px-3 py-2 border border-amber-800 shadow-inner backdrop-blur-sm mb-2 relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-md" />
+                          <div className="text-xs italic text-amber-900 text-center font-medium flex items-center justify-center relative z-10">
+                            <Heart className="h-2.5 w-2.5 mr-1.5 text-red-800" />
+                            <span className="font-serif">"{memorial.message}"</span>
+                            <Heart className="h-2.5 w-2.5 ml-1.5 text-red-800" />
+                          </div>
                         </div>
-                      </div>
-                      
-                      {/* Date Stamp */}
-                      <div className="text-center">
-                        <div className="inline-block bg-amber-900/30 px-3 py-1 rounded border-2 border-amber-950 shadow-inner">
-                          <div className="text-xs font-bold text-amber-950 font-serif">
-                            {new Date(memorial.timestamp).toLocaleDateString('en-GB', { 
-                              day: '2-digit', 
-                              month: '2-digit', 
-                              year: 'numeric' 
-                            })}
+                        
+                        {/* Date Stamp */}
+                        <div className="text-center">
+                          <div className="inline-block bg-amber-800/20 px-2 py-0.5 rounded border border-amber-800 shadow-inner">
+                            <div className="text-xs font-bold text-amber-900 font-serif">
+                              {new Date(memorial.timestamp).toLocaleDateString('en-GB', { 
+                                day: '2-digit', 
+                                month: '2-digit', 
+                                year: 'numeric' 
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Enhanced Metallic Shine Animation */}
+                    {/* Enhanced Gold Gloss Animation Styles */}
                     <style>{`
-                      @keyframes metallic-shine {
+                      @keyframes gold-gloss {
+                        0%, 100% {
+                          box-shadow: 0 0 8px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.6);
+                          filter: brightness(1);
+                        }
+                        50% {
+                          box-shadow: 0 0 16px rgba(255, 215, 0, 0.8), inset 0 2px 4px rgba(255,255,255,0.9);
+                          filter: brightness(1.3);
+                        }
+                      }
+                      
+                      @keyframes gold-plaque-gloss {
+                        0%, 100% {
+                          box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 12px rgba(255, 215, 0, 0.3);
+                          filter: brightness(1) saturate(1);
+                        }
+                        50% {
+                          box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 0 20px rgba(255, 215, 0, 0.6);
+                          filter: brightness(1.2) saturate(1.3);
+                        }
+                      }
+                      
+                      @keyframes gold-shine {
                         0% {
                           transform: translateX(-150%) translateY(-150%) rotate(45deg);
                           opacity: 0;
                         }
-                        10% {
+                        15% {
                           opacity: 1;
                         }
-                        30% {
+                        35% {
                           transform: translateX(0%) translateY(0%) rotate(45deg);
                           opacity: 1;
                         }
-                        40% {
+                        50% {
+                          transform: translateX(75%) translateY(75%) rotate(45deg);
                           opacity: 0.8;
                         }
-                        60% {
+                        70% {
                           transform: translateX(150%) translateY(150%) rotate(45deg);
-                          opacity: 0.6;
+                          opacity: 0.4;
                         }
                         100% {
-                          transform: translateX(300%) translateY(300%) rotate(45deg);
+                          transform: translateX(200%) translateY(200%) rotate(45deg);
                           opacity: 0;
                         }
                       }
