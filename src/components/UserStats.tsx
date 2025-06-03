@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -114,9 +113,9 @@ const UserStats = () => {
   console.log('UserStats isMember:', isMember);
 
   return (
-    <div className="w-full -mx-6 -mt-6">
+    <div className="w-full">
       {/* Classic Gold Certificate - Wider with balanced margins */}
-      <div className="mx-6 text-center mb-8 pt-8">
+      <div className="text-center mb-8 pt-8">
         <div className="relative bg-gradient-to-br from-yellow-200 via-yellow-300 to-amber-400 transform hover:scale-[1.02] transition-all duration-500 p-4 shadow-2xl"
              style={{
                border: '6px solid transparent',
