@@ -8,8 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Edit, Trash2, Eye, DollarSign, Package } from 'lucide-react';
+import { Plus, Edit, Trash2, DollarSign, Package } from 'lucide-react';
 import { useCharityProducts } from '@/hooks/useCharityProducts';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -26,7 +25,7 @@ const ProductManagement: React.FC = () => {
     category: '',
     image_url: '',
     product_type: 'fixed_price' as 'fixed_price' | 'flexible_donation',
-    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested' | 'tiered',
+    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested',
     fixed_price: '',
     minimum_amount: '',
     suggested_amount: '',
@@ -117,7 +116,7 @@ const ProductManagement: React.FC = () => {
         image_url: formData.image_url || null,
         product_type: formData.product_type,
         pricing_model: formData.pricing_model,
-        fixed_price: formData.fixed_price ? parseInt(formData.fixed_price) * 100 : null, // Convert to pence
+        fixed_price: formData.fixed_price ? parseInt(formData.fixed_price) * 100 : null,
         minimum_amount: formData.minimum_amount ? parseInt(formData.minimum_amount) * 100 : null,
         suggested_amount: formData.suggested_amount ? parseInt(formData.suggested_amount) * 100 : null,
         maximum_amount: formData.maximum_amount ? parseInt(formData.maximum_amount) * 100 : null,
@@ -138,7 +137,7 @@ const ProductManagement: React.FC = () => {
       } else {
         result = await supabase
           .from('charity_products')
-          .insert([productData]);
+          .insert(productData);
       }
 
       if (result.error) throw result.error;
@@ -374,7 +373,6 @@ const ProductManagement: React.FC = () => {
                         <SelectItem value="fixed">Fixed</SelectItem>
                         <SelectItem value="minimum">Minimum</SelectItem>
                         <SelectItem value="suggested">Suggested</SelectItem>
-                        <SelectItem value="tiered">Tiered</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

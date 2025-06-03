@@ -18,21 +18,33 @@ export const useSiteConfig = (configKey?: string) => {
     queryFn: async () => {
       console.log('Fetching site config:', configKey);
       
-      let query = supabase.from('site_config' as any).select('*');
-      
       if (configKey) {
-        query = query.eq('config_key', configKey).single();
-      }
-      
-      const { data, error } = await query;
+        const { data, error } = await supabase
+          .from('site_config')
+          .select('*')
+          .eq('config_key', configKey)
+          .single();
 
-      if (error) {
-        console.error('Error fetching site config:', error);
-        throw error;
-      }
+        if (error) {
+          console.error('Error fetching site config:', error);
+          throw error;
+        }
 
-      console.log('Fetched site config:', data);
-      return data as SiteConfig | SiteConfig[];
+        console.log('Fetched site config:', data);
+        return data as SiteConfig;
+      } else {
+        const { data, error } = await supabase
+          .from('site_config')
+          .select('*');
+
+        if (error) {
+          console.error('Error fetching site config:', error);
+          throw error;
+        }
+
+        console.log('Fetched site config:', data);
+        return (data || []) as SiteConfig[];
+      }
     },
   });
 };
@@ -44,7 +56,7 @@ export const usePublicSiteConfig = () => {
       console.log('Fetching public site config');
       
       const { data, error } = await supabase
-        .from('site_config' as any)
+        .from('site_config')
         .select('*')
         .eq('is_public', true);
 
@@ -56,7 +68,7 @@ export const usePublicSiteConfig = () => {
       console.log('Fetched public site config:', data);
       
       // Convert to object for easier access
-      const configObject = data.reduce((acc: any, config: any) => {
+      const configObject = (data || []).reduce((acc: any, config: any) => {
         let value = config.config_value;
         
         // Parse JSON values
