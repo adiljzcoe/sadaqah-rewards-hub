@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Gift, Heart, BookOpen } from 'lucide-react';
-import { useLocationCurrency } from '@/hooks/useLocationCurrency';
 
 interface DuaCategory {
   id: string;
@@ -32,8 +31,6 @@ interface DuaCardProps {
 }
 
 const DuaCard = ({ dua, onDonate }: DuaCardProps) => {
-  const { formatCurrency } = useLocationCurrency();
-
   return (
     <Card className="transition-all hover:shadow-lg hover:-translate-y-1">
       <CardHeader>
@@ -94,7 +91,7 @@ const DuaCard = ({ dua, onDonate }: DuaCardProps) => {
         
         <div className="flex items-center justify-between pt-4 border-t">
           <div className="text-sm text-gray-600">
-            Suggested: {formatCurrency(dua.recommended_donation_amount)}
+            Suggested: £{(dua.recommended_donation_amount / 100).toFixed(2)}
           </div>
           <Button onClick={onDonate} className="bg-green-600 hover:bg-green-700">
             <Gift className="h-4 w-4 mr-2" />

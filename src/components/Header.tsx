@@ -1,127 +1,522 @@
-
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import UserStats from '@/components/UserStats';
-import { useAuth } from '@/hooks/useAuth';
-import MobileSidebar from '@/components/MobileSidebar';
-import CurrencySelector from '@/components/CurrencySelector';
-import { LogOut, User, Settings, Heart, Gift } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, ShoppingCart } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getUserRank, getNextRank } from '@/utils/rankSystem';
+import MobileSidebar from './MobileSidebar';
+import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 const Header = () => {
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
+  const { totalItems, totalAmount } = useCart();
+  const isMember = true; // VIP status
+  
+  // State for controlling dropdown visibility
+  const [donateOpen, setDonateOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
+  const [rewardsOpen, setRewardsOpen] = useState(false);
+  const [islamicOpen, setIslamicOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
-  // Mock data for MobileSidebar props
+  // User level data - this would come from your user context/state management
   const userLevel = 12;
   const currentPoints = 5632;
   const nextLevelPoints = 6000;
-  const isMember = false;
+  const pointsToNextLevel = nextLevelPoints - currentPoints;
+  const progress = (currentPoints / nextLevelPoints) * 100;
+
+  // Get user's rank
+  const currentRank = getUserRank(currentPoints);
+  const nextRank = getNextRank(currentPoints);
+
+  const isActive = (path: string) => location.pathname === path;
+
+  // Debug log to check if component renders
+  React.useEffect(() => {
+    console.log('🛩️ Header component rendered - mega menu should work!');
+  }, []);
 
   return (
-    <header className="bg-white shadow-sm border-b sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
+    <header className="relative bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-b-2 border-cyan-400/30 z-50">
+      {/* Final Fantasy inspired crystalline background effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+      <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-2 left-10 w-20 h-8 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+        <div className="absolute top-4 right-32 w-16 h-6 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+        <div className="absolute top-1 left-1/3 w-24 h-10 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+        <div className="absolute top-3 right-1/4 w-18 h-7 bg-cyan-400/25 rounded-full blur-sm animate-pulse delay-700 shadow-cyan-300/60"></div>
+        <div className="absolute top-6 left-20 w-2 h-2 bg-cyan-300 rounded-full animate-pulse shadow-lg shadow-cyan-300/80"></div>
+        <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
+      </div>
+      
+      <div className="relative z-10 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo and Mobile Menu */}
-          <div className="flex items-center gap-4">
-            <MobileSidebar 
-              userLevel={userLevel}
-              currentPoints={currentPoints}
-              nextLevelPoints={nextLevelPoints}
-              isMember={isMember}
-            />
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
-                <Heart className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                CharityFlow
-              </span>
+          {/* Left Section - Logo and User with proper z-index layering */}
+          <div className="flex items-center space-x-3 relative">
+            <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-20">
+              <img 
+                src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
+                alt="Your Jannah Logo" 
+                className="w-full h-auto object-contain max-w-[100px]"
+              />
             </Link>
+
+            <div className="flex items-center flex-shrink-0 relative z-10">
+              <div className="flex items-center">
+                {user ? (
+                  <Link to="/profile">
+                    {isMember ? (
+                      <Button className="relative overflow-hidden rounded-xl px-2 py-1.5 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
+                        <div className="flex items-center space-x-1.5">
+                          <div className="flex items-center">
+                            <span className="text-xs mr-1 drop-shadow-sm">🛡️</span>
+                            <div className="flex flex-col">
+                              <span className="text-xs font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
+                              <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
+                            </div>
+                          </div>
+                          
+                          <div className="w-px h-5 bg-amber-300/40"></div>
+                          
+                          <div className="flex flex-col space-y-0.5">
+                            <div className="flex items-center space-x-1">
+                              <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
+                              <div className="relative w-8 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
+                                <div 
+                                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
+                                  style={{ width: `${progress}%` }}
+                                ></div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-amber-200/20 rounded-full"></div>
+                              </div>
+                            </div>
+                            <div className="flex items-center">
+                              <Star className="h-2 w-2 text-yellow-200 mr-0.5 drop-shadow-sm" />
+                              <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="absolute top-1 left-2 w-8 h-3 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
+                      </Button>
+                    ) : (
+                      <Button className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 text-white border-0 font-bold shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 rounded-2xl ring-2 ring-cyan-400/30">
+                        <User className="h-5 w-5 mr-2" />
+                        <span className="hidden sm:inline">Ahmad M.</span>
+                      </Button>
+                    )}
+                  </Link>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <Button 
+                      onClick={fakeUserLogin}
+                      className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1"
+                    >
+                      Fake User Login
+                    </Button>
+                    <Button 
+                      onClick={fakeAdminLogin}
+                      className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1"
+                    >
+                      Fake Admin Login
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Sign Out Button for logged in users */}
+            {user && (
+              <Button 
+                onClick={signOut}
+                variant="outline"
+                className="text-white border-white/30 hover:bg-white/10 text-xs px-3 py-1"
+              >
+                Sign Out
+              </Button>
+            )}
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/campaigns" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-              Campaigns
+          {/* Enhanced Navigation with All Pages */}
+          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-40">
+            <Link 
+              to="/" 
+              className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
+                isActive('/') ? 'text-cyan-300' : 'text-slate-300 hover:text-cyan-400'
+              }`}
+            >
+              Home
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 shadow-sm shadow-cyan-400/50 ${
+                isActive('/') ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}></span>
             </Link>
-            <Link to="/fundraising" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-              Fundraising
-            </Link>
-            <Link to="/gift-cards" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-              <div className="flex items-center gap-1">
-                <Gift className="h-4 w-4" />
-                Gift Cards
-              </div>
-            </Link>
-            <Link to="/namaz-times" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-              Prayer Times
-            </Link>
-            <Link to="/duas-library" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
-              Duas
-            </Link>
+
+            {/* Islamic Life Dropdown */}
+            <DropdownMenu open={islamicOpen} onOpenChange={setIslamicOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setIslamicOpen(true)}
+                onMouseLeave={() => setIslamicOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Islamic Life</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-96 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setIslamicOpen(true)}
+                onMouseLeave={() => setIslamicOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Islamic Calendar & Worship</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/islamic-calendar" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
+                      <Calendar className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Islamic Calendar</div>
+                        <p className="text-sm text-emerald-200">Sacred days & celebrations</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/ramadan-calendar" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white">
+                      <Moon className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Ramadan Calendar</div>
+                        <p className="text-sm text-purple-200">Track your Ramadan journey</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/adhan-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white">
+                      <Mic className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Adhan Community</div>
+                        <p className="text-sm text-blue-200">Share beautiful Adhan recordings</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/live-tv" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white">
+                      <Tv className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Live TV</div>
+                        <p className="text-sm text-red-200">Islamic channels & content</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dhikr-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white">
+                      <Sparkles className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Dhikr Community</div>
+                        <p className="text-sm text-purple-200">Spiritual remembrance together</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Tools & Services Dropdown */}
+            <DropdownMenu open={toolsOpen} onOpenChange={setToolsOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setToolsOpen(true)}
+                onMouseLeave={() => setToolsOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Tools</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setToolsOpen(true)}
+                onMouseLeave={() => setToolsOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Islamic Tools</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/namaz-times" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white">
+                      <Clock className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Prayer Times</div>
+                        <p className="text-sm text-indigo-200">Accurate prayer times worldwide</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/quran-reader" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
+                      <BookOpen className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Quran Reader</div>
+                        <p className="text-sm text-emerald-200">Read & track progress</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/zakat-calculator" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white">
+                      <Coins className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Zakat Calculator</div>
+                        <p className="text-sm text-yellow-200">Calculate your Zakat</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dua-wall" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
+                      <Heart className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Dua Wall</div>
+                        <p className="text-sm text-pink-200">Share & support prayers</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Donate Dropdown with Enhanced Options */}
+            <DropdownMenu open={donateOpen} onOpenChange={setDonateOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setDonateOpen(true)}
+                onMouseLeave={() => setDonateOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Donate</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setDonateOpen(true)}
+                onMouseLeave={() => setDonateOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Make an Impact</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/campaigns" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
+                      <Heart className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Active Campaigns</div>
+                        <p className="text-sm text-emerald-200">Support urgent causes worldwide</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/build-mosque" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white">
+                      <Building className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Build a Mosque</div>
+                        <p className="text-sm text-blue-200">Fund mosque construction</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/water-wells" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white">
+                      <span className="text-lg mr-3">💧</span>
+                      <div>
+                        <div className="font-semibold">Water Wells</div>
+                        <p className="text-sm text-cyan-200">Provide clean water access</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/orphanages" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
+                      <span className="text-lg mr-3">👶</span>
+                      <div>
+                        <div className="font-semibold">Orphanages</div>
+                        <p className="text-sm text-pink-200">Support orphan care & education</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/qurbani" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white">
+                      <span className="text-lg mr-3">🐄</span>
+                      <div>
+                        <div className="font-semibold">Qurbani</div>
+                        <p className="text-sm text-orange-200">Sacrifice & share blessings</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Community Dropdown */}
+            <DropdownMenu open={communityOpen} onOpenChange={setCommunityOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setCommunityOpen(true)}
+                onMouseLeave={() => setCommunityOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Community</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setCommunityOpen(true)}
+                onMouseLeave={() => setCommunityOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Connect & Compete</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/masjid-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white">
+                      <Building className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Masjid Community</div>
+                        <p className="text-sm text-indigo-200">Represent your local mosque</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-ummah" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
+                      <Users className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">My Ummah</div>
+                        <p className="text-sm text-emerald-200">Global Muslim community</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/leaderboards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white">
+                      <Trophy className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Leaderboards</div>
+                        <p className="text-sm text-amber-200">Top donors & recognition</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Rewards Dropdown */}
+            <DropdownMenu open={rewardsOpen} onOpenChange={setRewardsOpen}>
+              <DropdownMenuTrigger 
+                asChild
+                onMouseEnter={() => setRewardsOpen(true)}
+                onMouseLeave={() => setRewardsOpen(false)}
+              >
+                <button className="font-bold text-slate-300 hover:text-cyan-400 drop-shadow-sm bg-transparent border-0 flex items-center space-x-1 cursor-pointer">
+                  <span>Rewards</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                onMouseEnter={() => setRewardsOpen(true)}
+                onMouseLeave={() => setRewardsOpen(false)}
+              >
+                <div className="p-4 space-y-3">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Rewards & Benefits</h3>
+                  <DropdownMenuItem asChild>
+                    <Link to="/sadaqah-coins" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-white">
+                      <Coins className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Sadaqah Coins</div>
+                        <p className="text-sm text-yellow-200">Purchase coins & unlock rewards</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-jannah" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
+                      <Building className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">My Jannah</div>
+                        <p className="text-sm text-emerald-200">Build your paradise</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/membership" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white">
+                      <Shield className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Membership Tiers</div>
+                        <p className="text-sm text-purple-200">Upgrade for multiplied points</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/gift-cards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
+                      <Gift className="h-5 w-5 mr-3" />
+                      <div>
+                        <div className="font-semibold">Gift Cards</div>
+                        <p className="text-sm text-pink-200">Give the gift of giving</p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Become a Member - FF style */}
+            {!isMember && (
+              <Button className="bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-700 hover:to-cyan-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-2xl ring-2 ring-cyan-400/30 hover:ring-cyan-300/50">
+                <span className="text-lg mr-2">🛡️</span>
+                Become a Member
+              </Button>
+            )}
           </nav>
 
-          {/* Right Side */}
-          <div className="flex items-center space-x-4">
-            {/* Currency Selector */}
-            <CurrencySelector />
-
-            {user ? (
-              <div className="flex items-center space-x-4">
-                <UserStats />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <User className="h-4 w-4 text-white" />
-                      </div>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/my-jannah')}>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>My Jannah</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleSignOut}>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Sign out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" onClick={() => navigate('/auth')}>
-                  Sign In
+          {/* Right Section - Cart and Mobile Menu */}
+          <div className="flex items-center space-x-3">
+            {/* Checkout Button - Only show when there are items */}
+            {totalItems > 0 && (
+              <Link to="/checkout">
+                <Button className="relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-xl ring-2 ring-green-400/30 hover:ring-green-300/50">
+                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  <span className="hidden sm:inline">Checkout</span>
+                  <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full animate-pulse">
+                    {totalItems}
+                  </Badge>
                 </Button>
-                <Button onClick={() => navigate('/auth')}>
-                  Sign Up
-                </Button>
-              </div>
+              </Link>
             )}
+
+            {/* Mobile Menu */}
+            <div className="md:hidden relative z-20">
+              <MobileSidebar 
+                userLevel={userLevel}
+                currentPoints={currentPoints}
+                nextLevelPoints={nextLevelPoints}
+                isMember={isMember}
+              />
+            </div>
           </div>
         </div>
       </div>
     </header>
   );
 };
+
+// Navigation items for the main application
+export const navigationItems = [
+  { name: "Home", path: "/" },
+  { name: "Why Donate", path: "/why-donate" },
+  { name: "My Jannah", path: "/my-jannah" },
+  { name: "My Ummah", path: "/my-ummah" },
+  { name: "Live TV", path: "/live-tv" },
+  { name: "Quran", path: "/quran-reader" },
+  { name: "Sadaqah Coins", path: "/sadaqah-coins" },
+  { name: "Namaz Times", path: "/namaz-times" },
+  { name: "Charity Partners", path: "/charity-partners" },
+  { name: "Admin Dashboard", path: "/admin-dashboard" },
+];
 
 export default Header;
