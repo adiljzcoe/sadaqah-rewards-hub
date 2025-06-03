@@ -90,40 +90,42 @@ const Header = () => {
 
             {/* Compact Golden User Plaque - Responsive Sizing with Rounded Corners */}
             {user ? (
-              // Logged in user plaque with responsive sizing and rounded corners
-              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl md:rounded-3xl px-2 py-1 md:px-3 md:py-2 shadow-xl md:shadow-2xl border border-yellow-300/50 md:border-2 hover:shadow-2xl md:hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden">
-                {/* Inner glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl md:rounded-3xl"></div>
-                
-                {/* Top highlight */}
-                <div className="absolute top-0.5 md:top-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
-                
-                {/* Glossy animation effect that moves across */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl md:rounded-3xl"></div>
-                
-                <div className="relative flex items-center justify-between text-white min-w-[140px] md:min-w-[180px]">
-                  {/* Left side - Crown, Name and Guardian */}
-                  <div className="flex items-center space-x-1 md:space-x-2">
-                    <Crown className="h-3 w-3 md:h-4 md:w-4 text-yellow-100 drop-shadow-lg" />
-                    <div className="flex flex-col">
-                      <span className="font-bold text-xs md:text-sm text-yellow-50 drop-shadow-md">Ahmad M.</span>
-                      <span className="text-[10px] md:text-xs text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
+              // Logged in user plaque with responsive sizing and rounded corners - now clickable
+              <Link to="/profile" className="transition-all duration-300 hover:scale-[1.02]">
+                <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl md:rounded-3xl px-2 py-1 md:px-3 md:py-2 shadow-xl md:shadow-2xl border border-yellow-300/50 md:border-2 hover:shadow-2xl md:hover:shadow-3xl transition-all duration-300 overflow-hidden cursor-pointer">
+                  {/* Inner glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl md:rounded-3xl"></div>
+                  
+                  {/* Top highlight */}
+                  <div className="absolute top-0.5 md:top-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
+                  
+                  {/* Glossy animation effect that moves across */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl md:rounded-3xl"></div>
+                  
+                  <div className="relative flex items-center justify-between text-white min-w-[140px] md:min-w-[180px]">
+                    {/* Left side - Crown, Name and Guardian */}
+                    <div className="flex items-center space-x-1 md:space-x-2">
+                      <Crown className="h-3 w-3 md:h-4 md:w-4 text-yellow-100 drop-shadow-lg" />
+                      <div className="flex flex-col">
+                        <span className="font-bold text-xs md:text-sm text-yellow-50 drop-shadow-md">Ahmad M.</span>
+                        <span className="text-[10px] md:text-xs text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
+                      </div>
+                    </div>
+                    
+                    {/* Right side - Level and Points */}
+                    <div className="text-right">
+                      <div className="font-bold text-xs md:text-sm text-yellow-50 drop-shadow-md">LV {userLevel}</div>
+                      <div className="flex items-center justify-end space-x-1">
+                        <Star className="h-2 w-2 md:h-3 md:w-3 text-yellow-100 drop-shadow-md" />
+                        <span className="font-bold text-[10px] md:text-xs text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} pts</span>
+                      </div>
                     </div>
                   </div>
                   
-                  {/* Right side - Level and Points */}
-                  <div className="text-right">
-                    <div className="font-bold text-xs md:text-sm text-yellow-50 drop-shadow-md">LV {userLevel}</div>
-                    <div className="flex items-center justify-end space-x-1">
-                      <Star className="h-2 w-2 md:h-3 md:w-3 text-yellow-100 drop-shadow-md" />
-                      <span className="font-bold text-[10px] md:text-xs text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} pts</span>
-                    </div>
-                  </div>
+                  {/* Bottom highlight */}
+                  <div className="absolute bottom-0.5 md:bottom-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
                 </div>
-                
-                {/* Bottom highlight */}
-                <div className="absolute bottom-0.5 md:bottom-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
-              </div>
+              </Link>
             ) : (
               // Non-logged in membership plaque with responsive sizing and rounded corners
               <Link to="/membership">
