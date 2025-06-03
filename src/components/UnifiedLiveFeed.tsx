@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -34,7 +35,7 @@ import GoldCoin3D from './GoldCoin3D';
 
 interface FeedActivity {
   id: string;
-  type: 'donation' | 'jannah' | 'message' | 'media' | 'achievement' | 'charity_update' | 'leaderboard';
+  type: 'donation' | 'jannah' | 'message' | 'media' | 'achievement' | 'charity_update' | 'leaderboard' | 'honoring';
   user: string;
   action: string;
   details: string;
@@ -46,13 +47,56 @@ interface FeedActivity {
   priority: 'high' | 'medium' | 'low';
   category?: string;
   verified?: boolean;
+  honoringOf?: string;
 }
 
 const UnifiedLiveFeed = () => {
   const [activities, setActivities] = useState<FeedActivity[]>([]);
-  const [activeTab, setActiveTab] = useState<'all' | 'donations' | 'jannah' | 'achievements' | 'charity' | 'community'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'donations' | 'jannah' | 'achievements' | 'charity' | 'community' | 'honoring'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
+  // Generate honoring activities
+  const generateHonoringActivity = () => {
+    const memorialMessages = [
+      { person: 'Father', messages: ['I love you baba', 'Miss you every day', 'Your teachings guide me', 'Forever in my heart'] },
+      { person: 'Mother', messages: ['I love you mama', 'Thank you for everything', 'Your love lives on', 'Missing your hugs'] },
+      { person: 'Prophet Muhammad (PBUH)', messages: ['Following your example', 'Peace be upon you', 'Your mercy inspires us', 'Grateful for your guidance'] },
+      { person: 'Grandmother', messages: ['Love you nani', 'Your prayers protect us', 'Missing your stories', 'Your wisdom lives on'] },
+      { person: 'Grandfather', messages: ['Love you nana', 'Your strength inspires me', 'Missing your advice', 'Thank you for everything'] },
+      { person: 'All Muslims', messages: ['May Allah unite us', 'For the ummah', 'Together in faith', 'One community'] },
+      { person: 'Deceased loved one', messages: ['Until we meet again', 'Your memory lives on', 'In loving memory', 'Forever remembered'] },
+      { person: 'Sister', messages: ['Miss you so much', 'You were my best friend', 'Love you forever', 'Your smile lives on'] },
+      { person: 'Brother', messages: ['My hero always', 'Miss our talks', 'You taught me strength', 'Love you bro'] }
+    ];
+
+    const fakeUsers = [
+      'Ahmad M.', 'Sarah K.', 'Omar R.', 'Fatima S.', 'Yusuf A.', 'Aisha B.', 'Hassan M.', 'Khadija L.',
+      'Ali T.', 'Zainab H.', 'Ibrahim K.', 'Maryam N.', 'Abdullah R.', 'Hafsa M.', 'Layla A.', 'Amara J.'
+    ];
+
+    const donationAmounts = [25, 50, 75, 100, 150, 200, 250, 300];
+
+    const randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+    const randomMemorial = memorialMessages[Math.floor(Math.random() * memorialMessages.length)];
+    const randomMessage = randomMemorial.messages[Math.floor(Math.random() * randomMemorial.messages.length)];
+    const randomAmount = donationAmounts[Math.floor(Math.random() * donationAmounts.length)];
+
+    return {
+      id: `honoring-${Date.now()}-${Math.random()}`,
+      type: 'honoring' as const,
+      user: randomUser,
+      action: 'honored',
+      details: `"${randomMessage}" - donated £${randomAmount} to charity`,
+      amount: randomAmount,
+      currency: '£',
+      timestamp: new Date(),
+      emoji: '💖',
+      priority: 'high' as const,
+      verified: true,
+      honoringOf: randomMemorial.person
+    };
+  };
 
   // Mock data - this would come from various sources in real implementation
   useEffect(() => {
@@ -155,6 +199,18 @@ const UnifiedLiveFeed = () => {
     ];
 
     setActivities(mockActivities);
+
+    // Generate initial honoring activity
+    const initialHonoring = generateHonoringActivity();
+    setActivities(prev => [initialHonoring, ...prev]);
+
+    // Generate honoring activities periodically
+    const interval = setInterval(() => {
+      const newHonoring = generateHonoringActivity();
+      setActivities(prev => [newHonoring, ...prev.slice(0, 15)]); // Keep only latest 16 activities
+    }, 12000); // Every 12 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const formatTimeAgo = (timestamp: Date) => {
@@ -178,6 +234,8 @@ const UnifiedLiveFeed = () => {
         return activities.filter(a => a.type === 'charity_update' || a.type === 'media');
       case 'community':
         return activities.filter(a => a.type === 'message');
+      case 'honoring':
+        return activities.filter(a => a.type === 'honoring');
       default:
         return activities;
     }
@@ -207,6 +265,7 @@ const UnifiedLiveFeed = () => {
       case 'charity_update': return Camera;
       case 'leaderboard': return TrendingUp;
       case 'message': return MessageSquare;
+      case 'honoring': return Heart;
       default: return Activity;
     }
   };
@@ -219,6 +278,7 @@ const UnifiedLiveFeed = () => {
       case 'charity_update': return 'from-blue-500 to-cyan-500';
       case 'leaderboard': return 'from-green-500 to-emerald-500';
       case 'message': return 'from-gray-500 to-slate-500';
+      case 'honoring': return 'from-pink-500 to-rose-500';
       default: return 'from-gray-400 to-gray-600';
     }
   };
@@ -261,7 +321,7 @@ const UnifiedLiveFeed = () => {
       {/* Tabs */}
       <Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange} className="w-full">
         <div className="px-6 pt-4 pb-2 bg-gray-50/50 border-b">
-          <TabsList className="grid w-full grid-cols-6 bg-white/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-7 bg-white/80 backdrop-blur-sm">
             <TabsTrigger value="all" className="text-xs">
               <Activity className="h-3 w-3 mr-1" />
               All
@@ -269,6 +329,10 @@ const UnifiedLiveFeed = () => {
             <TabsTrigger value="donations" className="text-xs">
               <Heart className="h-3 w-3 mr-1" />
               Donations
+            </TabsTrigger>
+            <TabsTrigger value="honoring" className="text-xs">
+              <Heart className="h-3 w-3 mr-1" />
+              Honoring
             </TabsTrigger>
             <TabsTrigger value="jannah" className="text-xs">
               <Star className="h-3 w-3 mr-1" />
@@ -323,6 +387,11 @@ const UnifiedLiveFeed = () => {
                         <div className="flex items-center space-x-2 mb-2">
                           <span className="font-bold text-gray-800">{activity.user}</span>
                           <span className="text-sm text-gray-600 font-medium">{activity.action}</span>
+                          {activity.honoringOf && (
+                            <Badge variant="outline" className="text-xs bg-pink-50 text-pink-700 border-pink-200">
+                              {activity.honoringOf}
+                            </Badge>
+                          )}
                           {activity.amount && (
                             <div className={`px-3 py-1 rounded-lg bg-gradient-to-r ${getTypeColor(activity.type)} text-white font-bold text-sm shadow-lg`}>
                               {activity.currency}{activity.amount}
