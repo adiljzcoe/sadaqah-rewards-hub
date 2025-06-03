@@ -28,6 +28,7 @@ import SadaqahCoins from './pages/SadaqahCoins';
 import MyJannah from './pages/MyJannah';
 import Membership from './pages/Membership';
 import GiftCards from './pages/GiftCards';
+import PrayForPalestine from './pages/PrayForPalestine';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -56,6 +57,7 @@ function App() {
             <Route path="/quran-reader" element={<QuranReader />} />
             <Route path="/zakat-calculator" element={<ZakatCalculator />} />
             <Route path="/dua-wall" element={<DuaWall />} />
+            <Route path="/pray-for-palestine" element={<PrayForPalestine />} />
             
             {/* Donation Routes */}
             <Route path="/campaigns" element={<Campaigns />} />

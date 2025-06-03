@@ -9,6 +9,21 @@ export function useDonations() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  const { data: profile } = useQuery({
+    queryKey: ['profile', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user?.id,
+  });
+
   const { data: donations, isLoading } = useQuery({
     queryKey: ['donations', user?.id],
     queryFn: async () => {
@@ -39,6 +54,7 @@ export function useDonations() {
       anonymous?: boolean;
     }) => {
       if (!user?.id) throw new Error('Must be logged in to donate');
+      if (!profile) throw new Error('Profile not loaded');
 
       // Calculate points and coins
       const jannahPoints = Math.floor(donationData.amount * 10); // 10 points per £1
@@ -62,10 +78,10 @@ export function useDonations() {
       await supabase
         .from('profiles')
         .update({
-          jannah_points: profile.jannah_points + jannahPoints,
-          sadaqah_coins: profile.sadaqah_coins + sadaqahCoins,
-          total_donated: profile.total_donated + donationData.amount,
-          donation_count: profile.donation_count + 1,
+          jannah_points: (profile.jannah_points || 0) + jannahPoints,
+          sadaqah_coins: (profile.sadaqah_coins || 0) + sadaqahCoins,
+          total_donated: (profile.total_donated || 0) + donationData.amount,
+          donation_count: (profile.donation_count || 0) + 1,
           last_donation_date: new Date().toISOString(),
         })
         .eq('id', user.id);
@@ -89,25 +105,11 @@ export function useDonations() {
     },
   });
 
-  const { data: profile } = useQuery({
-    queryKey: ['profile', user?.id],
-    queryFn: async () => {
-      if (!user?.id) return null;
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!user?.id,
-  });
-
   return {
     donations,
     isLoading,
     createDonation: createDonation.mutate,
     isCreatingDonation: createDonation.isPending,
+    profile,
   };
 }
