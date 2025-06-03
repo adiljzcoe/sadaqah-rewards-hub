@@ -17,7 +17,6 @@ const UserStats = () => {
   );
   const nextLevelPoints = 6000;
   const progress = (currentPoints / nextLevelPoints) * 100;
-  const sadaqahCoins = 142;
   const totalDonations = 28;
   
   // Get user's current rank and next rank
@@ -273,36 +272,6 @@ const UserStats = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/50 to-transparent animate-shimmer"></div>
             </div>
           )}
-
-          {/* Sadaqah Coins */}
-          <div className="game-card p-4 relative overflow-hidden">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <GoldCoin3D size={48} className="animate-subtle-pulse">
-                  {sadaqahCoins}
-                </GoldCoin3D>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-amber-800 text-lg">Sadaqah Coins</span>
-                    {isMember && (
-                      <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs shadow-lg border border-white/20">
-                        2x Rate
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="text-sm text-amber-600">💰 Shop Currency</div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-black text-amber-700 animate-points-pop">
-                  {sadaqahCoins}
-                </div>
-              </div>
-            </div>
-            <div className="absolute -right-4 -top-4 w-16 h-16 opacity-20">
-              <GoldCoin3D size={64} />
-            </div>
-          </div>
 
           {/* Total Donations */}
           <div className="game-card p-4 bg-gradient-to-r from-pink-50 to-red-50">

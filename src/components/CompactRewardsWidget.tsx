@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, Zap, Crown, ArrowUp, Shield, Flame, Target } from 'lucide-react';
+import { Star, Zap, Crown, ArrowUp, Shield, Flame, Target, Coins } from 'lucide-react';
 import { getUserRank, getNextRank, getRankProgress, getPointsToNextRank } from '@/utils/rankSystem';
 import { getStreakData } from '@/utils/streakSystem';
 import { useToast } from '@/hooks/use-toast';
@@ -27,6 +27,7 @@ const CompactRewardsWidget = () => {
   const isMember = false;
   const userLevel = 12;
   const levelProgress = 89; // 5950/6000 * 100
+  const sadaqahCoins = 142; // Add sadaqah coins
 
   return (
     <div className="w-full">
@@ -114,7 +115,7 @@ const CompactRewardsWidget = () => {
           )}
 
           {/* Compact Stats Grid */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-3 gap-3 mb-4">
             {/* Level Progress */}
             <div className="bg-white/25 rounded-lg p-3 backdrop-blur-sm border border-white/20">
               <div className="flex items-center gap-2 mb-2">
@@ -123,6 +124,18 @@ const CompactRewardsWidget = () => {
               </div>
               <Progress value={levelProgress} className="h-2 bg-white/30 rounded-full mb-1" />
               <div className="text-xs text-blue-100 text-center">{levelProgress}% to Level {userLevel + 1}</div>
+            </div>
+
+            {/* Sadaqah Coins */}
+            <div className="bg-white/25 rounded-lg p-3 backdrop-blur-sm border border-white/20">
+              <div className="flex items-center gap-2 mb-2">
+                <Coins className="h-4 w-4 text-yellow-300" />
+                <span className="text-sm font-bold text-white drop-shadow-sm">Coins</span>
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-bold text-yellow-200 drop-shadow-sm">{sadaqahCoins}</div>
+                <div className="text-xs text-blue-100">sadaqah</div>
+              </div>
             </div>
 
             {/* Streak */}
