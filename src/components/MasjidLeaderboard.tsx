@@ -26,7 +26,11 @@ interface CountryEntry {
   isUser: boolean;
 }
 
-const MasjidLeaderboard = () => {
+interface MasjidLeaderboardProps {
+  userMasjidId?: string;
+}
+
+const MasjidLeaderboard: React.FC<MasjidLeaderboardProps> = ({ userMasjidId }) => {
   const [activeTab, setActiveTab] = useState<'local' | 'cities' | 'countries'>('local');
 
   const localMasjids: MasjidEntry[] = [
@@ -50,7 +54,7 @@ const MasjidLeaderboard = () => {
     { rank: 4, name: 'Australia', points: 756300, isUser: false },
   ];
 
-  const getCurrentData = () => {
+  const getCurrentData = (): (MasjidEntry | CityEntry | CountryEntry)[] => {
     switch (activeTab) {
       case 'local': return localMasjids;
       case 'cities': return cities;
@@ -86,7 +90,7 @@ const MasjidLeaderboard = () => {
     );
   };
 
-  const getPointsToNext = (currentRank: number, currentPoints: number) => {
+  const getPointsToNext = (currentRank: number, currentPoints: number): number | null => {
     const data = getCurrentData();
     const nextRankData = data.find(item => item.rank === currentRank - 1);
     if (!nextRankData) return null;
