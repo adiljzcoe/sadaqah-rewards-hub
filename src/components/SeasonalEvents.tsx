@@ -23,11 +23,6 @@ const SeasonalEvents = () => {
     userProgress: 12
   };
 
-  const upcomingEvents = [
-    { name: "Ramadan Giving Month", icon: "🌙", startDate: "March 2024", description: "30 days of blessed giving" },
-    { name: "Earth Day Eco Challenge", icon: "🌍", startDate: "April 2024", description: "Environmental charity focus" }
-  ];
-
   return (
     <Card className="p-6 game-card">
       <div className="mb-6">
@@ -101,28 +96,6 @@ const SeasonalEvents = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Upcoming Events */}
-      <div>
-        <h4 className="font-bold text-gray-700 mb-3 text-sm flex items-center gap-1">
-          <Star className="h-4 w-4 text-yellow-500" />
-          Coming Soon
-        </h4>
-        <div className="space-y-2">
-          {upcomingEvents.map((event, index) => (
-            <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border">
-              <span className="text-2xl">{event.icon}</span>
-              <div className="flex-1">
-                <div className="font-bold text-sm text-gray-800">{event.name}</div>
-                <div className="text-xs text-gray-600">{event.description}</div>
-              </div>
-              <Badge variant="outline" className="text-xs">
-                {event.startDate}
-              </Badge>
-            </div>
-          ))}
         </div>
       </div>
     </Card>
