@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -5,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Heart, Send, Users, MessageCircle, Star, Clock, Lock, Crown } from 'lucide-react';
+import { Heart, Send, Users, MessageCircle, Star, Clock, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -31,39 +32,8 @@ const DuaWall = () => {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [isPaidMember, setIsPaidMember] = useState(false);
-  const [checkingSubscription, setCheckingSubscription] = useState(true);
-
-  // Check subscription status
-  useEffect(() => {
-    const checkSubscription = async () => {
-      if (!user) {
-        setCheckingSubscription(false);
-        return;
-      }
-
-      try {
-        // Mock subscription check - replace with actual subscription logic
-        // For now, we'll assume users with certain conditions are paid members
-        const mockIsPaid = user.email?.includes('premium') || user.user_metadata?.subscription === 'premium';
-        setIsPaidMember(!!mockIsPaid);
-      } catch (error) {
-        console.error('Error checking subscription:', error);
-        setIsPaidMember(false);
-      } finally {
-        setCheckingSubscription(false);
-      }
-    };
-
-    checkSubscription();
-  }, [user]);
 
   const fetchDuas = async () => {
-    if (!isPaidMember) {
-      setLoading(false);
-      return;
-    }
-
     try {
       console.log('Fetching duas...');
       
@@ -87,6 +57,16 @@ const DuaWall = () => {
           created_at: new Date(Date.now() - 3600000).toISOString(),
           user_id: 'user2',
           user_has_said_ameen: true
+        },
+        {
+          id: '3',
+          content: 'May Allah accept our prayers and guide us on the straight path.',
+          is_anonymous: false,
+          ameen_count: 8,
+          created_at: new Date(Date.now() - 7200000).toISOString(),
+          user_id: 'user3',
+          profiles: { full_name: 'Fatima Ali' },
+          user_has_said_ameen: false
         }
       ];
 
@@ -208,10 +188,8 @@ const DuaWall = () => {
   };
 
   useEffect(() => {
-    if (!checkingSubscription) {
-      fetchDuas();
-    }
-  }, [user, isPaidMember, checkingSubscription]);
+    fetchDuas();
+  }, []);
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -225,86 +203,6 @@ const DuaWall = () => {
     return date.toLocaleDateString();
   };
 
-  // Show loading state while checking subscription
-  if (checkingSubscription) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Checking access...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Show premium required message for non-paid members
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-              <MessageCircle className="h-10 w-10 text-blue-600" />
-              Du'a Wall
-            </h1>
-          </div>
-
-          <Card className="max-w-2xl mx-auto text-center py-12">
-            <CardContent>
-              <Lock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Authentication Required</h3>
-              <p className="text-gray-500 mb-6">Please log in to access the Du'a Wall community feature.</p>
-              <Button onClick={() => window.location.href = '/auth'} className="bg-blue-600 hover:bg-blue-700">
-                Sign In
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isPaidMember) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-              <MessageCircle className="h-10 w-10 text-blue-600" />
-              Du'a Wall
-            </h1>
-          </div>
-
-          <Card className="max-w-2xl mx-auto text-center py-12">
-            <CardContent>
-              <Crown className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">Premium Feature</h3>
-              <p className="text-gray-500 mb-6">
-                The Du'a Wall is an exclusive feature for premium members. Join our community to share prayers 
-                and support fellow believers with your Ameen.
-              </p>
-              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <h4 className="font-semibold text-yellow-800 mb-2">Premium Benefits Include:</h4>
-                <ul className="text-sm text-yellow-700 space-y-1">
-                  <li>• Share and read community prayers</li>
-                  <li>• Support others with Ameen responses</li>
-                  <li>• Anonymous posting option</li>
-                  <li>• Connect with believers worldwide</li>
-                </ul>
-              </div>
-              <Button onClick={() => window.location.href = '/membership'} className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
-                <Crown className="h-4 w-4 mr-2" />
-                Upgrade to Premium
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
       <div className="container mx-auto px-4 py-8">
@@ -313,10 +211,6 @@ const DuaWall = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
             <MessageCircle className="h-10 w-10 text-blue-600" />
             Du'a Wall
-            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
-              <Crown className="h-3 w-3 mr-1" />
-              Premium
-            </Badge>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Share your prayers with the community and support others with your Ameen. 
@@ -366,50 +260,70 @@ const DuaWall = () => {
         </div>
 
         {/* Submit New Dua */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-yellow-500" />
-              Share Your Prayer
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea
-              placeholder="Write your du'a here... Allah is listening 🤲"
-              value={newDua}
-              onChange={(e) => setNewDua(e.target.value)}
-              className="min-h-[120px] resize-none"
-              maxLength={500}
-            />
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="anonymous"
-                  checked={isAnonymous}
-                  onCheckedChange={setIsAnonymous}
-                />
-                <Label htmlFor="anonymous" className="text-sm text-gray-600">
-                  Share anonymously
-                </Label>
-              </div>
+        {user ? (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Star className="h-5 w-5 text-yellow-500" />
+                Share Your Prayer
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Textarea
+                placeholder="Write your du'a here... Allah is listening 🤲"
+                value={newDua}
+                onChange={(e) => setNewDua(e.target.value)}
+                className="min-h-[120px] resize-none"
+                maxLength={500}
+              />
               
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-500">
-                  {newDua.length}/500
-                </span>
-                <Button 
-                  onClick={submitDua}
-                  disabled={submitting || !newDua.trim()}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  <Send className="h-4 w-4 mr-2" />
-                  {submitting ? 'Sharing...' : 'Share Prayer'}
-                </Button>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="anonymous"
+                    checked={isAnonymous}
+                    onCheckedChange={setIsAnonymous}
+                  />
+                  <Label htmlFor="anonymous" className="text-sm text-gray-600">
+                    Share anonymously
+                  </Label>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <span className="text-sm text-gray-500">
+                    {newDua.length}/500
+                  </span>
+                  <Button 
+                    onClick={submitDua}
+                    disabled={submitting || !newDua.trim()}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Send className="h-4 w-4 mr-2" />
+                    {submitting ? 'Sharing...' : 'Share Prayer'}
+                  </Button>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <CardContent className="p-6 text-center">
+              <Lock className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Join the Community
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Sign in to share your prayers and support others with your Ameen.
+              </p>
+              <Button 
+                onClick={() => window.location.href = '/auth'}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Sign In to Participate
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Duas List */}
         <div className="space-y-6">
@@ -454,7 +368,7 @@ const DuaWall = () => {
                       </span>
                     </div>
                     
-                    {user && (
+                    {user ? (
                       <Button
                         size="sm"
                         variant={dua.user_has_said_ameen ? "default" : "outline"}
@@ -463,6 +377,15 @@ const DuaWall = () => {
                       >
                         <Heart className={`h-4 w-4 mr-2 ${dua.user_has_said_ameen ? 'fill-current' : ''}`} />
                         {dua.user_has_said_ameen ? 'Ameen Said' : 'Say Ameen'}
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => window.location.href = '/auth'}
+                      >
+                        <Heart className="h-4 w-4 mr-2" />
+                        Sign in to say Ameen
                       </Button>
                     )}
                   </div>
