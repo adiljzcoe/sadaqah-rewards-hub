@@ -413,6 +413,92 @@ export type Database = {
           },
         ]
       }
+      charity_products: {
+        Row: {
+          beneficiaries_count: number | null
+          category: string
+          charity_id: string
+          created_at: string
+          currency: string
+          description: string | null
+          fixed_price: number | null
+          id: string
+          image_url: string | null
+          impact_description: string | null
+          is_active: boolean
+          is_featured: boolean
+          maximum_amount: number | null
+          minimum_amount: number | null
+          name: string
+          pricing_model: Database["public"]["Enums"]["pricing_model"]
+          product_type: Database["public"]["Enums"]["product_type"]
+          raised_amount: number | null
+          sort_order: number | null
+          suggested_amount: number | null
+          tags: string[] | null
+          target_amount: number | null
+          updated_at: string
+        }
+        Insert: {
+          beneficiaries_count?: number | null
+          category: string
+          charity_id: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          fixed_price?: number | null
+          id?: string
+          image_url?: string | null
+          impact_description?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          maximum_amount?: number | null
+          minimum_amount?: number | null
+          name: string
+          pricing_model?: Database["public"]["Enums"]["pricing_model"]
+          product_type?: Database["public"]["Enums"]["product_type"]
+          raised_amount?: number | null
+          sort_order?: number | null
+          suggested_amount?: number | null
+          tags?: string[] | null
+          target_amount?: number | null
+          updated_at?: string
+        }
+        Update: {
+          beneficiaries_count?: number | null
+          category?: string
+          charity_id?: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          fixed_price?: number | null
+          id?: string
+          image_url?: string | null
+          impact_description?: string | null
+          is_active?: boolean
+          is_featured?: boolean
+          maximum_amount?: number | null
+          minimum_amount?: number | null
+          name?: string
+          pricing_model?: Database["public"]["Enums"]["pricing_model"]
+          product_type?: Database["public"]["Enums"]["product_type"]
+          raised_amount?: number | null
+          sort_order?: number | null
+          suggested_amount?: number | null
+          tags?: string[] | null
+          target_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_products_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dhikr_achievements: {
         Row: {
           badge_color: string | null
@@ -1476,6 +1562,85 @@ export type Database = {
           },
         ]
       }
+      product_media: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          media_type: string
+          media_url: string
+          product_id: string
+          sort_order: number | null
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          media_type: string
+          media_url: string
+          product_id: string
+          sort_order?: number | null
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          media_type?: string
+          media_url?: string
+          product_id?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_media_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "charity_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_pricing_tiers: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          id: string
+          impact_description: string | null
+          name: string
+          product_id: string
+          sort_order: number | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          impact_description?: string | null
+          name: string
+          product_id: string
+          sort_order?: number | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          impact_description?: string | null
+          name?: string
+          product_id?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_pricing_tiers_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "charity_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2303,6 +2468,12 @@ export type Database = {
         | "refunded"
         | "sent_to_charity"
       fundraiser_status: "draft" | "active" | "completed" | "cancelled"
+      pricing_model: "fixed" | "minimum" | "suggested" | "free_choice"
+      product_type:
+        | "fixed_price"
+        | "flexible_amount"
+        | "subscription"
+        | "cause_campaign"
       qurbani_status:
         | "preorder"
         | "confirmed"
@@ -2441,6 +2612,13 @@ export const Constants = {
         "sent_to_charity",
       ],
       fundraiser_status: ["draft", "active", "completed", "cancelled"],
+      pricing_model: ["fixed", "minimum", "suggested", "free_choice"],
+      product_type: [
+        "fixed_price",
+        "flexible_amount",
+        "subscription",
+        "cause_campaign",
+      ],
       qurbani_status: [
         "preorder",
         "confirmed",

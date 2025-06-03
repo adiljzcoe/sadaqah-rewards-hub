@@ -1,12 +1,14 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/Header';
 import DonationWidget from '@/components/DonationWidget';
-import { ArrowLeft, MapPin, Users, Shield, Star, Globe, Phone, Mail, ExternalLink } from 'lucide-react';
+import CharityProductCard from '@/components/CharityProductCard';
+import { ArrowLeft, MapPin, Users, Shield, Star, Globe, Phone, Mail, ExternalLink, Package } from 'lucide-react';
+import { useCharityProducts } from '@/hooks/useCharityProducts';
 
 // Mock charity data - in a real app this would come from an API
 const charityData = {
@@ -170,8 +172,11 @@ const charityData = {
 const CharityProfile = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [customAmount, setCustomAmount] = useState<number | null>(null);
   
   const charity = id ? charityData[id as keyof typeof charityData] : null;
+  const { data: products, isLoading: productsLoading } = useCharityProducts(charity?.id || '');
 
   if (!charity) {
     return (
@@ -189,6 +194,21 @@ const CharityProfile = () => {
       </div>
     );
   }
+
+  const handleProductDonate = (productId: string, amount?: number) => {
+    setSelectedProductId(productId);
+    setCustomAmount(amount || null);
+    // In a real app, this would open a donation modal or navigate to checkout
+    console.log('Donating to product:', productId, 'Amount:', amount);
+  };
+
+  const groupedProducts = products?.reduce((acc, product) => {
+    if (!acc[product.category]) {
+      acc[product.category] = [];
+    }
+    acc[product.category].push(product);
+    return acc;
+  }, {} as Record<string, typeof products>) || {};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -228,150 +248,234 @@ const CharityProfile = () => {
         <div className="mt-20 grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Basic Info */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-3xl text-islamic-green-800 mb-2">
-                      {charity.name}
-                      {charity.verified && (
-                        <Badge className="ml-3 bg-islamic-green-100 text-islamic-green-800">
-                          <Shield className="h-3 w-3 mr-1" />
-                          Verified
-                        </Badge>
-                      )}
-                    </CardTitle>
-                    <div className="flex items-center space-x-4 text-gray-600 mb-4">
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {charity.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Star className="h-4 w-4 text-yellow-500 fill-current mr-1" />
-                        {charity.rating}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        {charity.beneficiaries}
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="products">
+                  <Package className="h-4 w-4 mr-2" />
+                  Products
+                </TabsTrigger>
+                <TabsTrigger value="projects">Projects</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="space-y-6">
+                {/* Basic Info */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-3xl text-islamic-green-800 mb-2">
+                          {charity.name}
+                          {charity.verified && (
+                            <Badge className="ml-3 bg-islamic-green-100 text-islamic-green-800">
+                              <Shield className="h-3 w-3 mr-1" />
+                              Verified
+                            </Badge>
+                          )}
+                        </CardTitle>
+                        <div className="flex items-center space-x-4 text-gray-600 mb-4">
+                          <div className="flex items-center">
+                            <MapPin className="h-4 w-4 mr-1" />
+                            {charity.location}
+                          </div>
+                          <div className="flex items-center">
+                            <Star className="h-4 w-4 text-yellow-500 fill-current mr-1" />
+                            {charity.rating}
+                          </div>
+                          <div className="flex items-center">
+                            <Users className="h-4 w-4 mr-1" />
+                            {charity.beneficiaries}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 mb-6">{charity.fullDescription}</p>
-                
-                <div className="grid md:grid-cols-3 gap-4 mb-6">
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-islamic-green-600">{charity.raised}</div>
-                    <div className="text-sm text-gray-600">Total Raised</div>
-                  </div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">{charity.projects}</div>
-                    <div className="text-sm text-gray-600">Active Projects</div>
-                  </div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">{charity.countries}+</div>
-                    <div className="text-sm text-gray-600">Countries</div>
-                  </div>
-                </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 mb-6">{charity.fullDescription}</p>
+                    
+                    <div className="grid md:grid-cols-3 gap-4 mb-6">
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-islamic-green-600">{charity.raised}</div>
+                        <div className="text-sm text-gray-600">Total Raised</div>
+                      </div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">{charity.projects}</div>
+                        <div className="text-sm text-gray-600">Active Projects</div>
+                      </div>
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-purple-600">{charity.countries}+</div>
+                        <div className="text-sm text-gray-600">Countries</div>
+                      </div>
+                    </div>
 
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-800">Focus Areas</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {charity.categories.map((category, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {category}
-                      </Badge>
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-gray-800">Focus Areas</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {charity.categories.map((category, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {category}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Contact Information */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Contact Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="flex items-center space-x-3">
+                        <Globe className="h-5 w-5 text-blue-600" />
+                        <div>
+                          <div className="text-sm text-gray-600">Website</div>
+                          <a href={charity.website} target="_blank" rel="noopener noreferrer" 
+                             className="text-blue-600 hover:underline flex items-center">
+                            {charity.website.replace('https://', '')}
+                            <ExternalLink className="h-3 w-3 ml-1" />
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Mail className="h-5 w-5 text-green-600" />
+                        <div>
+                          <div className="text-sm text-gray-600">Email</div>
+                          <a href={`mailto:${charity.email}`} className="text-green-600 hover:underline">
+                            {charity.email}
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Phone className="h-5 w-5 text-purple-600" />
+                        <div>
+                          <div className="text-sm text-gray-600">Phone</div>
+                          <a href={`tel:${charity.phone}`} className="text-purple-600 hover:underline">
+                            {charity.phone}
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Shield className="h-5 w-5 text-orange-600" />
+                        <div>
+                          <div className="text-sm text-gray-600">Registration</div>
+                          <div className="font-medium">{charity.registrationNumber}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Recent Projects */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Projects</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-6">
+                      {charity.recentProjects.map((project, index) => (
+                        <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                          <img 
+                            src={project.image} 
+                            alt={project.title}
+                            className="w-full h-48 object-cover"
+                          />
+                          <div className="p-4">
+                            <h4 className="font-semibold text-lg mb-2">{project.title}</h4>
+                            <p className="text-gray-600 mb-4">{project.description}</p>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm text-gray-600">Progress</span>
+                              <span className="text-sm font-medium">
+                                £{project.raised.toLocaleString()} / £{project.target.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-islamic-green-600 h-2 rounded-full" 
+                                style={{ width: `${(project.raised / project.target) * 100}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="products" className="space-y-6">
+                {productsLoading ? (
+                  <div className="text-center py-8">
+                    <div className="text-gray-600">Loading products...</div>
+                  </div>
+                ) : products && products.length > 0 ? (
+                  <div className="space-y-8">
+                    {Object.entries(groupedProducts).map(([category, categoryProducts]) => (
+                      <div key={category}>
+                        <h3 className="text-xl font-bold mb-4 text-islamic-green-800">{category}</h3>
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                          {categoryProducts.map((product) => (
+                            <CharityProductCard
+                              key={product.id}
+                              product={product}
+                              onDonate={handleProductDonate}
+                            />
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="text-center py-8">
+                      <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">No Products Available</h3>
+                      <p className="text-gray-600">This charity hasn't added any products yet.</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
 
-            {/* Contact Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-3">
-                    <Globe className="h-5 w-5 text-blue-600" />
-                    <div>
-                      <div className="text-sm text-gray-600">Website</div>
-                      <a href={charity.website} target="_blank" rel="noopener noreferrer" 
-                         className="text-blue-600 hover:underline flex items-center">
-                        {charity.website.replace('https://', '')}
-                        <ExternalLink className="h-3 w-3 ml-1" />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Mail className="h-5 w-5 text-green-600" />
-                    <div>
-                      <div className="text-sm text-gray-600">Email</div>
-                      <a href={`mailto:${charity.email}`} className="text-green-600 hover:underline">
-                        {charity.email}
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Phone className="h-5 w-5 text-purple-600" />
-                    <div>
-                      <div className="text-sm text-gray-600">Phone</div>
-                      <a href={`tel:${charity.phone}`} className="text-purple-600 hover:underline">
-                        {charity.phone}
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Shield className="h-5 w-5 text-orange-600" />
-                    <div>
-                      <div className="text-sm text-gray-600">Registration</div>
-                      <div className="font-medium">{charity.registrationNumber}</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Projects */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Projects</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-6">
-                  {charity.recentProjects.map((project, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="p-4">
-                        <h4 className="font-semibold text-lg mb-2">{project.title}</h4>
-                        <p className="text-gray-600 mb-4">{project.description}</p>
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-gray-600">Progress</span>
-                          <span className="text-sm font-medium">
-                            £{project.raised.toLocaleString()} / £{project.target.toLocaleString()}
-                          </span>
+              <TabsContent value="projects" className="space-y-6">
+                {/* Recent Projects - keep existing code */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Projects</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-6">
+                      {charity.recentProjects.map((project, index) => (
+                        <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                          <img 
+                            src={project.image} 
+                            alt={project.title}
+                            className="w-full h-48 object-cover"
+                          />
+                          <div className="p-4">
+                            <h4 className="font-semibold text-lg mb-2">{project.title}</h4>
+                            <p className="text-gray-600 mb-4">{project.description}</p>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm text-gray-600">Progress</span>
+                              <span className="text-sm font-medium">
+                                £{project.raised.toLocaleString()} / £{project.target.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-islamic-green-600 h-2 rounded-full" 
+                                style={{ width: `${(project.raised / project.target) * 100}%` }}
+                              ></div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
-                            className="bg-islamic-green-600 h-2 rounded-full" 
-                            style={{ width: `${(project.raised / project.target) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* Sidebar */}
