@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -63,7 +64,7 @@ const Header = () => {
       
       <div className="relative z-20 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
-          {/* Left Section - Logo and Simple User Info */}
+          {/* Left Section - Logo and Golden Plaque */}
           <div className="flex items-center space-x-6 relative z-50">
             <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-30">
               <img 
@@ -73,15 +74,34 @@ const Header = () => {
               />
             </Link>
 
-            {/* Simple User Info - Only show when logged in */}
-            {user && (
-              <div className="flex items-center space-x-3 text-white">
-                <span className="text-sm">Welcome, {user.user_metadata?.full_name || 'User'}</span>
-                <Badge className="bg-yellow-500 text-black">
-                  <Star className="h-3 w-3 mr-1" />
-                  {currentPoints.toLocaleString()}
-                </Badge>
+            {/* Golden User Plaque - Show different content based on login status */}
+            {user ? (
+              // Logged in user plaque
+              <div className="flex items-center bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl px-4 py-2 shadow-lg">
+                <div className="flex items-center space-x-2 text-white">
+                  <Crown className="h-5 w-5" />
+                  <span className="font-bold text-sm">Ahmad M.</span>
+                  <span className="font-bold text-sm">LV {userLevel}</span>
+                  <div className="flex items-center space-x-1 ml-2">
+                    <Star className="h-4 w-4" />
+                    <span className="font-bold text-sm">{currentPoints.toLocaleString()} pts</span>
+                  </div>
+                </div>
               </div>
+            ) : (
+              // Non-logged in membership plaque
+              <Link to="/membership">
+                <div className="flex items-center bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="flex items-center space-x-2 text-white">
+                    <Crown className="h-5 w-5" />
+                    <span className="font-bold text-sm">Membership</span>
+                    <div className="flex items-center space-x-1 ml-2">
+                      <Shield className="h-4 w-4" />
+                      <span className="font-bold text-sm">Join Now</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             )}
           </div>
 
