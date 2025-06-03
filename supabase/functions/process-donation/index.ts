@@ -83,16 +83,6 @@ const handler = async (req: Request): Promise<Response> => {
       })
       .eq('id', charityId);
 
-    // Add to matching pool
-    const { error: poolError } = await supabase
-      .from('matching_pool')
-      .insert({
-        user_id: userId,
-        donation_id: donation.id,
-        sadaqah_coins_amount: sadaqahCoins,
-        matched: false,
-      });
-
     // Check for achievements
     await checkAndAwardAchievements(userId, profile, amount);
 

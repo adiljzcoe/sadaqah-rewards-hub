@@ -18,7 +18,6 @@ import StreakWidget from '@/components/StreakWidget';
 import AchievementSystem from '@/components/AchievementSystem';
 import FriendsWidget from '@/components/FriendsWidget';
 import SeasonalEvents from '@/components/SeasonalEvents';
-import MatchingPoolWidget from '@/components/MatchingPoolWidget';
 import CharityTicker from '@/components/CharityTicker';
 import BusinessAdvert from '@/components/BusinessAdvert';
 import LeagueTablesCarousel from '@/components/LeagueTablesCarousel';
@@ -146,9 +145,6 @@ const Index = () => {
           <div className="space-y-6 max-w-full overflow-x-hidden pl-4 pr-2">
             <div className="hover-lift">
               <UserStats />
-            </div>
-            <div className="hover-lift">
-              <MatchingPoolWidget />
             </div>
             <div className="hover-lift">
               <StreakWidget />
