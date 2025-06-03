@@ -7,7 +7,6 @@ import CharityPartners from '@/components/CharityPartners';
 import LiveFeed from '@/components/LiveFeed';
 import UserStats from '@/components/UserStats';
 import PersonalLeagueWidget from '@/components/PersonalLeagueWidget';
-import FloatingDonationWidget from '@/components/FloatingDonationWidget';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
 import CharityFeedSection from '@/components/CharityFeedSection';
@@ -266,7 +265,6 @@ const Index = () => {
       </section>
 
       <FloatingDonationButton />
-      <FloatingDonationWidget />
     </div>
   );
 };
