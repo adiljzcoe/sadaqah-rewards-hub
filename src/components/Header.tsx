@@ -111,6 +111,7 @@ const Header = () => {
                     </Button>
                   </Link>
                 ) : (
+                  // Show fake login buttons only when not logged in
                   <div className="flex items-center space-x-2">
                     <Button 
                       onClick={fakeUserLogin}
@@ -496,9 +497,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* User Level Plaque - Desktop Bottom Bar */}
+      {/* User Level Plaque - Desktop Bottom Bar - ALWAYS SHOW WHEN USER IS LOGGED IN */}
       {user && (
-        <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-900/90 via-purple-900/90 to-indigo-900/90 backdrop-blur-sm border-t border-cyan-400/30">
+        <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-900/90 via-purple-900/90 to-indigo-900/90 backdrop-blur-sm border-t border-cyan-400/30 z-40">
           <div className="container mx-auto px-6 py-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-6">
