@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -64,7 +63,7 @@ const Header = () => {
       
       <div className="relative z-20 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
-          {/* Left Section - Logo and User with FIXED z-index */}
+          {/* Left Section - Logo and Simple User Info */}
           <div className="flex items-center space-x-6 relative z-50">
             <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-30">
               <img 
@@ -74,32 +73,14 @@ const Header = () => {
               />
             </Link>
 
-            {/* Golden User Plaque - Horizontal Pills Like Reference Image */}
+            {/* Simple User Info - Only show when logged in */}
             {user && (
-              <div className="flex items-center space-x-2 relative z-50">
-                {/* Jannah Points Pill */}
-                <Link to="/profile" className="block">
-                  <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <Star className="h-4 w-4 text-white" />
-                    <span className="text-white font-bold text-sm">{currentPoints.toLocaleString()}</span>
-                  </div>
-                </Link>
-
-                {/* Sadaqah Coins Pill */}
-                <Link to="/sadaqah-coins" className="block">
-                  <div className="flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-yellow-600 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <Coins className="h-4 w-4 text-white" />
-                    <span className="text-white font-bold text-sm">1,250</span>
-                  </div>
-                </Link>
-
-                {/* Level Pill */}
-                <Link to="/profile" className="block">
-                  <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                    <Crown className="h-4 w-4 text-white" />
-                    <span className="text-white font-bold text-sm">Lv.{userLevel}</span>
-                  </div>
-                </Link>
+              <div className="flex items-center space-x-3 text-white">
+                <span className="text-sm">Welcome, {user.user_metadata?.full_name || 'User'}</span>
+                <Badge className="bg-yellow-500 text-black">
+                  <Star className="h-3 w-3 mr-1" />
+                  {currentPoints.toLocaleString()}
+                </Badge>
               </div>
             )}
           </div>
@@ -458,40 +439,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
-      {/* User Level Plaque - Desktop Bottom Bar - Progress Bar Like Reference */}
-      {user && (
-        <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-900/90 via-purple-900/90 to-indigo-900/90 backdrop-blur-sm border-t border-cyan-400/30 z-40">
-          <div className="container mx-auto px-6 py-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2 text-white text-sm">
-                <span className="font-medium">Level {userLevel}</span>
-              </div>
-              
-              <div className="flex-1 mx-8">
-                <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full transition-all duration-300"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <div className="text-white text-sm">
-                  <span className="font-medium text-cyan-300">{currentPoints}/{nextLevelPoints} XP</span>
-                </div>
-                
-                {/* Top Up Button */}
-                <Button className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold text-xs px-4 py-1 rounded-full">
-                  <Gift className="h-3 w-3 mr-1" />
-                  Top Up
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 };
