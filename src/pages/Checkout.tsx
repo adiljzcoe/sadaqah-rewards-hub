@@ -52,7 +52,7 @@ const fundraisingAmounts = [10, 25, 50, 100, 250, 500];
 
 const adminFeeOptions = [
   { percentage: 0, label: 'No admin fee (100% to charity)', description: 'Every penny goes directly to help', badge: '💝 PURE CHARITY' },
-  { percentage: 0.05, label: '0.05% admin fee', description: 'Ultra minimal platform support', badge: '🌱 ECO' },
+  { percentage: 0.5, label: '0.5% admin fee', description: 'Ultra minimal platform support', badge: '🌱 ECO' },
   { percentage: 1, label: '1% admin fee', description: 'Minimal support for platform costs', badge: '🌱 SUPPORTER' },
   { percentage: 3, label: '3% admin fee', description: 'Helps us improve our platform', badge: '🌟 SUPPORTER' },
   { percentage: 5, label: '5% admin fee', description: 'Supports platform maintenance', badge: '🚀 BUILDER' },
