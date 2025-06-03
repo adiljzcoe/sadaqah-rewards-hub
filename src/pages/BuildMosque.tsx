@@ -1,513 +1,222 @@
 
 import React from 'react';
-import Header from '@/components/Header';
-import ProjectDonationWidget from '@/components/ProjectDonationWidget';
-import LiveDonationFeed from '@/components/LiveDonationFeed';
-import { Building2, MapPin, Users, Calendar, CheckCircle, Clock, Target, Star, Award, ShoppingCart } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
+import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target } from 'lucide-react';
 
 const BuildMosque = () => {
-  // Mock user track record data - would come from API/localStorage
-  const userTrackRecord = {
-    prayerSpacesFunded: 0, // Change this to test different states
-    mosquesCompleted: 0,
-    totalContributed: 0,
-    activeContributions: 0
-  };
-
-  // Calculate prayer space cost based on capacity and total cost
-  const calculatePrayerSpaceCost = (capacity: number, totalCost: number) => {
-    return Math.round(totalCost / capacity);
-  };
-
-  // Mock data for mosque projects with prayer space details
   const mosqueProjects = [
     {
       id: 1,
-      name: 'Al-Noor Mosque',
-      location: 'Gaza, Palestine',
-      status: 'completed',
-      capacity: 500,
-      completedDate: '2024-03-15',
-      totalCost: 75000,
-      contributors: 245,
-      progress: 100,
-      size: 'medium',
-      totalPrayerSpaces: 75,
-      fundedPrayerSpaces: 75,
-      prayerSpaceCost: calculatePrayerSpaceCost(500, 75000)
+      name: "Central Community Mosque",
+      location: "Birmingham, UK",
+      description: "A modern mosque serving 2,000+ families with community center, school, and sports facilities.",
+      targetAmount: 500000,
+      raisedAmount: 287500,
+      donorsCount: 1250,
+      daysLeft: 45,
+      capacity: 2000,
+      features: ["Prayer Hall", "Community Center", "Islamic School", "Sports Complex", "Car Park"],
+      urgency: "high",
+      image: "/placeholder.svg"
     },
     {
       id: 2,
-      name: 'Masjid Al-Rahman',
-      location: 'Aleppo, Syria',
-      status: 'under-construction',
-      capacity: 800,
-      startDate: '2024-01-10',
-      expectedCompletion: '2024-07-30',
-      totalCost: 120000,
-      raisedAmount: 95000,
-      contributors: 387,
-      progress: 79,
-      size: 'large',
-      totalPrayerSpaces: 100,
-      fundedPrayerSpaces: 79,
-      prayerSpaceCost: calculatePrayerSpaceCost(800, 120000)
-    },
-    {
-      id: 3,
-      name: 'Community Mosque',
-      location: 'Karachi, Pakistan',
-      status: 'funded',
-      capacity: 300,
-      fundedDate: '2024-05-20',
-      totalCost: 45000,
-      contributors: 156,
-      progress: 100,
-      size: 'small',
-      totalPrayerSpaces: 50,
-      fundedPrayerSpaces: 50,
-      prayerSpaceCost: calculatePrayerSpaceCost(300, 45000)
-    },
-    {
-      id: 4,
-      name: 'Baitul Hidayah',
-      location: 'Dhaka, Bangladesh',
-      status: 'under-construction',
-      capacity: 600,
-      startDate: '2024-02-01',
-      expectedCompletion: '2024-08-15',
-      totalCost: 85000,
-      raisedAmount: 72000,
-      contributors: 298,
-      progress: 85,
-      size: 'medium',
-      totalPrayerSpaces: 75,
-      fundedPrayerSpaces: 64,
-      prayerSpaceCost: calculatePrayerSpaceCost(600, 85000)
-    },
-    {
-      id: 5,
-      name: 'Masjid As-Salam',
-      location: 'Mogadishu, Somalia',
-      status: 'completed',
-      capacity: 400,
-      completedDate: '2024-04-12',
-      totalCost: 55000,
-      contributors: 189,
-      progress: 100,
-      size: 'medium',
-      totalPrayerSpaces: 60,
-      fundedPrayerSpaces: 60,
-      prayerSpaceCost: calculatePrayerSpaceCost(400, 55000)
-    },
-    {
-      id: 6,
-      name: 'Al-Furqan Mosque',
-      location: 'Sana\'a, Yemen',
-      status: 'funded',
-      capacity: 700,
-      fundedDate: '2024-05-28',
-      totalCost: 95000,
-      contributors: 234,
-      progress: 100,
-      size: 'large',
-      totalPrayerSpaces: 80,
-      fundedPrayerSpaces: 80,
-      prayerSpaceCost: calculatePrayerSpaceCost(700, 95000)
+      name: "Riverside Family Mosque",
+      location: "Manchester, UK",
+      description: "Family-focused mosque with dedicated women's section, children's area, and elderly care facilities.",
+      targetAmount: 300000,
+      raisedAmount: 195000,
+      donorsCount: 890,
+      daysLeft: 60,
+      capacity: 1200,
+      features: ["Family Prayer Areas", "Women's Section", "Children's Area", "Elderly Care", "Library"],
+      urgency: "medium",
+      image: "/placeholder.svg"
     }
   ];
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <Badge className="bg-green-100 text-green-700"><CheckCircle className="h-3 w-3 mr-1" />Completed</Badge>;
-      case 'under-construction':
-        return <Badge className="bg-blue-100 text-blue-700"><Clock className="h-3 w-3 mr-1" />Under Construction</Badge>;
-      case 'funded':
-        return <Badge className="bg-emerald-100 text-emerald-700"><Target className="h-3 w-3 mr-1" />Funded</Badge>;
-      default:
-        return null;
+  const getUrgencyColor = (urgency: string) => {
+    switch (urgency) {
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-green-100 text-green-800 border-green-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
-  const handleBuyPrayerSpace = (project: any) => {
-    console.log(`Buying prayer space for ${project.name} - £${project.prayerSpaceCost}`);
-    // This would integrate with the donation widget/payment system
-    // and add jannah points to user's account
-    alert(`Donation successful! £${project.prayerSpaceCost} donated for 1 prayer space in ${project.name}. You earned ${project.prayerSpaceCost * 10} Jannah Points!`);
-  };
-
-  const completedCount = mosqueProjects.filter(p => p.status === 'completed').length;
-  const underConstructionCount = mosqueProjects.filter(p => p.status === 'under-construction').length;
-  const fundedCount = mosqueProjects.filter(p => p.status === 'funded').length;
-  const totalContributors = mosqueProjects.reduce((sum, p) => sum + p.contributors, 0);
-  const totalPrayerSpacesNeeded = mosqueProjects
-    .filter(p => p.status === 'under-construction')
-    .reduce((sum, p) => sum + (p.totalPrayerSpaces - p.fundedPrayerSpaces), 0);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50">
-      <Header />
-      <ProjectDonationWidget projectType="mosque" />
-      
-      {/* Live Donation Feed - moved above hero section */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <div className="container mx-auto px-4 py-8">
-        <LiveDonationFeed />
-      </div>
-      
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 text-white">
-        <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <div className="text-left">
-            <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="bg-gradient-to-r from-emerald-500 to-blue-500 p-3 rounded-full">
+              <Building className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
               Build a Mosque
-            </h2>
-            <p className="mt-6 text-xl">
-              Empower communities by providing a sacred space for prayer and reflection.
-            </p>
-            {totalPrayerSpacesNeeded > 0 && (
-              <div className="mt-4 p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                <p className="text-lg font-semibold">
-                  🙏 {totalPrayerSpacesNeeded} Prayer Spaces Needed Urgently
-                </p>
-                <p className="text-sm opacity-90">
-                  Help complete our mosques under construction
-                </p>
-              </div>
-            )}
-            <div className="mt-8 flex flex-wrap gap-4">
-              <a
-                href="#track-record"
-                className="bg-white text-emerald-700 hover:bg-emerald-50 font-semibold py-3 px-6 rounded-full transition-colors duration-300"
-              >
-                Your Progress
-              </a>
-              <a
-                href="#impact"
-                className="bg-teal-500 text-white hover:bg-teal-700 font-semibold py-3 px-6 rounded-full transition-colors duration-300"
-              >
-                See the Impact
-              </a>
-              <a
-                href="#projects"
-                className="bg-teal-500 text-white hover:bg-teal-700 font-semibold py-3 px-6 rounded-full transition-colors duration-300"
-              >
-                View Projects
-              </a>
+            </h1>
+          </div>
+          
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
+            Support the construction of beautiful mosques that will serve communities for generations. 
+            Every donation helps create a sacred space for worship, community gathering, and spiritual growth.
+          </p>
+          
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
+              <Building className="h-4 w-4 text-emerald-500" />
+              <span className="text-sm font-medium">Sacred Spaces</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
+              <Users className="h-4 w-4 text-blue-500" />
+              <span className="text-sm font-medium">Community Centers</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
+              <Heart className="h-4 w-4 text-pink-500" />
+              <span className="text-sm font-medium">Lasting Legacy</span>
             </div>
           </div>
-          <div className="hidden lg:block">
-            <Building2 className="h-48 w-auto text-emerald-200 opacity-50" />
-          </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        {/* Your Track Record Section */}
-        <section id="track-record" className="mb-16">
-          <h3 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-3">
-            <Award className="h-8 w-8 text-emerald-600" />
-            Your Mosque Building Track Record
-          </h3>
+        {/* Impact Stats */}
+        <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
+            <CardContent className="p-6 text-center">
+              <Building className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-2xl font-bold">12</div>
+              <div className="text-sm opacity-90">Mosques Built</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+            <CardContent className="p-6 text-center">
+              <Users className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-2xl font-bold">25K+</div>
+              <div className="text-sm opacity-90">People Served</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+            <CardContent className="p-6 text-center">
+              <Heart className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-2xl font-bold">£2.3M</div>
+              <div className="text-sm opacity-90">Total Raised</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-white">
+            <CardContent className="p-6 text-center">
+              <Star className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-2xl font-bold">4.8</div>
+              <div className="text-sm opacity-90">Average Rating</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Active Projects */}
+        <div className="space-y-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center">Active Mosque Projects</h2>
           
-          {userTrackRecord.prayerSpacesFunded === 0 && userTrackRecord.mosquesCompleted === 0 ? (
-            <Card className="p-8 bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200">
-              <div className="text-center">
-                <div className="text-6xl mb-4">🕌</div>
-                <h4 className="text-2xl font-bold text-gray-800 mb-4">Start Your Mosque Building Journey</h4>
-                <p className="text-lg text-gray-600 mb-6">
-                  You haven't funded any prayer spaces yet. Every mosque starts with a single prayer space contribution!
-                </p>
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Target className="h-8 w-8 text-emerald-600" />
-                    </div>
-                    <h5 className="font-semibold text-gray-800 mb-2">Set Your Goal</h5>
-                    <p className="text-sm text-gray-600">Start with funding just 1 prayer space for £100</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Users className="h-8 w-8 text-blue-600" />
-                    </div>
-                    <h5 className="font-semibold text-gray-800 mb-2">Join Others</h5>
-                    <p className="text-sm text-gray-600">Pool with other donors to complete mosques faster</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Building2 className="h-8 w-8 text-green-600" />
-                    </div>
-                    <h5 className="font-semibold text-gray-800 mb-2">Build Legacy</h5>
-                    <p className="text-sm text-gray-600">Watch your mosque get built and serve the community</p>
+          {mosqueProjects.map((project) => (
+            <Card key={project.id} className="overflow-hidden hover-lift">
+              <div className="grid lg:grid-cols-2 gap-0">
+                {/* Image Section */}
+                <div className="relative">
+                  <img 
+                    src={project.image} 
+                    alt={project.name}
+                    className="w-full h-64 lg:h-full object-cover"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <Badge className={`${getUrgencyColor(project.urgency)} border`}>
+                      {project.urgency.toUpperCase()} PRIORITY
+                    </Badge>
                   </div>
                 </div>
-                <div className="bg-white p-6 rounded-lg border border-emerald-200">
-                  <h5 className="font-semibold text-gray-800 mb-3">💡 Did you know?</h5>
-                  <p className="text-gray-600">
-                    The Prophet Muhammad ﷺ said: "Whoever builds a mosque for Allah, Allah will build for him a house in Paradise." 
-                    Start your journey today and earn this incredible reward!
-                  </p>
+
+                {/* Content Section */}
+                <div className="p-8">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{project.name}</h3>
+                      <div className="flex items-center gap-2 text-gray-600 mb-4">
+                        <MapPin className="h-4 w-4" />
+                        <span>{project.location}</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-gray-500">Capacity</div>
+                      <div className="text-lg font-bold">{project.capacity.toLocaleString()}</div>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-700 mb-6">{project.description}</p>
+
+                  {/* Features */}
+                  <div className="mb-6">
+                    <h4 className="font-semibold mb-3">Project Features:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.features.map((feature, index) => (
+                        <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                          {feature}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Progress */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Progress</span>
+                      <span className="text-sm font-semibold">
+                        £{project.raisedAmount.toLocaleString()} of £{project.targetAmount.toLocaleString()}
+                      </span>
+                    </div>
+                    <Progress 
+                      value={(project.raisedAmount / project.targetAmount) * 100} 
+                      className="h-3"
+                    />
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <span className="flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        {project.donorsCount.toLocaleString()} donors
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {project.daysLeft} days left
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3">
+                    <Button className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white">
+                      <Heart className="h-4 w-4 mr-2" />
+                      Donate Now
+                    </Button>
+                    <Button variant="outline" className="px-6">
+                      Learn More
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Card>
-          ) : (
-            <div className="grid md:grid-cols-4 gap-6">
-              <Card className="p-6 bg-gradient-to-br from-emerald-50 to-green-50 border-emerald-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-emerald-600 text-sm font-medium">Prayer Spaces Funded</p>
-                    <p className="text-3xl font-bold text-emerald-800">{userTrackRecord.prayerSpacesFunded}</p>
-                  </div>
-                  <Target className="h-8 w-8 text-emerald-600" />
-                </div>
-              </Card>
-              
-              <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-green-600 text-sm font-medium">Mosques Completed</p>
-                    <p className="text-3xl font-bold text-green-800">{userTrackRecord.mosquesCompleted}</p>
-                  </div>
-                  <CheckCircle className="h-8 w-8 text-green-600" />
-                </div>
-              </Card>
-              
-              <Card className="p-6 bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-blue-600 text-sm font-medium">Total Contributed</p>
-                    <p className="text-3xl font-bold text-blue-800">£{userTrackRecord.totalContributed}</p>
-                  </div>
-                  <Star className="h-8 w-8 text-blue-600" />
-                </div>
-              </Card>
-              
-              <Card className="p-6 bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-purple-600 text-sm font-medium">Active Projects</p>
-                    <p className="text-3xl font-bold text-purple-800">{userTrackRecord.activeContributions}</p>
-                  </div>
-                  <Clock className="h-8 w-8 text-purple-600" />
-                </div>
-              </Card>
-            </div>
-          )}
-        </section>
-
-        {/* Statistics Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-600 text-sm font-medium">Completed Mosques</p>
-                <p className="text-3xl font-bold text-green-800">{completedCount}</p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
-            </div>
-          </Card>
-          
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-sky-50 border-blue-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-600 text-sm font-medium">Under Construction</p>
-                <p className="text-3xl font-bold text-blue-800">{underConstructionCount}</p>
-              </div>
-              <Clock className="h-8 w-8 text-blue-600" />
-            </div>
-          </Card>
-          
-          <Card className="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-emerald-600 text-sm font-medium">Fully Funded</p>
-                <p className="text-3xl font-bold text-emerald-800">{fundedCount}</p>
-              </div>
-              <Target className="h-8 w-8 text-emerald-600" />
-            </div>
-          </Card>
-          
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-600 text-sm font-medium">Total Contributors</p>
-                <p className="text-3xl font-bold text-purple-800">{totalContributors}</p>
-              </div>
-              <Users className="h-8 w-8 text-purple-600" />
-            </div>
-          </Card>
+          ))}
         </div>
 
-        {/* Mosque Projects Table */}
-        <section id="projects" className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-3xl font-bold text-gray-800">
-              Our Mosque Projects
-            </h3>
-            <div className="text-sm text-gray-600">
-              Showing impact across {mosqueProjects.length} projects
+        {/* Testimonial */}
+        <div className="mt-16 text-center">
+          <div className="bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 rounded-2xl p-8 text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold mb-4">
+                "Whoever builds a mosque for Allah, Allah will build for him a house in Paradise."
+              </h3>
+              <p className="text-lg opacity-90">- Prophet Muhammad (ﷺ) - Sahih Bukhari</p>
             </div>
           </div>
-          
-          <Card className="overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50">
-                  <TableHead className="font-semibold">Mosque Name</TableHead>
-                  <TableHead className="font-semibold">Location</TableHead>
-                  <TableHead className="font-semibold">Status</TableHead>
-                  <TableHead className="font-semibold">Prayer Spaces</TableHead>
-                  <TableHead className="font-semibold">Progress</TableHead>
-                  <TableHead className="font-semibold">Contributors</TableHead>
-                  <TableHead className="font-semibold">Timeline</TableHead>
-                  <TableHead className="font-semibold">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {mosqueProjects.map((project) => (
-                  <TableRow key={project.id} className="hover:bg-gray-50">
-                    <TableCell className="font-medium">{project.name}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-2 text-gray-500" />
-                        {project.location}
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(project.status)}</TableCell>
-                    <TableCell>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-sm">
-                          <span>{project.fundedPrayerSpaces}/{project.totalPrayerSpaces} Spaces</span>
-                          <span className="text-xs text-gray-500">£{project.prayerSpaceCost} each</span>
-                        </div>
-                        <Progress 
-                          value={(project.fundedPrayerSpaces / project.totalPrayerSpaces) * 100} 
-                          className="h-2"
-                        />
-                        {project.status === 'under-construction' && (
-                          <p className="text-xs text-orange-600 font-medium">
-                            {project.totalPrayerSpaces - project.fundedPrayerSpaces} spaces needed
-                          </p>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>{project.progress}%</span>
-                          {project.status === 'under-construction' && project.raisedAmount && (
-                            <span>£{project.raisedAmount?.toLocaleString()} / £{project.totalCost.toLocaleString()}</span>
-                          )}
-                        </div>
-                        <Progress value={project.progress} className="h-2" />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="secondary">{project.contributors}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        {project.status === 'completed' && project.completedDate && (
-                          <span>Completed {new Date(project.completedDate).toLocaleDateString()}</span>
-                        )}
-                        {project.status === 'funded' && project.fundedDate && (
-                          <span>Funded {new Date(project.fundedDate).toLocaleDateString()}</span>
-                        )}
-                        {project.status === 'under-construction' && project.expectedCompletion && (
-                          <span>Est. {new Date(project.expectedCompletion).toLocaleDateString()}</span>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {project.status === 'under-construction' && project.fundedPrayerSpaces < project.totalPrayerSpaces ? (
-                        <Button
-                          size="sm"
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                          onClick={() => handleBuyPrayerSpace(project)}
-                        >
-                          <ShoppingCart className="h-3 w-3 mr-1" />
-                          £{project.prayerSpaceCost} for 1 space
-                        </Button>
-                      ) : (
-                        <span className="text-sm text-gray-500">
-                          {project.status === 'completed' ? 'Complete' : 'Fully Funded'}
-                        </span>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        </section>
-
-        {/* Impact Section */}
-        <section id="impact" className="mb-16">
-          <h3 className="text-3xl font-bold text-gray-800 mb-8">
-            The Impact of Building a Mosque
-          </h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <p className="text-lg text-gray-700 mb-4">
-                Building a mosque provides a community with a central place for worship,
-                education, and social gatherings. It fosters unity, strengthens faith, and
-                serves as a beacon of hope.
-              </p>
-              <ul className="list-disc pl-5 text-gray-600 space-y-2">
-                <li>Provides a space for daily prayers and religious education</li>
-                <li>Strengthens community bonds and promotes social cohesion</li>
-                <li>Offers refuge and support for those in need</li>
-                <li>Serves as a symbol of Islamic identity and culture</li>
-                <li>Creates lasting impact for generations to come</li>
-              </ul>
-            </div>
-            <div>
-              <img
-                src="https://via.placeholder.com/600x400/22c55e/fff?text=Mosque+Impact"
-                alt="Mosque Impact"
-                className="rounded-lg shadow-md"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* How to Contribute Section */}
-        <section id="contribute">
-          <h3 className="text-3xl font-bold text-gray-800 mb-8">
-            How to Contribute
-          </h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <p className="text-lg text-gray-700 mb-4">
-                You can contribute to building a mosque by funding prayer spaces through
-                our innovative pooled funding system. Your donation will help provide
-                essential resources and support for the construction process.
-              </p>
-              <ul className="list-disc pl-5 text-gray-600 space-y-2">
-                <li>Choose a project location that resonates with you</li>
-                <li>Select the mosque size and number of prayer spaces</li>
-                <li>Set your intention for maximum spiritual reward</li>
-                <li>Join existing project pools or start new ones</li>
-                <li>Receive updates on your project's progress</li>
-                <li>See your impact through our transparent tracking</li>
-              </ul>
-            </div>
-            <div>
-              <img
-                src="https://via.placeholder.com/600x400/22c55e/fff?text=Contribute+Now"
-                alt="Contribute Now"
-                className="rounded-lg shadow-md"
-              />
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
     </div>
   );

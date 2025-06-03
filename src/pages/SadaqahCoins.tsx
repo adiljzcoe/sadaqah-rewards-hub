@@ -1,209 +1,301 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/Header';
-import { Coins, Star, Gift, CreditCard, ShoppingCart, Zap } from 'lucide-react';
-
-const coinPackages = [
-  { 
-    coins: 100, 
-    price: '£10', 
-    bonus: 0, 
-    popular: false,
-    description: 'Perfect for getting started'
-  },
-  { 
-    coins: 250, 
-    price: '£20', 
-    bonus: 25, 
-    popular: false,
-    description: 'Great value for regular giving'
-  },
-  { 
-    coins: 500, 
-    price: '£35', 
-    bonus: 75, 
-    popular: true,
-    description: 'Most popular choice'
-  },
-  { 
-    coins: 1000, 
-    price: '£60', 
-    bonus: 200, 
-    popular: false,
-    description: 'Maximum impact bundle'
-  },
-  { 
-    coins: 2500, 
-    price: '£125', 
-    bonus: 625, 
-    popular: false,
-    description: 'Premium supporter package'
-  }
-];
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Coins, ShoppingBag, Gift, Star, Crown, Zap, Heart, Trophy, Target } from 'lucide-react';
+import GoldCoin3D from '@/components/GoldCoin3D';
 
 const SadaqahCoins = () => {
-  const [selectedPackage, setSelectedPackage] = useState(2);
+  const [userCoins, setUserCoins] = useState(142);
+  const [selectedCategory, setSelectedCategory] = useState('rewards');
+
+  const coinPackages = [
+    { coins: 50, price: 4.99, bonus: 0, popular: false },
+    { coins: 100, price: 8.99, bonus: 10, popular: false },
+    { coins: 250, price: 19.99, bonus: 50, popular: true },
+    { coins: 500, price: 34.99, bonus: 150, popular: false },
+    { coins: 1000, price: 59.99, bonus: 400, popular: false }
+  ];
+
+  const rewardItems = [
+    {
+      id: 1,
+      name: "Premium Profile Badge",
+      cost: 25,
+      category: "profile",
+      description: "Exclusive golden badge for your profile",
+      icon: "👑",
+      rarity: "rare"
+    },
+    {
+      id: 2,
+      name: "2x Points Multiplier (24h)",
+      cost: 50,
+      category: "boost",
+      description: "Double your points for 24 hours",
+      icon: "⚡",
+      rarity: "epic"
+    },
+    {
+      id: 3,
+      name: "Custom Profile Frame",
+      cost: 75,
+      category: "profile",
+      description: "Beautiful animated frame for your avatar",
+      icon: "🖼️",
+      rarity: "epic"
+    },
+    {
+      id: 4,
+      name: "Charity Spotlight Feature",
+      cost: 100,
+      category: "feature",
+      description: "Feature your chosen charity for 48h",
+      icon: "🌟",
+      rarity: "legendary"
+    }
+  ];
+
+  const achievements = [
+    { name: "First Purchase", coins: 10, unlocked: true, icon: "🎯" },
+    { name: "Coin Collector", coins: 25, unlocked: true, icon: "💰" },
+    { name: "Generous Spender", coins: 50, unlocked: false, icon: "💎" },
+    { name: "Coin Master", coins: 100, unlocked: false, icon: "👑" }
+  ];
+
+  const getRarityColor = (rarity: string) => {
+    switch (rarity) {
+      case 'common': return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'rare': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'epic': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'legendary': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-yellow-50/30 to-orange-50/20">
       <div className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full p-6">
-              <Coins className="h-16 w-16 text-white" />
-            </div>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <GoldCoin3D size={48} />
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">
+              Sadaqah Coins
+            </h1>
           </div>
-          <h1 className="text-4xl font-bold mb-4">Sadaqah Coins</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Purchase Sadaqah Coins to make instant donations, support emergency campaigns, 
-            and multiply your charitable impact across our trusted partner network.
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+            Earn and spend Sadaqah Coins to unlock exclusive features, boost your giving impact, and personalize your experience!
           </p>
         </div>
 
-        {/* Benefits Section */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="text-center">
-            <CardContent className="p-6">
-              <Zap className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Instant Donations</h3>
-              <p className="text-gray-600">Make immediate charitable contributions without payment delays</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="text-center">
-            <CardContent className="p-6">
-              <Star className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Bonus Rewards</h3>
-              <p className="text-gray-600">Earn bonus coins with larger purchases and multiply your impact</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="text-center">
-            <CardContent className="p-6">
-              <Gift className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Flexible Giving</h3>
-              <p className="text-gray-600">Support multiple causes and campaigns with a single balance</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Coin Packages */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">Choose Your Package</h2>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {coinPackages.map((pkg, index) => (
-              <Card 
-                key={index} 
-                className={`relative cursor-pointer transition-all duration-200 ${
-                  selectedPackage === index 
-                    ? 'ring-2 ring-sadaqah-gold-500 shadow-lg scale-105' 
-                    : 'hover:shadow-md'
-                } ${pkg.popular ? 'border-sadaqah-gold-500' : ''}`}
-                onClick={() => setSelectedPackage(index)}
-              >
-                {pkg.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-sadaqah-gold-500 text-white">
-                    Most Popular
-                  </Badge>
-                )}
-                
-                <CardContent className="p-6 text-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full p-4">
-                      <Coins className="h-8 w-8 text-white" />
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold mb-2">{pkg.coins} Coins</h3>
-                  {pkg.bonus > 0 && (
-                    <div className="text-green-600 font-semibold mb-2">
-                      +{pkg.bonus} Bonus Coins!
-                    </div>
-                  )}
-                  
-                  <div className="text-3xl font-bold text-sadaqah-gold-600 mb-2">{pkg.price}</div>
-                  <p className="text-sm text-gray-600 mb-4">{pkg.description}</p>
-                  
-                  {pkg.bonus > 0 && (
-                    <div className="text-xs text-green-600 bg-green-50 rounded-full px-3 py-1">
-                      Total: {pkg.coins + pkg.bonus} coins
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Purchase Section */}
-        <Card className="max-w-md mx-auto">
-          <CardHeader>
-            <CardTitle className="text-center">Complete Purchase</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex justify-between items-center mb-2">
-                <span>Package:</span>
-                <span className="font-semibold">
-                  {coinPackages[selectedPackage].coins} 
-                  {coinPackages[selectedPackage].bonus > 0 && ` (+${coinPackages[selectedPackage].bonus})`} 
-                  Coins
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Price:</span>
-                <span className="font-semibold text-sadaqah-gold-600">
-                  {coinPackages[selectedPackage].price}
-                </span>
+        {/* User Coin Balance */}
+        <Card className="mb-8 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 text-white">
+          <CardContent className="p-8 text-center">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <GoldCoin3D size={64} />
+              <div>
+                <div className="text-4xl font-bold">{userCoins.toLocaleString()}</div>
+                <div className="text-lg opacity-90">Sadaqah Coins</div>
               </div>
             </div>
-            
-            <Button className="w-full bg-sadaqah-gold-600 hover:bg-sadaqah-gold-700 text-white py-3">
-              <CreditCard className="h-5 w-5 mr-2" />
-              Purchase Coins
-            </Button>
-            
-            <div className="text-center text-sm text-gray-500">
-              Secure payment powered by Stripe
+            <div className="grid grid-cols-3 gap-4 mt-6">
+              <div className="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                <div className="text-lg font-bold">+25</div>
+                <div className="text-xs opacity-80">This Week</div>
+              </div>
+              <div className="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                <div className="text-lg font-bold">187</div>
+                <div className="text-xs opacity-80">Total Earned</div>
+              </div>
+              <div className="bg-white/20 rounded-lg p-3 backdrop-blur-sm">
+                <div className="text-lg font-bold">45</div>
+                <div className="text-xs opacity-80">Total Spent</div>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* How It Works */}
-        <div className="mt-16 bg-white rounded-xl p-8">
-          <h2 className="text-3xl font-bold text-center mb-8">How Sadaqah Coins Work</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <ShoppingCart className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">1. Purchase</h3>
-              <p className="text-gray-600">Buy Sadaqah Coins securely with your preferred payment method</p>
+        {/* Main Tabs */}
+        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
+            <TabsTrigger value="rewards">
+              <Gift className="h-4 w-4 mr-2" />
+              Rewards
+            </TabsTrigger>
+            <TabsTrigger value="packages">
+              <ShoppingBag className="h-4 w-4 mr-2" />
+              Buy Coins
+            </TabsTrigger>
+            <TabsTrigger value="achievements">
+              <Trophy className="h-4 w-4 mr-2" />
+              Achievements
+            </TabsTrigger>
+            <TabsTrigger value="earning">
+              <Target className="h-4 w-4 mr-2" />
+              Earn More
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Rewards Store */}
+          <TabsContent value="rewards">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {rewardItems.map((item) => (
+                <Card key={item.id} className="hover-lift">
+                  <CardContent className="p-6">
+                    <div className="text-center mb-4">
+                      <div className="text-4xl mb-2">{item.icon}</div>
+                      <Badge className={`${getRarityColor(item.rarity)} border`}>
+                        {item.rarity.toUpperCase()}
+                      </Badge>
+                    </div>
+                    
+                    <h3 className="font-bold text-lg mb-2 text-center">{item.name}</h3>
+                    <p className="text-sm text-gray-600 mb-4 text-center">{item.description}</p>
+                    
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <GoldCoin3D size={20} />
+                        <span className="font-bold text-lg">{item.cost}</span>
+                      </div>
+                      <Button 
+                        size="sm"
+                        disabled={userCoins < item.cost}
+                        className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
+                      >
+                        {userCoins >= item.cost ? 'Buy' : 'Need More Coins'}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            
-            <div className="text-center">
-              <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Coins className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">2. Store</h3>
-              <p className="text-gray-600">Coins are added to your account balance instantly</p>
+          </TabsContent>
+
+          {/* Coin Packages */}
+          <TabsContent value="packages">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {coinPackages.map((pack, index) => (
+                <Card key={index} className={`hover-lift ${pack.popular ? 'ring-2 ring-yellow-400 scale-105' : ''}`}>
+                  {pack.popular && (
+                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white">
+                      Most Popular
+                    </Badge>
+                  )}
+                  
+                  <CardContent className="p-6 text-center">
+                    <div className="mb-4">
+                      <GoldCoin3D size={48} />
+                    </div>
+                    
+                    <div className="text-3xl font-bold text-yellow-600 mb-2">
+                      {pack.coins + pack.bonus}
+                    </div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      {pack.coins} + {pack.bonus} bonus coins
+                    </div>
+                    
+                    <div className="text-2xl font-bold mb-4">£{pack.price}</div>
+                    
+                    {pack.bonus > 0 && (
+                      <Badge className="bg-green-100 text-green-800 mb-4">
+                        +{pack.bonus} Bonus!
+                      </Badge>
+                    )}
+                    
+                    <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
+                      Purchase
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            
-            <div className="text-center">
-              <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Gift className="h-8 w-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">3. Donate</h3>
-              <p className="text-gray-600">Use coins for instant donations to any charity or campaign</p>
+          </TabsContent>
+
+          {/* Achievements */}
+          <TabsContent value="achievements">
+            <div className="grid md:grid-cols-2 gap-6">
+              {achievements.map((achievement, index) => (
+                <Card key={index} className={`hover-lift ${achievement.unlocked ? 'bg-green-50 border-green-200' : 'bg-gray-50'}`}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="text-3xl">{achievement.icon}</div>
+                        <div>
+                          <h3 className="font-bold text-lg">{achievement.name}</h3>
+                          <div className="flex items-center gap-2">
+                            <GoldCoin3D size={16} />
+                            <span className="font-semibold">{achievement.coins} coins</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {achievement.unlocked ? (
+                        <Badge className="bg-green-500 text-white">Unlocked</Badge>
+                      ) : (
+                        <Badge variant="outline">Locked</Badge>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          </div>
-        </div>
+          </TabsContent>
+
+          {/* Earning Guide */}
+          <TabsContent value="earning">
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="h-5 w-5 text-red-500" />
+                    Donation Activities
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span>Make a donation</span>
+                    <Badge>+5 coins</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Weekly donation streak</span>
+                    <Badge>+10 coins</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Monthly giving goal</span>
+                    <Badge>+25 coins</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Star className="h-5 w-5 text-yellow-500" />
+                    Community Activities
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span>Share a campaign</span>
+                    <Badge>+2 coins</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Invite a friend</span>
+                    <Badge>+15 coins</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span>Top monthly donor</span>
+                    <Badge>+50 coins</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
