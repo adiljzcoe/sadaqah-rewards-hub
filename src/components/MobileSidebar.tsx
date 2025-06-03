@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown, Settings, Code, UserCog } from 'lucide-react';
+import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown, Settings, Code, UserCog, LogIn, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -17,6 +16,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { useAuth } from '@/hooks/useAuth';
 
 interface MobileSidebarProps {
   userLevel: number;
@@ -33,7 +33,9 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   const [communityOpen, setCommunityOpen] = useState(false);
   const [rewardsOpen, setRewardsOpen] = useState(false);
   const [developerOpen, setDeveloperOpen] = useState(false);
+  const [userLoginOpen, setUserLoginOpen] = useState(false);
 
+  const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
   const progress = (currentPoints / nextLevelPoints) * 100;
 
   const handleLinkClick = () => {
@@ -49,6 +51,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         setCommunityOpen(false);
         setRewardsOpen(false);
         setDeveloperOpen(false);
+        setUserLoginOpen(false);
       },
       tools: () => {
         setIslamicOpen(false);
@@ -56,6 +59,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         setCommunityOpen(false);
         setRewardsOpen(false);
         setDeveloperOpen(false);
+        setUserLoginOpen(false);
       },
       donate: () => {
         setIslamicOpen(false);
@@ -63,6 +67,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         setCommunityOpen(false);
         setRewardsOpen(false);
         setDeveloperOpen(false);
+        setUserLoginOpen(false);
       },
       community: () => {
         setIslamicOpen(false);
@@ -70,6 +75,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         setDonateOpen(false);
         setRewardsOpen(false);
         setDeveloperOpen(false);
+        setUserLoginOpen(false);
       },
       rewards: () => {
         setIslamicOpen(false);
@@ -77,6 +83,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         setDonateOpen(false);
         setCommunityOpen(false);
         setDeveloperOpen(false);
+        setUserLoginOpen(false);
       },
       developer: () => {
         setIslamicOpen(false);
@@ -84,12 +91,35 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         setDonateOpen(false);
         setCommunityOpen(false);
         setRewardsOpen(false);
+        setUserLoginOpen(false);
+      },
+      userLogin: () => {
+        setIslamicOpen(false);
+        setToolsOpen(false);
+        setDonateOpen(false);
+        setCommunityOpen(false);
+        setRewardsOpen(false);
+        setDeveloperOpen(false);
       }
     };
 
     if (closers[section as keyof typeof closers]) {
       closers[section as keyof typeof closers]();
     }
+  };
+
+  const handleFakeLogin = (type: 'admin' | 'user') => {
+    if (type === 'admin') {
+      fakeAdminLogin();
+    } else {
+      fakeUserLogin();
+    }
+    setOpen(false);
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    setOpen(false);
   };
 
   const islamicPages = [
@@ -243,6 +273,68 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <span className="text-lg mr-3">🏠</span>
               Home
             </Link>
+
+            {/* User Login Section */}
+            <Collapsible open={userLoginOpen} onOpenChange={(isOpen) => {
+              setUserLoginOpen(isOpen);
+              if (isOpen) handleSectionToggle('userLogin');
+            }}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <User className="h-5 w-5 mr-3" />
+                  <span>User Login</span>
+                </div>
+                {userLoginOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
+                {user ? (
+                  <button
+                    onClick={handleSignOut}
+                    className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-red-600 to-rose-600 hover:shadow-xl w-full"
+                  >
+                    <LogOut className="h-5 w-5 mr-3" />
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-white">Sign Out</div>
+                      <p className="text-xs text-white/80 leading-tight">Log out current user</p>
+                    </div>
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleFakeLogin('user')}
+                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-xl w-full"
+                    >
+                      <User className="h-5 w-5 mr-3" />
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold text-white">Test User Login</div>
+                        <p className="text-xs text-white/80 leading-tight">Login as a test user</p>
+                      </div>
+                    </button>
+                    <button
+                      onClick={() => handleFakeLogin('admin')}
+                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-orange-600 to-red-600 hover:shadow-xl w-full"
+                    >
+                      <Shield className="h-5 w-5 mr-3" />
+                      <div className="flex-1 text-left">
+                        <div className="font-semibold text-white">Test Admin Login</div>
+                        <p className="text-xs text-white/80 leading-tight">Login as a test admin</p>
+                      </div>
+                    </button>
+                    <Link
+                      to="/auth"
+                      onClick={handleLinkClick}
+                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl"
+                    >
+                      <LogIn className="h-5 w-5 mr-3" />
+                      <div className="flex-1">
+                        <div className="font-semibold text-white">Real Login</div>
+                        <p className="text-xs text-white/80 leading-tight">Go to authentication page</p>
+                      </div>
+                    </Link>
+                  </>
+                )}
+              </CollapsibleContent>
+            </Collapsible>
 
             {/* Islamic Life Section */}
             <Collapsible open={islamicOpen} onOpenChange={(isOpen) => {
