@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -380,7 +379,7 @@ const Checkout = () => {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                         {adminFeeOptions.map((option) => (
                           <div
                             key={option.percentage}
@@ -393,11 +392,11 @@ const Checkout = () => {
                           >
                             <div className="flex items-center justify-between">
                               <div>
-                                <div className="font-semibold text-gray-800 text-sm">{option.label}</div>
-                                <div className="text-xs text-gray-600">{option.description}</div>
+                                <div className="font-semibold text-gray-800 text-xs md:text-sm">{option.label}</div>
+                                <div className="text-xs text-gray-600 hidden md:block">{option.description}</div>
                               </div>
                               <div className="text-right">
-                                <div className="font-bold text-orange-600 text-sm">
+                                <div className="font-bold text-orange-600 text-xs md:text-sm">
                                   {option.percentage === 0 ? 'FREE' : `+£${((mainDonation + actualFundraisingAmount) * (option.percentage / 100)).toFixed(2)}`}
                                 </div>
                               </div>
@@ -448,16 +447,16 @@ const Checkout = () => {
                             </Badge>
                             
                             <div className="text-center">
-                              <div className="text-sm font-bold">{tier.name}</div>
+                              <div className="text-xs md:text-sm font-bold">{tier.name}</div>
                               <div className="mb-2">
                                 <div className="text-xs text-gray-500 line-through">£{tier.originalPrice}</div>
-                                <div className="text-xl font-bold text-purple-600">£{tier.price}</div>
+                                <div className="text-lg md:text-xl font-bold text-purple-600">£{tier.price}</div>
                                 <div className="text-xs text-green-600 font-semibold">
                                   Save £{(tier.originalPrice - tier.price).toFixed(2)}!
                                 </div>
                               </div>
-                              <div className="text-sm text-green-600 font-semibold">{tier.multiplier}x Multiplier!</div>
-                              <div className="mt-2 space-y-1">
+                              <div className="text-xs md:text-sm text-green-600 font-semibold">{tier.multiplier}x Multiplier!</div>
+                              <div className="mt-2 space-y-1 hidden md:block">
                                 {tier.features.slice(0, 2).map((feature, idx) => (
                                   <div key={idx} className="text-xs text-gray-600 flex items-center">
                                     <Star className="h-2 w-2 text-yellow-500 mr-1" />
