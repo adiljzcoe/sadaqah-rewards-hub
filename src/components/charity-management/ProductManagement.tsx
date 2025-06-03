@@ -8,7 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, DollarSign, Package } from 'lucide-react';
-import { useCharityProducts } from '@/hooks/useCharityProducts';
+import { useCharityProducts, type CharityProduct } from '@/hooks/useCharityProducts';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -23,8 +23,8 @@ const ProductManagement: React.FC = () => {
     description: '',
     category: '',
     image_url: '',
-    product_type: 'fixed_price' as 'fixed_price',
-    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested',
+    product_type: 'fixed_price' as 'fixed_price' | 'flexible_amount' | 'subscription' | 'cause_campaign',
+    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested' | 'tiered',
     fixed_price: '',
     minimum_amount: '',
     suggested_amount: '',
@@ -158,7 +158,7 @@ const ProductManagement: React.FC = () => {
     }
   };
 
-  const handleEdit = (product: any) => {
+  const handleEdit = (product: CharityProduct) => {
     setFormData({
       name: product.name,
       description: product.description || '',
@@ -348,13 +348,17 @@ const ProductManagement: React.FC = () => {
                     <Label>Product Type</Label>
                     <Select 
                       value={formData.product_type} 
-                      onValueChange={(value: 'fixed_price') => setFormData({ ...formData, product_type: value })}
+                      onValueChange={(value: 'fixed_price' | 'flexible_amount' | 'subscription' | 'cause_campaign') => 
+                        setFormData({ ...formData, product_type: value })}
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="fixed_price">Fixed Price</SelectItem>
+                        <SelectItem value="flexible_amount">Flexible Amount</SelectItem>
+                        <SelectItem value="subscription">Subscription</SelectItem>
+                        <SelectItem value="cause_campaign">Cause Campaign</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -362,7 +366,8 @@ const ProductManagement: React.FC = () => {
                     <Label>Pricing Model</Label>
                     <Select 
                       value={formData.pricing_model} 
-                      onValueChange={(value: 'fixed' | 'minimum' | 'suggested') => setFormData({ ...formData, pricing_model: value })}
+                      onValueChange={(value: 'fixed' | 'minimum' | 'suggested' | 'tiered') => 
+                        setFormData({ ...formData, pricing_model: value })}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -371,6 +376,7 @@ const ProductManagement: React.FC = () => {
                         <SelectItem value="fixed">Fixed</SelectItem>
                         <SelectItem value="minimum">Minimum</SelectItem>
                         <SelectItem value="suggested">Suggested</SelectItem>
+                        <SelectItem value="tiered">Tiered</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

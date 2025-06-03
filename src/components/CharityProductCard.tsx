@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Target, Tag } from 'lucide-react';
+import { type CharityProduct } from '@/hooks/useCharityProducts';
 
 interface ProductTier {
   id: string;
@@ -11,28 +12,6 @@ interface ProductTier {
   amount: number;
   description: string;
   impact_description: string;
-}
-
-interface CharityProduct {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  product_type: 'fixed_price' | 'flexible_amount' | 'subscription' | 'cause_campaign';
-  pricing_model: 'fixed' | 'minimum' | 'suggested' | 'free_choice';
-  fixed_price?: number;
-  minimum_amount?: number;
-  suggested_amount?: number;
-  maximum_amount?: number;
-  currency: string;
-  image_url?: string;
-  is_featured: boolean;
-  target_amount?: number;
-  raised_amount: number;
-  beneficiaries_count?: number;
-  impact_description?: string;
-  tags?: string[];
-  pricing_tiers?: ProductTier[];
 }
 
 interface CharityProductCardProps {
@@ -129,18 +108,18 @@ const CharityProductCard: React.FC<CharityProductCardProps> = ({ product, onDona
           </div>
         );
 
-      case 'free_choice':
+      case 'tiered':
         return (
           <div className="text-center">
             <div className="text-sm text-gray-600 mb-2">
-              Choose any amount
+              Multiple options available
             </div>
             <Button 
               className="w-full bg-islamic-green-600 hover:bg-islamic-green-700"
               onClick={() => onDonate(product.id)}
             >
               <Heart className="h-4 w-4 mr-2" />
-              Choose Amount
+              View Options
             </Button>
           </div>
         );
