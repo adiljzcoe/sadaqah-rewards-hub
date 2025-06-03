@@ -113,7 +113,12 @@ const Index = () => {
               <LiveVideo />
             </div>
             
-            {/* CharityTicker moved here - below the video */}
+            {/* Live Impact Feed moved here - directly below the video */}
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
+              <UnifiedLiveFeed />
+            </div>
+            
+            {/* CharityTicker moved here - below the live impact feed */}
             <div className="max-w-full overflow-x-hidden mt-6 px-4">
               <CharityTicker />
             </div>
@@ -126,11 +131,6 @@ const Index = () => {
             {/* Business Advertisement between feed sections */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <BusinessAdvert />
-            </div>
-            
-            {/* Unified Live Feed - Replaces old LiveFeed */}
-            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
-              <UnifiedLiveFeed />
             </div>
           </div>
 
