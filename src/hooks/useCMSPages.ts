@@ -29,29 +29,50 @@ export interface CMSPage {
   published_at?: string;
 }
 
+// Mock data for CMS pages since the table doesn't exist yet
+const mockCMSPages: CMSPage[] = [
+  {
+    id: '1',
+    slug: 'home',
+    title: 'Home Page',
+    content: { body: 'Welcome to our Islamic charity platform' },
+    status: 'published',
+    template_type: 'default',
+    page_type: 'standard',
+    sort_order: 0,
+    is_homepage: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: '2',
+    slug: 'about',
+    title: 'About Us',
+    content: { body: 'Learn more about our mission' },
+    status: 'published',
+    template_type: 'default',
+    page_type: 'standard',
+    sort_order: 1,
+    is_homepage: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+];
+
 export const useCMSPages = (status?: 'published' | 'draft' | 'archived') => {
   return useQuery({
     queryKey: ['cms-pages', status],
     queryFn: async () => {
-      console.log('Fetching CMS pages:', status);
+      console.log('Fetching CMS pages (mock data):', status);
       
-      let query = supabase.from('cms_pages').select('*');
-      
+      // Filter mock data by status if provided
+      let filteredPages = mockCMSPages;
       if (status) {
-        query = query.eq('status', status);
+        filteredPages = mockCMSPages.filter(page => page.status === status);
       }
       
-      query = query.order('sort_order', { ascending: true });
-      
-      const { data, error } = await query;
-
-      if (error) {
-        console.error('Error fetching CMS pages:', error);
-        throw error;
-      }
-
-      console.log('Fetched CMS pages:', data);
-      return (data || []) as CMSPage[];
+      console.log('Fetched CMS pages:', filteredPages);
+      return filteredPages;
     },
   });
 };
@@ -60,22 +81,16 @@ export const useCMSPage = (slug: string) => {
   return useQuery({
     queryKey: ['cms-page', slug],
     queryFn: async () => {
-      console.log('Fetching CMS page by slug:', slug);
+      console.log('Fetching CMS page by slug (mock data):', slug);
       
-      const { data, error } = await supabase
-        .from('cms_pages')
-        .select('*')
-        .eq('slug', slug)
-        .eq('status', 'published')
-        .single();
-
-      if (error) {
-        console.error('Error fetching CMS page:', error);
-        throw error;
+      const page = mockCMSPages.find(p => p.slug === slug && p.status === 'published');
+      
+      if (!page) {
+        throw new Error('Page not found');
       }
 
-      console.log('Fetched CMS page:', data);
-      return data as CMSPage;
+      console.log('Fetched CMS page:', page);
+      return page;
     },
   });
 };

@@ -12,38 +12,53 @@ export interface SiteConfig {
   category: string;
 }
 
+// Mock data for site config since the table doesn't exist yet
+const mockSiteConfig: SiteConfig[] = [
+  {
+    id: '1',
+    config_key: 'site_name',
+    config_value: 'Islamic Charity Platform',
+    config_type: 'string',
+    is_public: true,
+    description: 'The name of the website',
+    category: 'general'
+  },
+  {
+    id: '2',
+    config_key: 'maintenance_mode',
+    config_value: false,
+    config_type: 'boolean',
+    is_public: false,
+    description: 'Whether the site is in maintenance mode',
+    category: 'system'
+  },
+  {
+    id: '3',
+    config_key: 'max_donation_amount',
+    config_value: 10000,
+    config_type: 'number',
+    is_public: true,
+    description: 'Maximum donation amount allowed',
+    category: 'donations'
+  }
+];
+
 export const useSiteConfig = (configKey?: string) => {
   return useQuery({
     queryKey: ['site-config', configKey],
     queryFn: async () => {
-      console.log('Fetching site config:', configKey);
+      console.log('Fetching site config (mock data):', configKey);
       
       if (configKey) {
-        const { data, error } = await supabase
-          .from('site_config')
-          .select('*')
-          .eq('config_key', configKey)
-          .single();
-
-        if (error) {
-          console.error('Error fetching site config:', error);
-          throw error;
+        const config = mockSiteConfig.find(c => c.config_key === configKey);
+        if (!config) {
+          throw new Error('Config not found');
         }
-
-        console.log('Fetched site config:', data);
-        return data as SiteConfig;
+        console.log('Fetched site config:', config);
+        return config;
       } else {
-        const { data, error } = await supabase
-          .from('site_config')
-          .select('*');
-
-        if (error) {
-          console.error('Error fetching site config:', error);
-          throw error;
-        }
-
-        console.log('Fetched site config:', data);
-        return (data || []) as SiteConfig[];
+        console.log('Fetched site config:', mockSiteConfig);
+        return mockSiteConfig;
       }
     },
   });
@@ -53,25 +68,15 @@ export const usePublicSiteConfig = () => {
   return useQuery({
     queryKey: ['public-site-config'],
     queryFn: async () => {
-      console.log('Fetching public site config');
+      console.log('Fetching public site config (mock data)');
       
-      const { data, error } = await supabase
-        .from('site_config')
-        .select('*')
-        .eq('is_public', true);
-
-      if (error) {
-        console.error('Error fetching public site config:', error);
-        throw error;
-      }
-
-      console.log('Fetched public site config:', data);
+      const publicConfigs = mockSiteConfig.filter(config => config.is_public);
       
       // Convert to object for easier access
-      const configObject = (data || []).reduce((acc: any, config: any) => {
+      const configObject = publicConfigs.reduce((acc: any, config: any) => {
         let value = config.config_value;
         
-        // Parse JSON values
+        // Parse JSON values if needed
         if (typeof value === 'string') {
           try {
             value = JSON.parse(value);

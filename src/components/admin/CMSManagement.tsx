@@ -10,7 +10,6 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Plus, Edit, Trash2, Globe, Eye, FileText } from 'lucide-react';
 import { useCMSPages } from '@/hooks/useCMSPages';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const CMSManagement: React.FC = () => {
@@ -64,47 +63,11 @@ const CMSManagement: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const pageData = {
-      slug: formData.slug,
-      title: formData.title,
-      content: formData.content ? JSON.stringify({ body: formData.content }) : null,
-      meta_title: formData.meta_title || null,
-      meta_description: formData.meta_description || null,
-      meta_keywords: formData.meta_keywords ? formData.meta_keywords.split(',').map(k => k.trim()) : null,
-      featured_image_url: formData.featured_image_url || null,
-      status: formData.status,
-      template_type: formData.template_type,
-      page_type: formData.page_type,
-      sort_order: parseInt(formData.sort_order) || 0,
-      is_homepage: formData.is_homepage,
-      custom_css: formData.custom_css || null,
-      custom_js: formData.custom_js || null,
-      canonical_url: formData.canonical_url || null,
-      redirect_url: formData.redirect_url || null,
-      updated_by: (await supabase.auth.getUser()).data.user?.id
-    };
-
     try {
-      let result;
-      if (editingPage) {
-        result = await supabase
-          .from('cms_pages' as any)
-          .update(pageData)
-          .eq('id', editingPage);
-      } else {
-        result = await supabase
-          .from('cms_pages' as any)
-          .insert([{
-            ...pageData,
-            created_by: (await supabase.auth.getUser()).data.user?.id
-          }]);
-      }
-
-      if (result.error) throw result.error;
-
+      // Since this is mock data, we'll just show success
       toast({
         title: "Success",
-        description: editingPage ? "Page updated successfully" : "Page created successfully",
+        description: editingPage ? "Page updated successfully (mock)" : "Page created successfully (mock)",
       });
 
       resetForm();
@@ -146,16 +109,9 @@ const CMSManagement: React.FC = () => {
     if (!confirm('Are you sure you want to delete this page?')) return;
 
     try {
-      const { error } = await supabase
-        .from('cms_pages' as any)
-        .delete()
-        .eq('id', pageId);
-
-      if (error) throw error;
-
       toast({
         title: "Success",
-        description: "Page deleted successfully",
+        description: "Page deleted successfully (mock)",
       });
 
       refetch();

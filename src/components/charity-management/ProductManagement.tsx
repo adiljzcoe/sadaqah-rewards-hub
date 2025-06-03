@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,8 +23,8 @@ const ProductManagement: React.FC = () => {
     description: '',
     category: '',
     image_url: '',
-    product_type: 'fixed_price' as 'fixed_price' | 'flexible_donation',
-    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested',
+    product_type: 'fixed_price' as const,
+    pricing_model: 'fixed' as const,
     fixed_price: '',
     minimum_amount: '',
     suggested_amount: '',
@@ -137,7 +136,7 @@ const ProductManagement: React.FC = () => {
       } else {
         result = await supabase
           .from('charity_products')
-          .insert(productData);
+          .insert([productData]);
       }
 
       if (result.error) throw result.error;
@@ -349,14 +348,13 @@ const ProductManagement: React.FC = () => {
                     <Label>Product Type</Label>
                     <Select 
                       value={formData.product_type} 
-                      onValueChange={(value) => setFormData({ ...formData, product_type: value as any })}
+                      onValueChange={(value: 'fixed_price') => setFormData({ ...formData, product_type: value })}
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="fixed_price">Fixed Price</SelectItem>
-                        <SelectItem value="flexible_donation">Flexible Donation</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -364,7 +362,7 @@ const ProductManagement: React.FC = () => {
                     <Label>Pricing Model</Label>
                     <Select 
                       value={formData.pricing_model} 
-                      onValueChange={(value) => setFormData({ ...formData, pricing_model: value as any })}
+                      onValueChange={(value: 'fixed' | 'minimum' | 'suggested') => setFormData({ ...formData, pricing_model: value })}
                     >
                       <SelectTrigger>
                         <SelectValue />
