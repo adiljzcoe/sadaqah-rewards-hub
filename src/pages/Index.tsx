@@ -12,7 +12,6 @@ import CharityFeedSection from '@/components/CharityFeedSection';
 import CampaignsCarousel from '@/components/CampaignsCarousel';
 import FundraisersCarousel from '@/components/FundraisersCarousel';
 import InMemoryOfWidget from '@/components/InMemoryOfWidget';
-import AchievementSystem from '@/components/AchievementSystem';
 import FriendsWidget from '@/components/FriendsWidget';
 import SeasonalEvents from '@/components/SeasonalEvents';
 import CharityTicker from '@/components/CharityTicker';
@@ -142,9 +141,6 @@ const Index = () => {
           <div className="space-y-6 max-w-full overflow-x-hidden pl-4 pr-2">
             <div className="hover-lift">
               <UserStats />
-            </div>
-            <div className="hover-lift">
-              <AchievementSystem />
             </div>
             <div className="hover-lift">
               <FriendsWidget />
