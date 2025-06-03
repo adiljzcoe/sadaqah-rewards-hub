@@ -142,7 +142,7 @@ const Header = () => {
           </div>
 
           {/* Enhanced Navigation with All Pages */}
-          <nav className="hidden md:flex items-center space-x-6 flex-1 justify-center relative z-40">
+          <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center relative z-40">
             <Link 
               to="/" 
               className={`font-bold transition-all duration-300 hover:scale-105 relative group drop-shadow-sm ${
@@ -468,7 +468,7 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Right Section - Cart and Mobile Menu */}
+          {/* Right Section - Cart, Desktop Menu, and Mobile Menu */}
           <div className="flex items-center space-x-3 relative z-40">
             {/* Checkout Button - Only show when there are items */}
             {totalItems > 0 && (
@@ -483,7 +483,17 @@ const Header = () => {
               </Link>
             )}
 
-            {/* Mobile Menu */}
+            {/* Desktop Menu - Hidden on mobile, visible on desktop */}
+            <div className="hidden md:block lg:hidden relative z-30">
+              <MobileSidebar 
+                userLevel={userLevel}
+                currentPoints={currentPoints}
+                nextLevelPoints={nextLevelPoints}
+                isMember={isMember}
+              />
+            </div>
+
+            {/* Mobile Menu - Only visible on mobile */}
             <div className="md:hidden relative z-30">
               <MobileSidebar 
                 userLevel={userLevel}
