@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -55,8 +56,25 @@ const InMemoryOfWidget = () => {
       };
 
       setMemorialFeed(prev => {
-        const newFeed = [memorialDonation, ...prev.slice(0, 2)];
-        return newFeed;
+        // If we have 2 items, mark the oldest for exit
+        if (prev.length >= 2) {
+          const updatedFeed = prev.map((item, index) => 
+            index === prev.length - 1 ? { ...item, isExiting: true } : item
+          );
+          
+          // Remove the exiting item after fade animation completes
+          setTimeout(() => {
+            setMemorialFeed(current => {
+              const filtered = current.filter(item => !item.isExiting);
+              return [memorialDonation, ...filtered];
+            });
+          }, 800); // Wait for fade out animation
+          
+          return updatedFeed;
+        } else {
+          // If we have less than 2 items, just add the new one
+          return [memorialDonation, ...prev];
+        }
       });
       
       // Update leaderboard
@@ -65,33 +83,23 @@ const InMemoryOfWidget = () => {
           ? { ...memorial, amount: memorial.amount + randomAmount, donations: memorial.donations + 1 }
           : memorial
       ).sort((a, b) => b.amount - a.amount).map((memorial, index) => ({ ...memorial, rank: index + 1 })));
-      
-      // Mark oldest item for exit after 8 seconds, remove after 10 seconds
-      setTimeout(() => {
-        setMemorialFeed(prev => prev.map(item => 
-          item.id === memorialDonation.id ? { ...item, isExiting: true } : item
-        ));
-      }, 8000);
-
-      setTimeout(() => {
-        setMemorialFeed(prev => prev.filter(d => d.id !== memorialDonation.id));
-      }, 10000);
     };
 
-    // Generate initial donation
+    // Generate initial donations
     generateMemorialDonation();
+    setTimeout(() => generateMemorialDonation(), 2000);
     
     const interval = setInterval(() => {
       generateMemorialDonation();
-    }, Math.random() * 6000 + 4000);
+    }, 8000); // Slower rotation for better viewing
 
     return () => clearInterval(interval);
   }, []);
 
-  // Ensure we always have exactly 3 items to display
+  // Ensure we always have exactly 2 items to display
   const getDisplayItems = () => {
     const items = [...memorialFeed];
-    while (items.length < 3) {
+    while (items.length < 2) {
       items.push({
         id: `placeholder-${items.length}`,
         user: '',
@@ -103,7 +111,7 @@ const InMemoryOfWidget = () => {
         isExiting: false
       });
     }
-    return items.slice(0, 3);
+    return items.slice(0, 2);
   };
 
   const getRankIcon = (rank) => {
@@ -144,24 +152,24 @@ const InMemoryOfWidget = () => {
             <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
           </div>
           
-          <div className="space-y-4 min-h-[360px]">
+          <div className="space-y-4 min-h-[280px]">
             {getDisplayItems().map((memorial, index) => (
               <div
                 key={memorial.id}
-                className={`transition-all duration-500 ease-in-out ${
+                className={`transition-all duration-800 ease-in-out ${
                   memorial.isPlaceholder 
                     ? 'opacity-0 pointer-events-none' 
                     : memorial.isExiting 
                       ? 'opacity-0 transform scale-95' 
-                      : 'opacity-100 transform scale-100 animate-fade-in'
+                      : 'opacity-100 transform scale-100'
                 } ${
                   memorial.isPlaceholder 
                     ? 'bg-gray-50 border border-gray-100' 
                     : 'bg-gradient-to-br from-yellow-700 via-amber-600 to-yellow-800'
                 } rounded-xl border-4 border-amber-900 shadow-2xl relative overflow-hidden`}
                 style={{ 
-                  minHeight: '120px',
-                  transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`,
+                  minHeight: '130px',
+                  transitionDelay: memorial.isExiting ? '0ms' : `${index * 200}ms`,
                   boxShadow: memorial.isPlaceholder ? '' : '0 30px 60px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.3)'
                 }}
               >
