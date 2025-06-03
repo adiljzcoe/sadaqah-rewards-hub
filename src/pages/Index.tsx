@@ -105,211 +105,161 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">
-        <div className="grid lg:grid-cols-3 gap-6 max-w-full overflow-x-hidden p-4">
-          {/* Live Stream - Main Column */}
-          <div className="lg:col-span-2 max-w-full overflow-x-hidden space-y-6">
-            {/* Video Block */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover-lift max-w-full overflow-x-hidden">
+        <div className="grid lg:grid-cols-3 gap-0 max-w-full overflow-x-hidden">
+          {/* Live Stream - Main Column - Remove padding for edge-to-edge */}
+          <div className="lg:col-span-2 max-w-full overflow-x-hidden">
+            <div className="hover-lift max-w-full overflow-x-hidden">
               <LiveVideo />
             </div>
             
-            {/* Charity Ticker Block */}
-            <div className="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-xl shadow-lg p-6 max-w-full overflow-x-hidden">
+            {/* CharityTicker moved here - below the video */}
+            <div className="max-w-full overflow-x-hidden mt-6 px-4">
               <CharityTicker />
             </div>
             
-            {/* League Tables Block */}
-            <div className="bg-white rounded-xl shadow-lg p-6 max-w-full overflow-x-hidden">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Community Rankings</h3>
+            {/* League Tables Carousel - Right below charity ticker */}
+            <div className="max-w-full overflow-x-hidden">
               <LeagueTablesCarousel />
             </div>
             
-            {/* Charity Feed Block */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-6 hover-lift max-w-full overflow-x-hidden">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Latest Updates</h3>
+            {/* Charity Feed Section - Right below league tables */}
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <CharityFeedSection />
             </div>
 
-            {/* Business Advertisement Block */}
-            <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl shadow-lg p-6 hover-lift max-w-full overflow-x-hidden">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Featured Partner</h3>
+            {/* Business Advertisement between feed sections */}
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <BusinessAdvert />
             </div>
             
-            {/* Live Feed Block */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover-lift max-w-full overflow-x-hidden">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Live Activity</h3>
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <LiveFeed />
             </div>
           </div>
 
-          {/* Sidebar - Better organized blocks */}
-          <div className="space-y-4 max-w-full overflow-x-hidden">
-            {/* User Stats Block */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Sidebar */}
+          <div className="space-y-6 max-w-full overflow-x-hidden pl-4 pr-2">
+            <div className="hover-lift">
               <UserStats />
             </div>
-            
-            {/* Quick Actions Block */}
-            <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-xl shadow-lg p-4 space-y-4">
-              <h4 className="font-bold text-gray-900 text-lg mb-3">Quick Actions</h4>
+            <div className="hover-lift">
               <MatchingPoolWidget />
+            </div>
+            <div className="hover-lift">
               <StreakWidget />
             </div>
-            
-            {/* Community Block */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-100 rounded-xl shadow-lg p-4 space-y-4">
-              <h4 className="font-bold text-gray-900 text-lg mb-3">Your Community</h4>
+            <div className="hover-lift">
               <PersonalLeagueWidget />
+            </div>
+            <div className="hover-lift">
+              <AchievementSystem />
+            </div>
+            <div className="hover-lift">
               <FriendsWidget />
             </div>
-            
-            {/* Achievements Block */}
-            <div className="bg-gradient-to-br from-amber-50 to-yellow-100 rounded-xl shadow-lg p-4 space-y-4">
-              <h4 className="font-bold text-gray-900 text-lg mb-3">Progress & Rewards</h4>
-              <AchievementSystem />
+            <div className="hover-lift">
               <SeasonalEvents />
             </div>
-            
-            {/* Donation Options Block */}
-            <div className="bg-gradient-to-br from-rose-50 to-pink-100 rounded-xl shadow-lg p-4 space-y-4">
-              <h4 className="font-bold text-gray-900 text-lg mb-3">Donation Options</h4>
+            <div className="hover-lift">
               <DonationWidget />
+            </div>
+            <div className="hover-lift">
               <InMemoryOfWidget />
             </div>
-            
-            {/* Leaderboard Block */}
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-100 rounded-xl shadow-lg p-4">
-              <h4 className="font-bold text-gray-900 text-lg mb-3">Top Donors</h4>
+            <div className="hover-lift">
               <Leaderboard />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Donation Products Section */}
-      <section className="bg-white py-12 shadow-lg">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop for Good</h2>
-            <p className="text-gray-600 text-lg">Purchase items that make a difference</p>
-          </div>
-          <DonationProducts />
-        </div>
-      </section>
+      {/* Donation Products Section - New section added */}
+      <DonationProducts />
 
       {/* Campaigns Section */}
-      <section className="bg-gradient-to-r from-emerald-50 to-blue-50 py-12">
-        <div className="container mx-auto px-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Urgent Campaigns</h2>
-              <p className="text-gray-600 text-lg">Help those in immediate need</p>
-            </div>
-            <CampaignsCarousel campaigns={campaigns} title="" />
-          </div>
-        </div>
+      <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
+        <CampaignsCarousel campaigns={campaigns} title="Active Campaigns" />
       </section>
 
       {/* Fundraisers Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-purple-50 py-12">
-        <div className="container mx-auto px-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Long-term Projects</h2>
-              <p className="text-gray-600 text-lg">Support sustainable development</p>
-            </div>
-            <FundraisersCarousel fundraisers={fundraisers} title="" />
-          </div>
-        </div>
+      <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
+        <FundraisersCarousel fundraisers={fundraisers} title="Long-term Fundraisers" />
       </section>
 
       {/* Business Partners Section */}
-      <section className="bg-gradient-to-r from-gray-100 to-blue-100 py-12">
-        <div className="container mx-auto px-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Business Partners</h2>
-              <p className="text-gray-600 text-lg">Companies making a difference</p>
-            </div>
-            <BusinessSection />
-          </div>
-        </div>
-      </section>
+      <div className="max-w-full overflow-x-hidden">
+        <BusinessSection />
+      </div>
 
       {/* Charity Partners Section */}
-      <section className="bg-gradient-to-r from-emerald-100 to-green-100 py-12">
-        <div className="container mx-auto px-4">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <CharityPartners />
-          </div>
+      <section className="bg-gradient-to-r from-white to-blue-50/50 py-16 max-w-full overflow-x-hidden">
+        <div className="container mx-auto px-4 max-w-full overflow-x-hidden">
+          <CharityPartners />
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-gradient-to-br from-indigo-600 to-purple-700 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h3 className="text-4xl font-bold text-white mb-6">
-              Why Choose Donate Feels Great?
-            </h3>
-            <p className="text-xl text-indigo-100 max-w-3xl mx-auto leading-relaxed">
-              Our platform combines the spiritual reward of giving with engaging features that make charity 
-              <span className="text-yellow-300 font-semibold"> meaningful and rewarding</span>
-            </p>
+      <section className="container mx-auto px-4 py-16 max-w-full overflow-x-hidden">
+        <div className="text-center mb-12">
+          <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            Why Choose Donate Feels Great?
+          </h3>
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+            Our platform combines the spiritual reward of giving with engaging features that make charity 
+            <span className="vibrant-text-emerald font-semibold"> meaningful and rewarding</span>
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="text-center p-8 professional-card rounded-xl hover-lift">
+            <div className="vibrant-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
+              🎯
+            </div>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">Gamified Giving</h4>
+            <p className="text-gray-600">Earn points, badges, and compete with your community while doing good!</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl">
-                🎯
-              </div>
-              <h4 className="font-bold text-2xl mb-4 text-white">Gamified Giving</h4>
-              <p className="text-indigo-100 text-lg leading-relaxed">Earn points, badges, and compete with your community while doing good!</p>
+          <div className="text-center p-8 professional-card rounded-xl hover-lift">
+            <div className="accent-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
+              🏆
             </div>
-            
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl">
-                🏆
-              </div>
-              <h4 className="font-bold text-2xl mb-4 text-white">League Tables</h4>
-              <p className="text-indigo-100 text-lg leading-relaxed">See how your city, mosque, and community rank in giving!</p>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 hover:bg-white/15 transition-all duration-300">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl">
-                📺
-              </div>
-              <h4 className="font-bold text-2xl mb-4 text-white">Live Impact</h4>
-              <p className="text-indigo-100 text-lg leading-relaxed">Watch your donations make a real difference in real-time!</p>
-            </div>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">League Tables</h4>
+            <p className="text-gray-600">See how your city, mosque, and community rank in giving!</p>
           </div>
+          
+          <div className="text-center p-8 professional-card rounded-xl hover-lift">
+            <div className="purple-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
+              📺
+            </div>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">Live Impact</h4>
+            <p className="text-gray-600">Watch your donations make a real difference in real-time!</p>
+          </div>
+        </div>
 
-          {/* Stats section */}
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center shadow-2xl border border-white/20">
-            <h4 className="text-3xl font-bold text-white mb-8">Community Impact</h4>
-            <div className="grid md:grid-cols-4 gap-6">
-              <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-white mb-2">1,247</div>
-                <div className="text-white/90 font-medium text-lg">Active Donors</div>
-              </div>
-              <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-white mb-2">£50K</div>
-                <div className="text-white/90 font-medium text-lg">Raised Today</div>
-              </div>
-              <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-white mb-2">28</div>
-                <div className="text-white/90 font-medium text-lg">Cities Competing</div>
-              </div>
-              <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-white mb-2">95%</div>
-                <div className="text-white/90 font-medium text-lg">Satisfaction Rate</div>
-              </div>
+        {/* Stats section */}
+        <div className="mt-16 vibrant-gradient rounded-xl p-8 text-center shadow-xl">
+          <h4 className="text-2xl font-bold text-white mb-6">Community Impact</h4>
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+              <div className="text-2xl font-bold text-white">1,247</div>
+              <div className="text-white/90 font-medium">Active Donors</div>
+            </div>
+            <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+              <div className="text-2xl font-bold text-white">£50K</div>
+              <div className="text-white/90 font-medium">Raised Today</div>
+            </div>
+            <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+              <div className="text-2xl font-bold text-white">28</div>
+              <div className="text-white/90 font-medium">Cities Competing</div>
+            </div>
+            <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+              <div className="text-2xl font-bold text-white">95%</div>
+              <div className="text-white/90 font-medium">Satisfaction Rate</div>
             </div>
           </div>
         </div>
