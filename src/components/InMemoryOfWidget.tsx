@@ -50,10 +50,14 @@ const InMemoryOfWidget = () => {
         honoringOf: randomMemorial.person,
         message: randomMessage,
         amount: randomAmount,
-        timestamp: new Date()
+        timestamp: new Date(),
+        isExiting: false
       };
 
-      setMemorialFeed(prev => [memorialDonation, ...prev.slice(0, 4)]);
+      setMemorialFeed(prev => {
+        const newFeed = [memorialDonation, ...prev.slice(0, 2)];
+        return newFeed;
+      });
       
       // Update leaderboard
       setTopMemorials(prev => prev.map(memorial => 
@@ -62,6 +66,13 @@ const InMemoryOfWidget = () => {
           : memorial
       ).sort((a, b) => b.amount - a.amount).map((memorial, index) => ({ ...memorial, rank: index + 1 })));
       
+      // Mark oldest item for exit after 8 seconds, remove after 10 seconds
+      setTimeout(() => {
+        setMemorialFeed(prev => prev.map(item => 
+          item.id === memorialDonation.id ? { ...item, isExiting: true } : item
+        ));
+      }, 8000);
+
       setTimeout(() => {
         setMemorialFeed(prev => prev.filter(d => d.id !== memorialDonation.id));
       }, 10000);
@@ -76,6 +87,24 @@ const InMemoryOfWidget = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Ensure we always have exactly 3 items to display
+  const getDisplayItems = () => {
+    const items = [...memorialFeed];
+    while (items.length < 3) {
+      items.push({
+        id: `placeholder-${items.length}`,
+        user: '',
+        honoringOf: '',
+        message: '',
+        amount: 0,
+        timestamp: new Date(),
+        isPlaceholder: true,
+        isExiting: false
+      });
+    }
+    return items.slice(0, 3);
+  };
 
   const getRankIcon = (rank) => {
     switch (rank) {
@@ -108,49 +137,60 @@ const InMemoryOfWidget = () => {
 
       {/* Single Column Layout */}
       <div className="space-y-6">
-        {/* Live Honoring Feed - Latest 3 entries */}
+        {/* Live Honoring Feed - Fixed height for exactly 3 entries */}
         <div>
           <div className="flex items-center mb-4">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
             <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
           </div>
           
-          <div className="space-y-3">
-            {memorialFeed.slice(0, 3).map((memorial) => (
+          <div className="space-y-3 min-h-[300px]">
+            {getDisplayItems().map((memorial, index) => (
               <div
                 key={memorial.id}
-                className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4 animate-fade-in"
+                className={`transition-all duration-500 ease-in-out ${
+                  memorial.isPlaceholder 
+                    ? 'opacity-0 pointer-events-none' 
+                    : memorial.isExiting 
+                      ? 'opacity-0 transform scale-95' 
+                      : 'opacity-100 transform scale-100 animate-fade-in'
+                } ${
+                  memorial.isPlaceholder 
+                    ? 'bg-gray-50 border border-gray-100' 
+                    : 'bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200'
+                } rounded-lg p-4`}
+                style={{ 
+                  minHeight: '90px',
+                  transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`
+                }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-800 mb-1">
-                      {memorial.user} donated honoring <span className="font-bold text-purple-700">{memorial.honoringOf}</span>
+                {!memorial.isPlaceholder && (
+                  <>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-gray-800 mb-1">
+                          {memorial.user} donated honoring <span className="font-bold text-purple-700">{memorial.honoringOf}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <SimpleGoldCoin size={16} className="mr-1" />
+                          <span className="text-sm font-bold text-emerald-600">£{memorial.amount}</span>
+                        </div>
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        {new Date(memorial.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </Badge>
                     </div>
-                    <div className="flex items-center">
-                      <SimpleGoldCoin size={16} className="mr-1" />
-                      <span className="text-sm font-bold text-emerald-600">£{memorial.amount}</span>
+                    
+                    <div className="bg-white/60 rounded-lg px-3 py-2 border border-purple-200">
+                      <div className="text-sm italic text-gray-700 flex items-center">
+                        <Heart className="h-3 w-3 mr-2 text-pink-500" />
+                        "{memorial.message}"
+                      </div>
                     </div>
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {new Date(memorial.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </Badge>
-                </div>
-                
-                <div className="bg-white/60 rounded-lg px-3 py-2 border border-purple-200">
-                  <div className="text-sm italic text-gray-700 flex items-center">
-                    <Heart className="h-3 w-3 mr-2 text-pink-500" />
-                    "{memorial.message}"
-                  </div>
-                </div>
+                  </>
+                )}
               </div>
             ))}
-            
-            {memorialFeed.length === 0 && (
-              <div className="text-center text-gray-500 py-8">
-                <Heart className="h-8 w-8 mx-auto mb-2 text-gray-300" />
-                <p className="text-sm">Honoring donations will appear here</p>
-              </div>
-            )}
           </div>
         </div>
 
