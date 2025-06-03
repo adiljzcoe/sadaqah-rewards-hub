@@ -18,6 +18,7 @@ import CharityTicker from '@/components/CharityTicker';
 import BusinessAdvert from '@/components/BusinessAdvert';
 import LeagueTablesCarousel from '@/components/LeagueTablesCarousel';
 import DonationProducts from '@/components/DonationProducts';
+import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 
 const Index = () => {
   // Mock data for campaigns
@@ -146,7 +147,7 @@ const Index = () => {
               <FriendsWidget />
             </div>
             <div className="hover-lift">
-              <SeasonalEvents />
+              <BusinessLeaderboard />
             </div>
             <div className="hover-lift">
               <DonationWidget />
