@@ -279,54 +279,23 @@ const UserStats = () => {
       {/* New Compact Rewards Widget */}
       <CompactRewardsWidget />
 
-      {/* Remaining Stats - Keep the essential ones */}
-      <Card className="p-6 game-card mt-6">
-        <div className="space-y-4">
-          {/* Member Benefits Banner */}
-          {isMember && (
-            <div className="game-card p-4 bg-gradient-to-r from-purple-100 to-pink-100 text-center relative overflow-hidden">
-              <div className="relative z-10">
-                <p className="font-bold text-purple-800 mb-1 text-lg flex items-center justify-center gap-2">
-                  <Crown className="h-5 w-5" />
-                  VIP Member Benefits Active!
-                </p>
-                <p className="text-sm font-bold text-purple-700">
-                  💎 Double Jannah Points & Sadaqah Coins on all donations!
-                </p>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/50 to-transparent animate-shimmer"></div>
-            </div>
-          )}
-
-          {/* Weekly Goal */}
-          <div className="game-card p-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className="font-bold text-gray-900">Weekly Goal 🎯</span>
-              <span className="text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-blue-500 px-3 py-1 rounded-full gel-button">
-                3/5 donations
-              </span>
-            </div>
-            <div className="relative">
-              <Progress value={60} className="h-3 bg-gray-200 shadow-inner rounded-full" />
-              <div className="h-3 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full animate-gentle-fade" 
-                   style={{ width: '60%', marginTop: '-12px' }}>
-              </div>
-            </div>
-          </div>
-
-          {/* Special Multiplier */}
-          <div className="game-card p-4 bg-gradient-to-r from-amber-100 to-yellow-100 text-center relative overflow-hidden">
+      {/* Member Benefits Banner - only show if member */}
+      {isMember && (
+        <Card className="p-6 game-card mt-6">
+          <div className="game-card p-4 bg-gradient-to-r from-purple-100 to-pink-100 text-center relative overflow-hidden">
             <div className="relative z-10">
-              <p className="font-bold text-amber-800 mb-1 text-lg">🌙 Special Time!</p>
-              <p className="text-sm font-bold text-amber-700">
-                <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
-                {isMember ? 'Quadruple' : 'Double'} points until Maghrib!
+              <p className="font-bold text-purple-800 mb-1 text-lg flex items-center justify-center gap-2">
+                <Crown className="h-5 w-5" />
+                VIP Member Benefits Active!
+              </p>
+              <p className="text-sm font-bold text-purple-700">
+                💎 Double Jannah Points & Sadaqah Coins on all donations!
               </p>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/50 to-transparent animate-shimmer"></div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 };
