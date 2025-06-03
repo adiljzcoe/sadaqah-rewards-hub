@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -35,52 +36,52 @@ const UserStats = () => {
     switch (rank.name) {
       case "Divine Saint":
         return {
-          background: "bg-gradient-to-br from-yellow-50 via-amber-25 to-yellow-50",
-          border: "border-8 border-double border-yellow-500",
-          shadow: "shadow-2xl shadow-yellow-500/60 drop-shadow-2xl",
-          texture: "bg-[radial-gradient(circle_at_30%_30%,rgba(251,191,36,0.15),transparent_70%)] bg-[radial-gradient(circle_at_70%_70%,rgba(245,158,11,0.1),transparent_70%)]",
-          glow: "ring-6 ring-yellow-400/40 ring-offset-6 ring-offset-white",
+          background: "bg-gradient-to-br from-yellow-400 via-amber-300 to-yellow-500",
+          border: "border-8 border-double border-yellow-600",
+          shadow: "shadow-2xl shadow-yellow-600/60",
+          textColor: "text-yellow-900",
+          headerColor: "text-yellow-800",
           material: "🏆 PLATINUM CERTIFICATE 🏆",
           ornament: "💎",
           premium: true
         };
       case "Noble Champion":
         return {
-          background: "bg-gradient-to-br from-purple-100 via-violet-50 to-purple-100",
-          border: "border-6 border-double border-purple-400",
+          background: "bg-gradient-to-br from-purple-400 via-violet-300 to-purple-500",
+          border: "border-6 border-double border-purple-600",
           shadow: "shadow-xl shadow-purple-400/40",
-          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(147,51,234,0.1),transparent_50%)]",
-          glow: "ring-3 ring-purple-300/30 ring-offset-3 ring-offset-white",
+          textColor: "text-purple-900",
+          headerColor: "text-purple-800",
           material: "Gold Certificate",
           ornament: "👑"
         };
       case "Guardian Angel":
         return {
-          background: "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-100",
-          border: "border-4 border-double border-blue-400",
+          background: "bg-gradient-to-br from-blue-400 via-sky-300 to-blue-500",
+          border: "border-4 border-double border-blue-600",
           shadow: "shadow-lg shadow-blue-400/30",
-          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]",
-          glow: "ring-2 ring-blue-300/30 ring-offset-2 ring-offset-white",
+          textColor: "text-blue-900",
+          headerColor: "text-blue-800",
           material: "Silver Certificate",
           ornament: "👼"
         };
       case "Kind Heart":
         return {
-          background: "bg-gradient-to-br from-orange-100 via-amber-50 to-orange-100",
-          border: "border-4 border-orange-400",
+          background: "bg-gradient-to-br from-orange-400 via-amber-300 to-orange-500",
+          border: "border-4 border-orange-600",
           shadow: "shadow-md shadow-orange-400/20",
-          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(251,146,60,0.1),transparent_50%)]",
-          glow: "ring-1 ring-orange-300/20 ring-offset-1 ring-offset-white",
+          textColor: "text-orange-900",
+          headerColor: "text-orange-800",
           material: "Bronze Certificate",
           ornament: "🥉"
         };
       default:
         return {
-          background: "bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50",
-          border: "border-2 border-dashed border-amber-400",
+          background: "bg-gradient-to-br from-amber-300 via-yellow-200 to-amber-400",
+          border: "border-2 border-dashed border-amber-600",
           shadow: "shadow-sm shadow-amber-200/30",
-          texture: "bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmJmNGY2IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')]",
-          glow: "",
+          textColor: "text-amber-900",
+          headerColor: "text-amber-800",
           material: "Parchment Scroll",
           ornament: "📜"
         };
@@ -144,101 +145,102 @@ const UserStats = () => {
 
   return (
     <Card className="p-6 game-card">
-      {/* Premium Certificate/Plaque Display */}
+      {/* Classic Gold Certificate */}
       <div className="text-center mb-8">
-        <div className={`relative p-10 mx-4 rounded-3xl ${certificateStyle.background} ${certificateStyle.border} ${certificateStyle.shadow} ${certificateStyle.glow} ${certificateStyle.texture} transform hover:scale-[1.02] transition-all duration-500`}>
-          {/* Enhanced Decorative Corner Ornaments for Platinum */}
-          {certificateStyle.premium ? (
-            <>
-              <div className="absolute top-6 left-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
-              <div className="absolute top-6 right-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
-              <div className="absolute bottom-6 left-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
-              <div className="absolute bottom-6 right-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
-              
-              {/* Extra premium decorations */}
-              <div className="absolute top-16 left-16 text-2xl opacity-40">🌟</div>
-              <div className="absolute top-16 right-16 text-2xl opacity-40">🌟</div>
-              <div className="absolute bottom-16 left-16 text-2xl opacity-40">🌟</div>
-              <div className="absolute bottom-16 right-16 text-2xl opacity-40">🌟</div>
-            </>
-          ) : (
-            <>
-              <div className="absolute top-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-              <div className="absolute top-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-              <div className="absolute bottom-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-              <div className="absolute bottom-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-            </>
-          )}
+        <div className={`relative p-12 rounded-none ${certificateStyle.background} ${certificateStyle.border} ${certificateStyle.shadow} transform hover:scale-[1.02] transition-all duration-500`}>
+          {/* Classic Corner Ornaments */}
+          <div className="absolute top-4 left-4 text-3xl opacity-70">{certificateStyle.ornament}</div>
+          <div className="absolute top-4 right-4 text-3xl opacity-70">{certificateStyle.ornament}</div>
+          <div className="absolute bottom-4 left-4 text-3xl opacity-70">{certificateStyle.ornament}</div>
+          <div className="absolute bottom-4 right-4 text-3xl opacity-70">{certificateStyle.ornament}</div>
           
-          {/* Certificate Header */}
+          {/* Certificate Header with Traditional Styling */}
           <div className="mb-8">
-            <div className={`text-sm font-bold uppercase tracking-wider mb-2 ${certificateStyle.premium ? 'text-yellow-700 text-lg' : 'text-gray-600'}`}>
+            <div className={`text-lg font-bold uppercase tracking-widest mb-4 ${certificateStyle.headerColor} border-b-2 border-current pb-2`}>
               {certificateStyle.material}
             </div>
-            <div className={`w-32 h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent mx-auto mb-6 ${certificateStyle.premium ? 'shadow-lg' : ''}`}></div>
           </div>
 
-          {/* Rank Badge */}
-          <div className="relative inline-block mb-8">
-            <div className={`w-28 h-28 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-2xl bg-gradient-to-r ${currentRank.gradient} ring-8 ring-white/60 transform hover:rotate-12 transition-transform duration-300 ${certificateStyle.premium ? 'animate-pulse' : ''}`}>
-              <span className="text-4xl">{currentRank.icon}</span>
+          {/* Rank Badge - More Traditional */}
+          <div className="relative inline-block mb-6">
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl bg-gradient-to-r ${currentRank.gradient} border-4 border-white transform hover:rotate-6 transition-transform duration-300`}>
+              <span className="text-3xl">{currentRank.icon}</span>
             </div>
-            <Badge className={`absolute -top-3 -right-3 gel-button bg-gradient-to-r ${currentRank.gradient} text-white text-sm shadow-xl animate-pulse border-3 border-white ${certificateStyle.premium ? 'ring-2 ring-yellow-400' : ''}`}>
-              <Shield className="h-4 w-4 mr-1" />
+            <Badge className={`absolute -top-2 -right-2 bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-lg border-2 border-white`}>
+              <Shield className="h-3 w-3 mr-1" />
               {currentRank.badge}
             </Badge>
           </div>
 
-          {/* Certificate Title */}
-          <div className="mb-6">
-            <div className={`text-xs uppercase tracking-widest mb-3 ${certificateStyle.premium ? 'text-yellow-700 font-bold' : 'text-gray-500'}`}>This Certifies That</div>
-            <h3 className={`font-bold text-3xl flex items-center justify-center gap-3 mb-3 ${certificateStyle.premium ? 'text-yellow-800' : 'text-gray-900'}`}>
+          {/* Traditional Certificate Text */}
+          <div className="mb-6 space-y-4">
+            <div className={`text-sm uppercase tracking-wider ${certificateStyle.textColor} opacity-80`}>
+              Certificate of Recognition
+            </div>
+            <div className={`text-sm uppercase tracking-widest mb-3 ${certificateStyle.textColor}`}>This Certifies That</div>
+            <h3 className={`font-bold text-4xl mb-3 ${certificateStyle.headerColor} border-b border-current pb-2 inline-block`}>
               Ahmad M.
               {isMember && (
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
-                  <Crown className="h-3 w-3 mr-1" />
+                <Badge className="ml-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm">
+                  <Crown className="h-4 w-4 mr-1" />
                   VIP
                 </Badge>
               )}
             </h3>
-            <div className={`text-xs uppercase tracking-widest mb-6 ${certificateStyle.premium ? 'text-yellow-700 font-bold' : 'text-gray-500'}`}>Has Achieved The Rank Of</div>
-            <div className={`text-3xl font-bold mb-3 ${certificateStyle.premium ? 'bg-gradient-to-r from-yellow-700 via-amber-600 to-yellow-700 bg-clip-text text-transparent' : 'bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent'}`}>
+            <div className={`text-sm uppercase tracking-widest mb-4 ${certificateStyle.textColor}`}>Has Successfully Achieved The Distinguished Rank Of</div>
+            <div className={`text-3xl font-bold mb-4 ${certificateStyle.headerColor} border border-current px-6 py-2 inline-block`}>
               {currentRank.name}
             </div>
-            <p className={`text-sm italic ${certificateStyle.premium ? 'text-yellow-700 font-semibold' : 'text-gray-600'}`}>{currentRank.description}</p>
+            <p className={`text-base italic ${certificateStyle.textColor} max-w-md mx-auto leading-relaxed`}>
+              {currentRank.description}
+            </p>
           </div>
 
-          {/* Points Display */}
+          {/* Points Display - Traditional Style */}
           <div className="mb-8">
-            <div className={`text-5xl font-black mb-3 ${certificateStyle.premium ? 'bg-gradient-to-r from-yellow-700 via-amber-600 to-yellow-700 bg-clip-text text-transparent animate-pulse' : 'bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent'}`}>
+            <div className={`text-sm ${certificateStyle.textColor} mb-2`}>Total Points Earned</div>
+            <div className={`text-5xl font-black mb-2 ${certificateStyle.headerColor} border-2 border-current px-4 py-2 inline-block`}>
               {currentPoints.toLocaleString()}
             </div>
-            <div className={`text-sm font-medium ${certificateStyle.premium ? 'text-yellow-700' : 'text-gray-600'}`}>Jannah Points Earned</div>
+            <div className={`text-sm font-medium ${certificateStyle.textColor}`}>Jannah Points</div>
           </div>
 
-          {/* Decorative Flourish */}
+          {/* Traditional Decorative Line */}
           <div className="flex items-center justify-center mb-6">
-            <div className={`w-12 h-px ${certificateStyle.premium ? 'bg-yellow-500' : 'bg-gray-400'}`}></div>
-            <Star className={`h-5 w-5 mx-4 ${certificateStyle.premium ? 'text-yellow-500 animate-pulse' : 'text-gray-400'}`} />
-            <div className={`w-12 h-px ${certificateStyle.premium ? 'bg-yellow-500' : 'bg-gray-400'}`}></div>
+            <div className={`w-16 h-px ${certificateStyle.textColor} bg-current`}></div>
+            <Star className={`h-6 w-6 mx-4 ${certificateStyle.textColor}`} />
+            <div className={`w-16 h-px ${certificateStyle.textColor} bg-current`}></div>
           </div>
 
-          {/* Benefits Preview */}
-          <div className={`text-sm mb-6 ${certificateStyle.premium ? 'text-yellow-700' : 'text-gray-600'}`}>
-            <div className="font-semibold mb-2">Current Benefits:</div>
+          {/* Benefits in Classic Style */}
+          <div className={`text-sm mb-6 ${certificateStyle.textColor}`}>
+            <div className="font-semibold mb-3 underline">Current Privileges & Benefits:</div>
             <div className="flex flex-wrap justify-center gap-2">
               {currentRank.benefits.slice(0, 2).map((benefit, index) => (
-                <span key={index} className={`px-3 py-1 rounded text-xs ${certificateStyle.premium ? 'bg-yellow-100/80 text-yellow-800 border border-yellow-300' : 'bg-white/50'}`}>
+                <span key={index} className={`px-4 py-1 border border-current text-xs uppercase tracking-wide ${certificateStyle.textColor}`}>
                   {benefit}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Signature Line */}
-          <div className={`border-t pt-6 mt-8 ${certificateStyle.premium ? 'border-yellow-400' : 'border-gray-300'}`}>
-            <div className={`text-xs ${certificateStyle.premium ? 'text-yellow-700 font-semibold' : 'text-gray-500'}`}>
-              Donate Feels Great Community
+          {/* Traditional Signature Area */}
+          <div className={`border-t-2 border-current pt-6 mt-8 ${certificateStyle.textColor}`}>
+            <div className="flex justify-between items-end">
+              <div className="text-left">
+                <div className={`border-b border-current w-32 mb-2`}></div>
+                <div className="text-xs uppercase tracking-wide">Director</div>
+              </div>
+              <div className="text-center">
+                <div className="text-xs font-semibold">
+                  Donate Feels Great
+                </div>
+                <div className="text-xs">Community Foundation</div>
+              </div>
+              <div className="text-right">
+                <div className={`border-b border-current w-32 mb-2`}></div>
+                <div className="text-xs uppercase tracking-wide">Date</div>
+              </div>
             </div>
           </div>
         </div>
