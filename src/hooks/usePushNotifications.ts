@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { pushNotificationService } from '@/services/pushNotificationService';
 
@@ -23,6 +24,9 @@ export const usePushNotifications = () => {
   const initializeState = async () => {
     const isSupported = 'serviceWorker' in navigator && 'PushManager' in window;
     
+    console.log('Push notifications supported:', isSupported);
+    console.log('Current permission:', Notification.permission);
+    
     setState(prev => ({
       ...prev,
       isSupported,
@@ -31,6 +35,7 @@ export const usePushNotifications = () => {
 
     if (isSupported) {
       const isSubscribed = await pushNotificationService.isSubscribed();
+      console.log('Currently subscribed:', isSubscribed);
       setState(prev => ({
         ...prev,
         isSubscribed
@@ -39,14 +44,15 @@ export const usePushNotifications = () => {
   };
 
   const subscribe = async (): Promise<boolean> => {
+    console.log('Hook: Starting subscription...');
     setState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      console.log('Starting subscription process...');
-      
       // This should trigger the browser permission popup
       const subscription = await pushNotificationService.subscribe();
       const success = !!subscription;
+      
+      console.log('Hook: Subscription result:', success);
       
       setState(prev => ({
         ...prev,
@@ -57,7 +63,7 @@ export const usePushNotifications = () => {
       
       return success;
     } catch (error) {
-      console.error('Subscribe error:', error);
+      console.error('Hook: Subscribe error:', error);
       setState(prev => ({ 
         ...prev, 
         isLoading: false,

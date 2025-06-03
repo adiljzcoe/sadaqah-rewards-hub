@@ -1,3 +1,4 @@
+
 // Push Notification Service for Frontend
 export class PushNotificationService {
   private static instance: PushNotificationService;
@@ -41,12 +42,22 @@ export class PushNotificationService {
 
   async requestPermission(): Promise<boolean> {
     try {
+      console.log('Current permission status:', Notification.permission);
+      
+      // Check if we're in a secure context
+      if (!window.isSecureContext) {
+        console.warn('Push notifications require HTTPS or localhost');
+      }
+      
       // Force the permission request - this should trigger the browser popup
       if ('Notification' in window) {
+        console.log('Requesting notification permission...');
         const permission = await Notification.requestPermission();
-        console.log('Notification permission result:', permission);
+        console.log('Permission request result:', permission);
         return permission === 'granted';
       }
+      
+      console.error('Notification API not available');
       return false;
     } catch (error) {
       console.error('Failed to request notification permission:', error);
@@ -56,8 +67,11 @@ export class PushNotificationService {
 
   async subscribe(): Promise<PushSubscription | null> {
     try {
+      console.log('Starting subscription process...');
+      
       // Initialize if not already done
       if (!this.registration) {
+        console.log('Initializing service worker...');
         const initialized = await this.initialize();
         if (!initialized) {
           throw new Error('Failed to initialize service worker');
@@ -68,18 +82,24 @@ export class PushNotificationService {
         throw new Error('Service worker not registered');
       }
 
+      console.log('Current notification permission:', Notification.permission);
+
       // Check current permission status
       if (Notification.permission === 'denied') {
+        console.error('Notification permission is denied');
         throw new Error('Notification permission denied');
       }
 
-      // Request permission if not already granted
-      if (Notification.permission === 'default') {
-        const permissionGranted = await this.requestPermission();
-        if (!permissionGranted) {
-          throw new Error('Permission not granted');
-        }
+      // ALWAYS request permission explicitly to trigger popup
+      console.log('Requesting permission explicitly...');
+      const permissionGranted = await this.requestPermission();
+      
+      if (!permissionGranted) {
+        console.error('Permission was not granted');
+        throw new Error('Permission not granted');
       }
+
+      console.log('Permission granted, checking existing subscription...');
 
       // Check if already subscribed
       this.subscription = await this.registration.pushManager.getSubscription();
@@ -88,6 +108,8 @@ export class PushNotificationService {
         console.log('Already subscribed to push notifications');
         return this.subscription;
       }
+
+      console.log('Creating new subscription...');
 
       // Subscribe to push notifications
       this.subscription = await this.registration.pushManager.subscribe({
