@@ -29,6 +29,7 @@ import MyJannah from './pages/MyJannah';
 import Membership from './pages/Membership';
 import GiftCards from './pages/GiftCards';
 import PrayForPalestine from './pages/PrayForPalestine';
+import Checkout from './pages/Checkout';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -44,6 +45,7 @@ function App() {
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/checkout" element={<Checkout />} />
             
             {/* Islamic Life Routes */}
             <Route path="/live-tv" element={<LiveTV />} />
