@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -138,7 +137,7 @@ const InMemoryOfWidget = () => {
 
       {/* Single Column Layout */}
       <div className="space-y-6">
-        {/* Live Honoring Feed - Sophisticated Certificate Plaques */}
+        {/* Live Honoring Feed - Memorial Bronze Plaques */}
         <div>
           <div className="flex items-center mb-4">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
@@ -158,86 +157,100 @@ const InMemoryOfWidget = () => {
                 } ${
                   memorial.isPlaceholder 
                     ? 'bg-gray-50 border border-gray-100' 
-                    : 'bg-gradient-to-br from-yellow-100 via-amber-50 to-yellow-200'
-                } rounded-xl border-4 border-amber-300 shadow-2xl relative overflow-hidden`}
+                    : 'bg-gradient-to-br from-yellow-600 via-amber-500 to-yellow-700'
+                } rounded-xl border-4 border-amber-800 shadow-2xl relative overflow-hidden`}
                 style={{ 
                   minHeight: '120px',
                   transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`,
-                  boxShadow: memorial.isPlaceholder ? '' : '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)'
+                  boxShadow: memorial.isPlaceholder ? '' : '0 25px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3)'
                 }}
               >
                 {!memorial.isPlaceholder && (
                   <>
-                    {/* Sophisticated Certificate Border with Gold Shiny Animation */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-100 rounded-lg" />
+                    {/* Bronze Memorial Plaque Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-600 via-yellow-600 to-amber-700 rounded-lg opacity-95" />
                     
-                    {/* Animated Shiny Gold Overlay */}
+                    {/* Metallic Shine Effect */}
                     <div 
-                      className="absolute inset-0 opacity-30 rounded-lg"
+                      className="absolute inset-0 opacity-40 rounded-lg"
                       style={{
-                        background: 'linear-gradient(135deg, transparent 30%, rgba(255,215,0,0.8) 50%, transparent 70%)',
-                        animation: 'shimmer 3s ease-in-out infinite'
+                        background: 'linear-gradient(135deg, transparent 25%, rgba(255,255,255,0.8) 45%, rgba(255,255,255,0.3) 55%, transparent 75%)',
+                        animation: 'shine 4s ease-in-out infinite'
                       }}
                     />
                     
-                    {/* Ornate Corner Decorations */}
-                    <div className="absolute top-3 left-3 w-6 h-6 border-l-2 border-t-2 border-amber-500 rounded-tl-lg" />
-                    <div className="absolute top-3 right-3 w-6 h-6 border-r-2 border-t-2 border-amber-500 rounded-tr-lg" />
-                    <div className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2 border-amber-500 rounded-bl-lg" />
-                    <div className="absolute bottom-3 right-3 w-6 h-6 border-r-2 border-b-2 border-amber-500 rounded-br-lg" />
+                    {/* Brushed Metal Texture */}
+                    <div 
+                      className="absolute inset-0 opacity-20 rounded-lg"
+                      style={{
+                        background: 'repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(255,255,255,0.1) 1px, rgba(255,255,255,0.1) 2px)'
+                      }}
+                    />
                     
-                    {/* Certificate Content */}
+                    {/* Memorial Plaque Content */}
                     <div className="relative p-6 z-10">
-                      {/* Elegant Header */}
+                      {/* Memorial Header */}
                       <div className="text-center mb-4">
-                        <div className="font-serif text-xs font-bold text-amber-800 mb-1 tracking-widest uppercase">
-                          Certificate of Honor
+                        <div className="font-serif text-xs font-bold text-amber-900 mb-2 tracking-[0.2em] uppercase">
+                          Memorial Plaque
                         </div>
-                        <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto mb-3" />
-                        <div className="font-serif text-lg font-bold text-amber-900 mb-2">
+                        <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-900 to-transparent mx-auto mb-3" />
+                        <div className="font-serif text-lg font-bold text-amber-900 mb-2 tracking-wide">
                           {memorial.honoringOf}
                         </div>
-                        <div className="font-serif text-sm text-amber-800 font-semibold tracking-wide">
+                        <div className="font-serif text-sm text-amber-900 font-semibold tracking-wider">
                           WE HONOR YOU
                         </div>
                       </div>
                       
                       {/* Donation Information */}
                       <div className="flex items-center justify-between mb-4">
-                        <div className="text-xs text-amber-800 font-medium">
+                        <div className="text-xs text-amber-900 font-medium">
                           Donated by {memorial.user}
                         </div>
-                        <div className="flex items-center bg-gradient-to-r from-emerald-50 to-green-100 px-3 py-1.5 rounded-full border-2 border-emerald-300 shadow-sm">
+                        <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-200 px-3 py-1.5 rounded-full border-2 border-emerald-400 shadow-md">
                           <SimpleGoldCoin size={16} className="mr-1.5" />
-                          <span className="text-sm font-bold text-emerald-700">£{memorial.amount}</span>
+                          <span className="text-sm font-bold text-emerald-800">£{memorial.amount}</span>
                         </div>
                       </div>
                       
-                      {/* Message in Elegant Frame */}
-                      <div className="bg-gradient-to-r from-white/80 to-amber-50/80 rounded-lg px-4 py-3 border-2 border-amber-400 shadow-inner backdrop-blur-sm">
+                      {/* Message in Bronze Frame */}
+                      <div className="bg-gradient-to-r from-yellow-200/90 to-amber-200/90 rounded-lg px-4 py-3 border-2 border-amber-800 shadow-inner backdrop-blur-sm mb-3">
                         <div className="text-sm italic text-amber-900 text-center font-medium flex items-center justify-center">
-                          <Heart className="h-3 w-3 mr-2 text-rose-600" />
+                          <Heart className="h-3 w-3 mr-2 text-red-700" />
                           <span className="font-serif">"{memorial.message}"</span>
-                          <Heart className="h-3 w-3 ml-2 text-rose-600" />
+                          <Heart className="h-3 w-3 ml-2 text-red-700" />
                         </div>
                       </div>
                       
-                      {/* Elegant Timestamp */}
-                      <div className="text-center mt-3">
-                        <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-800 border-amber-400 font-serif">
-                          {new Date(memorial.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </Badge>
+                      {/* Date Stamp */}
+                      <div className="text-center">
+                        <div className="inline-block bg-amber-800/20 px-3 py-1 rounded border border-amber-800">
+                          <div className="text-xs font-bold text-amber-900 font-serif">
+                            {new Date(memorial.timestamp).toLocaleDateString('en-GB', { 
+                              day: '2-digit', 
+                              month: '2-digit', 
+                              year: 'numeric' 
+                            })}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Shimmer Animation Styles */}
+                    {/* Metallic Shine Animation */}
                     <style>{`
-                      @keyframes shimmer {
+                      @keyframes shine {
                         0% {
                           transform: translateX(-100%) translateY(-100%) rotate(30deg);
                         }
+                        25% {
+                          transform: translateX(50%) translateY(50%) rotate(30deg);
+                        }
                         50% {
                           transform: translateX(100%) translateY(100%) rotate(30deg);
+                        }
+                        75% {
+                          transform: translateX(150%) translateY(150%) rotate(30deg);
                         }
                         100% {
                           transform: translateX(300%) translateY(300%) rotate(30deg);
