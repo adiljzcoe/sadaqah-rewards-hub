@@ -71,14 +71,14 @@ const FriendsWidget = () => {
   return (
     <Card className="p-0 overflow-hidden bg-white border border-gray-200/60 shadow-sm">
       {/* Premium Gold Header */}
-      <div className="relative p-6 bg-gradient-to-br from-amber-600 via-yellow-500 to-amber-700 overflow-hidden">
+      <div className="relative p-4 bg-gradient-to-br from-amber-600 via-yellow-500 to-amber-700 overflow-hidden">
         {/* Shiny effect overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-amber-400/20 via-yellow-300/30 to-amber-500/20 animate-glow"></div>
         
         <div className="relative z-10">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold text-white flex items-center gap-2 drop-shadow-lg">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-medium text-white flex items-center gap-2 drop-shadow-lg">
               <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm border border-white/30">
                 <Trophy className="h-4 w-4 text-yellow-200" />
               </div>
@@ -88,34 +88,14 @@ const FriendsWidget = () => {
               Gold League
             </Badge>
           </div>
-          
-          <div className="text-xs text-yellow-100 font-medium drop-shadow">
-            Your current position in the community
-          </div>
         </div>
       </div>
 
-      <div className="p-6">
-        {/* Enhanced Stats with Gold Accents */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="text-center p-4 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl border border-amber-200/50 shadow-sm">
-            <div className="text-lg font-bold text-amber-800 mb-1">{membersBehind}</div>
-            <div className="text-xs text-amber-600 font-medium">Behind You</div>
-          </div>
-          <div className="text-center p-4 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl border border-amber-200/50 shadow-sm">
-            <div className="text-lg font-bold text-amber-800 mb-1">{membersAhead}</div>
-            <div className="text-xs text-amber-600 font-medium">To Beat</div>
-          </div>
-          <div className="text-center p-4 bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl border border-amber-200/50 shadow-sm">
-            <div className="text-lg font-bold text-amber-800 mb-1">{leagueMembers.filter(f => f.status === 'donated today').length}</div>
-            <div className="text-xs text-amber-600 font-medium">Active Today</div>
-          </div>
-        </div>
-
+      <div className="p-4">
         {/* Premium Member List with Tier-specific Backgrounds */}
-        <div className="space-y-3 mb-6">
+        <div className="space-y-3 mb-4">
           {leagueMembers.map((member, index) => (
-            <div key={index} className={`group relative p-4 rounded-xl border hover:shadow-lg transition-all duration-200 ${getTierRowBackground(member.tier)}`}>
+            <div key={index} className={`group relative p-3 rounded-xl border hover:shadow-lg transition-all duration-200 ${getTierRowBackground(member.tier)}`}>
               {/* Tier-specific Rank Badge */}
               <div className={`absolute -top-2 -left-2 w-6 h-6 rounded-full text-white flex items-center justify-center text-xs font-bold border-2 border-white ${getRankBadgeStyle(member.tier)}`}>
                 {member.rank}
@@ -123,7 +103,7 @@ const FriendsWidget = () => {
 
               <div className="flex items-center justify-between ml-2">
                 <div className="flex items-center space-x-3">
-                  <Avatar className="h-10 w-10 ring-2 ring-amber-200">
+                  <Avatar className="h-8 w-8 ring-2 ring-amber-200">
                     <AvatarFallback className={`font-semibold text-white bg-gradient-to-r ${getTierGradient(member.tier)}`}>
                       {member.avatar}
                     </AvatarFallback>
@@ -165,27 +145,10 @@ const FriendsWidget = () => {
         </div>
 
         {/* Premium Gold Actions */}
-        <div className="space-y-3">
-          <Button className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-medium py-2.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl">
-            <Trophy className="h-4 w-4 mr-2" />
-            View Full Rankings
-          </Button>
-          
-          <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 border border-amber-200/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-lg shadow-sm">
-                <Crown className="h-4 w-4 text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-amber-800 text-sm">Unlock Platinum League</div>
-                <div className="text-xs text-amber-600">Exclusive rewards await</div>
-              </div>
-            </div>
-            <div className="text-xs text-amber-700 font-medium">
-              Compete with elite donors • Premium benefits • VIP status
-            </div>
-          </div>
-        </div>
+        <Button className="w-full bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white font-medium py-2.5 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl">
+          <Trophy className="h-4 w-4 mr-2" />
+          View Full Rankings
+        </Button>
       </div>
     </Card>
   );
