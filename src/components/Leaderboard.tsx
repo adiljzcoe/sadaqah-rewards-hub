@@ -131,33 +131,37 @@ const Leaderboard = () => {
         </div>
 
         <div className="p-6 space-y-6">
-          {/* User's City Highlight */}
-          <Card className="p-6 bg-gradient-to-br from-emerald-50 via-teal-50 to-blue-50 border-2 border-emerald-200 shadow-lg rounded-2xl">
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center">
-                <div className="p-2 bg-emerald-100 rounded-xl">
-                  <Target className="h-6 w-6 text-emerald-600" />
+          {/* User's City Highlight - Enhanced */}
+          <Card className="p-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-0 shadow-xl rounded-xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                  <Target className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold mb-1">Your City: {userCity}</h4>
+                  <div className="flex items-center space-x-4 text-emerald-100">
+                    <div className="flex items-center gap-1">
+                      <span className="text-sm font-medium">Rank</span>
+                      <span className="text-lg font-bold">#{userCityRank}</span>
+                    </div>
+                    <div className="w-px h-4 bg-white/30"></div>
+                    <div className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      <span className="text-sm font-medium">980 donors</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div>
-                <h4 className="text-xl font-bold text-emerald-800 mb-3">Your City: {userCity}</h4>
-                <div className="flex items-center justify-center space-x-8">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-emerald-600 mb-1">#{userCityRank}</div>
-                    <div className="text-sm text-emerald-700 font-semibold">CITY RANK</div>
-                  </div>
-                  <div className="w-px h-12 bg-emerald-200"></div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600 mb-1">980</div>
-                    <div className="text-sm text-blue-700 font-semibold">ACTIVE DONORS</div>
-                  </div>
-                </div>
-                <div className="mt-4 p-3 bg-emerald-100/50 rounded-xl">
-                  <p className="text-sm text-emerald-800 font-semibold">
-                    Help {userCity} beat Manchester! 3,250 points needed 🚀
-                  </p>
-                </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-white">38,900</div>
+                <div className="text-sm text-emerald-100 font-medium">points</div>
               </div>
+            </div>
+            <div className="mt-3 p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+              <p className="text-sm text-center font-medium text-white">
+                🚀 Help {userCity} beat Manchester! 3,250 points needed
+              </p>
             </div>
           </Card>
 
