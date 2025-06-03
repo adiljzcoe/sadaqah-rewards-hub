@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Heart, Send, Users, MessageCircle, Star, Clock, Lock } from 'lucide-rea
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import CoinAnimation from '@/components/CoinAnimation';
 
 interface Dua {
   id: string;
@@ -32,6 +32,7 @@ const DuaWall = () => {
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [showCoinAnimation, setShowCoinAnimation] = useState(false);
 
   const fetchDuas = async () => {
     try {
@@ -150,17 +151,27 @@ const DuaWall = () => {
     try {
       console.log('Saying ameen to dua:', duaId);
       
+      // Award Jannah points (10 points for saying Ameen)
+      const jannahPointsEarned = 10;
+      
       // Update the dua in the local state
       setDuas(prev => prev.map(dua => 
         dua.id === duaId 
           ? { ...dua, ameen_count: dua.ameen_count + 1, user_has_said_ameen: true }
           : dua
       ));
+
+      // Trigger coin animation
+      setShowCoinAnimation(true);
       
       toast({
         title: "Ameen! 🤲",
-        description: "Your support has been added to this prayer",
+        description: `Your support has been added to this prayer. +${jannahPointsEarned} Jannah Points earned!`,
       });
+
+      // Here you would update the user's Jannah points in the database
+      // For now, we'll just log it
+      console.log(`User earned ${jannahPointsEarned} Jannah points for saying Ameen`);
     } catch (error) {
       console.error('Error saying ameen:', error);
       toast({
@@ -204,7 +215,13 @@ const DuaWall = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20 relative">
+      {/* Coin Animation */}
+      <CoinAnimation 
+        trigger={showCoinAnimation} 
+        onComplete={() => setShowCoinAnimation(false)} 
+      />
+      
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
@@ -216,6 +233,9 @@ const DuaWall = () => {
             Share your prayers with the community and support others with your Ameen. 
             Together we strengthen our connection with Allah and each other.
           </p>
+          <div className="mt-4 text-sm text-blue-600 font-medium">
+            💰 Earn 10 Jannah Points for each Ameen you give!
+          </div>
         </div>
 
         {/* Stats */}
@@ -376,7 +396,7 @@ const DuaWall = () => {
                         className={dua.user_has_said_ameen ? "bg-green-600 hover:bg-green-700" : ""}
                       >
                         <Heart className={`h-4 w-4 mr-2 ${dua.user_has_said_ameen ? 'fill-current' : ''}`} />
-                        {dua.user_has_said_ameen ? 'Ameen Said' : 'Say Ameen'}
+                        {dua.user_has_said_ameen ? 'Ameen Said' : 'Say Ameen (+10 Points)'}
                       </Button>
                     ) : (
                       <Button
