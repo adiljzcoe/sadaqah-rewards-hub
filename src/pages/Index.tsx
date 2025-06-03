@@ -1,3 +1,4 @@
+
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
@@ -142,7 +143,7 @@ const Index = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6 max-w-full overflow-x-hidden px-4">
+          <div className="space-y-6 max-w-full overflow-x-hidden pl-4 pr-2">
             <div className="hover-lift">
               <UserStats />
             </div>
