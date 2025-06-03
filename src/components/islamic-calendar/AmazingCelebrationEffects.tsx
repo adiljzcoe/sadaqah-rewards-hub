@@ -28,15 +28,6 @@ interface MegaFirework {
   burst: boolean;
 }
 
-interface FloatingLantern {
-  id: string;
-  x: number;
-  y: number;
-  size: number;
-  color: string;
-  delay: number;
-}
-
 interface AmazingCelebrationEffectsProps {
   isActive: boolean;
   eventTitle: string;
@@ -47,7 +38,6 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
   const [duaMessages, setDuaMessages] = useState<DuaMessage[]>([]);
   const [loveMessages, setLoveMessages] = useState<LoveMessage[]>([]);
   const [megaFireworks, setMegaFireworks] = useState<MegaFirework[]>([]);
-  const [floatingLanterns, setFloatingLanterns] = useState<FloatingLantern[]>([]);
   const [confettiExplosion, setConfettiExplosion] = useState<any[]>([]);
 
   const duas = [
@@ -87,11 +77,6 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
     '#FF8C00', '#9370DB', '#FF4500', '#1E90FF', '#32CD32'
   ];
 
-  const arabicColors = [
-    '#B8860B', '#CD853F', '#DAA520', '#8B4513', '#A0522D', 
-    '#D2691E', '#228B22', '#4169E1', '#DC143C', '#FF8C00'
-  ];
-
   useEffect(() => {
     if (!isActive || isPaused) return;
 
@@ -116,16 +101,11 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
       createMegaFireworks();
     }, 6000);
 
-    const lanternInterval = setInterval(() => {
-      createFloatingLanterns();
-    }, 7000);
-
     // Cleanup old effects periodically
     const cleanupInterval = setInterval(() => {
       setDuaMessages(prev => prev.filter(msg => Date.now() - parseInt(msg.id.split('-')[1]) < 8000));
       setLoveMessages(prev => prev.filter(msg => Date.now() - parseInt(msg.id.split('-')[1]) < 8000));
       setMegaFireworks(prev => prev.filter(fw => Date.now() - parseInt(fw.id.split('-')[1]) < 3000));
-      setFloatingLanterns(prev => prev.filter(lantern => Date.now() - parseInt(lantern.id.split('-')[1]) < 12000));
       setConfettiExplosion(prev => prev.filter(conf => Date.now() - parseInt(conf.id.split('-')[1]) < 6000));
     }, 2000);
 
@@ -134,7 +114,6 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
       clearInterval(duaInterval);
       clearInterval(loveInterval);
       clearInterval(fireworkInterval);
-      clearInterval(lanternInterval);
       clearInterval(cleanupInterval);
     };
   }, [isActive, isPaused]);
@@ -145,7 +124,6 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
       setDuaMessages([]);
       setLoveMessages([]);
       setMegaFireworks([]);
-      setFloatingLanterns([]);
       setConfettiExplosion([]);
     }
   }, [isActive, isPaused]);
@@ -215,21 +193,6 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
         newFireworks.find(nf => nf.id === fw.id) ? { ...fw, burst: true } : fw
       ));
     }, 600);
-  };
-
-  const createFloatingLanterns = () => {
-    const newLanterns = [];
-    for (let i = 0; i < 10; i++) {
-      newLanterns.push({
-        id: `lantern-${Date.now()}-${i}`,
-        x: Math.random() * 100, // Full screen width
-        y: 70 + Math.random() * 30, // Bottom portion
-        size: 20 + Math.random() * 25,
-        color: arabicColors[Math.floor(Math.random() * arabicColors.length)],
-        delay: Math.random() * 3000
-      });
-    }
-    setFloatingLanterns(prev => [...prev, ...newLanterns]);
   };
 
   if (!isActive) return null;
@@ -327,43 +290,6 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle, isPaused = false }: A
               }}
             />
           ))}
-        </div>
-      ))}
-
-      {/* Floating Arabic Lanterns */}
-      {floatingLanterns.map(lantern => (
-        <div
-          key={lantern.id}
-          className={`absolute animate-float-up ${isPaused ? 'animation-play-state-paused' : ''}`}
-          style={{
-            left: `${lantern.x}%`,
-            top: `${lantern.y}%`,
-            animationDelay: `${lantern.delay}ms`,
-            animationDuration: '10s'
-          }}
-        >
-          <div
-            className="relative animate-traditional-glow rounded-lg opacity-90"
-            style={{
-              width: `${lantern.size}px`,
-              height: `${lantern.size * 1.3}px`,
-              backgroundColor: lantern.color
-            }}
-          >
-            {/* Lantern glow */}
-            <div
-              className="absolute inset-0 rounded-lg blur-md"
-              style={{
-                backgroundColor: lantern.color,
-                opacity: 0.7,
-                transform: 'scale(1.3)'
-              }}
-            />
-            {/* Lantern details */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-yellow-400 rounded-full" />
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-3 bg-yellow-600 rounded-sm" />
-            <Star className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-3 w-3 text-yellow-200 animate-pulse" />
-          </div>
         </div>
       ))}
 
