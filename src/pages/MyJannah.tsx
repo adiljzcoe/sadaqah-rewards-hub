@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Star, Heart, Trophy, Target, TrendingUp, Calendar, Gift, Zap, Crown, Award, TreeDeciduous, TreePalm, Trees, Waves, Home, Building, Mosque, Mountain, Sun, Moon, Apple, Grape, Bird, Fish, Car, Ship, Fountain, Flower } from 'lucide-react';
+import { Star, Heart, Trophy, Target, TrendingUp, Calendar, Gift, Zap, Crown, Award, TreeDeciduous, TreePalm, Trees, Waves, Home, Building, Church, Mountain, Sun, Moon, Apple, Grape, Bird, Fish, Car, Ship, Droplets, Flower } from 'lucide-react';
 import JannahBuilder from '@/components/JannahBuilder';
 import JannahShop from '@/components/JannahShop';
 import Jannah3DBuilder from '@/components/Jannah3DBuilder';
@@ -39,7 +40,7 @@ const MyJannah = () => {
       price: 100,
       category: 'utilities',
       size: '2x2',
-      icon: <Fountain className="h-6 w-6" />,
+      icon: <Droplets className="h-6 w-6" />,
       intention: 'May this fountain represent the rivers of Paradise',
       realProject: 'Provides clean water access to 50 families'
     },
@@ -50,7 +51,7 @@ const MyJannah = () => {
       price: 300,
       category: 'religious',
       size: '3x3',
-      icon: <Mosque className="h-6 w-6" />,
+      icon: <Church className="h-6 w-6" />,
       intention: 'Whoever builds a mosque, Allah builds a house for them in Paradise',
       realProject: 'Contributes to building a real mosque in a underserved community'
     },

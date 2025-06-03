@@ -1,5 +1,5 @@
 
-import { TreeDeciduous, TreePalm, Trees, Waves, Home, Building, Mosque, Mountain, Sun, Moon, Crown, Apple, Grape, Bird, Fish, Car, Ship, Fountain, Flower, Star, Heart, Gift, Zap } from 'lucide-react';
+import { TreeDeciduous, TreePalm, Trees, Waves, Home, Building, Church, Mountain, Sun, Moon, Crown, Apple, Grape, Bird, Fish, Car, Ship, Droplets, Flower, Star, Heart, Gift, Zap } from 'lucide-react';
 
 export interface JannahItem {
   id: string;
