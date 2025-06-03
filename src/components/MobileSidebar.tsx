@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown } from 'lucide-react';
+import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown, Settings, Code, UserCog } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -32,11 +32,64 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   const [donateOpen, setDonateOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
   const [rewardsOpen, setRewardsOpen] = useState(false);
+  const [developerOpen, setDeveloperOpen] = useState(false);
 
   const progress = (currentPoints / nextLevelPoints) * 100;
 
   const handleLinkClick = () => {
     setOpen(false);
+  };
+
+  // Function to close all other sections when one is opened
+  const handleSectionToggle = (section: string) => {
+    const closers = {
+      islamic: () => {
+        setToolsOpen(false);
+        setDonateOpen(false);
+        setCommunityOpen(false);
+        setRewardsOpen(false);
+        setDeveloperOpen(false);
+      },
+      tools: () => {
+        setIslamicOpen(false);
+        setDonateOpen(false);
+        setCommunityOpen(false);
+        setRewardsOpen(false);
+        setDeveloperOpen(false);
+      },
+      donate: () => {
+        setIslamicOpen(false);
+        setToolsOpen(false);
+        setCommunityOpen(false);
+        setRewardsOpen(false);
+        setDeveloperOpen(false);
+      },
+      community: () => {
+        setIslamicOpen(false);
+        setToolsOpen(false);
+        setDonateOpen(false);
+        setRewardsOpen(false);
+        setDeveloperOpen(false);
+      },
+      rewards: () => {
+        setIslamicOpen(false);
+        setToolsOpen(false);
+        setDonateOpen(false);
+        setCommunityOpen(false);
+        setDeveloperOpen(false);
+      },
+      developer: () => {
+        setIslamicOpen(false);
+        setToolsOpen(false);
+        setDonateOpen(false);
+        setCommunityOpen(false);
+        setRewardsOpen(false);
+      }
+    };
+
+    if (closers[section as keyof typeof closers]) {
+      closers[section as keyof typeof closers]();
+    }
   };
 
   const islamicPages = [
@@ -75,6 +128,20 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
     { name: "Gift Cards", path: "/gift-cards", icon: Gift, description: "Give the gift of giving", gradient: "from-pink-600 to-rose-600" },
   ];
 
+  const developerPages = [
+    { name: "Admin Dashboard", path: "/admin-dashboard", icon: UserCog, description: "Admin control panel", gradient: "from-red-600 to-orange-600" },
+    { name: "Profile Settings", path: "/profile", icon: User, description: "User profile management", gradient: "from-blue-600 to-indigo-600" },
+    { name: "Auth Page", path: "/auth", icon: Shield, description: "Login & registration", gradient: "from-purple-600 to-pink-600" },
+    { name: "Checkout", path: "/checkout", icon: "💳", description: "Payment processing", gradient: "from-green-600 to-emerald-600" },
+    { name: "Why Donate", path: "/why-donate", icon: Heart, description: "About donation benefits", gradient: "from-rose-600 to-pink-600" },
+    { name: "Live Feed", path: "/live-feed", icon: Tv, description: "Activity feed page", gradient: "from-cyan-600 to-blue-600" },
+    { name: "Fundraising", path: "/fundraising", icon: Trophy, description: "Create fundraisers", gradient: "from-amber-600 to-yellow-600" },
+    { name: "Charity Partners", path: "/charity-partners", icon: Building, description: "Partner organizations", gradient: "from-indigo-600 to-purple-600" },
+    { name: "Duas Library", path: "/duas-library", icon: BookOpen, description: "Collection of duas", gradient: "from-emerald-600 to-green-600" },
+    { name: "Business Profile", path: "/business-profile", icon: Building, description: "Business dashboard", gradient: "from-orange-600 to-red-600" },
+    { name: "Charity Profile", path: "/charity-profile", icon: Heart, description: "Charity organization page", gradient: "from-pink-600 to-rose-600" },
+  ];
+
   const renderPageItem = (page: any) => {
     const IconComponent = typeof page.icon === 'string' ? null : page.icon;
     
@@ -106,13 +173,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-        <SheetHeader className="p-4 border-b border-white/10">
-          <SheetTitle className="text-left text-white font-bold text-xl">Navigation</SheetTitle>
-        </SheetHeader>
         
         <div className="flex flex-col h-full">
-          {/* Enhanced Golden User Plaque */}
-          <div className="p-4 border-b border-white/10">
+          {/* Enhanced Golden User Plaque - Moved Higher */}
+          <div className="p-4">
             <div className="text-center">
               {/* Golden Plaque Container */}
               <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-3xl px-4 py-3 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto max-w-[240px]">
@@ -181,7 +245,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </Link>
 
             {/* Islamic Life Section */}
-            <Collapsible open={islamicOpen} onOpenChange={setIslamicOpen}>
+            <Collapsible open={islamicOpen} onOpenChange={(isOpen) => {
+              setIslamicOpen(isOpen);
+              if (isOpen) handleSectionToggle('islamic');
+            }}>
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">🕌</span>
@@ -195,7 +262,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </Collapsible>
 
             {/* Tools Section */}
-            <Collapsible open={toolsOpen} onOpenChange={setToolsOpen}>
+            <Collapsible open={toolsOpen} onOpenChange={(isOpen) => {
+              setToolsOpen(isOpen);
+              if (isOpen) handleSectionToggle('tools');
+            }}>
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">🛠️</span>
@@ -209,7 +279,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </Collapsible>
 
             {/* Donate Section */}
-            <Collapsible open={donateOpen} onOpenChange={setDonateOpen}>
+            <Collapsible open={donateOpen} onOpenChange={(isOpen) => {
+              setDonateOpen(isOpen);
+              if (isOpen) handleSectionToggle('donate');
+            }}>
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">💝</span>
@@ -223,7 +296,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </Collapsible>
 
             {/* Community Section */}
-            <Collapsible open={communityOpen} onOpenChange={setCommunityOpen}>
+            <Collapsible open={communityOpen} onOpenChange={(isOpen) => {
+              setCommunityOpen(isOpen);
+              if (isOpen) handleSectionToggle('community');
+            }}>
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">👥</span>
@@ -237,7 +313,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </Collapsible>
 
             {/* Rewards Section */}
-            <Collapsible open={rewardsOpen} onOpenChange={setRewardsOpen}>
+            <Collapsible open={rewardsOpen} onOpenChange={(isOpen) => {
+              setRewardsOpen(isOpen);
+              if (isOpen) handleSectionToggle('rewards');
+            }}>
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">🏆</span>
@@ -247,6 +326,23 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               </CollapsibleTrigger>
               <CollapsibleContent className="space-y-2 mt-2 ml-4">
                 {rewardsPages.map(renderPageItem)}
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* Developer Section */}
+            <Collapsible open={developerOpen} onOpenChange={(isOpen) => {
+              setDeveloperOpen(isOpen);
+              if (isOpen) handleSectionToggle('developer');
+            }}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+                <div className="flex items-center">
+                  <Code className="h-5 w-5 mr-3" />
+                  <span>Developer</span>
+                </div>
+                {developerOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 mt-2 ml-4">
+                {developerPages.map(renderPageItem)}
               </CollapsibleContent>
             </Collapsible>
 
