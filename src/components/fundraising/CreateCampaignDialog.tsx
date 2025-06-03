@@ -86,13 +86,25 @@ const CreateCampaignDialog: React.FC<CreateCampaignDialogProps> = ({ open, onOpe
     mutationFn: async (data: CampaignFormData) => {
       if (!user) throw new Error('Must be logged in');
 
+      const campaignData = {
+        title: data.title,
+        description: data.description,
+        cause_category: data.cause_category,
+        target_amount: data.target_amount,
+        currency: data.currency || 'GBP',
+        dedication_message: data.dedication_message || null,
+        video_url: data.video_url || null,
+        image_url: data.image_url || null,
+        masjid_id: data.masjid_id || null,
+        end_date: data.end_date?.toISOString() || null,
+        is_team_fundraiser: data.is_team_fundraiser || false,
+        created_by: user.id,
+        status: 'active' as const,
+      };
+
       const { data: campaign, error } = await supabase
         .from('fundraising_campaigns')
-        .insert({
-          ...data,
-          created_by: user.id,
-          status: 'active',
-        })
+        .insert(campaignData)
         .select()
         .single();
 

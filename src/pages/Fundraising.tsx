@@ -41,7 +41,7 @@ const Fundraising = () => {
         .from('fundraising_campaigns')
         .select(`
           *,
-          profiles:created_by(full_name, avatar_url),
+          profiles!fundraising_campaigns_created_by_fkey(full_name, avatar_url),
           masjids(name, location),
           fundraising_teams(
             id,
@@ -49,7 +49,7 @@ const Fundraising = () => {
             team_raised,
             team_members(
               id,
-              profiles:user_id(full_name, avatar_url)
+              profiles!team_members_user_id_fkey(full_name, avatar_url)
             )
           )
         `)

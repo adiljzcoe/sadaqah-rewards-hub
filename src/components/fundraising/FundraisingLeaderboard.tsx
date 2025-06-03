@@ -21,7 +21,7 @@ const FundraisingLeaderboard = () => {
           raised_amount,
           target_amount,
           created_at,
-          profiles:created_by(full_name, avatar_url)
+          profiles!fundraising_campaigns_created_by_fkey(full_name, avatar_url)
         `)
         .eq('status', 'active')
         .order('raised_amount', { ascending: false })
@@ -46,7 +46,7 @@ const FundraisingLeaderboard = () => {
           fundraising_campaigns(title),
           team_members(
             id,
-            profiles:user_id(full_name, avatar_url)
+            profiles!team_members_user_id_fkey(full_name, avatar_url)
           )
         `)
         .order('team_raised', { ascending: false })
@@ -65,7 +65,7 @@ const FundraisingLeaderboard = () => {
         .from('fundraising_campaigns')
         .select(`
           created_by,
-          profiles:created_by(full_name, avatar_url),
+          profiles!fundraising_campaigns_created_by_fkey(full_name, avatar_url),
           raised_amount
         `)
         .eq('status', 'active');
