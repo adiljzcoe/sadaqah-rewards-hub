@@ -164,10 +164,10 @@ const UserStats = () => {
           
           {/* Certificate Header */}
           <div className="mb-3">
-            <div className="text-xl font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="text-xl font-bold mb-1 text-amber-900 font-cinzel" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
               Certificate of Excellence
             </div>
-            <div className="text-xs uppercase tracking-[0.15em] mb-1 text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
+            <div className="text-xs uppercase tracking-[0.15em] mb-1 text-amber-800 font-semibold font-playfair">
               This is to certify that
             </div>
             <div className="w-10 h-px bg-amber-800 mx-auto"></div>
@@ -175,7 +175,7 @@ const UserStats = () => {
 
           {/* Main Content */}
           <div className="mb-3 space-y-2">
-            <div className="text-2xl font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="text-2xl font-bold mb-1 text-amber-900 font-cinzel" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
               Ahmad M.
               {isMember && (
                 <Badge className="ml-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm">
@@ -185,7 +185,7 @@ const UserStats = () => {
               )}
             </div>
             
-            <div className="text-xs mb-2 text-amber-800 max-w-xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'serif' }}>
+            <div className="text-xs mb-2 text-amber-800 max-w-xl mx-auto leading-relaxed font-medium font-playfair">
               has demonstrated outstanding commitment and excellence in<br />
               <span className="font-bold text-sm">Charitable Giving and Community Service</span>
             </div>
@@ -204,18 +204,18 @@ const UserStats = () => {
             {/* Points and Donations Display */}
             <div className="mb-2 grid grid-cols-2 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                <div className="text-2xl font-black mb-1 text-amber-900 font-cinzel" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
                   {currentPoints.toLocaleString()}
                 </div>
-                <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
+                <div className="text-sm font-semibold text-amber-800 font-playfair">
                   Jannah Points Earned
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-black mb-1 text-amber-900" style={{ fontFamily: 'serif', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+                <div className="text-2xl font-black mb-1 text-amber-900 font-cinzel" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
                   {totalDonations}
                 </div>
-                <div className="text-sm font-semibold text-amber-800" style={{ fontFamily: 'serif' }}>
+                <div className="text-sm font-semibold text-amber-800 font-playfair">
                   Total Donations
                 </div>
               </div>
@@ -227,7 +227,7 @@ const UserStats = () => {
             <div className="flex justify-between items-end max-w-2xl mx-auto">
               <div className="text-left">
                 <div className="border-b border-amber-800 w-16 mb-1"></div>
-                <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
+                <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold font-playfair">
                   Date
                 </div>
               </div>
@@ -237,24 +237,24 @@ const UserStats = () => {
                 <div className="w-8 h-8 rounded-full border-2 border-amber-800 flex items-center justify-center mb-1 bg-gradient-to-br from-yellow-300 to-amber-400">
                   <div className="text-sm">🏆</div>
                 </div>
-                <div className="text-xs text-amber-800 font-bold" style={{ fontFamily: 'serif' }}>
+                <div className="text-xs text-amber-800 font-bold font-playfair">
                   Official Seal
                 </div>
               </div>
               
               <div className="text-right">
                 <div className="border-b border-amber-800 w-16 mb-1"></div>
-                <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold" style={{ fontFamily: 'serif' }}>
+                <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold font-playfair">
                   Signature
                 </div>
               </div>
             </div>
             
             <div className="text-center mt-2">
-              <div className="text-lg font-bold mb-1 text-amber-900" style={{ fontFamily: 'serif' }}>
+              <div className="text-lg font-bold mb-1 text-amber-900 font-cinzel">
                 Held tight to the rope of Allah swt
               </div>
-              <div className="text-xs text-amber-800 font-medium" style={{ fontFamily: 'serif' }}>
+              <div className="text-xs text-amber-800 font-medium font-playfair">
                 Community Foundation
               </div>
             </div>
