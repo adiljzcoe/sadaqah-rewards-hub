@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, ShoppingCart } from 'lucide-react';
+import { Star, User, Menu, ArrowUp, ChevronDown, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, ShoppingCart, Crown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
@@ -75,46 +75,39 @@ const Header = () => {
               <div className="flex items-center">
                 {user ? (
                   <Link to="/profile">
-                    {isMember ? (
-                      <Button className="relative overflow-hidden rounded-xl px-2 py-1.5 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
-                        <div className="flex items-center space-x-1.5">
-                          <div className="flex items-center">
-                            <span className="text-xs mr-1 drop-shadow-sm">🛡️</span>
-                            <div className="flex flex-col">
-                              <span className="text-xs font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
-                              <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
-                            </div>
-                          </div>
-                          
-                          <div className="w-px h-5 bg-amber-300/40"></div>
-                          
-                          <div className="flex flex-col space-y-0.5">
-                            <div className="flex items-center space-x-1">
-                              <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
-                              <div className="relative w-8 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
-                                <div 
-                                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
-                                  style={{ width: `${progress}%` }}
-                                ></div>
-                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-amber-200/20 rounded-full"></div>
-                              </div>
-                            </div>
-                            <div className="flex items-center">
-                              <Star className="h-2 w-2 text-yellow-200 mr-0.5 drop-shadow-sm" />
-                              <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
-                            </div>
+                    <Button className="relative overflow-hidden rounded-xl px-2 py-1.5 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50">
+                      <div className="flex items-center space-x-1.5">
+                        <div className="flex items-center">
+                          <span className="text-xs mr-1 drop-shadow-sm">🛡️</span>
+                          <div className="flex flex-col">
+                            <span className="text-xs font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
+                            <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
                           </div>
                         </div>
                         
-                        <div className="absolute top-1 left-2 w-8 h-3 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
-                      </Button>
-                    ) : (
-                      <Button className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 text-white border-0 font-bold shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 rounded-2xl ring-2 ring-cyan-400/30">
-                        <User className="h-5 w-5 mr-2" />
-                        <span className="hidden sm:inline">Ahmad M.</span>
-                      </Button>
-                    )}
+                        <div className="w-px h-5 bg-amber-300/40"></div>
+                        
+                        <div className="flex flex-col space-y-0.5">
+                          <div className="flex items-center space-x-1">
+                            <span className="text-xs font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
+                            <div className="relative w-8 h-1 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
+                              <div 
+                                className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
+                                style={{ width: `${progress}%` }}
+                              ></div>
+                              <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-amber-200/20 rounded-full"></div>
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            <Star className="h-2 w-2 text-yellow-200 mr-0.5 drop-shadow-sm" />
+                            <span className="text-xs font-medium text-amber-100 drop-shadow-sm">5,632 pts</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="absolute top-1 left-2 w-8 h-3 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
+                    </Button>
                   </Link>
                 ) : (
                   <div className="flex items-center space-x-2">
