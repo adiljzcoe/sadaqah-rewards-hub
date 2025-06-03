@@ -20,11 +20,11 @@ const FriendsWidget = () => {
 
   const getTierColor = (tier: string) => {
     switch (tier) {
-      case 'platinum': return 'text-purple-700 bg-gradient-to-r from-purple-100 to-purple-200';
-      case 'gold': return 'text-amber-700 bg-gradient-to-r from-amber-100 to-yellow-200';
-      case 'silver': return 'text-gray-700 bg-gradient-to-r from-gray-100 to-slate-200';
-      case 'bronze': return 'text-orange-700 bg-gradient-to-r from-orange-100 to-amber-200';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'platinum': return 'text-slate-700 bg-slate-50 border-slate-200';
+      case 'gold': return 'text-amber-800 bg-amber-50 border-amber-200';
+      case 'silver': return 'text-gray-700 bg-gray-50 border-gray-200';
+      case 'bronze': return 'text-orange-700 bg-orange-50 border-orange-200';
+      default: return 'text-gray-600 bg-gray-50 border-gray-200';
     }
   };
 
@@ -40,122 +40,99 @@ const FriendsWidget = () => {
 
   const getTierGradient = (tier: string) => {
     switch (tier) {
-      case 'platinum': return 'from-purple-500 to-indigo-600';
-      case 'gold': return 'from-amber-400 to-yellow-500';
-      case 'silver': return 'from-gray-400 to-slate-500';
-      case 'bronze': return 'from-orange-400 to-amber-500';
+      case 'platinum': return 'from-slate-400 to-slate-600';
+      case 'gold': return 'from-amber-400 to-amber-600';
+      case 'silver': return 'from-gray-400 to-gray-600';
+      case 'bronze': return 'from-orange-400 to-orange-600';
       default: return 'from-gray-400 to-gray-500';
     }
   };
 
   return (
-    <Card className="p-0 overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 border-2 border-purple-200/30 shadow-xl">
-      {/* Header Section with Premium Look */}
-      <div className="relative p-6 bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 text-white overflow-hidden">
-        {/* Animated background pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
-        </div>
+    <Card className="p-0 overflow-hidden bg-white border border-gray-200/60 shadow-sm">
+      {/* Premium Header */}
+      <div className="relative p-6 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
         
         <div className="relative z-10">
-          <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-            <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
-              <Trophy className="h-6 w-6" />
-            </div>
-            <span className="bg-gradient-to-r from-white to-yellow-100 bg-clip-text text-transparent">
-              Your League
-            </span>
-          </h3>
-          
-          <div className="flex items-center gap-3">
-            <Badge className="bg-gradient-to-r from-white/20 to-white/10 text-white border-white/30 text-lg px-4 py-2 font-bold backdrop-blur-sm">
-              🏆 Gold League
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm">
+                <Trophy className="h-4 w-4 text-amber-400" />
+              </div>
+              League Rankings
+            </h3>
+            <Badge className="bg-white/10 text-white border-white/20 text-xs font-medium backdrop-blur-sm">
+              Gold League
             </Badge>
-            <div className="flex items-center gap-1 text-yellow-100">
-              <Star className="h-4 w-4 fill-current" />
-              <span className="text-sm font-semibold">Elite Status</span>
-            </div>
+          </div>
+          
+          <div className="text-xs text-gray-300 font-medium">
+            Your current position in the community
           </div>
         </div>
       </div>
 
       <div className="p-6">
-        {/* Enhanced Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 border-2 border-emerald-200/50 hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-black text-emerald-600 mb-1">{membersBehind}</div>
-            <div className="text-xs font-bold text-emerald-700 flex items-center justify-center gap-1">
-              <TrendingUp className="h-3 w-3" />
-              Behind You
-            </div>
+        {/* Elegant Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="text-center p-4 bg-gray-50/50 rounded-xl border border-gray-100">
+            <div className="text-lg font-bold text-gray-900 mb-1">{membersBehind}</div>
+            <div className="text-xs text-gray-600 font-medium">Behind You</div>
           </div>
-          <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-red-50 to-rose-100 border-2 border-red-200/50 hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-black text-red-600 mb-1">{membersAhead}</div>
-            <div className="text-xs font-bold text-red-700 flex items-center justify-center gap-1">
-              <Target className="h-3 w-3" />
-              To Beat
-            </div>
+          <div className="text-center p-4 bg-gray-50/50 rounded-xl border border-gray-100">
+            <div className="text-lg font-bold text-gray-900 mb-1">{membersAhead}</div>
+            <div className="text-xs text-gray-600 font-medium">To Beat</div>
           </div>
-          <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 border-2 border-blue-200/50 hover:scale-105 transition-transform duration-200">
-            <div className="text-2xl font-black text-blue-600 mb-1">{leagueMembers.filter(f => f.status === 'donated today').length}</div>
-            <div className="text-xs font-bold text-blue-700 flex items-center justify-center gap-1">
-              <Zap className="h-3 w-3" />
-              Active Today
-            </div>
+          <div className="text-center p-4 bg-gray-50/50 rounded-xl border border-gray-100">
+            <div className="text-lg font-bold text-gray-900 mb-1">{leagueMembers.filter(f => f.status === 'donated today').length}</div>
+            <div className="text-xs text-gray-600 font-medium">Active Today</div>
           </div>
         </div>
 
-        {/* Enhanced League Members List */}
+        {/* Premium Member List */}
         <div className="space-y-3 mb-6">
           {leagueMembers.map((member, index) => (
-            <div key={index} className={`relative p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg ${
-              member.rank < userRank ? 'border-red-200 bg-gradient-to-r from-red-50 to-rose-50 hover:from-red-100 hover:to-rose-100' : 
-              member.rank > userRank ? 'border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 hover:from-emerald-100 hover:to-green-100' : 
-              'border-gray-200 bg-gradient-to-r from-gray-50 to-slate-50'
-            }`}>
+            <div key={index} className="group relative p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-200">
               {/* Rank Badge */}
-              <div className={`absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shadow-lg ${
-                member.rank < userRank ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white' : 
-                member.rank > userRank ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white' : 
-                'bg-gradient-to-r from-gray-500 to-slate-600 text-white'
-              }`}>
-                #{member.rank}
+              <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-bold shadow-sm">
+                {member.rank}
               </div>
 
-              <div className="flex items-center justify-between ml-4">
+              <div className="flex items-center justify-between ml-2">
                 <div className="flex items-center space-x-3">
-                  <Avatar className="h-12 w-12 ring-2 ring-white shadow-lg">
-                    <AvatarFallback className={`font-bold text-white bg-gradient-to-r ${getTierGradient(member.tier)}`}>
+                  <Avatar className="h-10 w-10 ring-1 ring-gray-200">
+                    <AvatarFallback className={`font-semibold text-white bg-gradient-to-r ${getTierGradient(member.tier)}`}>
                       {member.avatar}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-bold text-gray-800">{member.name}</span>
-                      <Badge variant="outline" className="text-xs bg-white/50">L{member.level}</Badge>
+                      <span className="font-semibold text-gray-900 text-sm">{member.name}</span>
+                      <Badge variant="outline" className="text-xs px-1.5 py-0.5 bg-gray-50 text-gray-600 border-gray-200">
+                        L{member.level}
+                      </Badge>
                       {member.streak > 0 && (
-                        <div className="flex items-center gap-1 px-2 py-1 bg-orange-100 rounded-full">
+                        <div className="flex items-center gap-1 px-2 py-0.5 bg-orange-50 rounded-md border border-orange-200">
                           <Flame className="h-3 w-3 text-orange-500" />
-                          <span className="text-xs font-bold text-orange-600">{member.streak}</span>
+                          <span className="text-xs font-medium text-orange-700">{member.streak}</span>
                         </div>
                       )}
                     </div>
-                    <div className="text-xs text-gray-600 font-medium">{member.status}</div>
+                    <div className="text-xs text-gray-500 font-medium">{member.status}</div>
                   </div>
                 </div>
                 
                 <div className="text-right">
-                  <div className={`text-sm font-bold px-3 py-2 rounded-xl shadow-sm ${getTierColor(member.tier)}`}>
+                  <div className={`text-xs font-medium px-2.5 py-1.5 rounded-lg border ${getTierColor(member.tier)}`}>
                     {getTierIcon(member.tier)} {member.tier}
                   </div>
                   {member.rank < userRank ? (
-                    <div className="text-xs text-red-600 font-bold mt-1 flex items-center gap-1">
-                      <Crown className="h-3 w-3" />
+                    <div className="text-xs text-gray-500 mt-1 font-medium">
                       Ahead of you
                     </div>
                   ) : (
-                    <div className="text-xs text-emerald-600 font-bold mt-1 flex items-center gap-1">
-                      <Award className="h-3 w-3" />
+                    <div className="text-xs text-gray-500 mt-1 font-medium">
                       Behind you
                     </div>
                   )}
@@ -165,25 +142,25 @@ const FriendsWidget = () => {
           ))}
         </div>
 
-        {/* Enhanced Action Buttons */}
+        {/* Premium Actions */}
         <div className="space-y-3">
-          <Button className="w-full bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 text-white font-bold py-3 rounded-2xl hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-amber-300/50">
-            <Target className="h-5 w-5 mr-2" />
-            View Full League Rankings
+          <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 rounded-xl transition-colors duration-200">
+            <Trophy className="h-4 w-4 mr-2" />
+            View Full Rankings
           </Button>
           
-          <div className="p-4 rounded-2xl bg-gradient-to-r from-purple-100 via-pink-100 to-rose-100 border-2 border-purple-200/50 text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
-                <Crown className="h-5 w-5 text-white" />
+          <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-gray-50 border border-gray-200/50">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-gray-900 rounded-lg">
+                <Crown className="h-4 w-4 text-white" />
               </div>
-              <span className="font-bold text-purple-800 text-lg">Platinum League Awaits!</span>
+              <div>
+                <div className="font-semibold text-gray-900 text-sm">Unlock Platinum League</div>
+                <div className="text-xs text-gray-600">Exclusive rewards await</div>
+              </div>
             </div>
-            <p className="text-sm font-bold text-purple-700 mb-2">
-              🏆 Unlock exclusive rewards & premium benefits
-            </p>
-            <div className="text-xs text-purple-600 font-medium">
-              Compete with the elite • Double rewards • VIP status
+            <div className="text-xs text-gray-500 font-medium">
+              Compete with elite donors • Premium benefits • VIP status
             </div>
           </div>
         </div>
