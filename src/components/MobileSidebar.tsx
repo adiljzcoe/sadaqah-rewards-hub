@@ -1,5 +1,10 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Sheet,
   SheetContent,
@@ -7,24 +12,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Menu, 
-  Heart, 
-  Users, 
-  Building, 
-  Trophy, 
-  Gift, 
-  BookOpen, 
-  Star,
-  Coins,
-  Shield,
-  ChevronRight,
-  Home,
-  Info
-} from 'lucide-react';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface MobileSidebarProps {
   userLevel: number;
@@ -34,225 +26,190 @@ interface MobileSidebarProps {
 }
 
 const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: MobileSidebarProps) => {
-  const location = useLocation();
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isDonateOpen, setIsDonateOpen] = React.useState(false);
-  const [isCommunityOpen, setIsCommunityOpen] = React.useState(false);
-  const [isRewardsOpen, setIsRewardsOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [islamicOpen, setIslamicOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [donateOpen, setDonateOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
+  const [rewardsOpen, setRewardsOpen] = useState(false);
 
   const progress = (currentPoints / nextLevelPoints) * 100;
-  const isActive = (path: string) => location.pathname === path;
 
   const handleLinkClick = () => {
-    setIsOpen(false);
+    setOpen(false);
   };
 
-  const toggleSection = (section: string) => {
-    switch (section) {
-      case 'donate':
-        setIsDonateOpen(!isDonateOpen);
-        break;
-      case 'community':
-        setIsCommunityOpen(!isCommunityOpen);
-        break;
-      case 'rewards':
-        setIsRewardsOpen(!isRewardsOpen);
-        break;
-    }
+  const islamicPages = [
+    { name: "Islamic Calendar", path: "/islamic-calendar", icon: Calendar, description: "Sacred days & celebrations" },
+    { name: "Ramadan Calendar", path: "/ramadan-calendar", icon: Moon, description: "Track your Ramadan journey" },
+    { name: "Adhan Community", path: "/adhan-community", icon: Mic, description: "Share beautiful Adhan recordings" },
+    { name: "Live TV", path: "/live-tv", icon: Tv, description: "Islamic channels & content" },
+    { name: "Dhikr Community", path: "/dhikr-community", icon: Sparkles, description: "Spiritual remembrance together" },
+  ];
+
+  const toolsPages = [
+    { name: "Prayer Times", path: "/namaz-times", icon: Clock, description: "Accurate prayer times worldwide" },
+    { name: "Quran Reader", path: "/quran-reader", icon: BookOpen, description: "Read & track progress" },
+    { name: "Zakat Calculator", path: "/zakat-calculator", icon: Coins, description: "Calculate your Zakat" },
+    { name: "Dua Wall", path: "/dua-wall", icon: Heart, description: "Share & support prayers" },
+  ];
+
+  const donatePages = [
+    { name: "Active Campaigns", path: "/campaigns", icon: Heart, description: "Support urgent causes worldwide" },
+    { name: "Build a Mosque", path: "/build-mosque", icon: Building, description: "Fund mosque construction" },
+    { name: "Water Wells", path: "/water-wells", icon: "💧", description: "Provide clean water access" },
+    { name: "Orphanages", path: "/orphanages", icon: "👶", description: "Support orphan care & education" },
+    { name: "Qurbani", path: "/qurbani", icon: "🐄", description: "Sacrifice & share blessings" },
+  ];
+
+  const communityPages = [
+    { name: "Masjid Community", path: "/masjid-community", icon: Building, description: "Represent your local mosque" },
+    { name: "My Ummah", path: "/my-ummah", icon: Users, description: "Global Muslim community" },
+    { name: "Leaderboards", path: "/leaderboards", icon: Trophy, description: "Top donors & recognition" },
+  ];
+
+  const rewardsPages = [
+    { name: "Sadaqah Coins", path: "/sadaqah-coins", icon: Coins, description: "Purchase coins & unlock rewards" },
+    { name: "My Jannah", path: "/my-jannah", icon: Building, description: "Build your paradise" },
+    { name: "Membership Tiers", path: "/membership", icon: Shield, description: "Upgrade for multiplied points" },
+    { name: "Gift Cards", path: "/gift-cards", icon: Gift, description: "Give the gift of giving" },
+  ];
+
+  const renderPageItem = (page: any) => {
+    const IconComponent = typeof page.icon === 'string' ? null : page.icon;
+    
+    return (
+      <Link
+        key={page.path}
+        to={page.path}
+        onClick={handleLinkClick}
+        className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors"
+      >
+        {IconComponent ? (
+          <IconComponent className="h-5 w-5 mr-3 text-gray-600" />
+        ) : (
+          <span className="text-lg mr-3">{page.icon}</span>
+        )}
+        <div>
+          <div className="font-medium text-gray-900">{page.name}</div>
+          <p className="text-sm text-gray-500">{page.description}</p>
+        </div>
+      </Link>
+    );
   };
 
   return (
-    <div className="relative z-[200]">
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            className="md:hidden relative overflow-hidden bg-gradient-to-br from-slate-800/90 via-blue-800/80 to-indigo-800/90 backdrop-blur-sm text-cyan-300 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-full p-2 border-2 border-cyan-400/40 hover:scale-110 hover:border-cyan-300/60 ring-2 ring-cyan-400/20 flex-shrink-0 ml-2 z-[200]"
-          >
-            <Menu className="h-5 w-5 drop-shadow-sm" />
-          </Button>
-        </SheetTrigger>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+          <Menu className="h-6 w-6" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-80 p-0 bg-white">
+        <SheetHeader className="p-4 border-b">
+          <SheetTitle className="text-left">Navigation</SheetTitle>
+        </SheetHeader>
         
-        <SheetContent 
-          side="right" 
-          className="w-[320px] bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-l border-cyan-400/30 shadow-2xl text-white p-0 overflow-y-auto z-[300]"
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Navigation Menu</SheetTitle>
-          </SheetHeader>
-
-          {/* User Profile Header */}
-          <div className="p-6 border-b border-cyan-400/20">
-            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-600/20 to-yellow-600/20 border border-amber-400/30">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-full flex items-center justify-center">
-                  <span className="text-lg">🛡️</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-bold text-amber-100">Ahmad M.</span>
-                    {isMember && <Badge className="bg-amber-500/20 text-amber-200 border-amber-400/30 text-xs">Guardian</Badge>}
-                  </div>
-                  <div className="text-sm text-amber-200/80">Level {userLevel}</div>
-                </div>
-              </div>
-              
-              {/* Progress Bar */}
-              <div className="mt-3">
-                <div className="flex justify-between text-xs text-amber-200/80 mb-1">
-                  <span>{currentPoints} pts</span>
-                  <span>{nextLevelPoints} pts</span>
-                </div>
-                <Progress value={progress} className="h-2 bg-amber-800/40" />
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation Menu */}
-          <div className="flex-1 p-4 space-y-2">
+        <div className="flex flex-col h-full">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            
             {/* Home */}
             <Link 
               to="/" 
               onClick={handleLinkClick}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
-                isActive('/') ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30' : 'hover:bg-slate-800/50 text-white'
-              }`}
+              className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors font-medium text-gray-900"
             >
-              <Home className="h-5 w-5" />
-              <span className="font-medium">Home</span>
+              Home
             </Link>
+
+            {/* Islamic Life Section */}
+            <Collapsible open={islamicOpen} onOpenChange={setIslamicOpen}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                <span className="font-medium text-gray-900">Islamic Life</span>
+                {islamicOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 ml-4">
+                {islamicPages.map(renderPageItem)}
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* Tools Section */}
+            <Collapsible open={toolsOpen} onOpenChange={setToolsOpen}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                <span className="font-medium text-gray-900">Tools</span>
+                {toolsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 ml-4">
+                {toolsPages.map(renderPageItem)}
+              </CollapsibleContent>
+            </Collapsible>
 
             {/* Donate Section */}
-            <div className="space-y-1">
-              <button 
-                onClick={() => toggleSection('donate')}
-                className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-slate-800/50 transition-all duration-200 text-white"
-              >
-                <div className="flex items-center space-x-3">
-                  <Heart className="h-5 w-5 text-red-400" />
-                  <span className="font-medium">Donate</span>
-                </div>
-                <ChevronRight className={`h-4 w-4 transition-transform duration-200 ${isDonateOpen ? 'rotate-90' : ''}`} />
-              </button>
-              
-              {isDonateOpen && (
-                <div className="ml-8 space-y-1">
-                  <Link to="/campaigns" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-emerald-500/20 text-sm text-gray-300 hover:text-emerald-300 transition-colors">
-                    <Heart className="h-4 w-4 text-emerald-400" />
-                    <span>Active Campaigns</span>
-                  </Link>
-                  <Link to="/build-mosque" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-blue-500/20 text-sm text-gray-300 hover:text-blue-300 transition-colors">
-                    <Building className="h-4 w-4 text-blue-400" />
-                    <span>Build a Mosque</span>
-                  </Link>
-                  <Link to="/water-wells" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-cyan-500/20 text-sm text-gray-300 hover:text-cyan-300 transition-colors">
-                    <span className="text-sm">💧</span>
-                    <span>Water Wells</span>
-                  </Link>
-                  <Link to="/orphanages" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-pink-500/20 text-sm text-gray-300 hover:text-pink-300 transition-colors">
-                    <span className="text-sm">👶</span>
-                    <span>Orphanages</span>
-                  </Link>
-                  <Link to="/charities" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-violet-500/20 text-sm text-gray-300 hover:text-violet-300 transition-colors">
-                    <Users className="h-4 w-4 text-violet-400" />
-                    <span>Charity Partners</span>
-                  </Link>
-                  <Link to="/why-donate" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-orange-500/20 text-sm text-gray-300 hover:text-orange-300 transition-colors">
-                    <Shield className="h-4 w-4 text-orange-400" />
-                    <span>Why Donate With Us</span>
-                  </Link>
-                </div>
-              )}
-            </div>
+            <Collapsible open={donateOpen} onOpenChange={setDonateOpen}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                <span className="font-medium text-gray-900">Donate</span>
+                {donateOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 ml-4">
+                {donatePages.map(renderPageItem)}
+              </CollapsibleContent>
+            </Collapsible>
 
-            {/* Community Section - Updated to include Masjid */}
-            <div className="space-y-1">
-              <button 
-                onClick={() => toggleSection('community')}
-                className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-slate-800/50 transition-all duration-200 text-white"
-              >
-                <div className="flex items-center space-x-3">
-                  <Users className="h-5 w-5 text-purple-400" />
-                  <span className="font-medium">Community</span>
-                </div>
-                <ChevronRight className={`h-4 w-4 transition-transform duration-200 ${isCommunityOpen ? 'rotate-90' : ''}`} />
-              </button>
-              
-              {isCommunityOpen && (
-                <div className="ml-8 space-y-1">
-                  <Link to="/masjid-community" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-indigo-500/20 text-sm text-gray-300 hover:text-indigo-300 transition-colors">
-                    <Building className="h-4 w-4 text-indigo-400" />
-                    <span>Masjid Community</span>
-                  </Link>
-                  <Link to="/leaderboards" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-amber-500/20 text-sm text-gray-300 hover:text-amber-300 transition-colors">
-                    <Trophy className="h-4 w-4 text-amber-400" />
-                    <span>Leaderboards</span>
-                  </Link>
-                  <Link to="/live" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-red-500/20 text-sm text-gray-300 hover:text-red-300 transition-colors">
-                    <span className="text-sm">🔴</span>
-                    <span>Live Feed</span>
-                  </Link>
-                  <Link to="/blog" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-indigo-500/20 text-sm text-gray-300 hover:text-indigo-300 transition-colors">
-                    <BookOpen className="h-4 w-4 text-indigo-400" />
-                    <span>Blog & Stories</span>
-                  </Link>
-                </div>
-              )}
-            </div>
+            {/* Community Section */}
+            <Collapsible open={communityOpen} onOpenChange={setCommunityOpen}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                <span className="font-medium text-gray-900">Community</span>
+                {communityOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 ml-4">
+                {communityPages.map(renderPageItem)}
+              </CollapsibleContent>
+            </Collapsible>
 
             {/* Rewards Section */}
-            <div className="space-y-1">
-              <button 
-                onClick={() => toggleSection('rewards')}
-                className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-slate-800/50 transition-all duration-200 text-white"
-              >
-                <div className="flex items-center space-x-3">
-                  <Gift className="h-5 w-5 text-amber-400" />
-                  <span className="font-medium">Rewards</span>
-                </div>
-                <ChevronRight className={`h-4 w-4 transition-transform duration-200 ${isRewardsOpen ? 'rotate-90' : ''}`} />
-              </button>
-              
-              {isRewardsOpen && (
-                <div className="ml-8 space-y-1">
-                  <Link to="/coins" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-yellow-500/20 text-sm text-gray-300 hover:text-yellow-300 transition-colors">
-                    <Coins className="h-4 w-4 text-yellow-400" />
-                    <span>Sadaqah Coins</span>
-                  </Link>
-                  <Link to="/membership" onClick={handleLinkClick} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-purple-500/20 text-sm text-gray-300 hover:text-purple-300 transition-colors">
-                    <Shield className="h-4 w-4 text-purple-400" />
-                    <span>Membership Tiers</span>
-                  </Link>
-                </div>
-              )}
-            </div>
+            <Collapsible open={rewardsOpen} onOpenChange={setRewardsOpen}>
+              <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                <span className="font-medium text-gray-900">Rewards</span>
+                {rewardsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="space-y-2 ml-4">
+                {rewardsPages.map(renderPageItem)}
+              </CollapsibleContent>
+            </Collapsible>
 
-            {/* About */}
-            <Link 
-              to="/about" 
-              onClick={handleLinkClick}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
-                isActive('/about') ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30' : 'hover:bg-slate-800/50 text-white'
-              }`}
-            >
-              <Info className="h-5 w-5" />
-              <span className="font-medium">About</span>
-            </Link>
-
-            {/* Become a Member (if not member) */}
+            {/* Become a Member - only show if not a member */}
             {!isMember && (
-              <div className="pt-4">
-                <Button className="w-full bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-700 hover:to-cyan-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-xl ring-2 ring-cyan-400/30 hover:ring-cyan-300/50">
-                  <span className="text-lg mr-2">🛡️</span>
-                  Become a Member
-                </Button>
-              </div>
+              <Link 
+                to="/membership" 
+                onClick={handleLinkClick}
+                className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-cyan-600 text-white hover:from-indigo-700 hover:to-cyan-700 transition-colors"
+              >
+                <Shield className="h-5 w-5 mr-3" />
+                <span className="font-medium">Become a Member</span>
+              </Link>
             )}
           </div>
-        </SheetContent>
-      </Sheet>
-    </div>
+
+          {/* User Stats at Bottom */}
+          {isMember && (
+            <div className="p-4 border-t bg-gray-50">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium">Level {userLevel}</span>
+                  <div className="flex-1">
+                    <Progress value={progress} className="h-2" />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Star className="h-4 w-4 text-yellow-500" />
+                  <span className="text-sm font-medium">{currentPoints.toLocaleString()} points</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 
