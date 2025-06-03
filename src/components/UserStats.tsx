@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Star, Gift, Users, Heart, Award, Zap, Crown, ArrowUp, Shield } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
+import CompactRewardsWidget from './CompactRewardsWidget';
 import { updateStreak, checkAchievements, getStreakData } from '@/utils/streakSystem';
 import { getUserRank, getNextRank, getRankProgress, getPointsToNextRank } from '@/utils/rankSystem';
 import { useToast } from '@/hooks/use-toast';
@@ -13,7 +13,7 @@ const UserStats = () => {
   const { toast } = useToast();
   const userLevel = 12;
   const [currentPoints, setCurrentPoints] = React.useState(
-    parseInt(localStorage.getItem('jannahPoints') || '25000') // Increased to 25,000 to show premium Platinum Divine Saint
+    parseInt(localStorage.getItem('jannahPoints') || '950') // Match the compact widget
   );
   const nextLevelPoints = 6000;
   const progress = (currentPoints / nextLevelPoints) * 100;
@@ -250,66 +250,13 @@ const UserStats = () => {
             </div>
           </div>
         </div>
-        
-        {/* Next Rank Incentive */}
-        {nextRank && (
-          <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border-2 border-dashed border-blue-200 hover:border-blue-300 transition-colors duration-300">
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <span className="text-3xl animate-bounce">{nextRank.icon}</span>
-              <div>
-                <div className="font-bold text-gray-800 text-lg">{nextRank.name}</div>
-                <div className="text-sm text-gray-600">Next Rank Achievement</div>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 animate-pulse mb-2">
-                {pointsToNextRank.toLocaleString()} points to unlock!
-              </div>
-              <div className="text-sm text-gray-600 mb-3">
-                Unlock: {nextRank.benefits.join(', ')}
-              </div>
-              <div className="text-xs text-blue-500 font-semibold bg-blue-100 px-3 py-1 rounded-full inline-block">
-                🏆 Earn your {getCertificateStyle(nextRank).material}
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Upgrade link for non-members - electric glow */}
-        {!isMember && (
-          <div className="mt-4">
-            <button className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-105 border-2 border-white electric-glow">
-              <ArrowUp className="h-5 w-5 mr-2 inline" />
-              Upgrade to VIP for 2x Points & Premium Certificates!
-            </button>
-          </div>
-        )}
       </div>
 
-      {/* Rank Progress Bar */}
-      <Card className="p-6 game-card">
-        <div className="mb-6">
-          <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
-            <span>{currentRank.badge}</span>
-            {nextRank ? <span>{nextRank.badge}</span> : <span>Max Rank</span>}
-          </div>
-          <div className="relative">
-            <Progress 
-              value={rankProgress} 
-              className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 shadow-inner rounded-full overflow-hidden"
-            />
-            <div className={`h-4 bg-gradient-to-r ${currentRank.gradient} rounded-full relative overflow-hidden`} 
-                 style={{ width: `${rankProgress}%`, marginTop: '-16px' }}>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-            </div>
-          </div>
-          {nextRank && (
-            <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
-              {pointsToNextRank.toLocaleString()} points to {nextRank.name}! 🚀
-            </p>
-          )}
-        </div>
+      {/* New Compact Rewards Widget */}
+      <CompactRewardsWidget />
 
+      {/* Remaining Stats - Keep the essential ones */}
+      <Card className="p-6 game-card mt-6">
         <div className="space-y-4">
           {/* Member Benefits Banner */}
           {isMember && (
@@ -326,72 +273,6 @@ const UserStats = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/50 to-transparent animate-shimmer"></div>
             </div>
           )}
-
-          {/* Jannah Points */}
-          <div className="jannah-counter text-center relative">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Star className="h-6 w-6 text-white animate-points-pop" />
-              <span className="font-bold text-white text-lg">Jannah Points</span>
-              {isMember && (
-                <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs shadow-lg border border-white/20">
-                  2x Rate
-                </Badge>
-              )}
-            </div>
-            <div className="text-3xl font-black text-white animate-points-pop">
-              {currentPoints.toLocaleString()}
-            </div>
-            <div className="text-sm text-white/80 mt-1">✨ Divine Rewards + Prayer & Streak Bonuses ✨</div>
-          </div>
-
-          {/* Level Progress */}
-          <div className="game-card p-4">
-            <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
-              <span>Level {userLevel}</span>
-              <span>Level {userLevel + 1}</span>
-            </div>
-            <Progress 
-              value={progress} 
-              className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 shadow-inner rounded-full overflow-hidden"
-            />
-            <div className="h-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full relative overflow-hidden" 
-                 style={{ width: `${progress}%`, marginTop: '-12px' }}>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-            </div>
-            <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
-              {nextLevelPoints - currentPoints} points to level up! 🚀
-            </p>
-          </div>
-
-          {/* Prayer Rewards Info */}
-          <div className="game-card p-4 bg-gradient-to-r from-green-100 to-teal-100 text-center relative overflow-hidden">
-            <div className="relative z-10">
-              <p className="font-bold text-green-800 mb-1 text-lg">🤲 Prayer Rewards!</p>
-              <p className="text-sm font-bold text-green-700">
-                <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
-                Complete your 5 daily prayers for bonus points!
-              </p>
-              <div className="text-xs text-green-600 mt-2">
-                Each prayer: +50 points • All 5 prayers: +100 bonus points
-              </div>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-200/50 to-transparent animate-shimmer"></div>
-          </div>
-
-          {/* Streak Bonus Info */}
-          <div className="game-card p-4 bg-gradient-to-r from-orange-100 to-yellow-100 text-center relative overflow-hidden">
-            <div className="relative z-10">
-              <p className="font-bold text-orange-800 mb-1 text-lg">🔥 Streak Rewards!</p>
-              <p className="text-sm font-bold text-orange-700">
-                <Zap className="inline h-5 w-5 mr-1 animate-subtle-pulse" />
-                Longer streaks = More Jannah points!
-              </p>
-              <div className="text-xs text-orange-600 mt-2">
-                3+ days: +25 points • 7+ days: +50 points • 30+ days: +200 points
-              </div>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent animate-shimmer"></div>
-          </div>
 
           {/* Sadaqah Coins */}
           <div className="game-card p-4 relative overflow-hidden">
