@@ -1736,6 +1736,147 @@ export type Database = {
           },
         ]
       }
+      push_delivery_logs: {
+        Row: {
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          notification_id: string | null
+          status: string
+          subscription_id: string | null
+        }
+        Insert: {
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          notification_id?: string | null
+          status: string
+          subscription_id?: string | null
+        }
+        Update: {
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          notification_id?: string | null
+          status?: string
+          subscription_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_delivery_logs_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "push_notifications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "push_delivery_logs_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "push_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      push_notifications: {
+        Row: {
+          action_url: string | null
+          actions: Json | null
+          audience: string
+          created_at: string | null
+          created_by: string | null
+          delivered_count: number | null
+          failed_count: number | null
+          icon_url: string | null
+          id: string
+          message: string
+          priority: string
+          require_interaction: boolean | null
+          schedule_date: string | null
+          scheduled: boolean | null
+          sent_at: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          action_url?: string | null
+          actions?: Json | null
+          audience?: string
+          created_at?: string | null
+          created_by?: string | null
+          delivered_count?: number | null
+          failed_count?: number | null
+          icon_url?: string | null
+          id?: string
+          message: string
+          priority?: string
+          require_interaction?: boolean | null
+          schedule_date?: string | null
+          scheduled?: boolean | null
+          sent_at?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          action_url?: string | null
+          actions?: Json | null
+          audience?: string
+          created_at?: string | null
+          created_by?: string | null
+          delivered_count?: number | null
+          failed_count?: number | null
+          icon_url?: string | null
+          id?: string
+          message?: string
+          priority?: string
+          require_interaction?: boolean | null
+          schedule_date?: string | null
+          scheduled?: boolean | null
+          sent_at?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          active: boolean | null
+          auth_key: string
+          created_at: string | null
+          endpoint: string
+          id: string
+          p256dh_key: string
+          updated_at: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          auth_key: string
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          p256dh_key: string
+          updated_at?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          auth_key?: string
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          p256dh_key?: string
+          updated_at?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       quran_surahs: {
         Row: {
           created_at: string

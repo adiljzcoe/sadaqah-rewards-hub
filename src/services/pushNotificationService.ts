@@ -106,6 +106,8 @@ export class PushNotificationService {
       
       if (this.subscription) {
         console.log('Already subscribed to push notifications');
+        // Still save to database in case it's not there
+        await this.saveSubscriptionToDatabase(this.subscription);
         return this.subscription;
       }
 
@@ -120,7 +122,7 @@ export class PushNotificationService {
       console.log('Successfully subscribed to push notifications:', this.subscription);
 
       // Send subscription to server
-      await this.sendSubscriptionToServer(this.subscription);
+      await this.saveSubscriptionToDatabase(this.subscription);
 
       return this.subscription;
     } catch (error) {
@@ -140,7 +142,7 @@ export class PushNotificationService {
         
         if (result) {
           // Remove subscription from server
-          await this.removeSubscriptionFromServer();
+          await this.removeSubscriptionFromDatabase();
           this.subscription = null;
           console.log('Successfully unsubscribed from push notifications');
         }
@@ -173,49 +175,56 @@ export class PushNotificationService {
     return Notification.permission;
   }
 
-  private async sendSubscriptionToServer(subscription: PushSubscription): Promise<void> {
+  private async saveSubscriptionToDatabase(subscription: PushSubscription): Promise<void> {
     try {
-      const response = await fetch('/api/push/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          subscription: subscription.toJSON(),
-          userAgent: navigator.userAgent,
-          timestamp: new Date().toISOString()
-        })
-      });
+      // Import supabase client dynamically to avoid circular imports
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const subscriptionData = subscription.toJSON();
+      
+      const { error } = await supabase
+        .from('push_subscriptions')
+        .upsert({
+          endpoint: subscriptionData.endpoint,
+          p256dh_key: subscriptionData.keys?.p256dh,
+          auth_key: subscriptionData.keys?.auth,
+          user_agent: navigator.userAgent,
+          active: true
+        }, {
+          onConflict: 'endpoint'
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to send subscription to server');
+      if (error) {
+        console.error('Error saving subscription to database:', error);
+      } else {
+        console.log('Subscription saved to database successfully');
       }
-
-      console.log('Subscription sent to server successfully');
     } catch (error) {
-      console.error('Error sending subscription to server:', error);
+      console.error('Error saving subscription to database:', error);
     }
   }
 
-  private async removeSubscriptionFromServer(): Promise<void> {
+  private async removeSubscriptionFromDatabase(): Promise<void> {
     try {
-      const response = await fetch('/api/push/unsubscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          subscription: this.subscription?.toJSON()
-        })
-      });
+      // Import supabase client dynamically to avoid circular imports
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      if (!this.subscription) return;
+      
+      const subscriptionData = this.subscription.toJSON();
+      
+      const { error } = await supabase
+        .from('push_subscriptions')
+        .update({ active: false })
+        .eq('endpoint', subscriptionData.endpoint);
 
-      if (!response.ok) {
-        throw new Error('Failed to remove subscription from server');
+      if (error) {
+        console.error('Error removing subscription from database:', error);
+      } else {
+        console.log('Subscription removed from database successfully');
       }
-
-      console.log('Subscription removed from server successfully');
     } catch (error) {
-      console.error('Error removing subscription from server:', error);
+      console.error('Error removing subscription from database:', error);
     }
   }
 
