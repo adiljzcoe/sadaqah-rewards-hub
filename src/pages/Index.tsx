@@ -1,10 +1,11 @@
+
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
 import DonationWidget from '@/components/DonationWidget';
 import FloatingDonationButton from '@/components/FloatingDonationButton';
 import CharityPartners from '@/components/CharityPartners';
-import LiveFeed from '@/components/LiveFeed';
+import UnifiedLiveFeed from '@/components/UnifiedLiveFeed';
 import UserStats from '@/components/UserStats';
 import BusinessSection from '@/components/BusinessSection';
 import StickyDonationWidget from '@/components/StickyDonationWidget';
@@ -127,8 +128,9 @@ const Index = () => {
               <BusinessAdvert />
             </div>
             
+            {/* Unified Live Feed - Replaces old LiveFeed */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
-              <LiveFeed />
+              <UnifiedLiveFeed />
             </div>
           </div>
 
