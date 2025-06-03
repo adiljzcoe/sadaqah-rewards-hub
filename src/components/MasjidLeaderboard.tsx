@@ -4,24 +4,46 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Building2, MapPin, Crown, Users } from 'lucide-react';
 
+interface MasjidEntry {
+  rank: number;
+  name: string;
+  location?: string;
+  points: number;
+  isUser: boolean;
+}
+
+interface CityEntry {
+  rank: number;
+  name: string;
+  points: number;
+  isUser: boolean;
+}
+
+interface CountryEntry {
+  rank: number;
+  name: string;
+  points: number;
+  isUser: boolean;
+}
+
 const MasjidLeaderboard = () => {
   const [activeTab, setActiveTab] = useState<'local' | 'cities' | 'countries'>('local');
 
-  const localMasjids = [
+  const localMasjids: MasjidEntry[] = [
     { rank: 1, name: 'East London Mosque', location: 'London', points: 28750, isUser: false },
     { rank: 2, name: 'Birmingham Central Mosque', location: 'Birmingham', points: 24200, isUser: false },
     { rank: 3, name: 'Central London Mosque', location: 'London', points: 21680, isUser: true },
     { rank: 4, name: 'Manchester Islamic Centre', location: 'Manchester', points: 18940, isUser: false },
   ];
 
-  const cities = [
+  const cities: CityEntry[] = [
     { rank: 1, name: 'London', points: 156420, isUser: true },
     { rank: 2, name: 'Birmingham', points: 142300, isUser: false },
     { rank: 3, name: 'Manchester', points: 128900, isUser: false },
     { rank: 4, name: 'Leeds', points: 98700, isUser: false },
   ];
 
-  const countries = [
+  const countries: CountryEntry[] = [
     { rank: 1, name: 'United Kingdom', points: 1245600, isUser: true },
     { rank: 2, name: 'United States', points: 1189400, isUser: false },
     { rank: 3, name: 'Canada', points: 987200, isUser: false },
@@ -120,7 +142,7 @@ const MasjidLeaderboard = () => {
                       {item.name}
                       {item.isUser && <span className="ml-1 text-blue-600">(You)</span>}
                     </div>
-                    {activeTab === 'local' && 'location' in item && (
+                    {activeTab === 'local' && 'location' in item && item.location && (
                       <div className="text-xs text-gray-500 flex items-center gap-1">
                         <MapPin className="h-2 w-2" />
                         {item.location}
