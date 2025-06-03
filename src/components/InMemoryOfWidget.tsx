@@ -137,14 +137,14 @@ const InMemoryOfWidget = () => {
 
       {/* Single Column Layout */}
       <div className="space-y-6">
-        {/* Live Honoring Feed - Fixed height for exactly 3 entries */}
+        {/* Live Honoring Feed - Beautiful Plaques */}
         <div>
           <div className="flex items-center mb-4">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
             <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
           </div>
           
-          <div className="space-y-3 min-h-[300px]">
+          <div className="space-y-4 min-h-[360px]">
             {getDisplayItems().map((memorial, index) => (
               <div
                 key={memorial.id}
@@ -157,34 +157,60 @@ const InMemoryOfWidget = () => {
                 } ${
                   memorial.isPlaceholder 
                     ? 'bg-gray-50 border border-gray-100' 
-                    : 'bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200'
-                } rounded-lg p-4`}
+                    : 'bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50'
+                } rounded-xl border-2 border-amber-200 shadow-lg relative overflow-hidden`}
                 style={{ 
-                  minHeight: '90px',
+                  minHeight: '110px',
                   transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`
                 }}
               >
                 {!memorial.isPlaceholder && (
                   <>
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-gray-800 mb-1">
-                          {memorial.user} donated honoring <span className="font-bold text-purple-700">{memorial.honoringOf}</span>
+                    {/* Decorative Border */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-100/30 via-transparent to-amber-200/30 pointer-events-none" />
+                    <div className="absolute top-2 left-2 w-3 h-3 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full opacity-60" />
+                    <div className="absolute top-2 right-2 w-3 h-3 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full opacity-60" />
+                    <div className="absolute bottom-2 left-2 w-3 h-3 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full opacity-60" />
+                    <div className="absolute bottom-2 right-2 w-3 h-3 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full opacity-60" />
+                    
+                    {/* Plaque Content */}
+                    <div className="relative p-5">
+                      {/* Header with elegant typography */}
+                      <div className="text-center mb-3">
+                        <div className="font-playfair text-sm font-bold text-amber-800 mb-1 tracking-wide">
+                          IN LOVING MEMORY
                         </div>
-                        <div className="flex items-center">
-                          <SimpleGoldCoin size={16} className="mr-1" />
-                          <span className="text-sm font-bold text-emerald-600">£{memorial.amount}</span>
+                        <div className="font-cinzel text-lg font-bold text-amber-900 mb-2">
+                          {memorial.honoringOf}
+                        </div>
+                        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-2" />
+                      </div>
+                      
+                      {/* Donation Details */}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="text-xs text-amber-700 font-medium">
+                          Donated by {memorial.user}
+                        </div>
+                        <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-100 px-3 py-1 rounded-full border border-emerald-200">
+                          <SimpleGoldCoin size={14} className="mr-1" />
+                          <span className="text-sm font-bold text-emerald-700">£{memorial.amount}</span>
                         </div>
                       </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {new Date(memorial.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </Badge>
-                    </div>
-                    
-                    <div className="bg-white/60 rounded-lg px-3 py-2 border border-purple-200">
-                      <div className="text-sm italic text-gray-700 flex items-center">
-                        <Heart className="h-3 w-3 mr-2 text-pink-500" />
-                        "{memorial.message}"
+                      
+                      {/* Message in decorative box */}
+                      <div className="bg-gradient-to-r from-white/80 to-amber-50/80 rounded-lg px-4 py-3 border border-amber-200 shadow-inner">
+                        <div className="text-sm italic text-amber-800 text-center font-medium flex items-center justify-center">
+                          <Heart className="h-3 w-3 mr-2 text-pink-500" />
+                          <span className="font-playfair">"{memorial.message}"</span>
+                          <Heart className="h-3 w-3 ml-2 text-pink-500" />
+                        </div>
+                      </div>
+                      
+                      {/* Timestamp */}
+                      <div className="text-center mt-2">
+                        <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-700 border-amber-300">
+                          {new Date(memorial.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </Badge>
                       </div>
                     </div>
                   </>
