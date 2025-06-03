@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -74,18 +73,18 @@ const Header = () => {
               />
             </Link>
 
-            {/* Compact Golden User Plaque - Responsive Sizing */}
+            {/* Compact Golden User Plaque - Responsive Sizing with Rounded Corners */}
             {user ? (
-              // Logged in user plaque with responsive sizing
-              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 shadow-xl md:shadow-2xl border border-yellow-300/50 md:border-2 hover:shadow-2xl md:hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden">
+              // Logged in user plaque with responsive sizing and rounded corners
+              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl md:rounded-3xl px-2 py-1 md:px-3 md:py-2 shadow-xl md:shadow-2xl border border-yellow-300/50 md:border-2 hover:shadow-2xl md:hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden">
                 {/* Inner glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-lg md:rounded-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl md:rounded-3xl"></div>
                 
                 {/* Top highlight */}
                 <div className="absolute top-0.5 md:top-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
                 
                 {/* Glossy animation effect that moves across */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-lg md:rounded-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl md:rounded-3xl"></div>
                 
                 <div className="relative flex items-center justify-between text-white min-w-[140px] md:min-w-[180px]">
                   {/* Left side - Crown, Name and Guardian */}
@@ -111,17 +110,17 @@ const Header = () => {
                 <div className="absolute bottom-0.5 md:bottom-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
               </div>
             ) : (
-              // Non-logged in membership plaque with responsive sizing
+              // Non-logged in membership plaque with responsive sizing and rounded corners
               <Link to="/membership">
-                <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-lg md:rounded-xl px-2 py-1 md:px-3 md:py-2 shadow-xl md:shadow-2xl border border-yellow-300/50 md:border-2 hover:shadow-2xl md:hover:shadow-3xl transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden">
+                <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl md:rounded-3xl px-2 py-1 md:px-3 md:py-2 shadow-xl md:shadow-2xl border border-yellow-300/50 md:border-2 hover:shadow-2xl md:hover:shadow-3xl transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden">
                   {/* Inner glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-lg md:rounded-xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl md:rounded-3xl"></div>
                   
                   {/* Top highlight */}
                   <div className="absolute top-0.5 md:top-1 left-1 md:left-2 right-1 md:right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
                   
                   {/* Glossy animation effect that moves across */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-lg md:rounded-xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl md:rounded-3xl"></div>
                   
                   <div className="relative flex items-center space-x-2 md:space-x-3 text-white min-w-[140px] md:min-w-[180px]">
                     <Crown className="h-3 w-3 md:h-4 md:w-4 text-yellow-100 drop-shadow-lg" />
@@ -129,7 +128,7 @@ const Header = () => {
                       <span className="font-bold text-xs md:text-sm text-yellow-50 drop-shadow-md">Membership</span>
                       <span className="text-[10px] md:text-xs text-yellow-100/90 drop-shadow-sm font-medium">Join Now</span>
                     </div>
-                    <div className="flex items-center space-x-1 ml-2 md:ml-4 bg-white/20 rounded-md md:rounded-lg px-1 py-0.5 md:px-2 md:py-1 backdrop-blur-sm">
+                    <div className="flex items-center space-x-1 ml-2 md:ml-4 bg-white/20 rounded-xl md:rounded-2xl px-1 py-0.5 md:px-2 md:py-1 backdrop-blur-sm">
                       <Shield className="h-2 w-2 md:h-3 md:w-3 text-yellow-100 drop-shadow-md" />
                       <span className="font-bold text-[10px] md:text-xs text-yellow-50 drop-shadow-md">Unlock</span>
                     </div>
