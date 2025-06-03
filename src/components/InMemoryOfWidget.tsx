@@ -71,9 +71,9 @@ const InMemoryOfWidget = () => {
           timeoutId = setTimeout(() => {
             setMemorialFeed(current => {
               const filtered = current.filter(item => !item.isExiting);
-              return [newDonation, ...filtered.slice(0, 1)]; // Keep only 1 old item max
+              return [newDonation, ...filtered.slice(0, 1)];
             });
-          }, 500); // Reduced animation time
+          }, 300);
           
           return updatedFeed;
         } else {
@@ -105,11 +105,11 @@ const InMemoryOfWidget = () => {
       updateMemorialFeed(initial2);
     }, 1000);
     
-    // Slower, less frequent updates for better mobile performance
+    // Slower updates for better performance
     intervalId = setInterval(() => {
       const newDonation = generateMemorialDonation();
       updateMemorialFeed(newDonation);
-    }, 12000); // Increased from 8 seconds
+    }, 15000);
 
     return () => {
       if (intervalId) clearInterval(intervalId);
@@ -154,275 +154,237 @@ const InMemoryOfWidget = () => {
   };
 
   return (
-    <Card className="p-6 bg-white border border-gray-200 shadow-lg">
-      {/* Header */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2 flex items-center text-gray-900">
-          <Heart className="h-5 w-5 mr-2 text-pink-600" />
-          Honoring
-        </h3>
-        <p className="text-sm text-gray-600">Honoring loved ones through charitable giving</p>
-      </div>
+    <>
+      {/* Optimized CSS for better mobile performance */}
+      <style>{`
+        .memorial-plaque {
+          will-change: transform;
+          transform: translateZ(0);
+          backface-visibility: hidden;
+        }
+        
+        .gold-pin {
+          background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #ffd700 50%, #b8860b 75%, #ffd700 100%);
+          box-shadow: 
+            0 2px 4px rgba(0,0,0,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.6),
+            0 0 8px rgba(255,215,0,0.4);
+          border: 1px solid #b8860b;
+          animation: goldShimmer 3s ease-in-out infinite;
+        }
+        
+        .gold-plaque {
+          background: linear-gradient(135deg, #ffd700 0%, #ffed4e 30%, #ffc107 70%, #b8860b 100%);
+          box-shadow: 
+            inset 0 2px 4px rgba(0,0,0,0.2),
+            0 0 12px rgba(255,215,0,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.5);
+          border: 2px solid #b8860b;
+        }
+        
+        .marble-texture {
+          background: 
+            linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%),
+            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.8) 0%, transparent 50%),
+            radial-gradient(circle at 80% 60%, rgba(0,0,0,0.05) 0%, transparent 50%);
+          box-shadow: 
+            0 8px 32px rgba(0,0,0,0.15),
+            inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        
+        @keyframes goldShimmer {
+          0%, 100% { 
+            filter: brightness(1) saturate(1);
+          }
+          50% { 
+            filter: brightness(1.3) saturate(1.2);
+          }
+        }
+        
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeOut {
+          from {
+            opacity: 1;
+            transform: scale(1);
+          }
+          to {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+        }
+        
+        .memorial-enter {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+        
+        .memorial-exit {
+          animation: fadeOut 0.3s ease-in forwards;
+        }
+      `}</style>
 
-      {/* Single Column Layout */}
-      <div className="space-y-6">
-        {/* Live Honoring Feed - Memorial Limestone/Marble Plaques */}
-        <div>
-          <div className="flex items-center mb-4">
-            <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
-            <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
-          </div>
-          
-          <div className="space-y-4 min-h-[280px]">
-            {getDisplayItems().map((memorial, index) => (
-              <div
-                key={memorial.id}
-                className={`transition-all duration-800 ease-in-out ${
-                  memorial.isPlaceholder 
-                    ? 'opacity-0 pointer-events-none' 
-                    : memorial.isExiting 
-                      ? 'opacity-0 transform scale-95' 
-                      : 'opacity-100 transform scale-100'
-                } ${
-                  memorial.isPlaceholder 
-                    ? 'bg-gray-50 border border-gray-100' 
-                    : 'bg-gradient-to-br from-gray-100 via-stone-100 to-gray-200'
-                } rounded-xl shadow-2xl relative overflow-hidden`}
-                style={{ 
-                  minHeight: '130px',
-                  transitionDelay: memorial.isExiting ? '0ms' : `${index * 200}ms`,
-                  boxShadow: memorial.isPlaceholder ? '' : '0 25px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.6)'
-                }}
-              >
-                {!memorial.isPlaceholder && (
-                  <>
-                    {/* Limestone/Marble Outer Frame */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-stone-200 via-gray-100 to-stone-300 rounded-xl" />
-                    
-                    {/* Marble Texture Effect */}
-                    <div 
-                      className="absolute inset-0 opacity-40 rounded-xl"
-                      style={{
-                        background: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.8) 0%, transparent 50%), radial-gradient(circle at 80% 60%, rgba(0,0,0,0.1) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(255,255,255,0.6) 0%, transparent 50%)'
-                      }}
-                    />
+      <Card className="p-4 sm:p-6 bg-white border border-gray-200 shadow-lg">
+        {/* Header */}
+        <div className="mb-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 flex items-center text-gray-900">
+            <Heart className="h-5 w-5 mr-2 text-pink-600" />
+            Honoring
+          </h3>
+          <p className="text-sm text-gray-600">Honoring loved ones through charitable giving</p>
+        </div>
 
-                    {/* Limestone Grain Texture */}
-                    <div 
-                      className="absolute inset-0 opacity-20 rounded-xl"
-                      style={{
-                        background: 'repeating-linear-gradient(45deg, transparent, transparent 1px, rgba(0,0,0,0.05) 1px, rgba(0,0,0,0.05) 2px), repeating-linear-gradient(-45deg, transparent, transparent 1px, rgba(255,255,255,0.1) 1px, rgba(255,255,255,0.1) 2px)'
-                      }}
-                    />
-
-                    {/* Enhanced Gold Pins with Better Positioning */}
-                    {/* Corner Pins */}
-                    <div className="absolute top-3 left-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite' }} />
-                    <div className="absolute top-3 right-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 0.5s' }} />
-                    <div className="absolute bottom-3 left-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 1s' }} />
-                    <div className="absolute bottom-3 right-3 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 1.5s' }} />
-                    
-                    {/* Side Pins */}
-                    <div className="absolute top-1/2 left-1.5 transform -translate-y-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 2s' }} />
-                    <div className="absolute top-1/2 right-1.5 transform -translate-y-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-700 shadow-lg border-2 border-amber-800" style={{ animation: 'gold-gloss 4s ease-in-out infinite 2.5s' }} />
-
-                    {/* Pin Highlights */}
-                    <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
-                    <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
-                    <div className="absolute bottom-3 left-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
-                    <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
-                    <div className="absolute top-1/2 left-1.5 transform -translate-y-1/2 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
-                    <div className="absolute top-1/2 right-1.5 transform -translate-y-1/2 w-2 h-2 rounded-full bg-gradient-to-br from-white to-yellow-200 opacity-90" />
-                    
-                    {/* Inner Gold Plaque */}
-                    <div className="absolute inset-4 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-lg shadow-inner border-2 border-amber-700" style={{ animation: 'gold-plaque-gloss 6s ease-in-out infinite' }}>
-                      {/* Gold Plaque Shine Effect */}
-                      <div 
-                        className="absolute inset-0 opacity-30 rounded-lg"
-                        style={{
-                          background: 'linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.4) 60%, transparent 80%)',
-                          animation: 'gold-shine 8s ease-in-out infinite'
-                        }}
-                      />
+        {/* Single Column Layout */}
+        <div className="space-y-6">
+          {/* Live Honoring Feed */}
+          <div>
+            <div className="flex items-center mb-4">
+              <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
+              <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
+            </div>
+            
+            <div className="space-y-3 min-h-[240px]">
+              {getDisplayItems().map((memorial, index) => (
+                <div
+                  key={memorial.id}
+                  className={`memorial-plaque relative ${
+                    memorial.isPlaceholder 
+                      ? 'opacity-0 pointer-events-none h-24' 
+                      : memorial.isExiting 
+                        ? 'memorial-exit' 
+                        : 'memorial-enter'
+                  }`}
+                  style={{ 
+                    minHeight: memorial.isPlaceholder ? '96px' : '120px'
+                  }}
+                >
+                  {!memorial.isPlaceholder && (
+                    <div className="marble-texture rounded-lg p-3 relative overflow-hidden">
+                      {/* Corner Gold Pins */}
+                      <div className="gold-pin absolute top-2 left-2 w-3 h-3 rounded-full"></div>
+                      <div className="gold-pin absolute top-2 right-2 w-3 h-3 rounded-full"></div>
+                      <div className="gold-pin absolute bottom-2 left-2 w-3 h-3 rounded-full"></div>
+                      <div className="gold-pin absolute bottom-2 right-2 w-3 h-3 rounded-full"></div>
                       
-                      {/* Gold Texture */}
-                      <div 
-                        className="absolute inset-0 opacity-25 rounded-lg"
-                        style={{
-                          background: 'repeating-linear-gradient(90deg, transparent, transparent 0.5px, rgba(255,255,255,0.1) 0.5px, rgba(255,255,255,0.1) 1px)'
-                        }}
-                      />
-
-                      {/* Memorial Plaque Content */}
-                      <div className="relative p-4 z-10 h-full flex flex-col justify-center">
+                      {/* Inner Gold Plaque */}
+                      <div className="gold-plaque rounded-md mx-3 my-2 p-3 relative">
                         {/* Memorial Header */}
-                        <div className="text-center mb-3">
-                          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-900 to-transparent mx-auto mb-2" />
-                          <div className="font-serif text-base font-bold text-amber-900 mb-1 tracking-wide">
+                        <div className="text-center mb-2">
+                          <div className="font-serif text-sm font-bold text-amber-900 mb-1">
                             {memorial.honoringOf}
                           </div>
-                          <div className="font-serif text-xs text-amber-900 font-semibold tracking-wider">
+                          <div className="font-serif text-xs text-amber-800 font-semibold">
                             WE HONOR YOU
                           </div>
                         </div>
                         
                         {/* Donation Information */}
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="text-xs text-amber-900 font-medium">
+                        <div className="flex items-center justify-between mb-2 text-xs">
+                          <span className="text-amber-900 font-medium">
                             Donated by {memorial.user}
-                          </div>
-                          <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-200 px-2 py-1 rounded-full border border-emerald-500 shadow-md">
-                            <SimpleGoldCoin size={14} className="mr-1" />
-                            <span className="text-xs font-bold text-emerald-800">£{memorial.amount}</span>
+                          </span>
+                          <div className="flex items-center bg-emerald-100 px-2 py-1 rounded-full border border-emerald-400">
+                            <SimpleGoldCoin size={12} className="mr-1" />
+                            <span className="font-bold text-emerald-800">£{memorial.amount}</span>
                           </div>
                         </div>
                         
-                        {/* Message in Enhanced Frame */}
-                        <div className="bg-gradient-to-r from-yellow-100/95 to-amber-100/95 rounded-md px-3 py-2 border border-amber-800 shadow-inner backdrop-blur-sm mb-2 relative">
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-md" />
-                          <div className="text-xs italic text-amber-900 text-center font-medium flex items-center justify-center relative z-10">
-                            <Heart className="h-2.5 w-2.5 mr-1.5 text-red-800" />
+                        {/* Message */}
+                        <div className="bg-amber-100/90 rounded px-2 py-1 border border-amber-700 text-center">
+                          <div className="text-xs italic text-amber-900 flex items-center justify-center">
+                            <Heart className="h-2 w-2 mr-1 text-red-700" />
                             <span className="font-serif">"{memorial.message}"</span>
-                            <Heart className="h-2.5 w-2.5 ml-1.5 text-red-800" />
+                            <Heart className="h-2 w-2 ml-1 text-red-700" />
                           </div>
                         </div>
                         
-                        {/* Date Stamp */}
-                        <div className="text-center">
-                          <div className="inline-block bg-amber-800/20 px-2 py-0.5 rounded border border-amber-800 shadow-inner">
-                            <div className="text-xs font-bold text-amber-900 font-serif">
-                              {new Date(memorial.timestamp).toLocaleDateString('en-GB', { 
-                                day: '2-digit', 
-                                month: '2-digit', 
-                                year: 'numeric' 
-                              })}
-                            </div>
+                        {/* Date */}
+                        <div className="text-center mt-2">
+                          <div className="text-xs font-bold text-amber-900 font-serif">
+                            {new Date(memorial.timestamp).toLocaleDateString('en-GB')}
                           </div>
                         </div>
                       </div>
                     </div>
-
-                    {/* Enhanced Gold Gloss Animation Styles */}
-                    <style>{`
-                      @keyframes gold-gloss {
-                        0%, 100% {
-                          box-shadow: 0 0 8px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.6);
-                          filter: brightness(1);
-                        }
-                        50% {
-                          box-shadow: 0 0 16px rgba(255, 215, 0, 0.8), inset 0 2px 4px rgba(255,255,255,0.9);
-                          filter: brightness(1.3);
-                        }
-                      }
-                      
-                      @keyframes gold-plaque-gloss {
-                        0%, 100% {
-                          box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 12px rgba(255, 215, 0, 0.3);
-                          filter: brightness(1) saturate(1);
-                        }
-                        50% {
-                          box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 0 20px rgba(255, 215, 0, 0.6);
-                          filter: brightness(1.2) saturate(1.3);
-                        }
-                      }
-                      
-                      @keyframes gold-shine {
-                        0% {
-                          transform: translateX(-150%) translateY(-150%) rotate(45deg);
-                          opacity: 0;
-                        }
-                        15% {
-                          opacity: 1;
-                        }
-                        35% {
-                          transform: translateX(0%) translateY(0%) rotate(45deg);
-                          opacity: 1;
-                        }
-                        50% {
-                          transform: translateX(75%) translateY(75%) rotate(45deg);
-                          opacity: 0.8;
-                        }
-                        70% {
-                          transform: translateX(150%) translateY(150%) rotate(45deg);
-                          opacity: 0.4;
-                        }
-                        100% {
-                          transform: translateX(200%) translateY(200%) rotate(45deg);
-                          opacity: 0;
-                        }
-                      }
-                    `}</style>
-                  </>
-                )}
-              </div>
-            ))}
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Top 5 Most Honored */}
-        <div>
-          <div className="flex items-center mb-4">
-            <Trophy className="h-4 w-4 mr-2 text-yellow-600" />
-            <h4 className="font-semibold text-gray-800">Top 5 Most Honored</h4>
-          </div>
-          
-          <div className="space-y-3">
-            {topMemorials.slice(0, 5).map((memorial) => (
-              <div
-                key={memorial.name}
-                className={`flex items-center justify-between p-4 rounded-lg border ${getRankColor(memorial.rank)} hover:shadow-md transition-shadow`}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center justify-center w-8 h-8">
-                    {getRankIcon(memorial.rank)}
+          {/* Top 5 Most Honored */}
+          <div>
+            <div className="flex items-center mb-4">
+              <Trophy className="h-4 w-4 mr-2 text-yellow-600" />
+              <h4 className="font-semibold text-gray-800">Top 5 Most Honored</h4>
+            </div>
+            
+            <div className="space-y-3">
+              {topMemorials.slice(0, 5).map((memorial) => (
+                <div
+                  key={memorial.name}
+                  className={`flex items-center justify-between p-3 rounded-lg border ${getRankColor(memorial.rank)} hover:shadow-md transition-shadow`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center justify-center w-8 h-8">
+                      {getRankIcon(memorial.rank)}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-gray-800 text-sm truncate">
+                        {memorial.name}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        {memorial.donations} donations
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-800 text-sm">
-                      {memorial.name}
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      {memorial.donations} donations
+                  <div className="text-right flex-shrink-0">
+                    <div className="flex items-center font-bold text-emerald-700">
+                      <SimpleGoldCoin size={14} className="mr-1" />
+                      <span className="text-sm">£{memorial.amount.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
-                
-                <div className="text-right">
-                  <div className="flex items-center font-bold text-emerald-700">
-                    <SimpleGoldCoin size={14} className="mr-1" />
-                    <span className="text-sm">£{memorial.amount.toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Memorial Statistics */}
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
-          <div className="grid grid-cols-2 gap-4 text-center">
-            <div>
-              <div className="text-xl font-bold text-purple-700">
-                £{topMemorials.reduce((sum, memorial) => sum + memorial.amount, 0).toLocaleString()}
+          {/* Memorial Statistics */}
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <div className="text-lg sm:text-xl font-bold text-purple-700">
+                  £{topMemorials.reduce((sum, memorial) => sum + memorial.amount, 0).toLocaleString()}
+                </div>
+                <div className="text-xs text-purple-600">Total Honoring Donations</div>
               </div>
-              <div className="text-xs text-purple-600">Total Honoring Donations</div>
-            </div>
-            <div>
-              <div className="text-xl font-bold text-pink-700">
-                {topMemorials.reduce((sum, memorial) => sum + memorial.donations, 0)}
+              <div>
+                <div className="text-lg sm:text-xl font-bold text-pink-700">
+                  {topMemorials.reduce((sum, memorial) => sum + memorial.donations, 0)}
+                </div>
+                <div className="text-xs text-pink-600">Honoring Acts</div>
               </div>
-              <div className="text-xs text-pink-600">Honoring Acts</div>
             </div>
-          </div>
-          
-          <div className="mt-3 text-center">
-            <p className="text-xs text-gray-600 italic">
-              "And whoever saves a life, it is as if he has saved all of mankind" - Quran 5:32
-            </p>
+            
+            <div className="mt-3 text-center">
+              <p className="text-xs text-gray-600 italic">
+                "And whoever saves a life, it is as if he has saved all of mankind" - Quran 5:32
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 };
 
