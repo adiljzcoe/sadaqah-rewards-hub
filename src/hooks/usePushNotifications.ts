@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { pushNotificationService } from '@/services/pushNotificationService';
 
@@ -43,32 +42,27 @@ export const usePushNotifications = () => {
     setState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      await pushNotificationService.initialize();
-      const permissionGranted = await pushNotificationService.requestPermission();
+      console.log('Starting subscription process...');
       
-      if (!permissionGranted) {
-        setState(prev => ({ 
-          ...prev, 
-          isLoading: false,
-          permission: 'denied'
-        }));
-        return false;
-      }
-
+      // This should trigger the browser permission popup
       const subscription = await pushNotificationService.subscribe();
       const success = !!subscription;
       
       setState(prev => ({
         ...prev,
         isLoading: false,
-        permission: 'granted',
+        permission: success ? 'granted' : pushNotificationService.getPermissionStatus(),
         isSubscribed: success
       }));
       
       return success;
     } catch (error) {
       console.error('Subscribe error:', error);
-      setState(prev => ({ ...prev, isLoading: false }));
+      setState(prev => ({ 
+        ...prev, 
+        isLoading: false,
+        permission: pushNotificationService.getPermissionStatus()
+      }));
       return false;
     }
   };

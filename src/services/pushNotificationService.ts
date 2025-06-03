@@ -41,9 +41,13 @@ export class PushNotificationService {
 
   async requestPermission(): Promise<boolean> {
     try {
-      const permission = await Notification.requestPermission();
-      console.log('Notification permission:', permission);
-      return permission === 'granted';
+      // Force the permission request - this should trigger the browser popup
+      if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        console.log('Notification permission result:', permission);
+        return permission === 'granted';
+      }
+      return false;
     } catch (error) {
       console.error('Failed to request notification permission:', error);
       return false;
@@ -52,12 +56,29 @@ export class PushNotificationService {
 
   async subscribe(): Promise<PushSubscription | null> {
     try {
+      // Initialize if not already done
       if (!this.registration) {
-        await this.initialize();
+        const initialized = await this.initialize();
+        if (!initialized) {
+          throw new Error('Failed to initialize service worker');
+        }
       }
 
       if (!this.registration) {
         throw new Error('Service worker not registered');
+      }
+
+      // Check current permission status
+      if (Notification.permission === 'denied') {
+        throw new Error('Notification permission denied');
+      }
+
+      // Request permission if not already granted
+      if (Notification.permission === 'default') {
+        const permissionGranted = await this.requestPermission();
+        if (!permissionGranted) {
+          throw new Error('Permission not granted');
+        }
       }
 
       // Check if already subscribed
@@ -82,7 +103,7 @@ export class PushNotificationService {
       return this.subscription;
     } catch (error) {
       console.error('Failed to subscribe to push notifications:', error);
-      return null;
+      throw error; // Re-throw so the UI can handle it
     }
   }
 
