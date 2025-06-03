@@ -1,8 +1,6 @@
-
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
-import DonationWidget from '@/components/DonationWidget';
 import FloatingDonationButton from '@/components/FloatingDonationButton';
 import CharityPartners from '@/components/CharityPartners';
 import UnifiedLiveFeed from '@/components/UnifiedLiveFeed';
@@ -141,9 +139,6 @@ const Index = () => {
             </div>
             <div className="hover-lift">
               <BusinessLeaderboard />
-            </div>
-            <div className="hover-lift">
-              <DonationWidget />
             </div>
             <div className="hover-lift">
               <InMemoryOfWidget />
