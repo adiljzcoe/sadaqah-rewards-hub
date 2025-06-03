@@ -45,6 +45,7 @@ const Header = () => {
   React.useEffect(() => {
     console.log('🛩️ Header component rendered - mega menu should work!');
     console.log('User logged in:', !!user);
+    console.log('User object:', user);
   }, [user]);
 
   return (
@@ -72,31 +73,30 @@ const Header = () => {
               />
             </Link>
 
-            {/* Golden User Plaque - FIXED POSITIONING AND Z-INDEX */}
+            {/* Golden User Plaque - Horizontal Pills Like Reference Image */}
             {user && (
-              <div className="flex items-center flex-shrink-0 relative z-50">
+              <div className="flex items-center space-x-2 relative z-50">
+                {/* Jannah Points Pill */}
                 <Link to="/profile" className="block">
-                  <div className="relative overflow-hidden rounded-xl px-4 py-2 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50 cursor-pointer z-50">
-                    <div className="flex items-center space-x-3 relative z-50">
-                      <div className="flex items-center">
-                        <span className="text-lg mr-2 drop-shadow-sm">🛡️</span>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
-                          <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
-                        </div>
-                      </div>
-                      
-                      <div className="w-px h-6 bg-amber-300/40"></div>
-                      
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
-                        <Star className="h-3 w-3 text-yellow-200 drop-shadow-sm" />
-                        <span className="text-sm font-medium text-amber-100 drop-shadow-sm">{currentPoints.toLocaleString()}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="absolute top-1 left-2 w-6 h-2 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
+                  <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <Star className="h-4 w-4 text-white" />
+                    <span className="text-white font-bold text-sm">{currentPoints.toLocaleString()}</span>
+                  </div>
+                </Link>
+
+                {/* Sadaqah Coins Pill */}
+                <Link to="/sadaqah-coins" className="block">
+                  <div className="flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-yellow-600 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <Coins className="h-4 w-4 text-white" />
+                    <span className="text-white font-bold text-sm">1,250</span>
+                  </div>
+                </Link>
+
+                {/* Level Pill */}
+                <Link to="/profile" className="block">
+                  <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <Crown className="h-4 w-4 text-white" />
+                    <span className="text-white font-bold text-sm">Lv.{userLevel}</span>
                   </div>
                 </Link>
               </div>
@@ -458,42 +458,25 @@ const Header = () => {
         </div>
       </div>
 
-      {/* User Level Plaque - Desktop Bottom Bar - ALWAYS SHOW WHEN USER IS LOGGED IN */}
+      {/* User Level Plaque - Desktop Bottom Bar - Progress Bar Like Reference */}
       {user && (
         <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-900/90 via-purple-900/90 to-indigo-900/90 backdrop-blur-sm border-t border-cyan-400/30 z-40">
           <div className="container mx-auto px-6 py-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                {/* Jannah Points */}
-                <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-800/50 to-indigo-800/50 rounded-full px-4 py-1 border border-cyan-400/20">
-                  <Star className="h-4 w-4 text-yellow-400" />
-                  <span className="text-white font-bold text-sm">{currentPoints.toLocaleString()}</span>
-                </div>
-
-                {/* Sadaqah Coins */}
-                <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-700/50 to-amber-700/50 rounded-full px-4 py-1 border border-yellow-400/20">
-                  <Coins className="h-4 w-4 text-yellow-400" />
-                  <span className="text-white font-bold text-sm">1,250</span>
-                </div>
-
-                {/* Level Badge */}
-                <div className="flex items-center space-x-2 bg-gradient-to-r from-purple-700/50 to-pink-700/50 rounded-full px-4 py-1 border border-purple-400/20">
-                  <Crown className="h-4 w-4 text-purple-300" />
-                  <span className="text-white font-bold text-sm">Lv.{userLevel}</span>
-                </div>
+              <div className="flex items-center space-x-2 text-white text-sm">
+                <span className="font-medium">Level {userLevel}</span>
               </div>
-
-              {/* Level Progress */}
-              <div className="flex items-center space-x-4">
-                <div className="text-white text-sm">
-                  <span className="font-medium">Level {userLevel}</span>
-                </div>
-                <div className="w-32 bg-gray-700 rounded-full h-2 overflow-hidden">
+              
+              <div className="flex-1 mx-8">
+                <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
                   <div 
                     className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
+              </div>
+              
+              <div className="flex items-center space-x-4">
                 <div className="text-white text-sm">
                   <span className="font-medium text-cyan-300">{currentPoints}/{nextLevelPoints} XP</span>
                 </div>
