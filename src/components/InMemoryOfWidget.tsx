@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -137,7 +138,7 @@ const InMemoryOfWidget = () => {
 
       {/* Single Column Layout */}
       <div className="space-y-6">
-        {/* Live Honoring Feed - Beautiful Plaques */}
+        {/* Live Honoring Feed - Sophisticated Certificate Plaques */}
         <div>
           <div className="flex items-center mb-4">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
@@ -157,62 +158,92 @@ const InMemoryOfWidget = () => {
                 } ${
                   memorial.isPlaceholder 
                     ? 'bg-gray-50 border border-gray-100' 
-                    : 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-amber-400'
-                } rounded-xl border-2 border-yellow-500 shadow-lg relative overflow-hidden`}
+                    : 'bg-gradient-to-br from-yellow-100 via-amber-50 to-yellow-200'
+                } rounded-xl border-4 border-amber-300 shadow-2xl relative overflow-hidden`}
                 style={{ 
-                  minHeight: '110px',
-                  transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`
+                  minHeight: '120px',
+                  transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`,
+                  boxShadow: memorial.isPlaceholder ? '' : '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)'
                 }}
               >
                 {!memorial.isPlaceholder && (
                   <>
-                    {/* Decorative Border */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-amber-300/40 pointer-events-none" />
-                    <div className="absolute top-2 left-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
-                    <div className="absolute top-2 right-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
-                    <div className="absolute bottom-2 left-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
-                    <div className="absolute bottom-2 right-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
+                    {/* Sophisticated Certificate Border with Gold Shiny Animation */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-yellow-50 to-amber-100 rounded-lg" />
                     
-                    {/* Plaque Content */}
-                    <div className="relative p-5">
-                      {/* Header with elegant typography */}
-                      <div className="text-center mb-3">
-                        <div className="font-playfair text-sm font-bold text-amber-900 mb-1 tracking-wide">
-                          WE HONOR YOU
+                    {/* Animated Shiny Gold Overlay */}
+                    <div 
+                      className="absolute inset-0 opacity-30 rounded-lg"
+                      style={{
+                        background: 'linear-gradient(135deg, transparent 30%, rgba(255,215,0,0.8) 50%, transparent 70%)',
+                        animation: 'shimmer 3s ease-in-out infinite'
+                      }}
+                    />
+                    
+                    {/* Ornate Corner Decorations */}
+                    <div className="absolute top-3 left-3 w-6 h-6 border-l-2 border-t-2 border-amber-500 rounded-tl-lg" />
+                    <div className="absolute top-3 right-3 w-6 h-6 border-r-2 border-t-2 border-amber-500 rounded-tr-lg" />
+                    <div className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2 border-amber-500 rounded-bl-lg" />
+                    <div className="absolute bottom-3 right-3 w-6 h-6 border-r-2 border-b-2 border-amber-500 rounded-br-lg" />
+                    
+                    {/* Certificate Content */}
+                    <div className="relative p-6 z-10">
+                      {/* Elegant Header */}
+                      <div className="text-center mb-4">
+                        <div className="font-serif text-xs font-bold text-amber-800 mb-1 tracking-widest uppercase">
+                          Certificate of Honor
                         </div>
-                        <div className="font-cinzel text-lg font-bold text-amber-800 mb-2">
+                        <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto mb-3" />
+                        <div className="font-serif text-lg font-bold text-amber-900 mb-2">
                           {memorial.honoringOf}
                         </div>
-                        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto mb-2" />
+                        <div className="font-serif text-sm text-amber-800 font-semibold tracking-wide">
+                          WE HONOR YOU
+                        </div>
                       </div>
                       
-                      {/* Donation Details */}
-                      <div className="flex items-center justify-between mb-3">
+                      {/* Donation Information */}
+                      <div className="flex items-center justify-between mb-4">
                         <div className="text-xs text-amber-800 font-medium">
                           Donated by {memorial.user}
                         </div>
-                        <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-100 px-3 py-1 rounded-full border border-emerald-200">
-                          <SimpleGoldCoin size={14} className="mr-1" />
+                        <div className="flex items-center bg-gradient-to-r from-emerald-50 to-green-100 px-3 py-1.5 rounded-full border-2 border-emerald-300 shadow-sm">
+                          <SimpleGoldCoin size={16} className="mr-1.5" />
                           <span className="text-sm font-bold text-emerald-700">£{memorial.amount}</span>
                         </div>
                       </div>
                       
-                      {/* Message in decorative box */}
-                      <div className="bg-gradient-to-r from-white/60 to-yellow-100/60 rounded-lg px-4 py-3 border border-amber-500 shadow-inner">
+                      {/* Message in Elegant Frame */}
+                      <div className="bg-gradient-to-r from-white/80 to-amber-50/80 rounded-lg px-4 py-3 border-2 border-amber-400 shadow-inner backdrop-blur-sm">
                         <div className="text-sm italic text-amber-900 text-center font-medium flex items-center justify-center">
-                          <Heart className="h-3 w-3 mr-2 text-pink-600" />
-                          <span className="font-playfair">"{memorial.message}"</span>
-                          <Heart className="h-3 w-3 ml-2 text-pink-600" />
+                          <Heart className="h-3 w-3 mr-2 text-rose-600" />
+                          <span className="font-serif">"{memorial.message}"</span>
+                          <Heart className="h-3 w-3 ml-2 text-rose-600" />
                         </div>
                       </div>
                       
-                      {/* Timestamp */}
-                      <div className="text-center mt-2">
-                        <Badge variant="secondary" className="text-xs bg-amber-200 text-amber-800 border-amber-400">
+                      {/* Elegant Timestamp */}
+                      <div className="text-center mt-3">
+                        <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-800 border-amber-400 font-serif">
                           {new Date(memorial.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </Badge>
                       </div>
                     </div>
+
+                    {/* Shimmer Animation Styles */}
+                    <style>{`
+                      @keyframes shimmer {
+                        0% {
+                          transform: translateX(-100%) translateY(-100%) rotate(30deg);
+                        }
+                        50% {
+                          transform: translateX(100%) translateY(100%) rotate(30deg);
+                        }
+                        100% {
+                          transform: translateX(300%) translateY(300%) rotate(30deg);
+                        }
+                      }
+                    `}</style>
                   </>
                 )}
               </div>
