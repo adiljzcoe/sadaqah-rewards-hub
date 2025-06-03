@@ -3,7 +3,8 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Trophy, Medal, Award, MapPin, Users, ArrowUp, Target, Crown, Star } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Trophy, Medal, Award, MapPin, Users, ArrowUp, Target, Crown, Star, TrendingUp } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
 
 const leaderboardData = [
@@ -89,6 +90,14 @@ const getRankBadge = (rank: number) => {
 const Leaderboard = () => {
   const userCity = "London";
   const userCityRank = 3;
+  
+  // User's personal ranking data
+  const userRank = 47;
+  const userPoints = 5632;
+  const userAbove = { name: 'Sarah K.', points: 5890, rank: 46 };
+  const userBelow = { name: 'David M.', points: 5420, rank: 48 };
+  const pointsToNextRank = userAbove.points - userPoints;
+  const progressPercentage = (userPoints / userAbove.points) * 100;
 
   return (
     <div className="space-y-6">
@@ -197,6 +206,107 @@ const Leaderboard = () => {
                   </Card>
                 );
               })}
+            </div>
+          </div>
+
+          {/* Your Personal League Ranking */}
+          <div className="space-y-4">
+            <h4 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <Star className="h-6 w-6 text-purple-500" />
+              Your League Position
+            </h4>
+            
+            <div className="relative">
+              {/* Player Above */}
+              <Card className="p-4 bg-gradient-to-r from-white to-gray-50 border border-gray-200 shadow-md rounded-2xl mb-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl shadow-md">
+                      <span className="font-bold text-sm">#{userAbove.rank}</span>
+                    </div>
+                    <Avatar className="h-10 w-10 ring-2 ring-gray-300 shadow-lg">
+                      <AvatarFallback className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm font-bold">
+                        {userAbove.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="text-lg font-bold text-gray-800">{userAbove.name}</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-bold text-gray-800">{userAbove.points.toLocaleString()}</div>
+                    <div className="text-sm text-gray-600 font-semibold">points</div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Your Position - Elevated */}
+              <Card className="relative transform scale-105 z-10 p-5 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300 shadow-xl rounded-2xl mb-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl shadow-lg">
+                      <span className="font-bold text-lg">#{userRank}</span>
+                    </div>
+                    <Avatar className="h-12 w-12 ring-2 ring-purple-300 shadow-lg">
+                      <AvatarFallback className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-sm font-bold">
+                        YOU
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="text-xl font-bold text-purple-800 mb-1">
+                        YOU
+                        <Badge className="ml-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1">
+                          YOUR RANK
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-purple-600">{userPoints.toLocaleString()}</div>
+                    <div className="text-sm text-purple-700 font-semibold">points</div>
+                  </div>
+                </div>
+                
+                {/* Progress to next rank */}
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-purple-700 font-semibold flex items-center gap-1">
+                      <TrendingUp className="h-4 w-4" />
+                      Progress to #{userAbove.rank}
+                    </span>
+                    <span className="text-purple-600 font-bold">{pointsToNextRank} points needed</span>
+                  </div>
+                  <Progress value={progressPercentage} className="h-3 bg-purple-100">
+                    <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-300" />
+                  </Progress>
+                  <div className="text-xs text-purple-600 font-medium text-center">
+                    {Math.round(progressPercentage)}% of the way there!
+                  </div>
+                </div>
+              </Card>
+
+              {/* Player Below */}
+              <Card className="p-4 bg-gradient-to-r from-white to-gray-50 border border-gray-200 shadow-md rounded-2xl">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl shadow-md">
+                      <span className="font-bold text-sm">#{userBelow.rank}</span>
+                    </div>
+                    <Avatar className="h-10 w-10 ring-2 ring-gray-300 shadow-lg">
+                      <AvatarFallback className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm font-bold">
+                        {userBelow.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="text-lg font-bold text-gray-800">{userBelow.name}</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xl font-bold text-gray-800">{userBelow.points.toLocaleString()}</div>
+                    <div className="text-sm text-gray-600 font-semibold">points</div>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
 
