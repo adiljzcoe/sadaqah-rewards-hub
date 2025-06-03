@@ -81,16 +81,28 @@ const DuaDonationDialog = ({ dua, open, onOpenChange }: DuaDonationDialogProps) 
 
       // Update user's points and coins if authenticated
       if (user?.id) {
-        const { error: profileError } = await supabase
+        // Get current points and coins
+        const { data: currentProfile } = await supabase
           .from('profiles')
-          .update({
-            jannah_points: supabase.raw(`jannah_points + ${donationData.jannah_points_earned}`),
-            sadaqah_coins: supabase.raw(`sadaqah_coins + ${donationData.sadaqah_coins_earned}`)
-          })
-          .eq('id', user.id);
+          .select('jannah_points, sadaqah_coins')
+          .eq('id', user.id)
+          .single();
 
-        if (profileError) {
-          console.error('Error updating profile:', profileError);
+        if (currentProfile) {
+          const newJannahPoints = (currentProfile.jannah_points || 0) + donationData.jannah_points_earned;
+          const newSadaqahCoins = (currentProfile.sadaqah_coins || 0) + donationData.sadaqah_coins_earned;
+
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({
+              jannah_points: newJannahPoints,
+              sadaqah_coins: newSadaqahCoins
+            })
+            .eq('id', user.id);
+
+          if (profileError) {
+            console.error('Error updating profile:', profileError);
+          }
         }
       }
 
