@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,8 +6,20 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { Users, UserPlus, Trophy, Flame, Crown, Target, TrendingUp, Star, Zap, Award } from 'lucide-react';
 
+interface LeagueMember {
+  name: string;
+  level: number;
+  streak: number;
+  tier: string;
+  avatar: string;
+  status: string;
+  rank: number;
+  points: number;
+  isUser?: boolean;
+}
+
 const FriendsWidget = () => {
-  const [leagueMembers] = useState([
+  const [leagueMembers] = useState<LeagueMember[]>([
     { name: 'Sarah K.', level: 15, streak: 12, tier: 'gold', avatar: 'SK', status: 'donated today', rank: 46, points: 5890 },
     { name: 'Ahmed R.', level: 11, streak: 5, tier: 'silver', avatar: 'AR', status: '2 days ago', rank: 52, points: 5420 },
     { name: 'Fatima M.', level: 18, streak: 25, tier: 'platinum', avatar: 'FM', status: 'donated today', rank: 23, points: 7250 },
@@ -22,7 +33,7 @@ const FriendsWidget = () => {
   const sortedMembers = [...leagueMembers].sort((a, b) => a.rank - b.rank);
   
   // Add user to the sorted list
-  const allMembers = [
+  const allMembers: LeagueMember[] = [
     ...sortedMembers,
     { name: 'YOU', level: 12, streak: 8, tier: 'gold', avatar: 'YOU', status: 'active', rank: userRank, points: userPoints, isUser: true }
   ].sort((a, b) => a.rank - b.rank);
