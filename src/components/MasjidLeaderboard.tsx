@@ -90,7 +90,7 @@ const MasjidLeaderboard = () => {
         ].map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as any)}
+            onClick={() => setActiveTab(tab.key as 'local' | 'cities' | 'countries')}
             className={`flex-1 px-2 py-2 text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
               activeTab === tab.key
                 ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-500'

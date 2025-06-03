@@ -13,10 +13,8 @@ import CampaignsCarousel from '@/components/CampaignsCarousel';
 import FundraisersCarousel from '@/components/FundraisersCarousel';
 import InMemoryOfWidget from '@/components/InMemoryOfWidget';
 import FriendsWidget from '@/components/FriendsWidget';
-import SeasonalEvents from '@/components/SeasonalEvents';
 import CharityTicker from '@/components/CharityTicker';
 import BusinessAdvert from '@/components/BusinessAdvert';
-import LeagueTablesCarousel from '@/components/LeagueTablesCarousel';
 import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
@@ -119,12 +117,7 @@ const Index = () => {
               <CharityTicker />
             </div>
             
-            {/* League Tables Carousel - Right below charity ticker */}
-            <div className="max-w-full overflow-x-hidden">
-              <LeagueTablesCarousel />
-            </div>
-            
-            {/* Charity Feed Section - Right below league tables */}
+            {/* Charity Feed Section - Right below charity ticker */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <CharityFeedSection />
             </div>

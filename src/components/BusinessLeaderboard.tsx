@@ -100,7 +100,7 @@ const BusinessLeaderboard = () => {
                 {getRankBadge(business.rank)}
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold text-gray-900 text-xs truncate">{business.name}</div>
-                  {activeTab !== 'national' && (
+                  {activeTab !== 'national' && 'location' in business && (
                     <div className="text-xs text-gray-500 flex items-center gap-1">
                       <MapPin className="h-2 w-2" />
                       {business.location}
