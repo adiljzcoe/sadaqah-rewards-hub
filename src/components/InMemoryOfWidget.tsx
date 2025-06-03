@@ -157,8 +157,8 @@ const InMemoryOfWidget = () => {
                 } ${
                   memorial.isPlaceholder 
                     ? 'bg-gray-50 border border-gray-100' 
-                    : 'bg-gradient-to-br from-amber-800 via-yellow-700 to-orange-800'
-                } rounded-xl border-2 border-amber-700 shadow-lg relative overflow-hidden`}
+                    : 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-amber-400'
+                } rounded-xl border-2 border-yellow-500 shadow-lg relative overflow-hidden`}
                 style={{ 
                   minHeight: '110px',
                   transitionDelay: memorial.isExiting ? '0ms' : `${index * 100}ms`
@@ -167,28 +167,28 @@ const InMemoryOfWidget = () => {
                 {!memorial.isPlaceholder && (
                   <>
                     {/* Decorative Border */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-600/30 via-transparent to-amber-800/30 pointer-events-none" />
-                    <div className="absolute top-2 left-2 w-3 h-3 bg-gradient-to-br from-amber-300 to-yellow-600 rounded-full opacity-80" />
-                    <div className="absolute top-2 right-2 w-3 h-3 bg-gradient-to-br from-amber-300 to-yellow-600 rounded-full opacity-80" />
-                    <div className="absolute bottom-2 left-2 w-3 h-3 bg-gradient-to-br from-amber-300 to-yellow-600 rounded-full opacity-80" />
-                    <div className="absolute bottom-2 right-2 w-3 h-3 bg-gradient-to-br from-amber-300 to-yellow-600 rounded-full opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-amber-300/40 pointer-events-none" />
+                    <div className="absolute top-2 left-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
+                    <div className="absolute top-2 right-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
+                    <div className="absolute bottom-2 left-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
+                    <div className="absolute bottom-2 right-2 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-300 rounded-full opacity-90" />
                     
                     {/* Plaque Content */}
                     <div className="relative p-5">
                       {/* Header with elegant typography */}
                       <div className="text-center mb-3">
-                        <div className="font-playfair text-sm font-bold text-amber-100 mb-1 tracking-wide">
+                        <div className="font-playfair text-sm font-bold text-amber-900 mb-1 tracking-wide">
                           WE HONOR YOU
                         </div>
-                        <div className="font-cinzel text-lg font-bold text-amber-50 mb-2">
+                        <div className="font-cinzel text-lg font-bold text-amber-800 mb-2">
                           {memorial.honoringOf}
                         </div>
-                        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-300 to-transparent mx-auto mb-2" />
+                        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto mb-2" />
                       </div>
                       
                       {/* Donation Details */}
                       <div className="flex items-center justify-between mb-3">
-                        <div className="text-xs text-amber-200 font-medium">
+                        <div className="text-xs text-amber-800 font-medium">
                           Donated by {memorial.user}
                         </div>
                         <div className="flex items-center bg-gradient-to-r from-emerald-100 to-green-100 px-3 py-1 rounded-full border border-emerald-200">
@@ -198,11 +198,11 @@ const InMemoryOfWidget = () => {
                       </div>
                       
                       {/* Message in decorative box */}
-                      <div className="bg-gradient-to-r from-white/20 to-amber-100/20 rounded-lg px-4 py-3 border border-amber-600 shadow-inner">
-                        <div className="text-sm italic text-amber-100 text-center font-medium flex items-center justify-center">
-                          <Heart className="h-3 w-3 mr-2 text-pink-300" />
+                      <div className="bg-gradient-to-r from-white/60 to-yellow-100/60 rounded-lg px-4 py-3 border border-amber-500 shadow-inner">
+                        <div className="text-sm italic text-amber-900 text-center font-medium flex items-center justify-center">
+                          <Heart className="h-3 w-3 mr-2 text-pink-600" />
                           <span className="font-playfair">"{memorial.message}"</span>
-                          <Heart className="h-3 w-3 ml-2 text-pink-300" />
+                          <Heart className="h-3 w-3 ml-2 text-pink-600" />
                         </div>
                       </div>
                       
