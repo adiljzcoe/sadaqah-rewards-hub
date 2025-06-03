@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,7 +23,7 @@ const ProductManagement: React.FC = () => {
     description: '',
     category: '',
     image_url: '',
-    product_type: 'fixed_price' as const,
+    product_type: 'fixed_price' as 'fixed_price',
     pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested',
     fixed_price: '',
     minimum_amount: '',

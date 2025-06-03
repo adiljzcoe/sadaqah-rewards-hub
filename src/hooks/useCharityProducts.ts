@@ -6,7 +6,7 @@ export interface CharityProduct {
   id: string;
   charity_id: string;
   name: string;
-  description?: string;
+  description: string; // Made required to match usage
   category: string;
   image_url?: string;
   product_type: 'fixed_price' | 'flexible_donation';
@@ -26,6 +26,13 @@ export interface CharityProduct {
   beneficiaries_count?: number;
   created_at: string;
   updated_at: string;
+  pricing_tiers?: {
+    id: string;
+    name: string;
+    amount: number;
+    description: string;
+    impact_description: string;
+  }[];
 }
 
 export const useCharityProducts = (charityId?: string) => {
@@ -50,7 +57,10 @@ export const useCharityProducts = (charityId?: string) => {
       }
 
       console.log('Fetched charity products:', data);
-      return (data || []) as CharityProduct[];
+      return (data || []).map(product => ({
+        ...product,
+        description: product.description || '', // Ensure description is always a string
+      })) as CharityProduct[];
     },
   });
 };
