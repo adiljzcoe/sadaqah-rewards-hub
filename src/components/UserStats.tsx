@@ -58,6 +58,15 @@ const UserStats = () => {
 
   const certificateStyle = getCertificateStyle(currentRank);
 
+  // Mock earned badges - you can replace this with real data
+  const earnedBadges = [
+    { icon: "🕌", name: "Mosque Builder", description: "Built 5 mosques" },
+    { icon: "💧", name: "Water Hero", description: "Donated 10 water wells" },
+    { icon: "🔥", name: "Streak Master", description: "30-day donation streak" },
+    { icon: "❤️", name: "Generous Heart", description: "Donated $1000+" },
+    { icon: "🌟", name: "Community Leader", description: "Top 10 donor" }
+  ];
+
   // Listen for prayer completion events
   React.useEffect(() => {
     const handleJannahPointsUpdate = (event: CustomEvent) => {
@@ -227,32 +236,32 @@ const UserStats = () => {
             </div>
           </div>
 
-          {/* Date and Signature Area */}
+          {/* Earned Badges Section */}
           <div className="border-t-2 border-amber-800 pt-2 mt-2">
-            <div className="flex justify-between items-end max-w-2xl mx-auto">
-              <div className="text-left">
-                <div className="border-b border-amber-800 w-16 mb-1"></div>
-                <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold font-playfair">
-                  Date
-                </div>
+            <div className="text-center mb-2">
+              <div className="text-lg font-bold text-amber-900 font-cinzel">
+                Badges Earned
               </div>
-              
-              {/* Center Seal */}
-              <div className="text-center">
-                <div className="w-8 h-8 rounded-full border-2 border-amber-800 flex items-center justify-center mb-1 bg-gradient-to-br from-yellow-300 to-amber-400">
-                  <div className="text-sm">🏆</div>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-2 mb-3">
+              {earnedBadges.map((badge, index) => (
+                <div 
+                  key={index}
+                  className="group relative bg-white/20 backdrop-blur-sm rounded-lg p-2 border border-amber-800/30 hover:bg-white/30 transition-all duration-200"
+                  title={`${badge.name}: ${badge.description}`}
+                >
+                  <div className="text-lg">{badge.icon}</div>
+                  <div className="text-xs text-amber-800 font-bold mt-1 truncate max-w-16">
+                    {badge.name.split(' ')[0]}
+                  </div>
+                  
+                  {/* Tooltip on hover */}
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-amber-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                    {badge.description}
+                  </div>
                 </div>
-                <div className="text-xs text-amber-800 font-bold font-playfair">
-                  Official Seal
-                </div>
-              </div>
-              
-              <div className="text-right">
-                <div className="border-b border-amber-800 w-16 mb-1"></div>
-                <div className="text-xs uppercase tracking-wider text-amber-800 font-semibold font-playfair">
-                  Signature
-                </div>
-              </div>
+              ))}
             </div>
             
             <div className="text-center mt-2">
