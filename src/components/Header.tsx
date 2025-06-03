@@ -76,43 +76,26 @@ const Header = () => {
             {user && (
               <div className="flex items-center flex-shrink-0 relative z-50">
                 <Link to="/profile" className="block">
-                  <div className="relative overflow-hidden rounded-xl px-6 py-3 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50 cursor-pointer z-50">
-                    <div className="flex items-center space-x-4 relative z-50">
+                  <div className="relative overflow-hidden rounded-xl px-4 py-2 font-bold text-amber-100 border-0 shadow-xl transition-all duration-300 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 border-2 border-yellow-300/60 hover:shadow-2xl hover:scale-105 ring-2 ring-amber-400/30 hover:ring-amber-300/50 cursor-pointer z-50">
+                    <div className="flex items-center space-x-3 relative z-50">
                       <div className="flex items-center">
-                        <span className="text-xl mr-3 drop-shadow-sm">🛡️</span>
+                        <span className="text-lg mr-2 drop-shadow-sm">🛡️</span>
                         <div className="flex flex-col">
-                          <span className="text-base font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
-                          <span className="text-sm text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
+                          <span className="text-sm font-bold text-amber-100 drop-shadow-sm leading-tight">Ahmad M.</span>
+                          <span className="text-xs text-amber-200/90 drop-shadow-sm leading-tight">Guardian</span>
                         </div>
                       </div>
                       
-                      <div className="w-px h-8 bg-amber-300/40"></div>
+                      <div className="w-px h-6 bg-amber-300/40"></div>
                       
-                      <div className="flex flex-col space-y-2">
-                        <div className="flex items-center space-x-3">
-                          <span className="text-base font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
-                          <div className="relative w-16 h-2.5 bg-amber-800/60 rounded-full overflow-hidden border border-amber-400/30">
-                            <div 
-                              className="absolute left-0 top-0 h-full bg-gradient-to-r from-yellow-300 to-amber-200 rounded-full transition-all duration-300 shadow-sm shadow-yellow-300/50"
-                              style={{ width: `${progress}%` }}
-                            ></div>
-                            <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-amber-200/20 rounded-full"></div>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center">
-                            <Star className="h-4 w-4 text-yellow-200 mr-1 drop-shadow-sm" />
-                            <span className="text-sm font-medium text-amber-100 drop-shadow-sm">{currentPoints.toLocaleString()}</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Coins className="h-4 w-4 text-yellow-200 mr-1 drop-shadow-sm" />
-                            <span className="text-sm font-medium text-amber-100 drop-shadow-sm">1,250</span>
-                          </div>
-                        </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-bold text-amber-100 drop-shadow-sm">LV {userLevel}</span>
+                        <Star className="h-3 w-3 text-yellow-200 drop-shadow-sm" />
+                        <span className="text-sm font-medium text-amber-100 drop-shadow-sm">{currentPoints.toLocaleString()}</span>
                       </div>
                     </div>
                     
-                    <div className="absolute top-1 left-2 w-8 h-3 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
+                    <div className="absolute top-1 left-2 w-6 h-2 bg-gradient-to-r from-transparent via-white/70 to-transparent rounded-full animate-shimmer"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/20 rounded-xl"></div>
                   </div>
                 </Link>
