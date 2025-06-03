@@ -202,18 +202,8 @@ export class PushNotificationService {
         badge: '/favicon.ico',
         tag: 'test',
         data: { url: '/' },
-        actions: [
-          {
-            action: 'view',
-            title: 'View',
-            icon: '/favicon.ico'
-          },
-          {
-            action: 'close',
-            title: 'Close',
-            icon: '/favicon.ico'
-          }
-        ]
+        vibrate: [200, 100, 200],
+        requireInteraction: false
       });
     }
   }
