@@ -13,7 +13,7 @@ const UserStats = () => {
   const { toast } = useToast();
   const userLevel = 12;
   const [currentPoints, setCurrentPoints] = React.useState(
-    parseInt(localStorage.getItem('jannahPoints') || '5632')
+    parseInt(localStorage.getItem('jannahPoints') || '12500') // Temporarily set to 12,500 to show Divine Saint
   );
   const nextLevelPoints = 6000;
   const progress = (currentPoints / nextLevelPoints) * 100;
