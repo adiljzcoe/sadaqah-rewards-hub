@@ -1,3 +1,4 @@
+
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
@@ -154,7 +155,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Donation Products Section - New section added */}
+      {/* Business Partners Section */}
+      <div className="max-w-full overflow-x-hidden">
+        <BusinessSection />
+      </div>
+
+      {/* Donation Products Section - Moved to after Business Section */}
       <DonationProducts />
 
       {/* Campaigns Section */}
@@ -166,11 +172,6 @@ const Index = () => {
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         <FundraisersCarousel fundraisers={fundraisers} title="Long-term Fundraisers" />
       </section>
-
-      {/* Business Partners Section */}
-      <div className="max-w-full overflow-x-hidden">
-        <BusinessSection />
-      </div>
 
       {/* Charity Partners Section */}
       <section className="bg-gradient-to-r from-white to-blue-50/50 py-16 max-w-full overflow-x-hidden">
