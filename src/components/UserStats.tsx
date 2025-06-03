@@ -13,7 +13,7 @@ const UserStats = () => {
   const { toast } = useToast();
   const userLevel = 12;
   const [currentPoints, setCurrentPoints] = React.useState(
-    parseInt(localStorage.getItem('jannahPoints') || '12500') // Temporarily set to 12,500 to show Divine Saint
+    parseInt(localStorage.getItem('jannahPoints') || '25000') // Increased to 25,000 to show premium Platinum Divine Saint
   );
   const nextLevelPoints = 6000;
   const progress = (currentPoints / nextLevelPoints) * 100;
@@ -35,13 +35,14 @@ const UserStats = () => {
     switch (rank.name) {
       case "Divine Saint":
         return {
-          background: "bg-gradient-to-br from-yellow-100 via-amber-50 to-yellow-100",
-          border: "border-8 border-double border-yellow-400",
-          shadow: "shadow-2xl shadow-yellow-400/50",
-          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(251,191,36,0.1),transparent_50%)]",
-          glow: "ring-4 ring-yellow-300/30 ring-offset-4 ring-offset-white",
-          material: "Platinum Certificate",
-          ornament: "🏆"
+          background: "bg-gradient-to-br from-yellow-50 via-amber-25 to-yellow-50",
+          border: "border-8 border-double border-yellow-500",
+          shadow: "shadow-2xl shadow-yellow-500/60 drop-shadow-2xl",
+          texture: "bg-[radial-gradient(circle_at_30%_30%,rgba(251,191,36,0.15),transparent_70%)] bg-[radial-gradient(circle_at_70%_70%,rgba(245,158,11,0.1),transparent_70%)]",
+          glow: "ring-6 ring-yellow-400/40 ring-offset-6 ring-offset-white",
+          material: "🏆 PLATINUM CERTIFICATE 🏆",
+          ornament: "💎",
+          premium: true
         };
       case "Noble Champion":
         return {
@@ -145,36 +146,53 @@ const UserStats = () => {
     <Card className="p-6 game-card">
       {/* Premium Certificate/Plaque Display */}
       <div className="text-center mb-8">
-        <div className={`relative p-8 mx-4 rounded-2xl ${certificateStyle.background} ${certificateStyle.border} ${certificateStyle.shadow} ${certificateStyle.glow} ${certificateStyle.texture} transform hover:scale-[1.02] transition-all duration-300`}>
-          {/* Decorative Corner Ornaments */}
-          <div className="absolute top-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-          <div className="absolute top-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-          <div className="absolute bottom-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
-          <div className="absolute bottom-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+        <div className={`relative p-10 mx-4 rounded-3xl ${certificateStyle.background} ${certificateStyle.border} ${certificateStyle.shadow} ${certificateStyle.glow} ${certificateStyle.texture} transform hover:scale-[1.02] transition-all duration-500`}>
+          {/* Enhanced Decorative Corner Ornaments for Platinum */}
+          {certificateStyle.premium ? (
+            <>
+              <div className="absolute top-6 left-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
+              <div className="absolute top-6 right-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
+              <div className="absolute bottom-6 left-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
+              <div className="absolute bottom-6 right-6 text-4xl opacity-60 animate-pulse">{certificateStyle.ornament}</div>
+              
+              {/* Extra premium decorations */}
+              <div className="absolute top-16 left-16 text-2xl opacity-40">🌟</div>
+              <div className="absolute top-16 right-16 text-2xl opacity-40">🌟</div>
+              <div className="absolute bottom-16 left-16 text-2xl opacity-40">🌟</div>
+              <div className="absolute bottom-16 right-16 text-2xl opacity-40">🌟</div>
+            </>
+          ) : (
+            <>
+              <div className="absolute top-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+              <div className="absolute top-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+              <div className="absolute bottom-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+              <div className="absolute bottom-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+            </>
+          )}
           
           {/* Certificate Header */}
-          <div className="mb-6">
-            <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+          <div className="mb-8">
+            <div className={`text-sm font-bold uppercase tracking-wider mb-2 ${certificateStyle.premium ? 'text-yellow-700 text-lg' : 'text-gray-600'}`}>
               {certificateStyle.material}
             </div>
-            <div className="w-20 h-1 bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto mb-4"></div>
+            <div className={`w-32 h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent mx-auto mb-6 ${certificateStyle.premium ? 'shadow-lg' : ''}`}></div>
           </div>
 
           {/* Rank Badge */}
-          <div className="relative inline-block mb-6">
-            <div className={`w-24 h-24 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-2xl bg-gradient-to-r ${currentRank.gradient} ring-6 ring-white/50 transform hover:rotate-12 transition-transform duration-300`}>
-              <span className="text-3xl">{currentRank.icon}</span>
+          <div className="relative inline-block mb-8">
+            <div className={`w-28 h-28 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-2xl bg-gradient-to-r ${currentRank.gradient} ring-8 ring-white/60 transform hover:rotate-12 transition-transform duration-300 ${certificateStyle.premium ? 'animate-pulse' : ''}`}>
+              <span className="text-4xl">{currentRank.icon}</span>
             </div>
-            <Badge className={`absolute -top-2 -right-2 gel-button bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-lg animate-pulse border-2 border-white`}>
-              <Shield className="h-3 w-3 mr-1" />
+            <Badge className={`absolute -top-3 -right-3 gel-button bg-gradient-to-r ${currentRank.gradient} text-white text-sm shadow-xl animate-pulse border-3 border-white ${certificateStyle.premium ? 'ring-2 ring-yellow-400' : ''}`}>
+              <Shield className="h-4 w-4 mr-1" />
               {currentRank.badge}
             </Badge>
           </div>
 
           {/* Certificate Title */}
-          <div className="mb-4">
-            <div className="text-xs text-gray-500 uppercase tracking-widest mb-2">This Certifies That</div>
-            <h3 className="font-bold text-2xl text-gray-900 flex items-center justify-center gap-3 mb-2">
+          <div className="mb-6">
+            <div className={`text-xs uppercase tracking-widest mb-3 ${certificateStyle.premium ? 'text-yellow-700 font-bold' : 'text-gray-500'}`}>This Certifies That</div>
+            <h3 className={`font-bold text-3xl flex items-center justify-center gap-3 mb-3 ${certificateStyle.premium ? 'text-yellow-800' : 'text-gray-900'}`}>
               Ahmad M.
               {isMember && (
                 <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
@@ -183,34 +201,34 @@ const UserStats = () => {
                 </Badge>
               )}
             </h3>
-            <div className="text-xs text-gray-500 uppercase tracking-widest mb-4">Has Achieved The Rank Of</div>
-            <div className="text-2xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-2">
+            <div className={`text-xs uppercase tracking-widest mb-6 ${certificateStyle.premium ? 'text-yellow-700 font-bold' : 'text-gray-500'}`}>Has Achieved The Rank Of</div>
+            <div className={`text-3xl font-bold mb-3 ${certificateStyle.premium ? 'bg-gradient-to-r from-yellow-700 via-amber-600 to-yellow-700 bg-clip-text text-transparent' : 'bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent'}`}>
               {currentRank.name}
             </div>
-            <p className="text-sm text-gray-600 italic">{currentRank.description}</p>
+            <p className={`text-sm italic ${certificateStyle.premium ? 'text-yellow-700 font-semibold' : 'text-gray-600'}`}>{currentRank.description}</p>
           </div>
 
           {/* Points Display */}
-          <div className="mb-6">
-            <div className="text-4xl font-black bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-2">
+          <div className="mb-8">
+            <div className={`text-5xl font-black mb-3 ${certificateStyle.premium ? 'bg-gradient-to-r from-yellow-700 via-amber-600 to-yellow-700 bg-clip-text text-transparent animate-pulse' : 'bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent'}`}>
               {currentPoints.toLocaleString()}
             </div>
-            <div className="text-sm text-gray-600 font-medium">Jannah Points Earned</div>
+            <div className={`text-sm font-medium ${certificateStyle.premium ? 'text-yellow-700' : 'text-gray-600'}`}>Jannah Points Earned</div>
           </div>
 
           {/* Decorative Flourish */}
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-8 h-px bg-gray-400"></div>
-            <Star className="h-4 w-4 mx-3 text-gray-400" />
-            <div className="w-8 h-px bg-gray-400"></div>
+          <div className="flex items-center justify-center mb-6">
+            <div className={`w-12 h-px ${certificateStyle.premium ? 'bg-yellow-500' : 'bg-gray-400'}`}></div>
+            <Star className={`h-5 w-5 mx-4 ${certificateStyle.premium ? 'text-yellow-500 animate-pulse' : 'text-gray-400'}`} />
+            <div className={`w-12 h-px ${certificateStyle.premium ? 'bg-yellow-500' : 'bg-gray-400'}`}></div>
           </div>
 
           {/* Benefits Preview */}
-          <div className="text-xs text-gray-600 mb-4">
-            <div className="font-semibold mb-1">Current Benefits:</div>
-            <div className="flex flex-wrap justify-center gap-1">
+          <div className={`text-sm mb-6 ${certificateStyle.premium ? 'text-yellow-700' : 'text-gray-600'}`}>
+            <div className="font-semibold mb-2">Current Benefits:</div>
+            <div className="flex flex-wrap justify-center gap-2">
               {currentRank.benefits.slice(0, 2).map((benefit, index) => (
-                <span key={index} className="bg-white/50 px-2 py-1 rounded text-xs">
+                <span key={index} className={`px-3 py-1 rounded text-xs ${certificateStyle.premium ? 'bg-yellow-100/80 text-yellow-800 border border-yellow-300' : 'bg-white/50'}`}>
                   {benefit}
                 </span>
               ))}
@@ -218,8 +236,8 @@ const UserStats = () => {
           </div>
 
           {/* Signature Line */}
-          <div className="border-t border-gray-300 pt-4 mt-6">
-            <div className="text-xs text-gray-500">
+          <div className={`border-t pt-6 mt-8 ${certificateStyle.premium ? 'border-yellow-400' : 'border-gray-300'}`}>
+            <div className={`text-xs ${certificateStyle.premium ? 'text-yellow-700 font-semibold' : 'text-gray-500'}`}>
               Donate Feels Great Community
             </div>
           </div>
