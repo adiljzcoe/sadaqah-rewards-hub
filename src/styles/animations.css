@@ -1,4 +1,3 @@
-
 @keyframes float-up {
   0% {
     transform: translateY(0);
@@ -105,4 +104,100 @@
 
 .animate-traditional-glow {
   animation: traditional-glow 3s ease-in-out infinite;
+}
+
+@keyframes mega-confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(50vh) rotate(360deg) scale(1.2);
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-mega-confetti {
+  animation: mega-confetti-fall 4s linear forwards;
+}
+
+@keyframes float-up-with-bounce {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1.1);
+  }
+  40% {
+    transform: translateY(-40px) scale(1);
+  }
+  60% {
+    transform: translateY(-60px) scale(1.05);
+  }
+  80% {
+    transform: translateY(-80px) scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-120px) scale(0.9);
+    opacity: 0;
+  }
+}
+
+.animate-float-up {
+  animation: float-up-with-bounce 5s ease-out forwards;
+}
+
+@keyframes mega-firework-burst {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0.8;
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.animate-firework {
+  animation: mega-firework-burst 2s ease-out forwards;
+}
+
+@keyframes ultra-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 1), 0 0 60px rgba(251, 191, 36, 0.8);
+  }
+}
+
+.animate-traditional-glow {
+  animation: ultra-glow 2s ease-in-out infinite;
+}
+
+@keyframes rainbow-pulse {
+  0% { filter: hue-rotate(0deg) saturate(1.2); }
+  25% { filter: hue-rotate(90deg) saturate(1.5); }
+  50% { filter: hue-rotate(180deg) saturate(1.2); }
+  75% { filter: hue-rotate(270deg) saturate(1.5); }
+  100% { filter: hue-rotate(360deg) saturate(1.2); }
+}
+
+.animate-rainbow-pulse {
+  animation: rainbow-pulse 3s ease-in-out infinite;
 }

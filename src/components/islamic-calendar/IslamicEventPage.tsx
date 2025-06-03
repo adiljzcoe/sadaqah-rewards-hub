@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import DonationWidget from '@/components/DonationWidget';
 import NotificationScheduler from './NotificationScheduler';
 import CelebrationEffects from './CelebrationEffects';
 import CelebrationBanner from './CelebrationBanner';
+import AmazingCelebrationButton from './AmazingCelebrationButton';
+import AmazingCelebrationEffects from './AmazingCelebrationEffects';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,6 +17,7 @@ import CountdownTimer from './CountdownTimer';
 
 const IslamicEventPage = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [amazingCelebrationActive, setAmazingCelebrationActive] = useState(false);
   
   if (!slug) {
     return <Navigate to="/islamic-calendar" replace />;
@@ -55,10 +58,28 @@ const IslamicEventPage = () => {
     console.log(`Celebrating ${event.title}!`);
   };
 
+  const handleAmazingCelebration = () => {
+    setAmazingCelebrationActive(true);
+    
+    // Reset after 8 seconds
+    setTimeout(() => {
+      setAmazingCelebrationActive(false);
+    }, 8000);
+    
+    // Also trigger the original celebration
+    handleCelebrate();
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
-      {/* Celebration Effects - Always Active */}
+      {/* Regular Celebration Effects - Always Active */}
       <CelebrationEffects />
+      
+      {/* Amazing Celebration Effects - Triggered by button */}
+      <AmazingCelebrationEffects 
+        isActive={amazingCelebrationActive} 
+        eventTitle={event.title} 
+      />
       
       {/* Special Banner for Today's Events */}
       <CelebrationBanner eventTitle={event.title} isToday={isToday} />
@@ -66,7 +87,7 @@ const IslamicEventPage = () => {
       <Header />
       
       <div className={`container mx-auto px-4 py-8 ${isToday ? 'pt-24' : ''}`}>
-        {/* Enhanced Hero Section with Extra Celebration Elements */}
+        {/* Enhanced Hero Section with Amazing Celebration Button */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 text-white mb-8">
           {/* Background celebration pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -123,19 +144,23 @@ const IslamicEventPage = () => {
             
             <p className="text-xl leading-relaxed mb-6">{event.description}</p>
 
-            {/* Enhanced Celebration Button in Hero */}
-            <div className="flex gap-4">
+            {/* Enhanced Celebration Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              {/* Amazing Celebration Button - Main CTA */}
+              <AmazingCelebrationButton 
+                eventTitle={event.title}
+                onCelebrate={handleAmazingCelebration}
+              />
+              
+              {/* Original celebration button as secondary */}
               <Button 
                 onClick={handleCelebrate}
                 size="lg"
-                className={`${
-                  isToday 
-                    ? 'bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 hover:from-yellow-500 hover:via-pink-600 hover:to-purple-700 animate-pulse shadow-2xl' 
-                    : 'bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600'
-                } text-white font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
+                variant="outline"
+                className="bg-white/20 hover:bg-white/30 text-white border-white/30 hover:border-white/50 backdrop-blur-sm"
               >
-                <PartyPopper className="h-5 w-5 mr-2" />
-                {isToday ? 'Celebrate Now!' : 'Prepare to Celebrate!'}
+                <Heart className="h-5 w-5 mr-2" />
+                Simple Celebration
                 <Sparkles className="h-5 w-5 ml-2" />
               </Button>
             </div>
@@ -145,7 +170,7 @@ const IslamicEventPage = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Countdown */}
+            {/* Countdown with Amazing Button */}
             {!isPast && (
               <div className={`${isToday ? 'bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600' : 'bg-gradient-to-r from-purple-600 via-blue-600 to-emerald-600'} rounded-2xl p-1`}>
                 <div className="bg-white rounded-xl p-6">
@@ -156,21 +181,12 @@ const IslamicEventPage = () => {
                   </h2>
                   <CountdownTimer event={event} />
                   
-                  {/* Enhanced Celebration Button */}
+                  {/* Amazing Celebration Button in countdown section */}
                   <div className="mt-6 text-center">
-                    <Button 
-                      onClick={handleCelebrate}
-                      size="lg"
-                      className={`${
-                        isToday 
-                          ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-600 hover:via-purple-700 hover:to-indigo-700 animate-pulse shadow-2xl' 
-                          : 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700'
-                      } text-white font-bold px-8 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200`}
-                    >
-                      <Heart className="h-5 w-5 mr-2" />
-                      {isToday ? 'Join the Celebration!' : 'Express Your Joy!'}
-                      <Sparkles className="h-5 w-5 ml-2" />
-                    </Button>
+                    <AmazingCelebrationButton 
+                      eventTitle={event.title}
+                      onCelebrate={handleAmazingCelebration}
+                    />
                   </div>
                 </div>
               </div>
@@ -324,18 +340,25 @@ const IslamicEventPage = () => {
               </CardContent>
             </Card>
 
-            {/* Quick Actions */}
+            {/* Quick Actions with Amazing Button */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
+                <AmazingCelebrationButton 
+                  eventTitle={event.title}
+                  onCelebrate={handleAmazingCelebration}
+                />
                 <Button 
                   onClick={handleCelebrate}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  size="lg"
+                  variant="outline"
+                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 hover:border-white/50 backdrop-blur-sm"
                 >
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Celebrate Together
+                  <Heart className="h-5 w-5 mr-2" />
+                  Simple Celebration
+                  <Sparkles className="h-5 w-5 ml-2" />
                 </Button>
                 <Button variant="outline" className="w-full">
                   <Users className="h-4 w-4 mr-2" />
