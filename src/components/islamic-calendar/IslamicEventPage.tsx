@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import Header from '@/components/Header';
 import DonationWidget from '@/components/DonationWidget';
 import NotificationScheduler from './NotificationScheduler';
 import CelebrationEffects from './CelebrationEffects';
@@ -18,15 +17,15 @@ import { getEventBySlug, getDaysUntilEvent, formatIslamicDate } from '@/utils/is
 import CountdownTimer from './CountdownTimer';
 
 const IslamicEventPage = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const { eventSlug } = useParams<{ eventSlug: string }>();
   const [amazingCelebrationActive, setAmazingCelebrationActive] = useState(false);
   const [celebrationPaused, setCelebrationPaused] = useState(false);
   
-  if (!slug) {
+  if (!eventSlug) {
     return <Navigate to="/islamic-calendar" replace />;
   }
 
-  const event = getEventBySlug(slug);
+  const event = getEventBySlug(eventSlug);
   
   if (!event) {
     return <Navigate to="/islamic-calendar" replace />;
@@ -102,8 +101,6 @@ const IslamicEventPage = () => {
       
       {/* Special Banner for Today's Events */}
       <CelebrationBanner eventTitle={event.title} isToday={isToday} />
-      
-      <Header />
       
       <div className={`container mx-auto px-4 py-8 ${isToday ? 'pt-24' : ''} pb-24`}>
         {/* Enhanced Hero Section with Amazing Celebration Button */}
