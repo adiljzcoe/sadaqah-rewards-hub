@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -107,28 +106,28 @@ const InMemoryOfWidget = () => {
         <p className="text-sm text-gray-600">Honoring loved ones through charitable giving</p>
       </div>
 
-      {/* Mobile: Single Column Layout */}
-      <div className="block lg:flex">
-        {/* Memorial Feed - Full width on mobile, 2/3 on desktop */}
-        <div className="w-full lg:w-2/3 lg:pr-4">
-          <div className="flex items-center mb-3">
+      {/* Single Column Layout */}
+      <div className="space-y-6">
+        {/* Live Honoring Feed - Latest 3 entries */}
+        <div>
+          <div className="flex items-center mb-4">
             <MessageCircle className="h-4 w-4 mr-2 text-blue-600" />
             <h4 className="font-semibold text-gray-800">Live Honoring Feed</h4>
           </div>
           
           <div className="space-y-3">
-            {memorialFeed.map((memorial) => (
+            {memorialFeed.slice(0, 3).map((memorial) => (
               <div
                 key={memorial.id}
-                className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-3 animate-fade-in"
+                className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4 animate-fade-in"
               >
-                <div className="flex items-start justify-between mb-2">
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-800">
+                    <div className="text-sm font-medium text-gray-800 mb-1">
                       {memorial.user} donated honoring <span className="font-bold text-purple-700">{memorial.honoringOf}</span>
                     </div>
-                    <div className="flex items-center mt-1">
-                      <SimpleGoldCoin size={14} className="mr-1" />
+                    <div className="flex items-center">
+                      <SimpleGoldCoin size={16} className="mr-1" />
                       <span className="text-sm font-bold text-emerald-600">£{memorial.amount}</span>
                     </div>
                   </div>
@@ -137,9 +136,9 @@ const InMemoryOfWidget = () => {
                   </Badge>
                 </div>
                 
-                <div className="bg-white/50 rounded-lg px-3 py-2 border border-purple-200">
+                <div className="bg-white/60 rounded-lg px-3 py-2 border border-purple-200">
                   <div className="text-sm italic text-gray-700 flex items-center">
-                    <Heart className="h-3 w-3 mr-1 text-pink-500" />
+                    <Heart className="h-3 w-3 mr-2 text-pink-500" />
                     "{memorial.message}"
                   </div>
                 </div>
@@ -153,93 +152,68 @@ const InMemoryOfWidget = () => {
               </div>
             )}
           </div>
+        </div>
 
-          {/* Memorial Statistics */}
-          <div className="mt-6 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
-            <div className="grid grid-cols-2 gap-4 text-center">
-              <div>
-                <div className="text-2xl font-bold text-purple-700">
-                  £{topMemorials.reduce((sum, memorial) => sum + memorial.amount, 0).toLocaleString()}
+        {/* Top 5 Most Honored */}
+        <div>
+          <div className="flex items-center mb-4">
+            <Trophy className="h-4 w-4 mr-2 text-yellow-600" />
+            <h4 className="font-semibold text-gray-800">Top 5 Most Honored</h4>
+          </div>
+          
+          <div className="space-y-3">
+            {topMemorials.slice(0, 5).map((memorial) => (
+              <div
+                key={memorial.name}
+                className={`flex items-center justify-between p-4 rounded-lg border ${getRankColor(memorial.rank)} hover:shadow-md transition-shadow`}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center justify-center w-8 h-8">
+                    {getRankIcon(memorial.rank)}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-800 text-sm">
+                      {memorial.name}
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      {memorial.donations} donations
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs text-purple-600">Total Honoring Donations</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-pink-700">
-                  {topMemorials.reduce((sum, memorial) => sum + memorial.donations, 0)}
+                
+                <div className="text-right">
+                  <div className="flex items-center font-bold text-emerald-700">
+                    <SimpleGoldCoin size={14} className="mr-1" />
+                    <span className="text-sm">£{memorial.amount.toLocaleString()}</span>
+                  </div>
                 </div>
-                <div className="text-xs text-pink-600">Honoring Acts</div>
               </div>
-            </div>
-            
-            <div className="mt-3 text-center">
-              <p className="text-xs text-gray-600 italic">
-                "And whoever saves a life, it is as if he has saved all of mankind" - Quran 5:32
-              </p>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Leaderboard & Ad Space - Full width on mobile, 1/3 on desktop */}
-        <div className="w-full lg:w-1/3 mt-6 lg:mt-0 lg:pl-4 lg:border-l lg:border-gray-200">
-          {/* Memorial Leaderboard */}
-          <div className="mb-6">
-            <div className="flex items-center mb-3">
-              <Trophy className="h-4 w-4 mr-2 text-yellow-600" />
-              <h4 className="font-semibold text-gray-800">Most Honored</h4>
-              <Badge className="ml-2 bg-yellow-100 text-yellow-800 text-xs">Top 5</Badge>
+        {/* Memorial Statistics */}
+        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
+          <div className="grid grid-cols-2 gap-4 text-center">
+            <div>
+              <div className="text-xl font-bold text-purple-700">
+                £{topMemorials.reduce((sum, memorial) => sum + memorial.amount, 0).toLocaleString()}
+              </div>
+              <div className="text-xs text-purple-600">Total Honoring Donations</div>
             </div>
-            
-            <div className="space-y-2">
-              {topMemorials.slice(0, 5).map((memorial) => (
-                <div
-                  key={memorial.name}
-                  className={`flex items-center justify-between p-2 rounded-lg border ${getRankColor(memorial.rank)} hover:shadow-md transition-shadow`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className="flex items-center justify-center w-6 h-6">
-                      {getRankIcon(memorial.rank)}
-                    </div>
-                    
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-800 text-xs">
-                        {memorial.name}
-                      </div>
-                      <div className="text-xs text-gray-600">
-                        {memorial.donations} donations
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="text-right">
-                    <div className="flex items-center font-bold text-emerald-700">
-                      <SimpleGoldCoin size={12} className="mr-1" />
-                      <span className="text-xs">£{memorial.amount.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div>
+              <div className="text-xl font-bold text-pink-700">
+                {topMemorials.reduce((sum, memorial) => sum + memorial.donations, 0)}
+              </div>
+              <div className="text-xs text-pink-600">Honoring Acts</div>
             </div>
           </div>
-
-          {/* Ad Space */}
-          <div className="space-y-4">
-            <div className="bg-gradient-to-br from-pink-50 to-rose-50 border-2 border-dashed border-pink-200 rounded-lg p-4 text-center">
-              <div className="text-pink-600 mb-2">💝</div>
-              <h5 className="font-semibold text-gray-800 text-sm mb-2">Honoring Gifts</h5>
-              <p className="text-xs text-gray-600 mb-3">Honor loved ones with a lasting impact</p>
-              <button className="bg-pink-600 text-white px-3 py-1 rounded text-xs hover:bg-pink-700 transition-colors">
-                Start Honoring
-              </button>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-dashed border-purple-200 rounded-lg p-4 text-center">
-              <div className="text-purple-600 mb-2">🕊️</div>
-              <h5 className="font-semibold text-gray-800 text-sm mb-2">Peace Fund</h5>
-              <p className="text-xs text-gray-600 mb-3">Dedicated to peaceful causes worldwide</p>
-              <button className="bg-purple-600 text-white px-3 py-1 rounded text-xs hover:bg-purple-700 transition-colors">
-                Contribute
-              </button>
-            </div>
+          
+          <div className="mt-3 text-center">
+            <p className="text-xs text-gray-600 italic">
+              "And whoever saves a life, it is as if he has saved all of mankind" - Quran 5:32
+            </p>
           </div>
         </div>
       </div>
