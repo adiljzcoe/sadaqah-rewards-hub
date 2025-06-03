@@ -1,3 +1,4 @@
+
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
@@ -120,6 +121,13 @@ const Index = () => {
               <UnifiedLiveFeed />
             </div>
 
+            {/* Donation Products Section - moved here below the main feed */}
+            <div className="mt-8 px-4">
+              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-lg shadow-lg">
+                <DonationProducts />
+              </div>
+            </div>
+
             {/* Business Advertisement between feed sections */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <BusinessAdvert />
@@ -154,13 +162,6 @@ const Index = () => {
       <div className="max-w-full overflow-x-hidden">
         <BusinessSection />
       </div>
-
-      {/* Donation Products Section - Positioned directly below Business Section with clear spacing */}
-      <section className="w-full py-8 bg-white/80 backdrop-blur-sm border-t border-gray-100">
-        <div className="container mx-auto px-4">
-          <DonationProducts />
-        </div>
-      </section>
 
       {/* Campaigns Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
