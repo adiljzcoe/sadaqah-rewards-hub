@@ -10,7 +10,7 @@ export interface CharityProduct {
   category: string;
   image_url?: string;
   product_type: 'fixed_price' | 'flexible_amount' | 'subscription' | 'cause_campaign';
-  pricing_model: 'fixed' | 'minimum' | 'suggested' | 'tiered';
+  pricing_model: 'fixed' | 'minimum' | 'suggested' | 'free_choice';
   fixed_price?: number;
   minimum_amount?: number;
   suggested_amount?: number;

@@ -108,18 +108,18 @@ const CharityProductCard: React.FC<CharityProductCardProps> = ({ product, onDona
           </div>
         );
 
-      case 'tiered':
+      case 'free_choice':
         return (
           <div className="text-center">
             <div className="text-sm text-gray-600 mb-2">
-              Multiple options available
+              Choose your amount
             </div>
             <Button 
               className="w-full bg-islamic-green-600 hover:bg-islamic-green-700"
               onClick={() => onDonate(product.id)}
             >
               <Heart className="h-4 w-4 mr-2" />
-              View Options
+              Donate
             </Button>
           </div>
         );

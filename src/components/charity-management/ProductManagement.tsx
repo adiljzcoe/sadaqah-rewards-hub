@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,7 @@ const ProductManagement: React.FC = () => {
     category: '',
     image_url: '',
     product_type: 'fixed_price' as 'fixed_price' | 'flexible_amount' | 'subscription' | 'cause_campaign',
-    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested' | 'tiered',
+    pricing_model: 'fixed' as 'fixed' | 'minimum' | 'suggested' | 'free_choice',
     fixed_price: '',
     minimum_amount: '',
     suggested_amount: '',
@@ -110,7 +111,7 @@ const ProductManagement: React.FC = () => {
       const productData = {
         charity_id: charity.id,
         name: formData.name,
-        description: formData.description || null,
+        description: formData.description || '',
         category: formData.category,
         image_url: formData.image_url || null,
         product_type: formData.product_type,
@@ -136,7 +137,7 @@ const ProductManagement: React.FC = () => {
       } else {
         result = await supabase
           .from('charity_products')
-          .insert([productData]);
+          .insert(productData);
       }
 
       if (result.error) throw result.error;
@@ -366,7 +367,7 @@ const ProductManagement: React.FC = () => {
                     <Label>Pricing Model</Label>
                     <Select 
                       value={formData.pricing_model} 
-                      onValueChange={(value: 'fixed' | 'minimum' | 'suggested' | 'tiered') => 
+                      onValueChange={(value: 'fixed' | 'minimum' | 'suggested' | 'free_choice') => 
                         setFormData({ ...formData, pricing_model: value })}
                     >
                       <SelectTrigger>
@@ -376,7 +377,7 @@ const ProductManagement: React.FC = () => {
                         <SelectItem value="fixed">Fixed</SelectItem>
                         <SelectItem value="minimum">Minimum</SelectItem>
                         <SelectItem value="suggested">Suggested</SelectItem>
-                        <SelectItem value="tiered">Tiered</SelectItem>
+                        <SelectItem value="free_choice">Free Choice</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
