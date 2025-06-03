@@ -72,6 +72,7 @@ function App() {
                       <Route path="/quran-reader" element={<QuranReader />} />
                       <Route path="/duas-library" element={<DuasLibrary />} />
                       <Route path="/islamic-calendar" element={<IslamicCalendar />} />
+                      <Route path="/islamic-calendar/:eventSlug" element={<IslamicCalendar />} />
                       <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
                       <Route path="/namaz-times" element={<NamazTimes />} />
                       <Route path="/fundraising" element={<Fundraising />} />
@@ -87,6 +88,7 @@ function App() {
                       <Route path="/business/:id" element={<BusinessProfile />} />
                       <Route path="/charity-partners" element={<CharityPartnersPublic />} />
                       <Route path="/blog" element={<Blog />} />
+                      <Route path="/blog/:slug" element={<Blog />} />
                       <Route path="/live-feed" element={<LiveFeed />} />
                       <Route path="/live-tv" element={<LiveTV />} />
                       <Route path="/checkout" element={<Checkout />} />
@@ -104,7 +106,6 @@ function App() {
                           <Profile />
                         </ProtectedRoute>
                       } />
-                      {/* Fixed admin route - was /admin but header links to /admin-dashboard */}
                       <Route path="/admin-dashboard" element={
                         <ProtectedRoute>
                           <AdminDashboard />
