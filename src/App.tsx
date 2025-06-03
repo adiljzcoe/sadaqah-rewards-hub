@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -48,6 +47,7 @@ import MyUmmah from "./pages/MyUmmah";
 import DhikrCommunity from "./pages/DhikrCommunity";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PushNotificationTest from "./pages/PushNotificationTest";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -100,6 +100,9 @@ function App() {
                       <Route path="/adhan-community" element={<AdhanCommunity />} />
                       <Route path="/my-ummah" element={<MyUmmah />} />
                       <Route path="/dhikr-community" element={<DhikrCommunity />} />
+                      
+                      {/* Push Notification Test Page */}
+                      <Route path="/push-test" element={<PushNotificationTest />} />
                       
                       {/* Admin Routes - both /admin and /admin-dashboard work */}
                       <Route path="/admin" element={<Navigate to="/admin-dashboard" replace />} />

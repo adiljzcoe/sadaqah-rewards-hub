@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,13 +24,19 @@ import {
   TrendingUp,
   AlertTriangle,
   CheckCircle,
-  Globe
+  Globe,
+  TestTube
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const PushNotifications = () => {
   const [isCreatingNotification, setIsCreatingNotification] = useState(false);
   const [selectedTab, setSelectedTab] = useState('notifications');
+  const [isSending, setIsSending] = useState(false);
+  const { toast } = useToast();
+  
   const [newNotification, setNewNotification] = useState({
     title: '',
     message: '',
@@ -40,7 +45,10 @@ const PushNotifications = () => {
     scheduleDate: '',
     scheduleTime: '',
     actionUrl: '',
-    priority: 'normal'
+    priority: 'normal',
+    icon: '/favicon.ico',
+    requireInteraction: false,
+    actions: []
   });
 
   // Mock data for push notifications
@@ -93,7 +101,7 @@ const PushNotifications = () => {
     { day: 'Mon', delivered: 45000, opened: 12500, clicked: 3400 },
     { day: 'Tue', delivered: 38000, opened: 10200, clicked: 2800 },
     { day: 'Wed', delivered: 42000, opened: 11800, clicked: 3200 },
-    { day: 'Thu', delivered: 39000, enabled: 10500, clicked: 2900 },
+    { day: 'Thu', delivered: 39000, opened: 10500, clicked: 2900 },
     { day: 'Fri', delivered: 52000, opened: 16000, clicked: 4200 },
     { day: 'Sat', delivered: 48000, opened: 14500, clicked: 3800 },
     { day: 'Sun', delivered: 35000, opened: 9800, clicked: 2600 }
@@ -147,9 +155,7 @@ const PushNotifications = () => {
     }
   ];
 
-  const handleCreateNotification = () => {
-    console.log('Creating notification:', newNotification);
-    setIsCreatingNotification(false);
+  const resetForm = () => {
     setNewNotification({
       title: '',
       message: '',
@@ -158,8 +164,107 @@ const PushNotifications = () => {
       scheduleDate: '',
       scheduleTime: '',
       actionUrl: '',
-      priority: 'normal'
+      priority: 'normal',
+      icon: '/favicon.ico',
+      requireInteraction: false,
+      actions: []
     });
+    setIsCreatingNotification(false);
+  };
+
+  const handleCreateNotification = async () => {
+    if (!newNotification.title || !newNotification.message) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in title and message fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      // Call our edge function to send push notification
+      const { data, error } = await supabase.functions.invoke('send-push-notification', {
+        body: {
+          title: newNotification.title,
+          message: newNotification.message,
+          audience: newNotification.audience || 'all',
+          scheduled: newNotification.scheduled,
+          scheduleDate: newNotification.scheduleDate,
+          scheduleTime: newNotification.scheduleTime,
+          actionUrl: newNotification.actionUrl,
+          priority: newNotification.priority,
+          icon: newNotification.icon,
+          requireInteraction: newNotification.requireInteraction,
+          actions: newNotification.actions
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Success",
+        description: newNotification.scheduled 
+          ? "Push notification scheduled successfully" 
+          : "Push notification sent successfully",
+      });
+
+      resetForm();
+    } catch (error) {
+      console.error('Error sending push notification:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send push notification. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleTestNotification = async () => {
+    setIsSending(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-push-notification', {
+        body: {
+          title: 'Test Notification',
+          message: 'This is a test notification from Sadaqah Rewards Hub admin panel',
+          audience: 'test',
+          scheduled: false,
+          actionUrl: '/admin-dashboard',
+          priority: 'normal',
+          icon: '/favicon.ico',
+          requireInteraction: false,
+          actions: [
+            { action: 'view', title: 'View Dashboard' },
+            { action: 'close', title: 'Close' }
+          ]
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Test Sent",
+        description: "Test push notification sent successfully",
+      });
+    } catch (error) {
+      console.error('Error sending test notification:', error);
+      toast({
+        title: "Test Failed",
+        description: "Failed to send test notification",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -172,10 +277,24 @@ const PushNotifications = () => {
           </h2>
           <p className="text-gray-600">Engage users with timely push notifications</p>
         </div>
-        <Button onClick={() => setIsCreatingNotification(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Send Notification
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleTestNotification}
+            disabled={isSending}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <TestTube className="h-4 w-4" />
+            {isSending ? 'Sending...' : 'Send Test'}
+          </Button>
+          <Button 
+            onClick={() => setIsCreatingNotification(true)}
+            className="flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            Send Notification
+          </Button>
+        </div>
       </div>
 
       {/* Quick Stats */}
@@ -362,11 +481,22 @@ const PushNotifications = () => {
                   </div>
                 )}
 
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    checked={newNotification.requireInteraction}
+                    onCheckedChange={(checked) => setNewNotification({ ...newNotification, requireInteraction: checked })}
+                  />
+                  <Label>Require user interaction</Label>
+                </div>
+
                 <div className="flex gap-2 pt-4">
-                  <Button onClick={handleCreateNotification}>
-                    {newNotification.scheduled ? 'Schedule Notification' : 'Send Now'}
+                  <Button 
+                    onClick={handleCreateNotification}
+                    disabled={isSending}
+                  >
+                    {isSending ? 'Sending...' : (newNotification.scheduled ? 'Schedule Notification' : 'Send Now')}
                   </Button>
-                  <Button variant="outline" onClick={() => setIsCreatingNotification(false)}>Cancel</Button>
+                  <Button variant="outline" onClick={resetForm}>Cancel</Button>
                   <Button variant="outline">Preview</Button>
                 </div>
               </CardContent>
