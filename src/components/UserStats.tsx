@@ -30,6 +30,64 @@ const UserStats = () => {
   // Mock user membership status - set to false to show upgrade link
   const isMember = false;
 
+  // Certificate styling based on rank
+  const getCertificateStyle = (rank) => {
+    switch (rank.name) {
+      case "Divine Saint":
+        return {
+          background: "bg-gradient-to-br from-yellow-100 via-amber-50 to-yellow-100",
+          border: "border-8 border-double border-yellow-400",
+          shadow: "shadow-2xl shadow-yellow-400/50",
+          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(251,191,36,0.1),transparent_50%)]",
+          glow: "ring-4 ring-yellow-300/30 ring-offset-4 ring-offset-white",
+          material: "Platinum Certificate",
+          ornament: "🏆"
+        };
+      case "Noble Champion":
+        return {
+          background: "bg-gradient-to-br from-purple-100 via-violet-50 to-purple-100",
+          border: "border-6 border-double border-purple-400",
+          shadow: "shadow-xl shadow-purple-400/40",
+          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(147,51,234,0.1),transparent_50%)]",
+          glow: "ring-3 ring-purple-300/30 ring-offset-3 ring-offset-white",
+          material: "Gold Certificate",
+          ornament: "👑"
+        };
+      case "Guardian Angel":
+        return {
+          background: "bg-gradient-to-br from-blue-100 via-sky-50 to-blue-100",
+          border: "border-4 border-double border-blue-400",
+          shadow: "shadow-lg shadow-blue-400/30",
+          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]",
+          glow: "ring-2 ring-blue-300/30 ring-offset-2 ring-offset-white",
+          material: "Silver Certificate",
+          ornament: "👼"
+        };
+      case "Kind Heart":
+        return {
+          background: "bg-gradient-to-br from-orange-100 via-amber-50 to-orange-100",
+          border: "border-4 border-orange-400",
+          shadow: "shadow-md shadow-orange-400/20",
+          texture: "bg-[radial-gradient(circle_at_50%_50%,rgba(251,146,60,0.1),transparent_50%)]",
+          glow: "ring-1 ring-orange-300/20 ring-offset-1 ring-offset-white",
+          material: "Bronze Certificate",
+          ornament: "🥉"
+        };
+      default:
+        return {
+          background: "bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-50",
+          border: "border-2 border-dashed border-amber-400",
+          shadow: "shadow-sm shadow-amber-200/30",
+          texture: "bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmJmNGY2IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')]",
+          glow: "",
+          material: "Parchment Scroll",
+          ornament: "📜"
+        };
+    }
+  };
+
+  const certificateStyle = getCertificateStyle(currentRank);
+
   // Listen for prayer completion events
   React.useEffect(() => {
     const handleJannahPointsUpdate = (event: CustomEvent) => {
@@ -85,47 +143,107 @@ const UserStats = () => {
 
   return (
     <Card className="p-6 game-card">
-      {/* Rank Badge Display */}
-      <div className="text-center mb-6">
-        <div className="relative inline-block mb-4">
-          <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r ${currentRank.gradient} ring-4 ring-white/20`}>
-            <span className="text-2xl">{currentRank.icon}</span>
+      {/* Premium Certificate/Plaque Display */}
+      <div className="text-center mb-8">
+        <div className={`relative p-8 mx-4 rounded-2xl ${certificateStyle.background} ${certificateStyle.border} ${certificateStyle.shadow} ${certificateStyle.glow} ${certificateStyle.texture} transform hover:scale-[1.02] transition-all duration-300`}>
+          {/* Decorative Corner Ornaments */}
+          <div className="absolute top-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+          <div className="absolute top-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+          <div className="absolute bottom-4 left-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+          <div className="absolute bottom-4 right-4 text-2xl opacity-30">{certificateStyle.ornament}</div>
+          
+          {/* Certificate Header */}
+          <div className="mb-6">
+            <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+              {certificateStyle.material}
+            </div>
+            <div className="w-20 h-1 bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto mb-4"></div>
           </div>
-          <Badge className={`absolute -top-1 -right-1 gel-button bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-md animate-bounce-in`}>
-            <Shield className="h-3 w-3 mr-1" />
-            {currentRank.badge}
-          </Badge>
-        </div>
-        
-        <h3 className="font-bold text-xl text-gray-900 flex items-center justify-center gap-2">
-          Ahmad M.
-          {isMember && (
-            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
-              <Crown className="h-3 w-3 mr-1" />
-              VIP
+
+          {/* Rank Badge */}
+          <div className="relative inline-block mb-6">
+            <div className={`w-24 h-24 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-2xl bg-gradient-to-r ${currentRank.gradient} ring-6 ring-white/50 transform hover:rotate-12 transition-transform duration-300`}>
+              <span className="text-3xl">{currentRank.icon}</span>
+            </div>
+            <Badge className={`absolute -top-2 -right-2 gel-button bg-gradient-to-r ${currentRank.gradient} text-white text-xs shadow-lg animate-pulse border-2 border-white`}>
+              <Shield className="h-3 w-3 mr-1" />
+              {currentRank.badge}
             </Badge>
-          )}
-        </h3>
-        
-        <p className="text-gray-600 mb-2">{currentRank.name}</p>
-        <p className="text-sm text-gray-500">{currentRank.description}</p>
+          </div>
+
+          {/* Certificate Title */}
+          <div className="mb-4">
+            <div className="text-xs text-gray-500 uppercase tracking-widest mb-2">This Certifies That</div>
+            <h3 className="font-bold text-2xl text-gray-900 flex items-center justify-center gap-3 mb-2">
+              Ahmad M.
+              {isMember && (
+                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+                  <Crown className="h-3 w-3 mr-1" />
+                  VIP
+                </Badge>
+              )}
+            </h3>
+            <div className="text-xs text-gray-500 uppercase tracking-widest mb-4">Has Achieved The Rank Of</div>
+            <div className="text-2xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-2">
+              {currentRank.name}
+            </div>
+            <p className="text-sm text-gray-600 italic">{currentRank.description}</p>
+          </div>
+
+          {/* Points Display */}
+          <div className="mb-6">
+            <div className="text-4xl font-black bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-2">
+              {currentPoints.toLocaleString()}
+            </div>
+            <div className="text-sm text-gray-600 font-medium">Jannah Points Earned</div>
+          </div>
+
+          {/* Decorative Flourish */}
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-8 h-px bg-gray-400"></div>
+            <Star className="h-4 w-4 mx-3 text-gray-400" />
+            <div className="w-8 h-px bg-gray-400"></div>
+          </div>
+
+          {/* Benefits Preview */}
+          <div className="text-xs text-gray-600 mb-4">
+            <div className="font-semibold mb-1">Current Benefits:</div>
+            <div className="flex flex-wrap justify-center gap-1">
+              {currentRank.benefits.slice(0, 2).map((benefit, index) => (
+                <span key={index} className="bg-white/50 px-2 py-1 rounded text-xs">
+                  {benefit}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Signature Line */}
+          <div className="border-t border-gray-300 pt-4 mt-6">
+            <div className="text-xs text-gray-500">
+              Donate Feels Great Community
+            </div>
+          </div>
+        </div>
         
         {/* Next Rank Incentive */}
         {nextRank && (
-          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-dashed border-blue-200">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="text-2xl">{nextRank.icon}</span>
+          <div className="mt-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border-2 border-dashed border-blue-200 hover:border-blue-300 transition-colors duration-300">
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <span className="text-3xl animate-bounce">{nextRank.icon}</span>
               <div>
-                <div className="font-bold text-gray-800">{nextRank.name}</div>
-                <div className="text-sm text-gray-600">Next Rank</div>
+                <div className="font-bold text-gray-800 text-lg">{nextRank.name}</div>
+                <div className="text-sm text-gray-600">Next Rank Achievement</div>
               </div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-blue-600 animate-pulse">
+              <div className="text-2xl font-bold text-blue-600 animate-pulse mb-2">
                 {pointsToNextRank.toLocaleString()} points to unlock!
               </div>
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-sm text-gray-600 mb-3">
                 Unlock: {nextRank.benefits.join(', ')}
+              </div>
+              <div className="text-xs text-blue-500 font-semibold bg-blue-100 px-3 py-1 rounded-full inline-block">
+                🏆 Earn your {getCertificateStyle(nextRank).material}
               </div>
             </div>
           </div>
@@ -133,10 +251,10 @@ const UserStats = () => {
         
         {/* Upgrade link for non-members - electric glow */}
         {!isMember && (
-          <div className="mt-3 mb-2">
-            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 border-2 border-white electric-glow">
-              <ArrowUp className="h-4 w-4 mr-2 inline" />
-              Upgrade to VIP for 2x Points!
+          <div className="mt-4">
+            <button className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-105 border-2 border-white electric-glow">
+              <ArrowUp className="h-5 w-5 mr-2 inline" />
+              Upgrade to VIP for 2x Points & Premium Certificates!
             </button>
           </div>
         )}
@@ -210,7 +328,7 @@ const UserStats = () => {
             className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 shadow-inner rounded-full overflow-hidden"
           />
           <div className="h-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full relative overflow-hidden" 
-               style={{ width: `${progress}%`, marginTop: '-16px' }}>
+               style={{ width: `${progress}%`, marginTop: '-12px' }}>
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
           </div>
           <p className="text-sm text-center text-gray-600 mt-2 font-semibold">
