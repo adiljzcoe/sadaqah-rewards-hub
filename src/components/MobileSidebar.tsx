@@ -111,36 +111,59 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         </SheetHeader>
         
         <div className="flex flex-col h-full">
-          {/* User Level Plaque */}
+          {/* Enhanced Golden User Plaque */}
           <div className="p-4 border-b border-white/10">
             <div className="text-center">
-              <div className="relative inline-block mb-3">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-4 ring-white/20">
-                  <span className="text-xl">🛡️</span>
-                </div>
-                {isMember && (
-                  <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
-                    <Crown className="h-3 w-3 mr-1" />
-                    VIP
-                  </Badge>
-                )}
-              </div>
-              
-              <h3 className="font-bold text-lg text-white flex items-center justify-center gap-2 mb-1">
-                Ahmad M.
-              </h3>
-              
-              <div className="space-y-2">
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-sm font-bold text-white">Level {userLevel}</span>
-                  <div className="flex-1 max-w-20">
-                    <Progress value={progress} className="h-2" />
+              {/* Golden Plaque Container */}
+              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-3xl px-4 py-3 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto max-w-[240px]">
+                {/* Inner glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-3xl"></div>
+                
+                {/* Top highlight */}
+                <div className="absolute top-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
+                
+                {/* Glossy animation effect that moves across */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-3xl"></div>
+                
+                <div className="relative">
+                  {/* Avatar Section */}
+                  <div className="relative inline-block mb-3">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-4 ring-white/20">
+                      <span className="text-xl">🛡️</span>
+                    </div>
+                    {isMember && (
+                      <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
+                        <Crown className="h-3 w-3 mr-1" />
+                        VIP
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  {/* User Info */}
+                  <div className="text-center">
+                    <h3 className="font-bold text-lg text-yellow-50 drop-shadow-md mb-1">
+                      Ahmad M.
+                    </h3>
+                    <span className="text-sm text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
+                  </div>
+                  
+                  {/* Level and Progress */}
+                  <div className="mt-3 space-y-2">
+                    <div className="flex items-center justify-center space-x-2">
+                      <span className="text-sm font-bold text-yellow-50 drop-shadow-md">Level {userLevel}</span>
+                      <div className="flex-1 max-w-20">
+                        <Progress value={progress} className="h-2" />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center space-x-1">
+                      <Star className="h-4 w-4 text-yellow-100 drop-shadow-md" />
+                      <span className="text-sm font-bold text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} points</span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center space-x-1">
-                  <Star className="h-4 w-4 text-yellow-400" />
-                  <span className="text-sm font-bold text-white">{currentPoints.toLocaleString()} points</span>
-                </div>
+                
+                {/* Bottom highlight */}
+                <div className="absolute bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
               </div>
             </div>
           </div>
@@ -240,6 +263,14 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             )}
           </div>
         </div>
+        
+        {/* Add the shine animation keyframes */}
+        <style>{`
+          @keyframes shine {
+            0% { transform: translateX(-100%) skewX(-12deg); }
+            100% { transform: translateX(400%) skewX(-12deg); }
+          }
+        `}</style>
       </SheetContent>
     </Sheet>
   );
