@@ -1,6 +1,5 @@
 
 import React from 'react';
-import Header from '@/components/Header';
 import IslamicCalendarGrid from '@/components/islamic-calendar/IslamicCalendarGrid';
 import IslamicCalendarStats from '@/components/islamic-calendar/IslamicCalendarStats';
 import CelebrationEffects from '@/components/islamic-calendar/CelebrationEffects';
@@ -12,8 +11,6 @@ const IslamicCalendar = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20 relative overflow-hidden">
       {/* Add celebration effects to the main page too */}
       <CelebrationEffects />
-      
-      <Header />
       
       <div className="container mx-auto px-4 py-8">
         {/* Enhanced Hero Section with celebration elements */}
