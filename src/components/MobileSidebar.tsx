@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles } from 'lucide-react';
+import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -105,12 +105,46 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+      <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
         <SheetHeader className="p-4 border-b border-white/10">
           <SheetTitle className="text-left text-white font-bold text-xl">Navigation</SheetTitle>
         </SheetHeader>
         
         <div className="flex flex-col h-full">
+          {/* User Level Plaque */}
+          <div className="p-4 border-b border-white/10">
+            <div className="text-center">
+              <div className="relative inline-block mb-3">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-4 ring-white/20">
+                  <span className="text-xl">🛡️</span>
+                </div>
+                {isMember && (
+                  <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
+                    <Crown className="h-3 w-3 mr-1" />
+                    VIP
+                  </Badge>
+                )}
+              </div>
+              
+              <h3 className="font-bold text-lg text-white flex items-center justify-center gap-2 mb-1">
+                Ahmad M.
+              </h3>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-sm font-bold text-white">Level {userLevel}</span>
+                  <div className="flex-1 max-w-20">
+                    <Progress value={progress} className="h-2" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-center space-x-1">
+                  <Star className="h-4 w-4 text-yellow-400" />
+                  <span className="text-sm font-bold text-white">{currentPoints.toLocaleString()} points</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             
             {/* Home */}
@@ -205,24 +239,6 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               </Link>
             )}
           </div>
-
-          {/* User Stats at Bottom */}
-          {isMember && (
-            <div className="p-4 border-t border-white/10 bg-gradient-to-r from-slate-800/80 to-indigo-800/80">
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-bold text-white">Level {userLevel}</span>
-                  <div className="flex-1">
-                    <Progress value={progress} className="h-2" />
-                  </div>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4 text-yellow-400" />
-                  <span className="text-sm font-bold text-white">{currentPoints.toLocaleString()} points</span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </SheetContent>
     </Sheet>
