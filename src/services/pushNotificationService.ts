@@ -1,4 +1,3 @@
-
 // Push Notification Service for Frontend
 export class PushNotificationService {
   private static instance: PushNotificationService;
@@ -201,9 +200,7 @@ export class PushNotificationService {
         icon: '/favicon.ico',
         badge: '/favicon.ico',
         tag: 'test',
-        data: { url: '/' },
-        vibrate: [200, 100, 200],
-        requireInteraction: false
+        data: { url: '/' }
       });
     }
   }
