@@ -160,8 +160,12 @@ const Index = () => {
         <BusinessSection />
       </div>
 
-      {/* Donation Products Section - Moved to after Business Section */}
-      <DonationProducts />
+      {/* Donation Products Section - Positioned directly below Business Section with clear spacing */}
+      <section className="w-full py-8 bg-white/80 backdrop-blur-sm border-t border-gray-100">
+        <div className="container mx-auto px-4">
+          <DonationProducts />
+        </div>
+      </section>
 
       {/* Campaigns Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
