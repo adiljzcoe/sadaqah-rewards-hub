@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -262,57 +261,6 @@ const UnifiedLiveFeed = () => {
 
         <TabsContent value={activeTab} className="p-0 m-0">
           <div className="p-6">
-            {/* Activity Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-3 border border-red-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-lg font-bold text-red-600">
-                      {activities.filter(a => a.type === 'donation').length}
-                    </div>
-                    <div className="text-xs text-red-500 font-medium">Donations</div>
-                  </div>
-                  <Heart className="h-5 w-5 text-red-500" />
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg p-3 border border-yellow-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-lg font-bold text-yellow-600">
-                      {activities.filter(a => a.type === 'jannah').length}
-                    </div>
-                    <div className="text-xs text-yellow-500 font-medium">Jannah Items</div>
-                  </div>
-                  <Star className="h-5 w-5 text-yellow-500" />
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-3 border border-purple-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-lg font-bold text-purple-600">
-                      {activities.filter(a => a.type === 'achievement' || a.type === 'leaderboard').length}
-                    </div>
-                    <div className="text-xs text-purple-500 font-medium">Achievements</div>
-                  </div>
-                  <Trophy className="h-5 w-5 text-purple-500" />
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-3 border border-blue-200">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-lg font-bold text-blue-600">
-                      {activities.filter(a => a.type === 'charity_update').length}
-                    </div>
-                    <div className="text-xs text-blue-500 font-medium">Updates</div>
-                  </div>
-                  <Camera className="h-5 w-5 text-blue-500" />
-                </div>
-              </div>
-            </div>
-
             {/* Activities Feed */}
             <div className="space-y-4">
               {getFilteredActivities().map((activity, index) => {
