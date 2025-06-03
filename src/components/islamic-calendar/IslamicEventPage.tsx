@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -7,6 +8,7 @@ import CelebrationEffects from './CelebrationEffects';
 import CelebrationBanner from './CelebrationBanner';
 import AmazingCelebrationButton from './AmazingCelebrationButton';
 import AmazingCelebrationEffects from './AmazingCelebrationEffects';
+import CelebrationToggle from './CelebrationToggle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,6 +20,7 @@ import CountdownTimer from './CountdownTimer';
 const IslamicEventPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [amazingCelebrationActive, setAmazingCelebrationActive] = useState(false);
+  const [celebrationPaused, setCelebrationPaused] = useState(false);
   
   if (!slug) {
     return <Navigate to="/islamic-calendar" replace />;
@@ -58,13 +61,20 @@ const IslamicEventPage = () => {
     console.log(`Celebrating ${event.title}!`);
   };
 
+  const handleToggleCelebration = () => {
+    setAmazingCelebrationActive(!amazingCelebrationActive);
+    if (amazingCelebrationActive) {
+      setCelebrationPaused(false); // Reset pause state when stopping
+    }
+  };
+
+  const handlePauseCelebration = () => {
+    setCelebrationPaused(!celebrationPaused);
+  };
+
   const handleAmazingCelebration = () => {
     setAmazingCelebrationActive(true);
-    
-    // Reset after 8 seconds
-    setTimeout(() => {
-      setAmazingCelebrationActive(false);
-    }, 8000);
+    setCelebrationPaused(false);
     
     // Also trigger the original celebration
     handleCelebrate();
@@ -75,10 +85,19 @@ const IslamicEventPage = () => {
       {/* Regular Celebration Effects - Always Active */}
       <CelebrationEffects />
       
-      {/* Amazing Celebration Effects - Triggered by button */}
+      {/* Amazing Celebration Effects - Controlled by user */}
       <AmazingCelebrationEffects 
         isActive={amazingCelebrationActive} 
-        eventTitle={event.title} 
+        eventTitle={event.title}
+        isPaused={celebrationPaused}
+      />
+      
+      {/* Celebration Toggle Controls */}
+      <CelebrationToggle 
+        isActive={amazingCelebrationActive}
+        isPaused={celebrationPaused}
+        onToggle={handleToggleCelebration}
+        onPause={handlePauseCelebration}
       />
       
       {/* Special Banner for Today's Events */}
@@ -86,7 +105,7 @@ const IslamicEventPage = () => {
       
       <Header />
       
-      <div className={`container mx-auto px-4 py-8 ${isToday ? 'pt-24' : ''}`}>
+      <div className={`container mx-auto px-4 py-8 ${isToday ? 'pt-24' : ''} pb-24`}>
         {/* Enhanced Hero Section with Amazing Celebration Button */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 text-white mb-8">
           {/* Background celebration pattern */}
@@ -354,7 +373,7 @@ const IslamicEventPage = () => {
                   onClick={handleCelebrate}
                   size="lg"
                   variant="outline"
-                  className="bg-white/20 hover:bg-white/30 text-white border-white/30 hover:border-white/50 backdrop-blur-sm"
+                  className="w-full"
                 >
                   <Heart className="h-5 w-5 mr-2" />
                   Simple Celebration
