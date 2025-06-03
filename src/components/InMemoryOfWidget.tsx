@@ -215,9 +215,6 @@ const InMemoryOfWidget = () => {
                     <div className="relative p-6 z-10">
                       {/* Memorial Header */}
                       <div className="text-center mb-4">
-                        <div className="font-serif text-xs font-bold text-amber-950 mb-2 tracking-[0.2em] uppercase">
-                          Memorial Plaque
-                        </div>
                         <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-950 to-transparent mx-auto mb-3" />
                         <div className="font-serif text-lg font-bold text-amber-950 mb-2 tracking-wide">
                           {memorial.honoringOf}
