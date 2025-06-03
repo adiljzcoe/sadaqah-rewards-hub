@@ -1,3 +1,4 @@
+
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -17,7 +18,7 @@ export const useSiteConfig = (configKey?: string) => {
     queryFn: async () => {
       console.log('Fetching site config:', configKey);
       
-      let query = supabase.from('site_config').select('*');
+      let query = supabase.from('site_config' as any).select('*');
       
       if (configKey) {
         query = query.eq('config_key', configKey).single();
@@ -43,7 +44,7 @@ export const usePublicSiteConfig = () => {
       console.log('Fetching public site config');
       
       const { data, error } = await supabase
-        .from('site_config')
+        .from('site_config' as any)
         .select('*')
         .eq('is_public', true);
 
@@ -55,7 +56,7 @@ export const usePublicSiteConfig = () => {
       console.log('Fetched public site config:', data);
       
       // Convert to object for easier access
-      const configObject = data.reduce((acc, config) => {
+      const configObject = data.reduce((acc: any, config: any) => {
         let value = config.config_value;
         
         // Parse JSON values

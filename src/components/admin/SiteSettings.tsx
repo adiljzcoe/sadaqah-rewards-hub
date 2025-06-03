@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -47,7 +48,7 @@ const SiteSettings: React.FC = () => {
 
   React.useEffect(() => {
     if (configs && Array.isArray(configs)) {
-      const configObject = configs.reduce((acc, config) => {
+      const configObject = configs.reduce((acc: any, config: any) => {
         let value = config.config_value;
         
         // Parse JSON values
@@ -87,7 +88,7 @@ const SiteSettings: React.FC = () => {
       }
 
       const { error } = await supabase
-        .from('site_config')
+        .from('site_config' as any)
         .upsert({
           config_key: key,
           config_value: processedValue,
@@ -403,6 +404,7 @@ const SiteSettings: React.FC = () => {
                   id="facebook_pixel_id"
                   value={settings.facebook_pixel_id}
                   onChange={(e) => setSettings({ ...settings, facebook_pixel_id: e.target.value })}
+                  placeholder="Facebook Pixel ID"
                 />
               </div>
 

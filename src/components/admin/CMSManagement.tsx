@@ -88,12 +88,12 @@ const CMSManagement: React.FC = () => {
       let result;
       if (editingPage) {
         result = await supabase
-          .from('cms_pages')
+          .from('cms_pages' as any)
           .update(pageData)
           .eq('id', editingPage);
       } else {
         result = await supabase
-          .from('cms_pages')
+          .from('cms_pages' as any)
           .insert([{
             ...pageData,
             created_by: (await supabase.auth.getUser()).data.user?.id
@@ -147,7 +147,7 @@ const CMSManagement: React.FC = () => {
 
     try {
       const { error } = await supabase
-        .from('cms_pages')
+        .from('cms_pages' as any)
         .delete()
         .eq('id', pageId);
 

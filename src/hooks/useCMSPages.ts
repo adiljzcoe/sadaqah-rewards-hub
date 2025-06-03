@@ -35,7 +35,7 @@ export const useCMSPages = (status?: 'published' | 'draft' | 'archived') => {
     queryFn: async () => {
       console.log('Fetching CMS pages:', status);
       
-      let query = supabase.from('cms_pages').select('*');
+      let query = supabase.from('cms_pages' as any).select('*');
       
       if (status) {
         query = query.eq('status', status);
@@ -63,7 +63,7 @@ export const useCMSPage = (slug: string) => {
       console.log('Fetching CMS page by slug:', slug);
       
       const { data, error } = await supabase
-        .from('cms_pages')
+        .from('cms_pages' as any)
         .select('*')
         .eq('slug', slug)
         .eq('status', 'published')
