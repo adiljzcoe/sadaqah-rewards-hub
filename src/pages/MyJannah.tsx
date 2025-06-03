@@ -1,17 +1,106 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Star, Heart, Trophy, Target, TrendingUp, Calendar, Gift, Zap, Crown, Award } from 'lucide-react';
+import { Star, Heart, Trophy, Target, TrendingUp, Calendar, Gift, Zap, Crown, Award, TreeDeciduous, TreePalm, Trees, Waves, Home, Building, Mosque, Mountain, Sun, Moon, Apple, Grape, Bird, Fish, Car, Ship, Fountain, Flower } from 'lucide-react';
+import JannahBuilder from '@/components/JannahBuilder';
+import JannahShop from '@/components/JannahShop';
+import Jannah3DBuilder from '@/components/Jannah3DBuilder';
+import type { JannahItem } from '@/types/jannah';
 
 const MyJannah = () => {
   const [totalPoints, setTotalPoints] = useState(5634);
   const [currentLevel, setCurrentLevel] = useState(12);
   const [nextLevelPoints, setNextLevelPoints] = useState(6000);
   const [todayPoints, setTodayPoints] = useState(45);
+  const [userCoins, setUserCoins] = useState(1250);
+  const [placedItems, setPlacedItems] = useState<Array<{ item: JannahItem; x: number; y: number }>>([]);
+  const [gridSize, setGridSize] = useState(12);
+
+  // Jannah items data
+  const jannahItems: JannahItem[] = [
+    {
+      id: 'tree-oak',
+      name: 'Divine Oak Tree',
+      description: 'A majestic tree providing eternal shade and peace',
+      price: 50,
+      category: 'nature',
+      size: '2x2',
+      icon: <TreeDeciduous className="h-6 w-6" />,
+      intention: 'For every tree planted, may Allah grant us shade on the Day of Judgment',
+      realProject: 'Plants 5 trees in drought-affected areas'
+    },
+    {
+      id: 'fountain-crystal',
+      name: 'Crystal Fountain',
+      description: 'A sparkling fountain of pure, healing water',
+      price: 100,
+      category: 'utilities',
+      size: '2x2',
+      icon: <Fountain className="h-6 w-6" />,
+      intention: 'May this fountain represent the rivers of Paradise',
+      realProject: 'Provides clean water access to 50 families'
+    },
+    {
+      id: 'mosque-pearl',
+      name: 'Pearl Mosque',
+      description: 'A beautiful mosque made of luminous pearls',
+      price: 300,
+      category: 'religious',
+      size: '3x3',
+      icon: <Mosque className="h-6 w-6" />,
+      intention: 'Whoever builds a mosque, Allah builds a house for them in Paradise',
+      realProject: 'Contributes to building a real mosque in a underserved community'
+    },
+    {
+      id: 'palace-gold',
+      name: 'Golden Palace',
+      description: 'A magnificent palace for the righteous',
+      price: 500,
+      category: 'structures',
+      size: '4x4',
+      icon: <Building className="h-6 w-6" />,
+      intention: 'For the patient believers who worked for their eternal home',
+      realProject: 'Builds permanent housing for refugee families'
+    },
+    {
+      id: 'bird-paradise',
+      name: 'Birds of Paradise',
+      description: 'Beautiful birds that sing divine praises',
+      price: 75,
+      category: 'animals',
+      size: '1x1',
+      icon: <Bird className="h-6 w-6" />,
+      intention: 'All creation glorifies Allah',
+      realProject: 'Supports wildlife conservation efforts'
+    },
+    {
+      id: 'fruit-eternal',
+      name: 'Eternal Fruit Trees',
+      description: 'Trees bearing the most delicious fruits',
+      price: 120,
+      category: 'fruits',
+      size: '2x2',
+      icon: <Apple className="h-6 w-6" />,
+      intention: 'The fruits of Paradise never finish',
+      realProject: 'Plants fruit trees in food-insecure regions'
+    }
+  ];
+
+  const handlePurchase = (item: JannahItem): boolean => {
+    if (userCoins >= item.price) {
+      setUserCoins(prev => prev - item.price);
+      
+      if (item.id.includes('grid-expansion')) {
+        setGridSize(prev => prev + 2);
+      }
+      
+      return true;
+    }
+    return false;
+  };
 
   const recentActivities = [
     { action: "Donated to Water Wells", points: 50, time: "2 hours ago", charity: "Water Wells Foundation" },
@@ -45,8 +134,13 @@ const MyJannah = () => {
             My Jannah Journey
           </h1>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            Track your spiritual progress and earn rewards on your path to Jannah through charitable giving
+            Track your spiritual progress and build your paradise through charitable giving
           </p>
+          <div className="mt-4 flex items-center justify-center gap-4">
+            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2">
+              💰 {userCoins} Jannah Coins
+            </Badge>
+          </div>
         </div>
 
         {/* Level Progress Card */}
@@ -118,13 +212,35 @@ const MyJannah = () => {
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="activity" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
+        <Tabs defaultValue="builder" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
+            <TabsTrigger value="builder">Build Paradise</TabsTrigger>
+            <TabsTrigger value="shop">Jannah Shop</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
             <TabsTrigger value="achievements">Achievements</TabsTrigger>
-            <TabsTrigger value="rewards">Rewards</TabsTrigger>
             <TabsTrigger value="goals">Goals</TabsTrigger>
           </TabsList>
+
+          {/* Jannah Builder */}
+          <TabsContent value="builder">
+            <Jannah3DBuilder
+              items={jannahItems}
+              userCoins={userCoins}
+              onPurchase={handlePurchase}
+              placedItems={placedItems}
+              onItemsChange={setPlacedItems}
+              gridSize={gridSize}
+            />
+          </TabsContent>
+
+          {/* Jannah Shop */}
+          <TabsContent value="shop">
+            <JannahShop
+              items={jannahItems}
+              userCoins={userCoins}
+              onPurchase={handlePurchase}
+            />
+          </TabsContent>
 
           {/* Recent Activity */}
           <TabsContent value="activity">
@@ -187,40 +303,6 @@ const MyJannah = () => {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </TabsContent>
-
-          {/* Level Rewards */}
-          <TabsContent value="rewards">
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Gift className="h-5 w-5" />
-                    Upcoming Level Rewards
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {levelRewards.map((reward, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
-                            {reward.level}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold">Level {reward.level} Reward</h4>
-                            <p className="text-sm text-gray-600">{reward.reward}</p>
-                          </div>
-                        </div>
-                        <Badge variant={reward.unlocked ? "default" : "outline"}>
-                          {reward.unlocked ? "Unlocked" : "Locked"}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 

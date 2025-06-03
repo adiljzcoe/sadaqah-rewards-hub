@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, TreeDeciduous, TreePalm, Trees, Waves, Home } from 'lucide-react';
-import type { JannahItem } from '@/pages/MyJannah';
+import type { JannahItem } from '@/types/jannah';
 
 interface JannahBuilderProps {
   items: JannahItem[];
