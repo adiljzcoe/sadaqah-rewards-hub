@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Pause, Play } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import PixarHeartMascot from './PixarHeartMascot';
 import CoinAnimation from './CoinAnimation';
@@ -13,8 +13,9 @@ const FloatingDonationButton = () => {
   const [coinAnimationTrigger, setCoinAnimationTrigger] = useState(false);
   const [messageIndex, setMessageIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
-  const [position, setPosition] = useState({ x: 0, y: 0 }); // Changed from swipeOffset to position
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   
   const dragStartRef = useRef({ x: 0, y: 0 });
   const dragCurrentRef = useRef({ x: 0, y: 0 });
@@ -79,16 +80,16 @@ const FloatingDonationButton = () => {
     'Hope must not die! 🕊️'
   ];
 
-  // Rotate through messages every 3 seconds
+  // Rotate through messages every 3 seconds, but only if not paused
   useEffect(() => {
-    if (showCallToAction) {
+    if (showCallToAction && !isPaused) {
       const interval = setInterval(() => {
         setMessageIndex((prevIndex) => (prevIndex + 1) % encouragingMessages.length);
       }, 3000);
 
       return () => clearInterval(interval);
     }
-  }, [showCallToAction, encouragingMessages.length]);
+  }, [showCallToAction, isPaused, encouragingMessages.length]);
 
   // Update current message when index changes
   useEffect(() => {
@@ -96,14 +97,16 @@ const FloatingDonationButton = () => {
   }, [messageIndex, encouragingMessages]);
 
   useEffect(() => {
-    // Simulate a call to action after 5 seconds
+    // Simulate a call to action after 5 seconds, but only if not paused
     const timer = setTimeout(() => {
-      setShowCallToAction(true);
-      setCurrentMessage(encouragingMessages[0]);
+      if (!isPaused) {
+        setShowCallToAction(true);
+        setCurrentMessage(encouragingMessages[0]);
+      }
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [encouragingMessages]);
+  }, [encouragingMessages, isPaused]);
 
   // Updated touch handlers - now just move instead of swipe away
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -202,6 +205,14 @@ const FloatingDonationButton = () => {
     setIsStickyWidgetActive(!isStickyWidgetActive);
   };
 
+  const togglePause = () => {
+    setIsPaused(!isPaused);
+    if (isPaused) {
+      // Resume - show call to action if it was supposed to be shown
+      setShowCallToAction(true);
+    }
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -266,8 +277,27 @@ const FloatingDonationButton = () => {
           transition: isDragging ? 'none' : 'transform 0.3s ease-out'
         }}
       >
-        {/* Message positioned much closer to mascot */}
-        {showCallToAction && (
+        {/* Pause button - positioned at top right of mascot */}
+        <div className="absolute -top-2 -right-2 z-30">
+          <Button
+            variant="outline"
+            size="icon"
+            className="w-8 h-8 rounded-full bg-white/90 hover:bg-white border-2 border-gray-300 shadow-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePause();
+            }}
+          >
+            {isPaused ? (
+              <Play className="h-3 w-3 text-green-600" />
+            ) : (
+              <Pause className="h-3 w-3 text-orange-600" />
+            )}
+          </Button>
+        </div>
+
+        {/* Message positioned much closer to mascot - only show if not paused */}
+        {showCallToAction && !isPaused && (
           <div className={`absolute z-60 ${
             isStickyWidgetActive 
               ? 'top-12 -left-16 md:-top-8 md:-left-20' 
@@ -390,13 +420,13 @@ const FloatingDonationButton = () => {
           onMouseDown={handleMouseDown}
           className="relative w-40 h-40 cursor-pointer transition-all duration-300 group touch-none"
           style={{
-            animation: showCallToAction && !isDragging ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
+            animation: showCallToAction && !isDragging && !isPaused ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
           {/* Heart Mascot - Base layer */}
           <div className="absolute inset-0 z-10">
             <PixarHeartMascot 
-              isActive={showCallToAction} 
+              isActive={showCallToAction && !isPaused} 
               className="w-full h-full"
             />
           </div>
