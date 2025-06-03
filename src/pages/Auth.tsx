@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Github, Shield, User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +18,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, signUp, signInWithGoogle, signInWithGitHub, fakeAdminLogin, fakeUserLogin, user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -33,6 +37,78 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
     await signUp(email, password, fullName);
+    setLoading(false);
+  };
+
+  const handleTestLogin = async () => {
+    setLoading(true);
+    try {
+      // First try to sign in with the test credentials
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: 'test@test.com',
+        password: '12345',
+      });
+
+      if (error && error.message.includes('Invalid login credentials')) {
+        // If login fails, create the test account
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: 'test@test.com',
+          password: '12345',
+          options: {
+            data: {
+              full_name: 'Test User'
+            }
+          }
+        });
+
+        if (signUpError) {
+          toast({
+            title: "Error creating test account",
+            description: signUpError.message,
+            variant: "destructive",
+          });
+        } else {
+          // Now try to sign in again
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: 'test@test.com',
+            password: '12345',
+          });
+
+          if (signInError) {
+            toast({
+              title: "Test account created but login failed",
+              description: "Please try signing in manually with test@test.com / 12345",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Test account created and logged in!",
+              description: "You're now logged in with test@test.com",
+            });
+            navigate('/');
+          }
+        }
+      } else if (error) {
+        toast({
+          title: "Login failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Logged in successfully!",
+          description: "You're now logged in with test@test.com",
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Test login error:', error);
+      toast({
+        title: "Unexpected error",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
     setLoading(false);
   };
 
@@ -58,6 +134,31 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Quick Test Login Button */}
+          <div className="mb-6">
+            <Button
+              onClick={handleTestLogin}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "🚀 Quick Login (test@test.com)"}
+            </Button>
+            <p className="text-xs text-gray-500 text-center mt-2">
+              This will create and login with test@test.com / 12345
+            </p>
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or use manual login
+              </span>
+            </div>
+          </div>
+
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
