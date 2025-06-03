@@ -1,10 +1,10 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { CartProvider } from "@/hooks/useCart";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import Header from "./components/Header";
 import Index from "./pages/Index";
@@ -55,81 +55,83 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <CurrencyProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <div className="min-h-screen bg-background flex flex-col">
-                <Header />
-                <main className="flex-1">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/zakat-calculator" element={<ZakatCalculator />} />
-                    <Route path="/quran-reader" element={<QuranReader />} />
-                    <Route path="/duas-library" element={<DuasLibrary />} />
-                    <Route path="/islamic-calendar" element={<IslamicCalendar />} />
-                    <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
-                    <Route path="/namaz-times" element={<NamazTimes />} />
-                    <Route path="/fundraising" element={<Fundraising />} />
-                    <Route path="/campaigns" element={<Campaigns />} />
-                    <Route path="/orphanages" element={<Orphanages />} />
-                    <Route path="/water-wells" element={<WaterWells />} />
-                    <Route path="/build-mosque" element={<BuildMosque />} />
-                    <Route path="/donate-to-palestine" element={<DonateToPalestine />} />
-                    <Route path="/pray-for-palestine" element={<PrayForPalestine />} />
-                    <Route path="/qurbani" element={<Qurbani />} />
-                    <Route path="/why-donate" element={<WhyDonate />} />
-                    <Route path="/charity/:id" element={<CharityProfile />} />
-                    <Route path="/business/:id" element={<BusinessProfile />} />
-                    <Route path="/charity-partners" element={<CharityPartnersPublic />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/live-feed" element={<LiveFeed />} />
-                    <Route path="/live-tv" element={<LiveTV />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/gift-cards" element={<GiftCards />} />
-                    <Route path="/membership" element={<Membership />} />
-                    <Route path="/masjid-community" element={<MasjidCommunity />} />
-                    <Route path="/dua-wall" element={<DuaWall />} />
-                    <Route path="/adhan-community" element={<AdhanCommunity />} />
-                    <Route path="/my-ummah" element={<MyUmmah />} />
-                    <Route path="/dhikr-community" element={<DhikrCommunity />} />
-                    
-                    {/* Protected Routes */}
-                    <Route path="/profile" element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/admin" element={
-                      <ProtectedRoute>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/my-jannah" element={
-                      <ProtectedRoute>
-                        <MyJannah />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/sadaqah-coins" element={
-                      <ProtectedRoute>
-                        <SadaqahCoins />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/leaderboards" element={
-                      <ProtectedRoute>
-                        <Leaderboards />
-                      </ProtectedRoute>
-                    } />
-                    
-                    {/* 404 Route */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </div>
-            </BrowserRouter>
-          </CurrencyProvider>
+          <CartProvider>
+            <CurrencyProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <div className="min-h-screen bg-background flex flex-col">
+                  <Header />
+                  <main className="flex-1">
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+                      <Route path="/quran-reader" element={<QuranReader />} />
+                      <Route path="/duas-library" element={<DuasLibrary />} />
+                      <Route path="/islamic-calendar" element={<IslamicCalendar />} />
+                      <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
+                      <Route path="/namaz-times" element={<NamazTimes />} />
+                      <Route path="/fundraising" element={<Fundraising />} />
+                      <Route path="/campaigns" element={<Campaigns />} />
+                      <Route path="/orphanages" element={<Orphanages />} />
+                      <Route path="/water-wells" element={<WaterWells />} />
+                      <Route path="/build-mosque" element={<BuildMosque />} />
+                      <Route path="/donate-to-palestine" element={<DonateToPalestine />} />
+                      <Route path="/pray-for-palestine" element={<PrayForPalestine />} />
+                      <Route path="/qurbani" element={<Qurbani />} />
+                      <Route path="/why-donate" element={<WhyDonate />} />
+                      <Route path="/charity/:id" element={<CharityProfile />} />
+                      <Route path="/business/:id" element={<BusinessProfile />} />
+                      <Route path="/charity-partners" element={<CharityPartnersPublic />} />
+                      <Route path="/blog" element={<Blog />} />
+                      <Route path="/live-feed" element={<LiveFeed />} />
+                      <Route path="/live-tv" element={<LiveTV />} />
+                      <Route path="/checkout" element={<Checkout />} />
+                      <Route path="/gift-cards" element={<GiftCards />} />
+                      <Route path="/membership" element={<Membership />} />
+                      <Route path="/masjid-community" element={<MasjidCommunity />} />
+                      <Route path="/dua-wall" element={<DuaWall />} />
+                      <Route path="/adhan-community" element={<AdhanCommunity />} />
+                      <Route path="/my-ummah" element={<MyUmmah />} />
+                      <Route path="/dhikr-community" element={<DhikrCommunity />} />
+                      
+                      {/* Protected Routes */}
+                      <Route path="/profile" element={
+                        <ProtectedRoute>
+                          <Profile />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/admin" element={
+                        <ProtectedRoute>
+                          <AdminDashboard />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/my-jannah" element={
+                        <ProtectedRoute>
+                          <MyJannah />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/sadaqah-coins" element={
+                        <ProtectedRoute>
+                          <SadaqahCoins />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/leaderboards" element={
+                        <ProtectedRoute>
+                          <Leaderboards />
+                        </ProtectedRoute>
+                      } />
+                      
+                      {/* 404 Route */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </main>
+                </div>
+              </BrowserRouter>
+            </CurrencyProvider>
+          </CartProvider>
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
