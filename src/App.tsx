@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CartProvider } from './hooks/useCart';
@@ -34,6 +33,7 @@ import DonateToPalestine from './pages/DonateToPalestine';
 import Checkout from './pages/Checkout';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+import Fundraising from './pages/Fundraising';
 
 const queryClient = new QueryClient();
 
@@ -66,6 +66,7 @@ function App() {
               
               {/* Donation Routes */}
               <Route path="/campaigns" element={<Campaigns />} />
+              <Route path="/fundraising" element={<Fundraising />} />
               <Route path="/donate-to-palestine" element={<DonateToPalestine />} />
               <Route path="/build-mosque" element={<BuildMosque />} />
               <Route path="/water-wells" element={<WaterWells />} />

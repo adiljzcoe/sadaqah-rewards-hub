@@ -892,6 +892,200 @@ export type Database = {
         }
         Relationships: []
       }
+      fundraising_campaigns: {
+        Row: {
+          cause_category: string
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          dedication_message: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          image_url: string | null
+          is_team_fundraiser: boolean | null
+          masjid_id: string | null
+          raised_amount: number | null
+          share_code: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["fundraiser_status"] | null
+          target_amount: number
+          title: string
+          updated_at: string | null
+          video_url: string | null
+        }
+        Insert: {
+          cause_category: string
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          dedication_message?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          is_team_fundraiser?: boolean | null
+          masjid_id?: string | null
+          raised_amount?: number | null
+          share_code?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["fundraiser_status"] | null
+          target_amount: number
+          title: string
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          cause_category?: string
+          created_at?: string | null
+          created_by?: string | null
+          currency?: string | null
+          dedication_message?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          is_team_fundraiser?: boolean | null
+          masjid_id?: string | null
+          raised_amount?: number | null
+          share_code?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["fundraiser_status"] | null
+          target_amount?: number
+          title?: string
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      fundraising_categories: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+        }
+        Relationships: []
+      }
+      fundraising_donations: {
+        Row: {
+          amount: number
+          campaign_id: string | null
+          created_at: string | null
+          donor_name: string | null
+          donor_user_id: string | null
+          gift_aid: boolean | null
+          id: string
+          is_anonymous: boolean | null
+          message: string | null
+          payment_status: string | null
+          team_id: string | null
+        }
+        Insert: {
+          amount: number
+          campaign_id?: string | null
+          created_at?: string | null
+          donor_name?: string | null
+          donor_user_id?: string | null
+          gift_aid?: boolean | null
+          id?: string
+          is_anonymous?: boolean | null
+          message?: string | null
+          payment_status?: string | null
+          team_id?: string | null
+        }
+        Update: {
+          amount?: number
+          campaign_id?: string | null
+          created_at?: string | null
+          donor_name?: string | null
+          donor_user_id?: string | null
+          gift_aid?: boolean | null
+          id?: string
+          is_anonymous?: boolean | null
+          message?: string | null
+          payment_status?: string | null
+          team_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fundraising_donations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "fundraising_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fundraising_donations_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "fundraising_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fundraising_teams: {
+        Row: {
+          campaign_id: string | null
+          created_at: string | null
+          created_by: string | null
+          id: string
+          team_description: string | null
+          team_name: string
+          team_raised: number | null
+          team_target: number | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          team_description?: string | null
+          team_name: string
+          team_raised?: number | null
+          team_target?: number | null
+        }
+        Update: {
+          campaign_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          team_description?: string | null
+          team_name?: string
+          team_raised?: number | null
+          team_target?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fundraising_teams_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "fundraising_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gift_card_products: {
         Row: {
           assigned_charity_id: string | null
@@ -999,6 +1193,36 @@ export type Database = {
           title?: string
           updated_at?: string | null
           viewer_count?: number | null
+        }
+        Relationships: []
+      }
+      masjids: {
+        Row: {
+          address: string | null
+          contact_info: Json | null
+          created_at: string | null
+          id: string
+          location: string | null
+          name: string
+          verified: boolean | null
+        }
+        Insert: {
+          address?: string | null
+          contact_info?: Json | null
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          verified?: boolean | null
+        }
+        Update: {
+          address?: string | null
+          contact_info?: Json | null
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          verified?: boolean | null
         }
         Relationships: []
       }
@@ -1732,6 +1956,44 @@ export type Database = {
         }
         Relationships: []
       }
+      team_members: {
+        Row: {
+          id: string
+          joined_at: string | null
+          personal_raised: number | null
+          personal_target: number | null
+          role: Database["public"]["Enums"]["team_role"] | null
+          team_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          joined_at?: string | null
+          personal_raised?: number | null
+          personal_target?: number | null
+          role?: Database["public"]["Enums"]["team_role"] | null
+          team_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          joined_at?: string | null
+          personal_raised?: number | null
+          personal_target?: number | null
+          role?: Database["public"]["Enums"]["team_role"] | null
+          team_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "fundraising_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_achievements: {
         Row: {
           achievement_id: string | null
@@ -1889,12 +2151,14 @@ export type Database = {
         | "failed"
         | "refunded"
         | "sent_to_charity"
+      fundraiser_status: "draft" | "active" | "completed" | "cancelled"
       qurbani_status:
         | "preorder"
         | "confirmed"
         | "slaughtered"
         | "distributed"
         | "completed"
+      team_role: "leader" | "member" | "admin"
       user_role:
         | "user"
         | "admin"
@@ -2025,6 +2289,7 @@ export const Constants = {
         "refunded",
         "sent_to_charity",
       ],
+      fundraiser_status: ["draft", "active", "completed", "cancelled"],
       qurbani_status: [
         "preorder",
         "confirmed",
@@ -2032,6 +2297,7 @@ export const Constants = {
         "distributed",
         "completed",
       ],
+      team_role: ["leader", "member", "admin"],
       user_role: [
         "user",
         "admin",
