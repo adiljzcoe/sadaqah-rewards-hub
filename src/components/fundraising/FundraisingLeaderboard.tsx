@@ -8,11 +8,52 @@ import { Badge } from '@/components/ui/badge';
 import { Trophy, Medal, Award, TrendingUp } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+interface ExtendedCampaign {
+  id: string;
+  title: string;
+  raised_amount: number;
+  target_amount: number;
+  created_at: string;
+  created_by: string;
+  profiles?: {
+    full_name: string;
+    avatar_url?: string;
+  } | null;
+}
+
+interface ExtendedTeam {
+  id: string;
+  team_name: string;
+  team_raised: number;
+  team_target: number;
+  campaign_id: string;
+  fundraising_campaigns?: {
+    title: string;
+  } | null;
+  team_members?: Array<{
+    id: string;
+    profiles: {
+      full_name: string;
+      avatar_url?: string;
+    } | null;
+  }>;
+}
+
+interface ExtendedCampaigner {
+  user_id: string;
+  total_raised: number;
+  campaign_count: number;
+  user?: {
+    full_name: string;
+    avatar_url?: string;
+  } | null;
+}
+
 const FundraisingLeaderboard = () => {
   // Top fundraisers
   const { data: topFundraisers } = useQuery({
     queryKey: ['top-fundraisers'],
-    queryFn: async () => {
+    queryFn: async (): Promise<ExtendedCampaign[]> => {
       const { data, error } = await supabase
         .from('fundraising_campaigns')
         .select(`
@@ -31,7 +72,7 @@ const FundraisingLeaderboard = () => {
 
       // Get profiles separately
       const userIds = data?.map(campaign => campaign.created_by).filter(Boolean) || [];
-      if (userIds.length === 0) return data;
+      if (userIds.length === 0) return data || [];
 
       const { data: profiles } = await supabase
         .from('profiles')
@@ -42,14 +83,14 @@ const FundraisingLeaderboard = () => {
       return data?.map(campaign => ({
         ...campaign,
         profiles: profiles?.find(p => p.id === campaign.created_by) || null
-      }));
+      })) || [];
     }
   });
 
   // Top teams
   const { data: topTeams } = useQuery({
     queryKey: ['top-teams'],
-    queryFn: async () => {
+    queryFn: async (): Promise<ExtendedTeam[]> => {
       const { data, error } = await supabase
         .from('fundraising_teams')
         .select(`
@@ -63,9 +104,12 @@ const FundraisingLeaderboard = () => {
         .limit(10);
       
       if (error) throw error;
+      if (!data) return [];
 
       // Get campaign titles and team members separately
-      for (const team of data || []) {
+      const extendedTeams: ExtendedTeam[] = [];
+
+      for (const team of data) {
         // Get campaign title
         const { data: campaign } = await supabase
           .from('fundraising_campaigns')
@@ -73,13 +117,13 @@ const FundraisingLeaderboard = () => {
           .eq('id', team.campaign_id)
           .single();
         
-        team.fundraising_campaigns = campaign;
-
         // Get team members
         const { data: members } = await supabase
           .from('team_members')
           .select('id, user_id')
           .eq('team_id', team.id);
+
+        let teamMembers: Array<{ id: string; profiles: { full_name: string; avatar_url?: string; } | null; }> = [];
 
         if (members && members.length > 0) {
           const userIds = members.map(m => m.user_id).filter(Boolean);
@@ -88,23 +132,27 @@ const FundraisingLeaderboard = () => {
             .select('id, full_name, avatar_url')
             .in('id', userIds);
 
-          team.team_members = members.map(member => ({
-            ...member,
+          teamMembers = members.map(member => ({
+            id: member.id,
             profiles: profiles?.find(p => p.id === member.user_id) || null
           }));
-        } else {
-          team.team_members = [];
         }
+
+        extendedTeams.push({
+          ...team,
+          fundraising_campaigns: campaign,
+          team_members: teamMembers
+        });
       }
       
-      return data;
+      return extendedTeams;
     }
   });
 
   // Most active campaigners
   const { data: activeCampaigners } = useQuery({
     queryKey: ['active-campaigners'],
-    queryFn: async () => {
+    queryFn: async (): Promise<ExtendedCampaigner[]> => {
       const { data, error } = await supabase
         .from('fundraising_campaigns')
         .select(`
@@ -114,6 +162,7 @@ const FundraisingLeaderboard = () => {
         .eq('status', 'active');
       
       if (error) throw error;
+      if (!data) return [];
       
       // Group by user and sum amounts
       const grouped = data.reduce((acc: any, campaign) => {
@@ -132,10 +181,10 @@ const FundraisingLeaderboard = () => {
       
       const groupedArray = Object.values(grouped)
         .sort((a: any, b: any) => b.total_raised - a.total_raised)
-        .slice(0, 10);
+        .slice(0, 10) as ExtendedCampaigner[];
 
       // Get user profiles
-      const userIds = groupedArray.map((item: any) => item.user_id).filter(Boolean);
+      const userIds = groupedArray.map((item) => item.user_id).filter(Boolean);
       if (userIds.length === 0) return groupedArray;
 
       const { data: profiles } = await supabase
@@ -143,7 +192,7 @@ const FundraisingLeaderboard = () => {
         .select('id, full_name, avatar_url')
         .in('id', userIds);
 
-      return groupedArray.map((item: any) => ({
+      return groupedArray.map((item) => ({
         ...item,
         user: profiles?.find(p => p.id === item.user_id) || null
       }));
@@ -295,7 +344,7 @@ const FundraisingLeaderboard = () => {
         </TabsContent>
 
         <TabsContent value="individuals" className="space-y-4">
-          {activeCampaigners?.map((campaigner: any, index) => (
+          {activeCampaigners?.map((campaigner, index) => (
             <Card key={index} className={`transition-all ${index < 3 ? 'border-2 border-purple-200 bg-purple-50/50' : ''}`}>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">

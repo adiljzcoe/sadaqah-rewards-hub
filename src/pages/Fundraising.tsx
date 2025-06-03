@@ -13,6 +13,43 @@ import FundraisingCampaignCard from '@/components/fundraising/FundraisingCampaig
 import CreateCampaignDialog from '@/components/fundraising/CreateCampaignDialog';
 import FundraisingLeaderboard from '@/components/fundraising/FundraisingLeaderboard';
 
+interface ExtendedCampaign {
+  id: string;
+  title: string;
+  description: string;
+  cause_category: string;
+  target_amount: number;
+  raised_amount: number;
+  currency: string;
+  dedication_message?: string;
+  video_url?: string;
+  image_url?: string;
+  end_date?: string;
+  is_team_fundraiser: boolean;
+  share_code: string;
+  created_by: string;
+  masjid_id?: string;
+  profiles: {
+    full_name: string;
+    avatar_url?: string;
+  };
+  masjids?: {
+    name: string;
+    location: string;
+  };
+  fundraising_teams?: Array<{
+    id: string;
+    team_name: string;
+    team_raised: number;
+    team_members: Array<{
+      profiles: {
+        full_name: string;
+        avatar_url?: string;
+      };
+    }>;
+  }>;
+}
+
 const Fundraising = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -36,12 +73,10 @@ const Fundraising = () => {
   // Fetch active campaigns
   const { data: campaigns, isLoading } = useQuery({
     queryKey: ['fundraising-campaigns', selectedCategory, sortBy, searchTerm],
-    queryFn: async () => {
+    queryFn: async (): Promise<ExtendedCampaign[]> => {
       let query = supabase
         .from('fundraising_campaigns')
-        .select(`
-          *
-        `)
+        .select(`*`)
         .eq('status', 'active');
 
       if (selectedCategory !== 'all') {
@@ -65,30 +100,36 @@ const Fundraising = () => {
 
       const { data, error } = await query;
       if (error) throw error;
+      if (!data) return [];
 
-      // Get additional data separately
-      for (const campaign of data || []) {
+      // Get additional data separately for each campaign
+      const extendedCampaigns: ExtendedCampaign[] = [];
+
+      for (const campaign of data) {
         // Get creator profile
+        let profiles = null;
         if (campaign.created_by) {
           const { data: profile } = await supabase
             .from('profiles')
             .select('full_name, avatar_url')
             .eq('id', campaign.created_by)
             .single();
-          campaign.profiles = profile;
+          profiles = profile;
         }
 
         // Get masjid info
+        let masjids = undefined;
         if (campaign.masjid_id) {
           const { data: masjid } = await supabase
             .from('masjids')
             .select('name, location')
             .eq('id', campaign.masjid_id)
             .single();
-          campaign.masjids = masjid;
+          masjids = masjid || undefined;
         }
 
         // Get teams if it's a team fundraiser
+        let fundraising_teams = undefined;
         if (campaign.is_team_fundraiser) {
           const { data: teams } = await supabase
             .from('fundraising_teams')
@@ -101,34 +142,44 @@ const Fundraising = () => {
 
           if (teams && teams.length > 0) {
             // Get team members for each team
+            const teamsWithMembers = [];
             for (const team of teams) {
               const { data: members } = await supabase
                 .from('team_members')
                 .select('id, user_id')
                 .eq('team_id', team.id);
 
+              let teamMembers: Array<{ profiles: { full_name: string; avatar_url?: string; } }> = [];
               if (members && members.length > 0) {
                 const userIds = members.map(m => m.user_id).filter(Boolean);
-                const { data: profiles } = await supabase
+                const { data: teamProfiles } = await supabase
                   .from('profiles')
                   .select('id, full_name, avatar_url')
                   .in('id', userIds);
 
-                team.team_members = members.map(member => ({
-                  ...member,
-                  profiles: profiles?.find(p => p.id === member.user_id) || null
+                teamMembers = members.map(member => ({
+                  profiles: teamProfiles?.find(p => p.id === member.user_id) || { full_name: 'Unknown', avatar_url: undefined }
                 }));
-              } else {
-                team.team_members = [];
               }
-            }
-          }
 
-          campaign.fundraising_teams = teams || [];
+              teamsWithMembers.push({
+                ...team,
+                team_members: teamMembers
+              });
+            }
+            fundraising_teams = teamsWithMembers;
+          }
         }
+
+        extendedCampaigns.push({
+          ...campaign,
+          profiles: profiles || { full_name: 'Anonymous', avatar_url: undefined },
+          masjids,
+          fundraising_teams
+        });
       }
 
-      return data;
+      return extendedCampaigns;
     }
   });
 
