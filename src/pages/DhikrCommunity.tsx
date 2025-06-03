@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Users, Calendar, Trophy, BookOpen, Play, Pause, Volume2, Plus, Award, Star, Zap, Sparkles, Gift } from 'lucide-react';
+import { Heart, Users, Calendar, Trophy, BookOpen, Play, Pause, Volume2, Plus, Award, Star, Zap, Sparkles, Gift, Target, ArrowUp, Crown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 const DhikrCommunity = () => {
@@ -20,6 +20,53 @@ const DhikrCommunity = () => {
   const [celebrationText, setCelebrationText] = useState('');
   const [showCelebration, setShowCelebration] = useState(false);
   const [fireworks, setFireworks] = useState([]);
+
+  // Live ranking data
+  const [liveRanking, setLiveRanking] = useState([
+    { name: "Ahmed K.", points: 12470, rank: 1, location: "London" },
+    { name: "Fatima S.", points: 11560, rank: 2, location: "Dubai" },
+    { name: "Omar M.", points: 9870, rank: 3, location: "Istanbul" },
+    { name: "Aisha R.", points: 8560, rank: 4, location: "Cairo" },
+    { name: "You", points: 0, rank: 5, location: "Your Location", isUser: true }
+  ]);
+
+  // Update user's ranking based on their points
+  useEffect(() => {
+    setLiveRanking(prev => {
+      const updated = prev.map(participant => 
+        participant.isUser 
+          ? { ...participant, points: jannahPoints }
+          : participant
+      );
+      
+      // Sort by points descending and update ranks
+      updated.sort((a, b) => b.points - a.points);
+      return updated.map((participant, index) => ({
+        ...participant,
+        rank: index + 1
+      }));
+    });
+  }, [jannahPoints]);
+
+  const getUserRank = () => {
+    const userEntry = liveRanking.find(p => p.isUser);
+    return userEntry?.rank || 5;
+  };
+
+  const getNextPersonToBeat = () => {
+    const userRank = getUserRank();
+    if (userRank === 1) return null;
+    
+    const nextPerson = liveRanking.find(p => p.rank === userRank - 1);
+    return nextPerson;
+  };
+
+  const getPointsNeededToBeat = () => {
+    const nextPerson = getNextPersonToBeat();
+    if (!nextPerson) return 0;
+    
+    return Math.max(0, nextPerson.points - jannahPoints + 1);
+  };
 
   // Simulate collective count increasing automatically (background activity)
   useEffect(() => {
@@ -150,8 +197,8 @@ const DhikrCommunity = () => {
     const newMultiplier = calculatePointMultiplier(streakCount + 1);
     setPointMultiplier(newMultiplier);
     
-    // Base points with multiplier
-    const basePoints = 1;
+    // Base points with multiplier (10x the original)
+    const basePoints = 10;
     const totalPoints = basePoints * newMultiplier;
     setJannahPoints(prev => prev + totalPoints);
     
@@ -326,6 +373,55 @@ const DhikrCommunity = () => {
                     </div>
                   </div>
 
+                  {/* Live Rank Display */}
+                  <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl p-6 border-2 border-blue-200">
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Crown className="h-6 w-6 text-yellow-600" />
+                        <span className="text-xl font-bold text-blue-700">
+                          Your Live Rank: #{getUserRank()}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {getNextPersonToBeat() && (
+                      <div className="bg-white/70 rounded-lg p-4 border border-blue-300">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Target className="h-5 w-5 text-orange-600" />
+                            <span className="font-semibold text-gray-700">
+                              To beat {getNextPersonToBeat()?.name}:
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-orange-600">
+                              {getPointsNeededToBeat()} points
+                            </div>
+                            <div className="text-sm text-gray-600">needed</div>
+                          </div>
+                        </div>
+                        <div className="mt-2 flex items-center gap-1 text-sm text-orange-700">
+                          <ArrowUp className="h-4 w-4" />
+                          <span>
+                            They have {getNextPersonToBeat()?.points.toLocaleString()} points
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {getUserRank() === 1 && (
+                      <div className="bg-gradient-to-r from-yellow-100 to-amber-100 rounded-lg p-4 border-2 border-yellow-400">
+                        <div className="flex items-center justify-center gap-2">
+                          <Crown className="h-6 w-6 text-yellow-600" />
+                          <span className="text-lg font-bold text-yellow-800">
+                            🎉 You're #1! Keep leading! 🎉
+                          </span>
+                          <Crown className="h-6 w-6 text-yellow-600" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Dhikr Selection */}
                   <div className="space-y-4">
                     <div className="text-lg font-semibold">Choose Your Dhikr:</div>
@@ -494,14 +590,8 @@ const DhikrCommunity = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {[
-                    { name: "Ahmed K.", count: 1247, rank: 1 },
-                    { name: "Fatima S.", count: 1156, rank: 2 },
-                    { name: "Omar M.", count: 987, rank: 3 },
-                    { name: "Aisha R.", count: 856, rank: 4 },
-                    { name: "You", count: 756, rank: 5 }
-                  ].map(user => (
-                    <div key={user.rank} className={`flex items-center justify-between p-3 rounded-lg ${user.name === 'You' ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
+                  {liveRanking.map(user => (
+                    <div key={user.rank} className={`flex items-center justify-between p-3 rounded-lg ${user.isUser ? 'bg-green-50 border border-green-200' : 'bg-gray-50'}`}>
                       <div className="flex items-center gap-3">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
                           user.rank <= 3 ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-gray-700'
@@ -510,7 +600,7 @@ const DhikrCommunity = () => {
                         </span>
                         <span className="font-medium">{user.name}</span>
                       </div>
-                      <span className="text-sm text-gray-600">{user.count} dhikr</span>
+                      <span className="text-sm text-gray-600">{user.points} points</span>
                     </div>
                   ))}
                 </CardContent>
