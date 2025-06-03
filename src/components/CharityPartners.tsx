@@ -4,9 +4,11 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MapPin, Users, Heart, Shield, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const partners = [
   {
+    id: 'islamic-relief',
     name: 'Islamic Relief',
     location: 'Gaza, Palestine',
     beneficiaries: '50,000+',
@@ -17,6 +19,7 @@ const partners = [
     projects: 12
   },
   {
+    id: 'muslim-aid',
     name: 'Muslim Aid',
     location: 'Syria',
     beneficiaries: '25,000+',
@@ -27,6 +30,7 @@ const partners = [
     projects: 8
   },
   {
+    id: 'human-appeal',
     name: 'Human Appeal',
     location: 'Yemen',
     beneficiaries: '30,000+',
@@ -37,6 +41,7 @@ const partners = [
     projects: 15
   },
   {
+    id: 'matw-project',
     name: 'MATW Project',
     location: 'Bangladesh',
     beneficiaries: '15,000+',
@@ -49,6 +54,12 @@ const partners = [
 ];
 
 const CharityPartners = () => {
+  const navigate = useNavigate();
+
+  const handleCharityClick = (charityId: string) => {
+    navigate(`/charity/${charityId}`);
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -64,7 +75,14 @@ const CharityPartners = () => {
           <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-l-islamic-green-500">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
-                <h3 className="font-bold text-lg text-islamic-green-800 mb-1">{partner.name}</h3>
+                <button
+                  onClick={() => handleCharityClick(partner.id)}
+                  className="text-left w-full group"
+                >
+                  <h3 className="font-bold text-lg text-islamic-green-800 mb-1 group-hover:text-islamic-green-600 group-hover:underline transition-colors">
+                    {partner.name}
+                  </h3>
+                </button>
                 <div className="flex items-center text-sm text-gray-600 mb-2">
                   <MapPin className="h-3 w-3 mr-1" />
                   {partner.location}
@@ -105,10 +123,22 @@ const CharityPartners = () => {
               </div>
             </div>
             
-            <Button className="w-full bg-islamic-green-600 hover:bg-islamic-green-700 text-white">
-              <Heart className="h-4 w-4 mr-2" />
-              Donate Now
-            </Button>
+            <div className="space-y-2">
+              <Button 
+                className="w-full bg-islamic-green-600 hover:bg-islamic-green-700 text-white"
+                onClick={() => handleCharityClick(partner.id)}
+              >
+                <Heart className="h-4 w-4 mr-2" />
+                Donate Now
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full text-xs"
+                onClick={() => handleCharityClick(partner.id)}
+              >
+                View Profile
+              </Button>
+            </div>
           </Card>
         ))}
       </div>
