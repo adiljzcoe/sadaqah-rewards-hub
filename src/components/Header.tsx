@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -65,7 +64,7 @@ const Header = () => {
       <div className="relative z-20 container mx-auto px-3 py-3">
         <div className="flex items-center justify-between">
           {/* Left Section - Logo and Golden Plaque */}
-          <div className="flex items-center space-x-6 relative z-50">
+          <div className="flex items-center space-x-4 relative z-50">
             <Link to="/" className="transition-all duration-300 hover:scale-105 flex-shrink-0 w-[100px] relative z-30">
               <img 
                 src="/lovable-uploads/b5e73df9-e9d0-49e2-ac33-283b16c6dafb.png" 
@@ -74,71 +73,69 @@ const Header = () => {
               />
             </Link>
 
-            {/* High-Quality Golden User Plaque */}
+            {/* Compact Golden User Plaque */}
             {user ? (
-              // Logged in user plaque with brilliant golden finish and glossy animation
-              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-8 py-4 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden">
+              // Logged in user plaque with compact size and brilliant golden finish
+              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-xl px-4 py-2 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden">
                 {/* Inner glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-xl"></div>
                 
                 {/* Top highlight */}
-                <div className="absolute top-2 left-3 right-3 h-1 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
+                <div className="absolute top-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
                 
                 {/* Glossy animation effect that moves across */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-xl"></div>
                 
-                <div className="relative flex items-center justify-between text-white min-w-[280px]">
-                  {/* Left side - Name and Guardian */}
-                  <div className="flex items-center space-x-4">
-                    <Crown className="h-7 w-7 text-yellow-100 drop-shadow-lg" />
+                <div className="relative flex items-center justify-between text-white min-w-[200px]">
+                  {/* Left side - Crown, Name and Guardian */}
+                  <div className="flex items-center space-x-2">
+                    <Crown className="h-5 w-5 text-yellow-100 drop-shadow-lg" />
                     <div className="flex flex-col">
-                      <span className="font-bold text-lg text-yellow-50 drop-shadow-md">Ahmad M.</span>
-                      <span className="text-sm text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
+                      <span className="font-bold text-sm text-yellow-50 drop-shadow-md">Ahmad M.</span>
+                      <span className="text-xs text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
                     </div>
                   </div>
                   
                   {/* Right side - Level and Points */}
-                  <div className="flex items-center space-x-4">
-                    <div className="text-right">
-                      <div className="font-bold text-lg text-yellow-50 drop-shadow-md">LV {userLevel}</div>
-                      <div className="flex items-center justify-end space-x-1">
-                        <Star className="h-4 w-4 text-yellow-100 drop-shadow-md" />
-                        <span className="font-bold text-sm text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} pts</span>
-                      </div>
+                  <div className="text-right">
+                    <div className="font-bold text-sm text-yellow-50 drop-shadow-md">LV {userLevel}</div>
+                    <div className="flex items-center justify-end space-x-1">
+                      <Star className="h-3 w-3 text-yellow-100 drop-shadow-md" />
+                      <span className="font-bold text-xs text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} pts</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Bottom highlight */}
-                <div className="absolute bottom-2 left-3 right-3 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
+                <div className="absolute bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
               </div>
             ) : (
-              // Non-logged in membership plaque with same brilliant finish and glossy animation
+              // Non-logged in membership plaque with compact size
               <Link to="/membership">
-                <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-8 py-4 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden">
+                <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-xl px-4 py-2 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden">
                   {/* Inner glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-xl"></div>
                   
                   {/* Top highlight */}
-                  <div className="absolute top-2 left-3 right-3 h-1 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
+                  <div className="absolute top-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
                   
                   {/* Glossy animation effect that moves across */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-xl"></div>
                   
-                  <div className="relative flex items-center space-x-4 text-white min-w-[280px]">
-                    <Crown className="h-7 w-7 text-yellow-100 drop-shadow-lg" />
+                  <div className="relative flex items-center space-x-3 text-white min-w-[200px]">
+                    <Crown className="h-5 w-5 text-yellow-100 drop-shadow-lg" />
                     <div className="flex flex-col">
-                      <span className="font-bold text-lg text-yellow-50 drop-shadow-md">Membership</span>
-                      <span className="text-sm text-yellow-100/90 drop-shadow-sm font-medium">Join Now</span>
+                      <span className="font-bold text-sm text-yellow-50 drop-shadow-md">Membership</span>
+                      <span className="text-xs text-yellow-100/90 drop-shadow-sm font-medium">Join Now</span>
                     </div>
-                    <div className="flex items-center space-x-2 ml-6 bg-white/20 rounded-lg px-4 py-2 backdrop-blur-sm">
-                      <Shield className="h-5 w-5 text-yellow-100 drop-shadow-md" />
-                      <span className="font-bold text-sm text-yellow-50 drop-shadow-md">Unlock</span>
+                    <div className="flex items-center space-x-1 ml-4 bg-white/20 rounded-lg px-2 py-1 backdrop-blur-sm">
+                      <Shield className="h-4 w-4 text-yellow-100 drop-shadow-md" />
+                      <span className="font-bold text-xs text-yellow-50 drop-shadow-md">Unlock</span>
                     </div>
                   </div>
                   
                   {/* Bottom highlight */}
-                  <div className="absolute bottom-2 left-3 right-3 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
+                  <div className="absolute bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
                 </div>
               </Link>
             )}
