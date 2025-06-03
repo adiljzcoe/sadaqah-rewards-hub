@@ -14,6 +14,7 @@ import ZakatCalculator from "./pages/ZakatCalculator";
 import QuranReader from "./pages/QuranReader";
 import DuasLibrary from "./pages/DuasLibrary";
 import IslamicCalendar from "./pages/IslamicCalendar";
+import IslamicEventPage from "./components/islamic-calendar/IslamicEventPage";
 import RamadanCalendar from "./pages/RamadanCalendar";
 import NamazTimes from "./pages/NamazTimes";
 import Profile from "./pages/Profile";
@@ -72,7 +73,7 @@ function App() {
                       <Route path="/quran-reader" element={<QuranReader />} />
                       <Route path="/duas-library" element={<DuasLibrary />} />
                       <Route path="/islamic-calendar" element={<IslamicCalendar />} />
-                      <Route path="/islamic-calendar/:eventSlug" element={<IslamicCalendar />} />
+                      <Route path="/islamic-calendar/:eventSlug" element={<IslamicEventPage />} />
                       <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
                       <Route path="/namaz-times" element={<NamazTimes />} />
                       <Route path="/fundraising" element={<Fundraising />} />
