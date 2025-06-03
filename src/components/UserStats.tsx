@@ -162,9 +162,14 @@ const UserStats = () => {
                }}>
           </div>
           
-          {/* Certificate Header */}
+          {/* Certificate Header with Swishy Calligraphy */}
           <div className="mb-3">
-            <div className="text-xl font-bold mb-1 text-amber-900 font-cinzel" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="text-3xl font-bold mb-1 text-amber-900 italic transform -rotate-1 font-serif" 
+                 style={{ 
+                   fontFamily: 'Brush Script MT, cursive, Lucida Handwriting, fantasy',
+                   textShadow: '3px 3px 6px rgba(0,0,0,0.2), 1px 1px 3px rgba(184, 134, 11, 0.3)',
+                   letterSpacing: '0.05em'
+                 }}>
               Certificate of Excellence
             </div>
             <div className="text-xs uppercase tracking-[0.15em] mb-1 text-amber-800 font-semibold font-playfair">
