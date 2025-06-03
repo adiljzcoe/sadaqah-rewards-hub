@@ -31,7 +31,7 @@ const Header = () => {
   const isMember = false;
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo and Mobile Menu */}
@@ -53,23 +53,23 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/campaigns" className="text-gray-600 hover:text-gray-900 transition-colors">
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/campaigns" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
               Campaigns
             </Link>
-            <Link to="/fundraising" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link to="/fundraising" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
               Fundraising
             </Link>
-            <Link to="/gift-cards" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link to="/gift-cards" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
               <div className="flex items-center gap-1">
                 <Gift className="h-4 w-4" />
                 Gift Cards
               </div>
             </Link>
-            <Link to="/namaz-times" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link to="/namaz-times" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
               Prayer Times
             </Link>
-            <Link to="/duas-library" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <Link to="/duas-library" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
               Duas
             </Link>
           </nav>
