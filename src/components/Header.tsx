@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -141,9 +142,276 @@ const Header = () => {
             )}
           </div>
 
-          {/* Enhanced Navigation with All Pages - Hidden on all screen sizes now */}
-          <nav className="hidden items-center space-x-6 flex-1 justify-center relative z-40">
-            {/* ... keep existing code (dropdown menus) the same ... */}
+          {/* Enhanced Navigation with All Pages - Desktop Version */}
+          <nav className="hidden lg:flex items-center space-x-6 flex-1 justify-center relative z-40">
+            <Link 
+              to="/" 
+              className={`relative group text-white hover:text-cyan-300 transition-all duration-300 ${isActive('/') ? 'text-cyan-400 border-b-2 border-cyan-400' : ''}`}
+            >
+              Home
+            </Link>
+
+            {/* Islamic Life Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setIslamicOpen(true)}
+                onMouseLeave={() => setIslamicOpen(false)}
+                className="flex items-center space-x-1 text-white hover:text-cyan-300 transition-all duration-300"
+              >
+                <span>Islamic Life</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              
+              {islamicOpen && (
+                <div 
+                  className="absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-6 z-50"
+                  onMouseEnter={() => setIslamicOpen(true)}
+                  onMouseLeave={() => setIslamicOpen(false)}
+                >
+                  <div className="grid grid-cols-1 gap-3">
+                    <Link to="/islamic-calendar" className="flex items-center p-3 rounded-xl hover:bg-emerald-50 transition-all duration-300 group">
+                      <Calendar className="h-5 w-5 text-emerald-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-emerald-700">Islamic Calendar</div>
+                        <p className="text-xs text-gray-600">Sacred days & celebrations</p>
+                      </div>
+                    </Link>
+                    <Link to="/ramadan-calendar" className="flex items-center p-3 rounded-xl hover:bg-purple-50 transition-all duration-300 group">
+                      <Moon className="h-5 w-5 text-purple-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-purple-700">Ramadan Calendar</div>
+                        <p className="text-xs text-gray-600">Track your Ramadan journey</p>
+                      </div>
+                    </Link>
+                    <Link to="/adhan-community" className="flex items-center p-3 rounded-xl hover:bg-blue-50 transition-all duration-300 group">
+                      <Mic className="h-5 w-5 text-blue-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-blue-700">Adhan Community</div>
+                        <p className="text-xs text-gray-600">Share beautiful Adhan recordings</p>
+                      </div>
+                    </Link>
+                    <Link to="/live-tv" className="flex items-center p-3 rounded-xl hover:bg-red-50 transition-all duration-300 group">
+                      <Tv className="h-5 w-5 text-red-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-red-700">Live TV</div>
+                        <p className="text-xs text-gray-600">Islamic channels & content</p>
+                      </div>
+                    </Link>
+                    <Link to="/dhikr-community" className="flex items-center p-3 rounded-xl hover:bg-pink-50 transition-all duration-300 group">
+                      <Sparkles className="h-5 w-5 text-pink-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-pink-700">Dhikr Community</div>
+                        <p className="text-xs text-gray-600">Spiritual remembrance together</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Tools Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setToolsOpen(true)}
+                onMouseLeave={() => setToolsOpen(false)}
+                className="flex items-center space-x-1 text-white hover:text-cyan-300 transition-all duration-300"
+              >
+                <span>Tools</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              
+              {toolsOpen && (
+                <div 
+                  className="absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-6 z-50"
+                  onMouseEnter={() => setToolsOpen(true)}
+                  onMouseLeave={() => setToolsOpen(false)}
+                >
+                  <div className="grid grid-cols-1 gap-3">
+                    <Link to="/namaz-times" className="flex items-center p-3 rounded-xl hover:bg-indigo-50 transition-all duration-300 group">
+                      <Clock className="h-5 w-5 text-indigo-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-indigo-700">Prayer Times</div>
+                        <p className="text-xs text-gray-600">Accurate prayer times worldwide</p>
+                      </div>
+                    </Link>
+                    <Link to="/quran-reader" className="flex items-center p-3 rounded-xl hover:bg-emerald-50 transition-all duration-300 group">
+                      <BookOpen className="h-5 w-5 text-emerald-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-emerald-700">Quran Reader</div>
+                        <p className="text-xs text-gray-600">Read & track progress</p>
+                      </div>
+                    </Link>
+                    <Link to="/zakat-calculator" className="flex items-center p-3 rounded-xl hover:bg-yellow-50 transition-all duration-300 group">
+                      <Coins className="h-5 w-5 text-yellow-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-yellow-700">Zakat Calculator</div>
+                        <p className="text-xs text-gray-600">Calculate your Zakat</p>
+                      </div>
+                    </Link>
+                    <Link to="/dua-wall" className="flex items-center p-3 rounded-xl hover:bg-pink-50 transition-all duration-300 group">
+                      <Heart className="h-5 w-5 text-pink-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-pink-700">Dua Wall</div>
+                        <p className="text-xs text-gray-600">Share & support prayers</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Donate Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setDonateOpen(true)}
+                onMouseLeave={() => setDonateOpen(false)}
+                className="flex items-center space-x-1 text-white hover:text-cyan-300 transition-all duration-300"
+              >
+                <span>Donate</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              
+              {donateOpen && (
+                <div 
+                  className="absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-6 z-50"
+                  onMouseEnter={() => setDonateOpen(true)}
+                  onMouseLeave={() => setDonateOpen(false)}
+                >
+                  <div className="grid grid-cols-1 gap-3">
+                    <Link to="/campaigns" className="flex items-center p-3 rounded-xl hover:bg-emerald-50 transition-all duration-300 group">
+                      <Heart className="h-5 w-5 text-emerald-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-emerald-700">Active Campaigns</div>
+                        <p className="text-xs text-gray-600">Support urgent causes worldwide</p>
+                      </div>
+                    </Link>
+                    <Link to="/build-mosque" className="flex items-center p-3 rounded-xl hover:bg-blue-50 transition-all duration-300 group">
+                      <Building className="h-5 w-5 text-blue-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-blue-700">Build a Mosque</div>
+                        <p className="text-xs text-gray-600">Fund mosque construction</p>
+                      </div>
+                    </Link>
+                    <Link to="/water-wells" className="flex items-center p-3 rounded-xl hover:bg-cyan-50 transition-all duration-300 group">
+                      <span className="text-lg mr-3">💧</span>
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-cyan-700">Water Wells</div>
+                        <p className="text-xs text-gray-600">Provide clean water access</p>
+                      </div>
+                    </Link>
+                    <Link to="/orphanages" className="flex items-center p-3 rounded-xl hover:bg-pink-50 transition-all duration-300 group">
+                      <span className="text-lg mr-3">👶</span>
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-pink-700">Orphanages</div>
+                        <p className="text-xs text-gray-600">Support orphan care & education</p>
+                      </div>
+                    </Link>
+                    <Link to="/qurbani" className="flex items-center p-3 rounded-xl hover:bg-orange-50 transition-all duration-300 group">
+                      <span className="text-lg mr-3">🐄</span>
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-orange-700">Qurbani</div>
+                        <p className="text-xs text-gray-600">Sacrifice & share blessings</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Community Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setCommunityOpen(true)}
+                onMouseLeave={() => setCommunityOpen(false)}
+                className="flex items-center space-x-1 text-white hover:text-cyan-300 transition-all duration-300"
+              >
+                <span>Community</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              
+              {communityOpen && (
+                <div 
+                  className="absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-6 z-50"
+                  onMouseEnter={() => setCommunityOpen(true)}
+                  onMouseLeave={() => setCommunityOpen(false)}
+                >
+                  <div className="grid grid-cols-1 gap-3">
+                    <Link to="/masjid-community" className="flex items-center p-3 rounded-xl hover:bg-indigo-50 transition-all duration-300 group">
+                      <Building className="h-5 w-5 text-indigo-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-indigo-700">Masjid Community</div>
+                        <p className="text-xs text-gray-600">Represent your local mosque</p>
+                      </div>
+                    </Link>
+                    <Link to="/my-ummah" className="flex items-center p-3 rounded-xl hover:bg-emerald-50 transition-all duration-300 group">
+                      <Users className="h-5 w-5 text-emerald-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-emerald-700">My Ummah</div>
+                        <p className="text-xs text-gray-600">Global Muslim community</p>
+                      </div>
+                    </Link>
+                    <Link to="/leaderboards" className="flex items-center p-3 rounded-xl hover:bg-amber-50 transition-all duration-300 group">
+                      <Trophy className="h-5 w-5 text-amber-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-amber-700">Leaderboards</div>
+                        <p className="text-xs text-gray-600">Top donors & recognition</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Rewards Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setRewardsOpen(true)}
+                onMouseLeave={() => setRewardsOpen(false)}
+                className="flex items-center space-x-1 text-white hover:text-cyan-300 transition-all duration-300"
+              >
+                <span>Rewards</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              
+              {rewardsOpen && (
+                <div 
+                  className="absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-6 z-50"
+                  onMouseEnter={() => setRewardsOpen(true)}
+                  onMouseLeave={() => setRewardsOpen(false)}
+                >
+                  <div className="grid grid-cols-1 gap-3">
+                    <Link to="/sadaqah-coins" className="flex items-center p-3 rounded-xl hover:bg-yellow-50 transition-all duration-300 group">
+                      <Coins className="h-5 w-5 text-yellow-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-yellow-700">Sadaqah Coins</div>
+                        <p className="text-xs text-gray-600">Purchase coins & unlock rewards</p>
+                      </div>
+                    </Link>
+                    <Link to="/my-jannah" className="flex items-center p-3 rounded-xl hover:bg-emerald-50 transition-all duration-300 group">
+                      <Building className="h-5 w-5 text-emerald-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-emerald-700">My Jannah</div>
+                        <p className="text-xs text-gray-600">Build your paradise</p>
+                      </div>
+                    </Link>
+                    <Link to="/membership" className="flex items-center p-3 rounded-xl hover:bg-purple-50 transition-all duration-300 group">
+                      <Shield className="h-5 w-5 text-purple-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-purple-700">Membership Tiers</div>
+                        <p className="text-xs text-gray-600">Upgrade for multiplied points</p>
+                      </div>
+                    </Link>
+                    <Link to="/gift-cards" className="flex items-center p-3 rounded-xl hover:bg-pink-50 transition-all duration-300 group">
+                      <Gift className="h-5 w-5 text-pink-600 mr-3" />
+                      <div>
+                        <div className="font-semibold text-gray-800 group-hover:text-pink-700">Gift Cards</div>
+                        <p className="text-xs text-gray-600">Give the gift of giving</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Right Section - Cart, Desktop Menu, and Mobile Menu */}
@@ -161,18 +429,38 @@ const Header = () => {
               </Link>
             )}
 
-            {/* Desktop Menu - Visible on desktop and larger screens */}
-            <div className="hidden sm:block relative z-30">
-              <MobileSidebar 
-                userLevel={userLevel}
-                currentPoints={currentPoints}
-                nextLevelPoints={nextLevelPoints}
-                isMember={isMember}
-              />
+            {/* User Login Dropdown - Desktop Only */}
+            <div className="hidden lg:block">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+                    <User className="h-6 w-6" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48 bg-white/95 backdrop-blur-lg">
+                  {user ? (
+                    <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+                      Sign Out
+                    </DropdownMenuItem>
+                  ) : (
+                    <>
+                      <DropdownMenuItem onClick={fakeUserLogin} className="cursor-pointer">
+                        Test User Login
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={fakeAdminLogin} className="cursor-pointer">
+                        Test Admin Login
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/auth" className="cursor-pointer">Real Login</Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
-            {/* Mobile Menu - Only visible on small mobile screens */}
-            <div className="sm:hidden relative z-30">
+            {/* Mobile Menu - Only visible on mobile and tablet screens */}
+            <div className="lg:hidden relative z-30">
               <MobileSidebar 
                 userLevel={userLevel}
                 currentPoints={currentPoints}
