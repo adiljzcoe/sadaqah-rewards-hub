@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
@@ -12,6 +12,13 @@ const FloatingDonationButton = () => {
   const [isStickyWidgetActive, setIsStickyWidgetActive] = useState(false);
   const [coinAnimationTrigger, setCoinAnimationTrigger] = useState(false);
   const [messageIndex, setMessageIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const [swipeOffset, setSwipeOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  
+  const dragStartRef = useRef({ x: 0, y: 0 });
+  const dragCurrentRef = useRef({ x: 0, y: 0 });
+  const mascotRef = useRef<HTMLDivElement>(null);
 
   // 50+ encouraging donation messages
   const encouragingMessages = [
@@ -98,6 +105,144 @@ const FloatingDonationButton = () => {
     return () => clearTimeout(timer);
   }, [encouragingMessages]);
 
+  // Swipe/Touch handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    dragStartRef.current = { x: touch.clientX, y: touch.clientY };
+    dragCurrentRef.current = { x: touch.clientX, y: touch.clientY };
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+    
+    const touch = e.touches[0];
+    dragCurrentRef.current = { x: touch.clientX, y: touch.clientY };
+    
+    const deltaX = touch.clientX - dragStartRef.current.x;
+    const deltaY = touch.clientY - dragStartRef.current.y;
+    
+    setSwipeOffset({ x: deltaX, y: deltaY });
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return;
+    
+    const deltaX = dragCurrentRef.current.x - dragStartRef.current.x;
+    const deltaY = dragCurrentRef.current.y - dragStartRef.current.y;
+    
+    const threshold = 100; // Minimum swipe distance
+    
+    // Check if swipe is significant enough
+    if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
+      // Determine swipe direction
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Horizontal swipe (left or right)
+        if (deltaX > 0) {
+          // Swipe right
+          animateSwipeOut('right');
+        } else {
+          // Swipe left
+          animateSwipeOut('left');
+        }
+      } else {
+        // Vertical swipe
+        if (deltaY < 0) {
+          // Swipe up
+          animateSwipeOut('up');
+        }
+      }
+    } else {
+      // Snap back to original position
+      setSwipeOffset({ x: 0, y: 0 });
+    }
+    
+    setIsDragging(false);
+  };
+
+  // Mouse handlers for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+    dragCurrentRef.current = { x: e.clientX, y: e.clientY };
+    setIsDragging(true);
+    
+    // Add mouse move and up listeners to document
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    
+    dragCurrentRef.current = { x: e.clientX, y: e.clientY };
+    
+    const deltaX = e.clientX - dragStartRef.current.x;
+    const deltaY = e.clientY - dragStartRef.current.y;
+    
+    setSwipeOffset({ x: deltaX, y: deltaY });
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    
+    const deltaX = dragCurrentRef.current.x - dragStartRef.current.x;
+    const deltaY = dragCurrentRef.current.y - dragStartRef.current.y;
+    
+    const threshold = 100;
+    
+    if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+          animateSwipeOut('right');
+        } else {
+          animateSwipeOut('left');
+        }
+      } else {
+        if (deltaY < 0) {
+          animateSwipeOut('up');
+        }
+      }
+    } else {
+      setSwipeOffset({ x: 0, y: 0 });
+    }
+    
+    setIsDragging(false);
+    
+    // Remove mouse listeners
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
+
+  const animateSwipeOut = (direction: 'left' | 'right' | 'up') => {
+    const distance = 400; // Distance to animate out
+    
+    switch (direction) {
+      case 'left':
+        setSwipeOffset({ x: -distance, y: 0 });
+        break;
+      case 'right':
+        setSwipeOffset({ x: distance, y: 0 });
+        break;
+      case 'up':
+        setSwipeOffset({ x: 0, y: -distance });
+        break;
+    }
+    
+    // Hide the widget after animation
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 300);
+  };
+
+  // Cleanup mouse listeners on unmount
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
   const handleFundraisingDonate = (amount: number) => {
     const valueReceived = amount * 7;
     console.log(`Fundraising Donation: £${amount} = £${valueReceived} value!`);
@@ -119,6 +264,8 @@ const FloatingDonationButton = () => {
   const toggleStickyWidget = () => {
     setIsStickyWidgetActive(!isStickyWidgetActive);
   };
+
+  if (!isVisible) return null;
 
   return (
     <>
@@ -171,11 +318,18 @@ const FloatingDonationButton = () => {
         }
       `}</style>
       
-      <div className={`fixed ${
-        isStickyWidgetActive 
-          ? 'top-28 right-4 md:bottom-6 md:right-8' 
-          : 'bottom-6 right-8'
-      } z-50 transition-all duration-300`}>
+      <div 
+        ref={mascotRef}
+        className={`fixed ${
+          isStickyWidgetActive 
+            ? 'top-28 right-4 md:bottom-6 md:right-8' 
+            : 'bottom-6 right-8'
+        } z-50 transition-all duration-300 select-none`}
+        style={{
+          transform: `translate(${swipeOffset.x}px, ${swipeOffset.y}px)`,
+          transition: isDragging ? 'none' : 'transform 0.3s ease-out'
+        }}
+      >
         {/* Message positioned much closer to mascot */}
         {showCallToAction && (
           <div className={`absolute z-60 ${
@@ -292,12 +446,16 @@ const FloatingDonationButton = () => {
           </div>
         )}
 
-        {/* Main donation button with heart mascot - Fixed positioning */}
+        {/* Main donation button with heart mascot - Now with swipe support */}
         <div
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="relative w-40 h-40 cursor-pointer transition-all duration-300 group"
+          onClick={() => !isDragging && setIsExpanded(!isExpanded)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          className="relative w-40 h-40 cursor-pointer transition-all duration-300 group touch-none"
           style={{
-            animation: showCallToAction ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
+            animation: showCallToAction && !isDragging ? 'gentle-pulse 2s ease-in-out infinite' : 'none'
           }}
         >
           {/* Heart Mascot - Base layer */}
