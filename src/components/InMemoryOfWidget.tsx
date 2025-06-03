@@ -351,13 +351,45 @@ const InMemoryOfWidget = () => {
         }
         
         .enhanced-gold-text {
-          background: linear-gradient(135deg, #b8860b, #ffd700, #ffed4e, #ffd700, #b8860b);
+          background: linear-gradient(135deg, #8b6914, #d4af37, #ffd700, #d4af37, #8b6914);
           background-size: 200% 200%;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
           animation: goldTextShimmer 3s ease-in-out infinite;
-          text-shadow: 0 1px 3px rgba(184,134,11,0.5);
+          text-shadow: 2px 2px 4px rgba(139,105,20,0.8);
+          font-weight: 900;
+          letter-spacing: 0.5px;
+        }
+        
+        .readable-dark-text {
+          color: #2d3748;
+          text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+          font-weight: 700;
+        }
+        
+        .readable-gold-text {
+          color: #8b6914;
+          text-shadow: 1px 1px 2px rgba(255,255,255,0.9);
+          font-weight: 700;
+        }
+        
+        .message-text {
+          color: #744210;
+          text-shadow: 1px 1px 2px rgba(255,255,255,0.9);
+          font-weight: 600;
+          font-style: italic;
+        }
+        
+        .date-text {
+          background: linear-gradient(135deg, #8b6914, #d4af37, #ffd700);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 1px 1px 2px rgba(139,105,20,0.6);
+          font-weight: 800;
+          letter-spacing: 0.3px;
         }
         
         @keyframes goldTextShimmer {
@@ -412,37 +444,37 @@ const InMemoryOfWidget = () => {
                       <div className="gold-plaque rounded-lg mx-2 my-2 p-4 relative">
                         {/* Memorial Header */}
                         <div className="text-center mb-3">
-                          <div className="font-serif text-sm font-bold enhanced-gold-text mb-1">
+                          <div className="font-serif text-base font-black enhanced-gold-text mb-1">
                             {memorial.honoringOf}
                           </div>
-                          <div className="font-serif text-xs enhanced-gold-text font-semibold opacity-90">
+                          <div className="font-serif text-xs enhanced-gold-text font-black opacity-95 tracking-wider">
                             WE HONOR YOU
                           </div>
                         </div>
                         
                         {/* Donation Information */}
                         <div className="flex items-center justify-between mb-3 text-xs">
-                          <span className="text-amber-900 font-medium">
+                          <span className="readable-dark-text text-xs font-bold">
                             Donated by {memorial.user}
                           </span>
                           <div className="flex items-center bg-emerald-100 px-2 py-1 rounded-full border-2 border-emerald-400 shadow-sm">
                             <SimpleGoldCoin size={12} className="mr-1" />
-                            <span className="font-bold text-emerald-800">£{memorial.amount}</span>
+                            <span className="font-black text-emerald-800 text-xs">£{memorial.amount}</span>
                           </div>
                         </div>
                         
                         {/* Message */}
                         <div className="bg-amber-50/95 rounded-md px-3 py-2 border-2 border-amber-600 text-center shadow-inner">
-                          <div className="text-xs italic text-amber-900 flex items-center justify-center">
+                          <div className="text-xs flex items-center justify-center">
                             <Heart className="h-2 w-2 mr-1 text-red-700" />
-                            <span className="font-serif">"{memorial.message}"</span>
+                            <span className="font-serif message-text">"{memorial.message}"</span>
                             <Heart className="h-2 w-2 ml-1 text-red-700" />
                           </div>
                         </div>
                         
                         {/* Date */}
                         <div className="text-center mt-3">
-                          <div className="text-xs font-bold enhanced-gold-text font-serif">
+                          <div className="text-xs font-serif date-text">
                             {new Date(memorial.timestamp).toLocaleDateString('en-GB')}
                           </div>
                         </div>
