@@ -60,7 +60,7 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle }: AmazingCelebrationE
     "Ameen Ya Rabbil Alameen 🕌"
   ];
 
-  const loveMessages = [
+  const loveMessageTemplates = [
     "💖 Allah loves you",
     "🌟 You are blessed",
     "✨ Jannah awaits",
@@ -159,7 +159,7 @@ const AmazingCelebrationEffects = ({ isActive, eventTitle }: AmazingCelebrationE
     for (let i = 0; i < 5; i++) {
       newLove.push({
         id: `love-${Date.now()}-${i}`,
-        text: loveMessages[Math.floor(Math.random() * loveMessages.length)],
+        text: loveMessageTemplates[Math.floor(Math.random() * loveMessageTemplates.length)],
         x: i < 2 ? 2 + Math.random() * 18 : 80 + Math.random() * 18, // Sides
         y: 30 + Math.random() * 40,
         color: ['#FF69B4', '#FF1493', '#DC143C', '#FF6347'][Math.floor(Math.random() * 4)]
