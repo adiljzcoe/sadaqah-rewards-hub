@@ -19,6 +19,7 @@ import BusinessAdvert from '@/components/BusinessAdvert';
 import LeagueTablesCarousel from '@/components/LeagueTablesCarousel';
 import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
+import MasjidLeaderboard from '@/components/MasjidLeaderboard';
 
 const Index = () => {
   // Mock data for campaigns
@@ -145,6 +146,9 @@ const Index = () => {
             </div>
             <div className="hover-lift">
               <FriendsWidget />
+            </div>
+            <div className="hover-lift">
+              <MasjidLeaderboard />
             </div>
             <div className="hover-lift">
               <BusinessLeaderboard />

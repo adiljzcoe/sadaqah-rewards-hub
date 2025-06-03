@@ -1,172 +1,148 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Trophy, TrendingUp, Users, Crown } from 'lucide-react';
+import { Building2, MapPin, Crown, Users } from 'lucide-react';
 
-interface MasjidLeaderboardEntry {
-  id: string;
-  name: string;
-  location: string;
-  totalDonations: number;
-  memberCount: number;
-  rank: number;
-  weeklyGrowth: number;
-  averagePerMember: number;
-}
+const MasjidLeaderboard = () => {
+  const [activeTab, setActiveTab] = useState<'local' | 'cities' | 'countries'>('local');
 
-const mockLeaderboard: MasjidLeaderboardEntry[] = [
-  {
-    id: '1',
-    name: 'East London Mosque',
-    location: 'London',
-    totalDonations: 28750,
-    memberCount: 342,
-    rank: 1,
-    weeklyGrowth: 15.3,
-    averagePerMember: 84
-  },
-  {
-    id: '2',
-    name: 'Birmingham Central Mosque',
-    location: 'Birmingham',
-    totalDonations: 24200,
-    memberCount: 298,
-    rank: 2,
-    weeklyGrowth: 12.1,
-    averagePerMember: 81
-  },
-  {
-    id: '3',
-    name: 'Central London Mosque',
-    location: 'London',
-    totalDonations: 21680,
-    memberCount: 247,
-    rank: 3,
-    weeklyGrowth: 8.7,
-    averagePerMember: 88
-  },
-  {
-    id: '4',
-    name: 'Manchester Islamic Centre',
-    location: 'Manchester',
-    totalDonations: 18940,
-    memberCount: 201,
-    rank: 4,
-    weeklyGrowth: 6.2,
-    averagePerMember: 94
-  },
-  {
-    id: '5',
-    name: 'Leeds Grand Mosque',
-    location: 'Leeds',
-    totalDonations: 16750,
-    memberCount: 189,
-    rank: 5,
-    weeklyGrowth: 4.8,
-    averagePerMember: 89
-  }
-];
+  const localMasjids = [
+    { rank: 1, name: 'East London Mosque', location: 'London', points: 28750, isUser: false },
+    { rank: 2, name: 'Birmingham Central Mosque', location: 'Birmingham', points: 24200, isUser: false },
+    { rank: 3, name: 'Central London Mosque', location: 'London', points: 21680, isUser: true },
+    { rank: 4, name: 'Manchester Islamic Centre', location: 'Manchester', points: 18940, isUser: false },
+  ];
 
-interface MasjidLeaderboardProps {
-  userMasjidId?: string;
-}
+  const cities = [
+    { rank: 1, name: 'London', points: 156420, isUser: true },
+    { rank: 2, name: 'Birmingham', points: 142300, isUser: false },
+    { rank: 3, name: 'Manchester', points: 128900, isUser: false },
+    { rank: 4, name: 'Leeds', points: 98700, isUser: false },
+  ];
 
-const MasjidLeaderboard = ({ userMasjidId }: MasjidLeaderboardProps) => {
-  const getRankColor = (rank: number) => {
-    if (rank === 1) return 'text-yellow-600';
-    if (rank === 2) return 'text-gray-600';
-    if (rank === 3) return 'text-amber-600';
-    return 'text-gray-500';
+  const countries = [
+    { rank: 1, name: 'United Kingdom', points: 1245600, isUser: true },
+    { rank: 2, name: 'United States', points: 1189400, isUser: false },
+    { rank: 3, name: 'Canada', points: 987200, isUser: false },
+    { rank: 4, name: 'Australia', points: 756300, isUser: false },
+  ];
+
+  const getCurrentData = () => {
+    switch (activeTab) {
+      case 'local': return localMasjids;
+      case 'cities': return cities;
+      case 'countries': return countries;
+      default: return localMasjids;
+    }
   };
 
-  const getRankIcon = (rank: number) => {
-    if (rank === 1) return <Crown className="h-5 w-5 text-yellow-500" />;
-    if (rank <= 3) return <Trophy className="h-5 w-5 text-amber-500" />;
-    return <span className="text-lg font-bold text-gray-500">#{rank}</span>;
+  const getTabIcon = (tab: string) => {
+    switch (tab) {
+      case 'local': return <Building2 className="h-3 w-3" />;
+      case 'cities': return <MapPin className="h-3 w-3" />;
+      case 'countries': return <Users className="h-3 w-3" />;
+      default: return <Building2 className="h-3 w-3" />;
+    }
+  };
+
+  const getRankBadge = (rank: number, isUser: boolean) => {
+    if (rank === 1) {
+      return (
+        <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-md text-xs font-bold">
+          <Crown className="h-3 w-3" />
+          No.1
+        </div>
+      );
+    }
+    return (
+      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+        isUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+      }`}>
+        {rank}
+      </div>
+    );
+  };
+
+  const getPointsToNext = (currentRank: number, currentPoints: number) => {
+    const data = getCurrentData();
+    const nextRankData = data.find(item => item.rank === currentRank - 1);
+    if (!nextRankData) return null;
+    return nextRankData.points - currentPoints;
   };
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center gap-2 mb-6">
-        <Trophy className="h-6 w-6 text-yellow-500" />
-        <h3 className="text-xl font-bold text-gray-900">Masjid Leaderboard</h3>
+    <Card className="p-0 overflow-hidden bg-white border border-gray-200/60 shadow-sm">
+      {/* Header */}
+      <div className="p-3 bg-gradient-to-r from-emerald-600 to-green-600">
+        <h3 className="text-sm font-medium text-white flex items-center gap-2">
+          <Building2 className="h-4 w-4" />
+          Rankings
+        </h3>
       </div>
-      
-      <div className="space-y-4">
-        {mockLeaderboard.map((masjid) => {
-          const isUserMasjid = masjid.id === userMasjidId;
-          
-          return (
-            <div 
-              key={masjid.id}
-              className={`p-4 rounded-lg border transition-all duration-200 ${
-                isUserMasjid 
-                  ? 'border-blue-200 bg-blue-50 shadow-md' 
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-8 h-8">
-                    {getRankIcon(masjid.rank)}
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-gray-900">{masjid.name}</h4>
-                      {isUserMasjid && (
-                        <Badge className="bg-blue-100 text-blue-800 text-xs">
-                          Your Masjid
-                        </Badge>
-                      )}
+
+      {/* Tabs */}
+      <div className="flex border-b border-gray-200">
+        {[
+          { key: 'local', label: 'Masjid' },
+          { key: 'cities', label: 'Cities' },
+          { key: 'countries', label: 'Countries' }
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key as any)}
+            className={`flex-1 px-2 py-2 text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
+              activeTab === tab.key
+                ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-500'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            {getTabIcon(tab.key)}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Rankings List */}
+      <div className="p-3">
+        <div className="space-y-2">
+          {getCurrentData().map((item) => {
+            const pointsToNext = item.isUser ? getPointsToNext(item.rank, item.points) : null;
+            
+            return (
+              <div key={item.rank} className={`flex items-center justify-between p-2 rounded-lg transition-colors ${
+                item.isUser ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50 hover:bg-gray-100'
+              }`}>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  {getRankBadge(item.rank, item.isUser)}
+                  <div className="min-w-0 flex-1">
+                    <div className={`text-xs truncate font-semibold ${item.isUser ? 'text-blue-900' : 'text-gray-900'}`}>
+                      {item.name}
+                      {item.isUser && <span className="ml-1 text-blue-600">(You)</span>}
                     </div>
-                    <p className="text-sm text-gray-600">{masjid.location}</p>
+                    {activeTab === 'local' && 'location' in item && (
+                      <div className="text-xs text-gray-500 flex items-center gap-1">
+                        <MapPin className="h-2 w-2" />
+                        {item.location}
+                      </div>
+                    )}
+                    {item.isUser && pointsToNext && (
+                      <div className="text-xs text-orange-600 font-medium">
+                        {pointsToNext.toLocaleString()} points to rank {item.rank - 1}
+                      </div>
+                    )}
                   </div>
                 </div>
-                
                 <div className="text-right">
-                  <div className="font-bold text-lg text-green-600">
-                    £{masjid.totalDonations.toLocaleString()}
+                  <div className={`font-bold text-xs ${item.isUser ? 'text-blue-600' : 'text-emerald-600'}`}>
+                    {item.points.toLocaleString()}
                   </div>
-                  <div className="text-xs text-gray-500">
-                    {masjid.memberCount} members
-                  </div>
+                  <div className="text-xs text-gray-500">points</div>
                 </div>
               </div>
-              
-              <div className="mt-3 grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  <span className="text-gray-600">Growth:</span>
-                  <span className="font-medium text-green-600">+{masjid.weeklyGrowth}%</span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-blue-500" />
-                  <span className="text-gray-600">Avg/member:</span>
-                  <span className="font-medium">£{masjid.averagePerMember}</span>
-                </div>
-              </div>
-              
-              {isUserMasjid && (
-                <div className="mt-3 pt-3 border-t border-blue-200">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Progress to #2</span>
-                    <span className="font-medium">
-                      £{(mockLeaderboard[1].totalDonations - masjid.totalDonations).toLocaleString()} needed
-                    </span>
-                  </div>
-                  <Progress 
-                    value={(masjid.totalDonations / mockLeaderboard[1].totalDonations) * 100} 
-                    className="mt-2 h-2"
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </Card>
   );
