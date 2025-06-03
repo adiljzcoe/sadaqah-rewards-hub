@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -368,21 +367,6 @@ const Leaderboard = () => {
             </TabsContent>
           </div>
         </Tabs>
-      </Card>
-
-      {/* Footer Stats */}
-      <Card className="p-4 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-xl text-center">
-        <div className="flex items-center justify-center mb-2">
-          <div className="p-2 bg-orange-100 rounded-xl">
-            <Trophy className="h-5 w-5 text-orange-600" />
-          </div>
-        </div>
-        <p className="text-base font-bold text-orange-700 mb-1">
-          🔥 Weekly reset in 3 days 🔥
-        </p>
-        <p className="text-xs text-orange-600">
-          Final chance to improve your ranking!
-        </p>
       </Card>
     </div>
   );
