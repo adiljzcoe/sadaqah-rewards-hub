@@ -4,6 +4,15 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { 
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import { 
   Heart, 
   MapPin, 
   Clock, 
@@ -42,6 +51,8 @@ interface FeedActivity {
 const UnifiedLiveFeed = () => {
   const [activities, setActivities] = useState<FeedActivity[]>([]);
   const [activeTab, setActiveTab] = useState<'all' | 'donations' | 'jannah' | 'achievements' | 'charity' | 'community'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // Mock data - this would come from various sources in real implementation
   useEffect(() => {
@@ -172,6 +183,22 @@ const UnifiedLiveFeed = () => {
     }
   };
 
+  const getPaginatedActivities = () => {
+    const filtered = getFilteredActivities();
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filtered.slice(startIndex, startIndex + itemsPerPage);
+  };
+
+  const getTotalPages = () => {
+    return Math.ceil(getFilteredActivities().length / itemsPerPage);
+  };
+
+  // Reset to page 1 when tab changes
+  const handleTabChange = (value: string) => {
+    setActiveTab(value as any);
+    setCurrentPage(1);
+  };
+
   const getActivityIcon = (type: string) => {
     switch (type) {
       case 'donation': return Heart;
@@ -205,6 +232,9 @@ const UnifiedLiveFeed = () => {
     }
   };
 
+  const totalPages = getTotalPages();
+  const paginatedActivities = getPaginatedActivities();
+
   return (
     <Card className="p-0 overflow-hidden bg-gradient-to-br from-white via-slate-50/50 to-blue-50/30 border-2 border-white/50 shadow-2xl backdrop-blur-sm">
       {/* Header */}
@@ -229,7 +259,7 @@ const UnifiedLiveFeed = () => {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="all" value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
+      <Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange} className="w-full">
         <div className="px-6 pt-4 pb-2 bg-gray-50/50 border-b">
           <TabsList className="grid w-full grid-cols-6 bg-white/80 backdrop-blur-sm">
             <TabsTrigger value="all" className="text-xs">
@@ -263,7 +293,7 @@ const UnifiedLiveFeed = () => {
           <div className="p-6">
             {/* Activities Feed */}
             <div className="space-y-4">
-              {getFilteredActivities().map((activity, index) => {
+              {paginatedActivities.map((activity, index) => {
                 const IconComponent = getActivityIcon(activity.type);
                 
                 return (
@@ -337,7 +367,7 @@ const UnifiedLiveFeed = () => {
                 );
               })}
 
-              {getFilteredActivities().length === 0 && (
+              {paginatedActivities.length === 0 && (
                 <div className="text-center py-12">
                   <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-600 mb-2">No activities yet</h3>
@@ -346,13 +376,39 @@ const UnifiedLiveFeed = () => {
               )}
             </div>
 
-            {/* Load More */}
-            {getFilteredActivities().length > 0 && (
-              <div className="pt-6 text-center">
-                <button className="gel-button vibrant-gradient px-6 py-3 rounded-lg font-medium text-white hover:scale-105 transition-transform duration-300">
-                  <Activity className="h-4 w-4 mr-2" />
-                  Load More Activity
-                </button>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pt-6">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                    
+                    {/* Page Numbers */}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(page)}
+                          isActive={currentPage === page}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+
+                    <PaginationItem>
+                      <PaginationNext 
+                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             )}
           </div>
