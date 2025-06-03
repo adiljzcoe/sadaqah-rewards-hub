@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -109,33 +108,6 @@ const CharityFeedSection = () => {
           <div className="flex items-center text-sm text-gray-500">
             <div className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse"></div>
             Live
-          </div>
-        </div>
-        
-        {/* Trust System Explanation */}
-        <div className="bg-gradient-to-r from-blue-50 to-emerald-50 border border-blue-200 rounded-lg p-4 mb-4">
-          <div className="flex items-start gap-3">
-            <Shield className="h-5 w-5 text-blue-600 mt-0.5" />
-            <div>
-              <h4 className="font-semibold text-gray-800 mb-1">Trust-Based Distribution System</h4>
-              <p className="text-sm text-gray-600 mb-2">
-                Your donations are distributed based on charity performance. More active charities with verified field updates receive larger shares.
-              </p>
-              <div className="flex items-center gap-4 text-xs text-gray-500">
-                <div className="flex items-center gap-1">
-                  <Star className="h-3 w-3 text-yellow-500" />
-                  <span>Trust Rating (1-10)</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <CheckCircle className="h-3 w-3 text-green-500" />
-                  <span>Verified Updates Only</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Eye className="h-3 w-3 text-blue-500" />
-                  <span>Real Proof of Work</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
