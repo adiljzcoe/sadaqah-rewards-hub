@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -155,7 +154,7 @@ const InMemoryOfWidget = () => {
 
   return (
     <>
-      {/* Optimized CSS for better mobile performance */}
+      {/* Enhanced CSS for more exquisite gold effects */}
       <style>{`
         .memorial-plaque {
           will-change: transform;
@@ -164,40 +163,160 @@ const InMemoryOfWidget = () => {
         }
         
         .gold-pin {
-          background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #ffd700 50%, #b8860b 75%, #ffd700 100%);
+          background: linear-gradient(135deg, 
+            #ffd700 0%, 
+            #ffed4e 15%, 
+            #ffffff 25%, 
+            #ffd700 35%, 
+            #b8860b 50%, 
+            #ffd700 65%, 
+            #ffffff 75%, 
+            #ffed4e 85%, 
+            #ffd700 100%
+          );
+          background-size: 200% 200%;
           box-shadow: 
-            0 2px 4px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.6),
-            0 0 8px rgba(255,215,0,0.4);
-          border: 1px solid #b8860b;
-          animation: goldShimmer 3s ease-in-out infinite;
+            0 3px 6px rgba(0,0,0,0.4),
+            inset 0 2px 4px rgba(255,255,255,0.8),
+            inset 0 -1px 2px rgba(184,134,11,0.6),
+            0 0 12px rgba(255,215,0,0.6);
+          border: 2px solid #b8860b;
+          animation: luxuriousGoldShimmer 4s ease-in-out infinite;
         }
         
         .gold-plaque {
-          background: linear-gradient(135deg, #ffd700 0%, #ffed4e 30%, #ffc107 70%, #b8860b 100%);
+          background: linear-gradient(135deg, 
+            #ffd700 0%, 
+            #ffed4e 20%, 
+            #ffffff 30%, 
+            #ffc107 40%, 
+            #b8860b 50%, 
+            #ffc107 60%, 
+            #ffffff 70%, 
+            #ffed4e 80%, 
+            #ffd700 100%
+          );
+          background-size: 300% 300%;
           box-shadow: 
-            inset 0 2px 4px rgba(0,0,0,0.2),
-            0 0 12px rgba(255,215,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.5);
-          border: 2px solid #b8860b;
+            inset 0 4px 8px rgba(0,0,0,0.3),
+            inset 0 2px 4px rgba(255,255,255,0.8),
+            inset 0 -2px 4px rgba(184,134,11,0.7),
+            0 0 20px rgba(255,215,0,0.5),
+            0 4px 16px rgba(0,0,0,0.2);
+          border: 3px solid #b8860b;
+          position: relative;
+          overflow: hidden;
+          animation: premiumGoldFlow 6s ease-in-out infinite;
+        }
+        
+        .gold-plaque::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: linear-gradient(45deg, 
+            transparent 40%, 
+            rgba(255,255,255,0.8) 50%, 
+            transparent 60%
+          );
+          animation: goldGlossWave 3s ease-in-out infinite;
+          pointer-events: none;
         }
         
         .marble-texture {
           background: 
-            linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%),
-            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.8) 0%, transparent 50%),
-            radial-gradient(circle at 80% 60%, rgba(0,0,0,0.05) 0%, transparent 50%);
+            linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #ffffff 50%, #e9ecef 75%, #f8f9fa 100%),
+            radial-gradient(circle at 25% 25%, rgba(255,255,255,0.9) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(0,0,0,0.08) 0%, transparent 40%),
+            radial-gradient(circle at 50% 50%, rgba(255,255,255,0.7) 0%, transparent 60%);
           box-shadow: 
-            0 8px 32px rgba(0,0,0,0.15),
-            inset 0 1px 0 rgba(255,255,255,0.6);
+            0 12px 40px rgba(0,0,0,0.2),
+            inset 0 2px 4px rgba(255,255,255,0.8),
+            inset 0 -1px 3px rgba(0,0,0,0.1);
+          border: 2px solid rgba(255,255,255,0.5);
+          position: relative;
         }
         
-        @keyframes goldShimmer {
+        .marble-texture::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(45deg, 
+            transparent 30%, 
+            rgba(255,255,255,0.3) 50%, 
+            transparent 70%
+          );
+          animation: marbleShine 5s ease-in-out infinite;
+          pointer-events: none;
+          border-radius: inherit;
+        }
+        
+        @keyframes luxuriousGoldShimmer {
           0%, 100% { 
-            filter: brightness(1) saturate(1);
+            background-position: 0% 50%;
+            filter: brightness(1) saturate(1.2);
+            transform: scale(1);
+          }
+          25% {
+            background-position: 25% 25%;
+            filter: brightness(1.4) saturate(1.6);
+            transform: scale(1.05);
           }
           50% { 
-            filter: brightness(1.3) saturate(1.2);
+            background-position: 100% 50%;
+            filter: brightness(1.8) saturate(2);
+            transform: scale(1.1);
+          }
+          75% {
+            background-position: 75% 75%;
+            filter: brightness(1.4) saturate(1.6);
+            transform: scale(1.05);
+          }
+        }
+        
+        @keyframes premiumGoldFlow {
+          0%, 100% { 
+            background-position: 0% 50%;
+            filter: brightness(1) saturate(1.3);
+          }
+          33% {
+            background-position: 50% 0%;
+            filter: brightness(1.5) saturate(1.8);
+          }
+          66% { 
+            background-position: 100% 100%;
+            filter: brightness(1.2) saturate(1.5);
+          }
+        }
+        
+        @keyframes goldGlossWave {
+          0% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes marbleShine {
+          0%, 100% {
+            transform: translateX(-100%) rotate(45deg);
+            opacity: 0;
+          }
+          50% {
+            transform: translateX(0%) rotate(45deg);
+            opacity: 0.6;
+          }
+          100% {
+            transform: translateX(100%) rotate(45deg);
+            opacity: 0;
           }
         }
         
@@ -229,6 +348,21 @@ const InMemoryOfWidget = () => {
         
         .memorial-exit {
           animation: fadeOut 0.3s ease-in forwards;
+        }
+        
+        .enhanced-gold-text {
+          background: linear-gradient(135deg, #b8860b, #ffd700, #ffed4e, #ffd700, #b8860b);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: goldTextShimmer 3s ease-in-out infinite;
+          text-shadow: 0 1px 3px rgba(184,134,11,0.5);
+        }
+        
+        @keyframes goldTextShimmer {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
       `}</style>
 
@@ -267,38 +401,38 @@ const InMemoryOfWidget = () => {
                   }}
                 >
                   {!memorial.isPlaceholder && (
-                    <div className="marble-texture rounded-lg p-3 relative overflow-hidden">
-                      {/* Corner Gold Pins */}
-                      <div className="gold-pin absolute top-2 left-2 w-3 h-3 rounded-full"></div>
-                      <div className="gold-pin absolute top-2 right-2 w-3 h-3 rounded-full"></div>
-                      <div className="gold-pin absolute bottom-2 left-2 w-3 h-3 rounded-full"></div>
-                      <div className="gold-pin absolute bottom-2 right-2 w-3 h-3 rounded-full"></div>
+                    <div className="marble-texture rounded-lg p-4 relative overflow-hidden">
+                      {/* Enhanced Corner Gold Pins */}
+                      <div className="gold-pin absolute top-3 left-3 w-4 h-4 rounded-full"></div>
+                      <div className="gold-pin absolute top-3 right-3 w-4 h-4 rounded-full"></div>
+                      <div className="gold-pin absolute bottom-3 left-3 w-4 h-4 rounded-full"></div>
+                      <div className="gold-pin absolute bottom-3 right-3 w-4 h-4 rounded-full"></div>
                       
-                      {/* Inner Gold Plaque */}
-                      <div className="gold-plaque rounded-md mx-3 my-2 p-3 relative">
+                      {/* Enhanced Inner Gold Plaque */}
+                      <div className="gold-plaque rounded-lg mx-2 my-2 p-4 relative">
                         {/* Memorial Header */}
-                        <div className="text-center mb-2">
-                          <div className="font-serif text-sm font-bold text-amber-900 mb-1">
+                        <div className="text-center mb-3">
+                          <div className="font-serif text-sm font-bold enhanced-gold-text mb-1">
                             {memorial.honoringOf}
                           </div>
-                          <div className="font-serif text-xs text-amber-800 font-semibold">
+                          <div className="font-serif text-xs enhanced-gold-text font-semibold opacity-90">
                             WE HONOR YOU
                           </div>
                         </div>
                         
                         {/* Donation Information */}
-                        <div className="flex items-center justify-between mb-2 text-xs">
+                        <div className="flex items-center justify-between mb-3 text-xs">
                           <span className="text-amber-900 font-medium">
                             Donated by {memorial.user}
                           </span>
-                          <div className="flex items-center bg-emerald-100 px-2 py-1 rounded-full border border-emerald-400">
+                          <div className="flex items-center bg-emerald-100 px-2 py-1 rounded-full border-2 border-emerald-400 shadow-sm">
                             <SimpleGoldCoin size={12} className="mr-1" />
                             <span className="font-bold text-emerald-800">£{memorial.amount}</span>
                           </div>
                         </div>
                         
                         {/* Message */}
-                        <div className="bg-amber-100/90 rounded px-2 py-1 border border-amber-700 text-center">
+                        <div className="bg-amber-50/95 rounded-md px-3 py-2 border-2 border-amber-600 text-center shadow-inner">
                           <div className="text-xs italic text-amber-900 flex items-center justify-center">
                             <Heart className="h-2 w-2 mr-1 text-red-700" />
                             <span className="font-serif">"{memorial.message}"</span>
@@ -307,8 +441,8 @@ const InMemoryOfWidget = () => {
                         </div>
                         
                         {/* Date */}
-                        <div className="text-center mt-2">
-                          <div className="text-xs font-bold text-amber-900 font-serif">
+                        <div className="text-center mt-3">
+                          <div className="text-xs font-bold enhanced-gold-text font-serif">
                             {new Date(memorial.timestamp).toLocaleDateString('en-GB')}
                           </div>
                         </div>
