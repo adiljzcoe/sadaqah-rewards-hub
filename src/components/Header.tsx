@@ -172,7 +172,7 @@ const Header = () => {
               }`}></span>
             </Link>
 
-            {/* Islamic Life Dropdown */}
+            {/* Islamic Life Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={islamicOpen} onOpenChange={setIslamicOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -185,62 +185,76 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-96 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[480px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setIslamicOpen(true)}
                 onMouseLeave={() => setIslamicOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">Islamic Calendar & Worship</h3>
-                  <DropdownMenuItem asChild>
-                    <Link to="/islamic-calendar" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
-                      <Calendar className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Islamic Calendar</div>
-                        <p className="text-sm text-emerald-200">Sacred days & celebrations</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/ramadan-calendar" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white">
-                      <Moon className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Ramadan Calendar</div>
-                        <p className="text-sm text-purple-200">Track your Ramadan journey</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/adhan-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white">
-                      <Mic className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Adhan Community</div>
-                        <p className="text-sm text-blue-200">Share beautiful Adhan recordings</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/live-tv" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white">
-                      <Tv className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Live TV</div>
-                        <p className="text-sm text-red-200">Islamic channels & content</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/dhikr-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white">
-                      <Sparkles className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Dhikr Community</div>
-                        <p className="text-sm text-purple-200">Spiritual remembrance together</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
+                {/* Crystalline mega menu background with FF style */}
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  {/* Background crystal effects */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-2 left-10 w-16 h-6 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute top-4 right-8 w-12 h-4 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                    <div className="absolute bottom-3 left-1/3 w-20 h-8 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+                    <div className="absolute top-6 right-1/4 w-14 h-5 bg-cyan-400/25 rounded-full blur-sm animate-pulse delay-700 shadow-cyan-300/60"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">Islamic Calendar & Worship</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <DropdownMenuItem asChild>
+                        <Link to="/islamic-calendar" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-green-600/80 hover:from-emerald-500 hover:to-green-500 text-white backdrop-blur-sm border border-emerald-400/30 shadow-lg shadow-emerald-400/20 transition-all duration-300 hover:scale-105">
+                          <Calendar className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Islamic Calendar</div>
+                            <p className="text-sm text-emerald-200">Sacred days & celebrations</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/ramadan-calendar" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600/80 to-indigo-600/80 hover:from-purple-500 hover:to-indigo-500 text-white backdrop-blur-sm border border-purple-400/30 shadow-lg shadow-purple-400/20 transition-all duration-300 hover:scale-105">
+                          <Moon className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Ramadan Calendar</div>
+                            <p className="text-sm text-purple-200">Track your journey</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/adhan-community" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500 hover:to-cyan-500 text-white backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-400/20 transition-all duration-300 hover:scale-105">
+                          <Mic className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Adhan Community</div>
+                            <p className="text-sm text-blue-200">Beautiful recordings</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/live-tv" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-red-600/80 to-pink-600/80 hover:from-red-500 hover:to-pink-500 text-white backdrop-blur-sm border border-red-400/30 shadow-lg shadow-red-400/20 transition-all duration-300 hover:scale-105">
+                          <Tv className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Live TV</div>
+                            <p className="text-sm text-red-200">Islamic channels</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    </div>
+                    <DropdownMenuItem asChild>
+                      <Link to="/dhikr-community" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600/80 to-pink-600/80 hover:from-purple-500 hover:to-pink-500 text-white backdrop-blur-sm border border-purple-400/30 shadow-lg shadow-purple-400/20 transition-all duration-300 hover:scale-105 w-full">
+                        <Sparkles className="h-6 w-6 mr-3 drop-shadow-lg" />
+                        <div>
+                          <div className="font-semibold drop-shadow-md">Dhikr Community</div>
+                          <p className="text-sm text-purple-200">Spiritual remembrance together</p>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Tools & Services Dropdown */}
+            {/* Tools & Services Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={toolsOpen} onOpenChange={setToolsOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -253,53 +267,64 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[400px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setToolsOpen(true)}
                 onMouseLeave={() => setToolsOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">Islamic Tools</h3>
-                  <DropdownMenuItem asChild>
-                    <Link to="/namaz-times" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white">
-                      <Clock className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Prayer Times</div>
-                        <p className="text-sm text-indigo-200">Accurate prayer times worldwide</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/quran-reader" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
-                      <BookOpen className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Quran Reader</div>
-                        <p className="text-sm text-emerald-200">Read & track progress</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/zakat-calculator" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500 text-white">
-                      <Coins className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Zakat Calculator</div>
-                        <p className="text-sm text-yellow-200">Calculate your Zakat</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/dua-wall" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
-                      <Heart className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Dua Wall</div>
-                        <p className="text-sm text-pink-200">Share & support prayers</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-2 left-8 w-14 h-5 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute bottom-4 right-6 w-12 h-4 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                    <div className="absolute top-1/2 left-1/4 w-16 h-6 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">Islamic Tools</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <DropdownMenuItem asChild>
+                        <Link to="/namaz-times" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-600/80 to-blue-600/80 hover:from-indigo-500 hover:to-blue-500 text-white backdrop-blur-sm border border-indigo-400/30 shadow-lg shadow-indigo-400/20 transition-all duration-300 hover:scale-105">
+                          <Clock className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Prayer Times</div>
+                            <p className="text-sm text-indigo-200">Accurate worldwide</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/quran-reader" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-green-600/80 hover:from-emerald-500 hover:to-green-500 text-white backdrop-blur-sm border border-emerald-400/30 shadow-lg shadow-emerald-400/20 transition-all duration-300 hover:scale-105">
+                          <BookOpen className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Quran Reader</div>
+                            <p className="text-sm text-emerald-200">Read & track</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/zakat-calculator" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-yellow-600/80 to-orange-600/80 hover:from-yellow-500 hover:to-orange-500 text-white backdrop-blur-sm border border-yellow-400/30 shadow-lg shadow-yellow-400/20 transition-all duration-300 hover:scale-105">
+                          <Coins className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Zakat Calculator</div>
+                            <p className="text-sm text-yellow-200">Calculate Zakat</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/dua-wall" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-pink-600/80 to-rose-600/80 hover:from-pink-500 hover:to-rose-500 text-white backdrop-blur-sm border border-pink-400/30 shadow-lg shadow-pink-400/20 transition-all duration-300 hover:scale-105">
+                          <Heart className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Dua Wall</div>
+                            <p className="text-sm text-pink-200">Share prayers</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Donate Dropdown with Enhanced Options */}
+            {/* Donate Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={donateOpen} onOpenChange={setDonateOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -312,62 +337,75 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[450px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setDonateOpen(true)}
                 onMouseLeave={() => setDonateOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">Make an Impact</h3>
-                  <DropdownMenuItem asChild>
-                    <Link to="/campaigns" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
-                      <Heart className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Active Campaigns</div>
-                        <p className="text-sm text-emerald-200">Support urgent causes worldwide</p>
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-3 left-12 w-18 h-7 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute bottom-2 right-10 w-14 h-5 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                    <div className="absolute top-1/3 left-1/3 w-16 h-6 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">Make an Impact</h3>
+                    <div className="space-y-3">
+                      <DropdownMenuItem asChild>
+                        <Link to="/campaigns" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-green-600/80 hover:from-emerald-500 hover:to-green-500 text-white backdrop-blur-sm border border-emerald-400/30 shadow-lg shadow-emerald-400/20 transition-all duration-300 hover:scale-105 w-full">
+                          <Heart className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Active Campaigns</div>
+                            <p className="text-sm text-emerald-200">Support urgent causes worldwide</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <div className="grid grid-cols-2 gap-3">
+                        <DropdownMenuItem asChild>
+                          <Link to="/build-mosque" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600/80 to-indigo-600/80 hover:from-blue-500 hover:to-indigo-500 text-white backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-400/20 transition-all duration-300 hover:scale-105">
+                            <Building className="h-6 w-6 mr-3 drop-shadow-lg" />
+                            <div>
+                              <div className="font-semibold drop-shadow-md">Build Mosque</div>
+                              <p className="text-sm text-blue-200">Fund construction</p>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/water-wells" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600/80 to-blue-600/80 hover:from-cyan-500 hover:to-blue-500 text-white backdrop-blur-sm border border-cyan-400/30 shadow-lg shadow-cyan-400/20 transition-all duration-300 hover:scale-105">
+                            <span className="text-xl mr-3 drop-shadow-lg">💧</span>
+                            <div>
+                              <div className="font-semibold drop-shadow-md">Water Wells</div>
+                              <p className="text-sm text-cyan-200">Clean water</p>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/orphanages" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-pink-600/80 to-rose-600/80 hover:from-pink-500 hover:to-rose-500 text-white backdrop-blur-sm border border-pink-400/30 shadow-lg shadow-pink-400/20 transition-all duration-300 hover:scale-105">
+                            <span className="text-xl mr-3 drop-shadow-lg">👶</span>
+                            <div>
+                              <div className="font-semibold drop-shadow-md">Orphanages</div>
+                              <p className="text-sm text-pink-200">Support care</p>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/qurbani" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-orange-600/80 to-red-600/80 hover:from-orange-500 hover:to-red-500 text-white backdrop-blur-sm border border-orange-400/30 shadow-lg shadow-orange-400/20 transition-all duration-300 hover:scale-105">
+                            <span className="text-xl mr-3 drop-shadow-lg">🐄</span>
+                            <div>
+                              <div className="font-semibold drop-shadow-md">Qurbani</div>
+                              <p className="text-sm text-orange-200">Share blessings</p>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
                       </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/build-mosque" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white">
-                      <Building className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Build a Mosque</div>
-                        <p className="text-sm text-blue-200">Fund mosque construction</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/water-wells" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white">
-                      <span className="text-lg mr-3">💧</span>
-                      <div>
-                        <div className="font-semibold">Water Wells</div>
-                        <p className="text-sm text-cyan-200">Provide clean water access</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/orphanages" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
-                      <span className="text-lg mr-3">👶</span>
-                      <div>
-                        <div className="font-semibold">Orphanages</div>
-                        <p className="text-sm text-pink-200">Support orphan care & education</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/qurbani" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white">
-                      <span className="text-lg mr-3">🐄</span>
-                      <div>
-                        <div className="font-semibold">Qurbani</div>
-                        <p className="text-sm text-orange-200">Sacrifice & share blessings</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Community Dropdown */}
+            {/* Community Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={communityOpen} onOpenChange={setCommunityOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -380,44 +418,55 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[400px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setCommunityOpen(true)}
                 onMouseLeave={() => setCommunityOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">Connect & Compete</h3>
-                  <DropdownMenuItem asChild>
-                    <Link to="/masjid-community" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white">
-                      <Building className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Masjid Community</div>
-                        <p className="text-sm text-indigo-200">Represent your local mosque</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/my-ummah" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
-                      <Users className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">My Ummah</div>
-                        <p className="text-sm text-emerald-200">Global Muslim community</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/leaderboards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 text-white">
-                      <Trophy className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Leaderboards</div>
-                        <p className="text-sm text-amber-200">Top donors & recognition</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-2 left-6 w-16 h-6 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute bottom-3 right-8 w-12 h-4 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                    <div className="absolute top-1/2 right-1/4 w-14 h-5 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">Connect & Compete</h3>
+                    <div className="space-y-3">
+                      <DropdownMenuItem asChild>
+                        <Link to="/masjid-community" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-600/80 to-purple-600/80 hover:from-indigo-500 hover:to-purple-500 text-white backdrop-blur-sm border border-indigo-400/30 shadow-lg shadow-indigo-400/20 transition-all duration-300 hover:scale-105 w-full">
+                          <Building className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Masjid Community</div>
+                            <p className="text-sm text-indigo-200">Represent your local mosque</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/my-ummah" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-green-600/80 hover:from-emerald-500 hover:to-green-500 text-white backdrop-blur-sm border border-emerald-400/30 shadow-lg shadow-emerald-400/20 transition-all duration-300 hover:scale-105 w-full">
+                          <Users className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">My Ummah</div>
+                            <p className="text-sm text-emerald-200">Global Muslim community</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/leaderboards" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600/80 to-yellow-600/80 hover:from-amber-500 hover:to-yellow-500 text-white backdrop-blur-sm border border-amber-400/30 shadow-lg shadow-amber-400/20 transition-all duration-300 hover:scale-105 w-full">
+                          <Trophy className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Leaderboards</div>
+                            <p className="text-sm text-amber-200">Top donors & recognition</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Rewards Dropdown */}
+            {/* Rewards Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={rewardsOpen} onOpenChange={setRewardsOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -430,53 +479,64 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[420px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setRewardsOpen(true)}
                 onMouseLeave={() => setRewardsOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">Rewards & Benefits</h3>
-                  <DropdownMenuItem asChild>
-                    <Link to="/sadaqah-coins" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-500 hover:to-amber-500 text-white">
-                      <Coins className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Sadaqah Coins</div>
-                        <p className="text-sm text-yellow-200">Purchase coins & unlock rewards</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/my-jannah" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white">
-                      <Building className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">My Jannah</div>
-                        <p className="text-sm text-emerald-200">Build your paradise</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/membership" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white">
-                      <Shield className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Membership Tiers</div>
-                        <p className="text-sm text-purple-200">Upgrade for multiplied points</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/gift-cards" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white">
-                      <Gift className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Gift Cards</div>
-                        <p className="text-sm text-pink-200">Give the gift of giving</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-3 left-10 w-18 h-7 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute bottom-2 right-12 w-16 h-6 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                    <div className="absolute top-1/3 left-1/4 w-14 h-5 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">Rewards & Benefits</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <DropdownMenuItem asChild>
+                        <Link to="/sadaqah-coins" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-yellow-600/80 to-amber-600/80 hover:from-yellow-500 hover:to-amber-500 text-white backdrop-blur-sm border border-yellow-400/30 shadow-lg shadow-yellow-400/20 transition-all duration-300 hover:scale-105">
+                          <Coins className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Sadaqah Coins</div>
+                            <p className="text-sm text-yellow-200">Purchase & unlock</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/my-jannah" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-green-600/80 hover:from-emerald-500 hover:to-green-500 text-white backdrop-blur-sm border border-emerald-400/30 shadow-lg shadow-emerald-400/20 transition-all duration-300 hover:scale-105">
+                          <Building className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">My Jannah</div>
+                            <p className="text-sm text-emerald-200">Build paradise</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/membership" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600/80 to-indigo-600/80 hover:from-purple-500 hover:to-indigo-500 text-white backdrop-blur-sm border border-purple-400/30 shadow-lg shadow-purple-400/20 transition-all duration-300 hover:scale-105">
+                          <Shield className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Membership</div>
+                            <p className="text-sm text-purple-200">Upgrade tiers</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/gift-cards" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-pink-600/80 to-rose-600/80 hover:from-pink-500 hover:to-rose-500 text-white backdrop-blur-sm border border-pink-400/30 shadow-lg shadow-pink-400/20 transition-all duration-300 hover:scale-105">
+                          <Gift className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Gift Cards</div>
+                            <p className="text-sm text-pink-200">Gift giving</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* User Login Dropdown */}
+            {/* User Login Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={userLoginOpen} onOpenChange={setUserLoginOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -490,70 +550,80 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[380px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setUserLoginOpen(true)}
                 onMouseLeave={() => setUserLoginOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">User Account</h3>
-                  {user ? (
-                    <DropdownMenuItem asChild>
-                      <button
-                        onClick={handleSignOut}
-                        className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white w-full"
-                      >
-                        <LogOut className="h-5 w-5 mr-3" />
-                        <div>
-                          <div className="font-semibold">Sign Out</div>
-                          <p className="text-sm text-red-200">Log out current user</p>
-                        </div>
-                      </button>
-                    </DropdownMenuItem>
-                  ) : (
-                    <>
-                      <DropdownMenuItem asChild>
-                        <button
-                          onClick={() => handleFakeLogin('user')}
-                          className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white w-full"
-                        >
-                          <User className="h-5 w-5 mr-3" />
-                          <div>
-                            <div className="font-semibold">Test User Login</div>
-                            <p className="text-sm text-blue-200">Login as a test user</p>
-                          </div>
-                        </button>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <button
-                          onClick={() => handleFakeLogin('admin')}
-                          className="flex items-center p-3 rounded-lg bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white w-full"
-                        >
-                          <Shield className="h-5 w-5 mr-3" />
-                          <div>
-                            <div className="font-semibold">Test Admin Login</div>
-                            <p className="text-sm text-orange-200">Login as a test admin</p>
-                          </div>
-                        </button>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link
-                          to="/auth"
-                          className="flex items-center p-3 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white"
-                        >
-                          <LogIn className="h-5 w-5 mr-3" />
-                          <div>
-                            <div className="font-semibold">Real Login</div>
-                            <p className="text-sm text-purple-200">Go to authentication page</p>
-                          </div>
-                        </Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-2 left-8 w-14 h-5 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute bottom-4 right-6 w-12 h-4 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">User Account</h3>
+                    <div className="space-y-3">
+                      {user ? (
+                        <DropdownMenuItem asChild>
+                          <button
+                            onClick={handleSignOut}
+                            className="flex items-center p-4 rounded-xl bg-gradient-to-r from-red-600/80 to-rose-600/80 hover:from-red-500 hover:to-rose-500 text-white backdrop-blur-sm border border-red-400/30 shadow-lg shadow-red-400/20 transition-all duration-300 hover:scale-105 w-full"
+                          >
+                            <LogOut className="h-6 w-6 mr-3 drop-shadow-lg" />
+                            <div>
+                              <div className="font-semibold drop-shadow-md">Sign Out</div>
+                              <p className="text-sm text-red-200">Log out current user</p>
+                            </div>
+                          </button>
+                        </DropdownMenuItem>
+                      ) : (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <button
+                              onClick={() => handleFakeLogin('user')}
+                              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500 hover:to-cyan-500 text-white backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-400/20 transition-all duration-300 hover:scale-105 w-full"
+                            >
+                              <User className="h-6 w-6 mr-3 drop-shadow-lg" />
+                              <div>
+                                <div className="font-semibold drop-shadow-md">Test User Login</div>
+                                <p className="text-sm text-blue-200">Login as a test user</p>
+                              </div>
+                            </button>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <button
+                              onClick={() => handleFakeLogin('admin')}
+                              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-orange-600/80 to-red-600/80 hover:from-orange-500 hover:to-red-500 text-white backdrop-blur-sm border border-orange-400/30 shadow-lg shadow-orange-400/20 transition-all duration-300 hover:scale-105 w-full"
+                            >
+                              <Shield className="h-6 w-6 mr-3 drop-shadow-lg" />
+                              <div>
+                                <div className="font-semibold drop-shadow-md">Test Admin Login</div>
+                                <p className="text-sm text-orange-200">Login as a test admin</p>
+                              </div>
+                            </button>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              to="/auth"
+                              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-purple-600/80 to-indigo-600/80 hover:from-purple-500 hover:to-indigo-500 text-white backdrop-blur-sm border border-purple-400/30 shadow-lg shadow-purple-400/20 transition-all duration-300 hover:scale-105"
+                            >
+                              <LogIn className="h-6 w-6 mr-3 drop-shadow-lg" />
+                              <div>
+                                <div className="font-semibold drop-shadow-md">Real Login</div>
+                                <p className="text-sm text-purple-200">Go to authentication page</p>
+                              </div>
+                            </Link>
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Developer Dropdown */}
+            {/* Developer Dropdown - Enhanced Mega Menu */}
             <DropdownMenu open={developerOpen} onOpenChange={setDeveloperOpen}>
               <DropdownMenuTrigger 
                 asChild
@@ -567,48 +637,58 @@ const Header = () => {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-80 bg-white border border-gray-200 shadow-2xl rounded-xl z-[9999]"
+                className="w-[400px] border-0 shadow-2xl rounded-2xl z-[9999] p-0 overflow-hidden"
                 onMouseEnter={() => setDeveloperOpen(true)}
                 onMouseLeave={() => setDeveloperOpen(false)}
               >
-                <div className="p-4 space-y-3">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">Developer Tools</h3>
-                  <DropdownMenuItem asChild>
-                    <Link to="/admin-dashboard" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white">
-                      <UserCog className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Admin Dashboard</div>
-                        <p className="text-sm text-red-200">Admin control panel</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white">
-                      <User className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Profile Settings</div>
-                        <p className="text-sm text-blue-200">User profile management</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/checkout" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white">
-                      <span className="text-lg mr-3">💳</span>
-                      <div>
-                        <div className="font-semibold">Checkout</div>
-                        <p className="text-sm text-green-200">Payment processing</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/charity-partners" className="flex items-center p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white">
-                      <Building className="h-5 w-5 mr-3" />
-                      <div>
-                        <div className="font-semibold">Charity Partners</div>
-                        <p className="text-sm text-indigo-200">Partner organizations</p>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+                  <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-2 left-6 w-16 h-6 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+                    <div className="absolute bottom-3 right-8 w-12 h-4 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+                  </div>
+                  
+                  <div className="relative z-10 p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-cyan-300 mb-4 drop-shadow-lg">Developer Tools</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin-dashboard" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-red-600/80 to-orange-600/80 hover:from-red-500 hover:to-orange-500 text-white backdrop-blur-sm border border-red-400/30 shadow-lg shadow-red-400/20 transition-all duration-300 hover:scale-105">
+                          <UserCog className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Admin Dashboard</div>
+                            <p className="text-sm text-red-200">Control panel</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/profile" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-blue-600/80 to-indigo-600/80 hover:from-blue-500 hover:to-indigo-500 text-white backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-400/20 transition-all duration-300 hover:scale-105">
+                          <User className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Profile Settings</div>
+                            <p className="text-sm text-blue-200">User management</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/checkout" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-green-600/80 to-emerald-600/80 hover:from-green-500 hover:to-emerald-500 text-white backdrop-blur-sm border border-green-400/30 shadow-lg shadow-green-400/20 transition-all duration-300 hover:scale-105">
+                          <span className="text-xl mr-3 drop-shadow-lg">💳</span>
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Checkout</div>
+                            <p className="text-sm text-green-200">Payment processing</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/charity-partners" className="flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-600/80 to-purple-600/80 hover:from-indigo-500 hover:to-purple-500 text-white backdrop-blur-sm border border-indigo-400/30 shadow-lg shadow-indigo-400/20 transition-all duration-300 hover:scale-105">
+                          <Building className="h-6 w-6 mr-3 drop-shadow-lg" />
+                          <div>
+                            <div className="font-semibold drop-shadow-md">Charity Partners</div>
+                            <p className="text-sm text-indigo-200">Partner orgs</p>
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
