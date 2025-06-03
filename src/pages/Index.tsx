@@ -113,17 +113,17 @@ const Index = () => {
               <LiveVideo />
             </div>
             
-            {/* Live Impact Feed moved here - directly below the video */}
-            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
-              <UnifiedLiveFeed />
-            </div>
-            
-            {/* CharityTicker moved here - below the live impact feed */}
+            {/* CharityTicker moved here - directly below the video */}
             <div className="max-w-full overflow-x-hidden mt-6 px-4">
               <CharityTicker />
             </div>
             
-            {/* Charity Feed Section - Right below charity ticker */}
+            {/* Live Impact Feed moved here - below the charity ticker */}
+            <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
+              <UnifiedLiveFeed />
+            </div>
+            
+            {/* Charity Feed Section - Right below live impact feed */}
             <div className="hover-lift mt-6 max-w-full overflow-x-hidden px-4">
               <CharityFeedSection />
             </div>
