@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Heart, CreditCard, Gift, Users } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface DonationWidgetProps {
   campaignId?: string;
@@ -34,6 +35,34 @@ const DonationWidget = ({
   const [isCustom, setIsCustom] = useState(false);
 
   const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
+  const { currency } = useCurrency();
+
+  // Get currency symbol based on detected/selected currency
+  const getCurrencySymbol = (curr: string) => {
+    const symbols: { [key: string]: string } = {
+      'GBP': '£',
+      'USD': '$',
+      'EUR': '€',
+      'AED': 'د.إ',
+      'SAR': 'ر.س',
+      'QAR': 'ر.ق',
+      'KWD': 'د.ك',
+      'BHD': 'د.ب',
+      'OMR': 'ر.ع',
+      'EGP': 'ج.م',
+      'JOD': 'د.أ',
+      'PKR': '₨',
+      'INR': '₹',
+      'MYR': 'RM',
+      'IDR': 'Rp',
+      'TRY': '₺',
+      'CAD': 'C$',
+      'AUD': 'A$',
+    };
+    return symbols[curr] || '£';
+  };
+
+  const currencySymbol = getCurrencySymbol(currency);
 
   const predefinedAmounts = [10, 25, 50, 100, 250, 500];
 
@@ -70,12 +99,14 @@ const DonationWidget = ({
       anonymous,
       campaignId,
       charityId,
+      currency,
       ...attributionData
     });
 
     // Here you would integrate with your payment system
     console.log('Processing donation with attribution:', {
       amount: donationAmount,
+      currency,
       type: donationType,
       message,
       anonymous,
@@ -119,7 +150,7 @@ const DonationWidget = ({
 
           {/* Amount Selection */}
           <div>
-            <Label htmlFor="amount">Donation Amount (£)</Label>
+            <Label htmlFor="amount">Donation Amount ({currencySymbol})</Label>
             <div className="grid grid-cols-3 gap-2 mt-2 mb-3">
               {predefinedAmounts.map((value) => (
                 <Button
@@ -129,7 +160,7 @@ const DonationWidget = ({
                   className="h-10"
                   onClick={() => handleAmountSelect(value.toString())}
                 >
-                  £{value}
+                  {currencySymbol}{value}
                 </Button>
               ))}
             </div>
@@ -202,7 +233,7 @@ const DonationWidget = ({
             onClick={() => trackClick('donate-button', 'primary_cta')}
           >
             <CreditCard className="h-4 w-4 mr-2" />
-            Donate £{isCustom ? customAmount || '0' : amount}
+            Donate {currencySymbol}{isCustom ? customAmount || '0' : amount}
           </Button>
 
           <div className="text-center">
