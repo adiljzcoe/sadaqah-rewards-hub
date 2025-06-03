@@ -48,6 +48,26 @@ const FriendsWidget = () => {
     }
   };
 
+  const getTierRowBackground = (tier: string) => {
+    switch (tier) {
+      case 'platinum': return 'bg-gradient-to-r from-slate-50 via-slate-25 to-white border-slate-200/60 shadow-lg';
+      case 'gold': return 'bg-gradient-to-r from-amber-50 via-yellow-25 to-white border-amber-200/60 shadow-lg';
+      case 'silver': return 'bg-gradient-to-r from-gray-50 via-gray-25 to-white border-gray-200/60 shadow-md';
+      case 'bronze': return 'bg-gradient-to-r from-orange-50 via-orange-25 to-white border-orange-200/60 shadow-md';
+      default: return 'bg-gradient-to-r from-gray-50 to-white border-gray-100';
+    }
+  };
+
+  const getRankBadgeStyle = (tier: string) => {
+    switch (tier) {
+      case 'platinum': return 'bg-gradient-to-r from-slate-600 to-slate-800 shadow-lg ring-2 ring-slate-300';
+      case 'gold': return 'bg-gradient-to-r from-amber-600 to-yellow-700 shadow-lg ring-2 ring-amber-300';
+      case 'silver': return 'bg-gradient-to-r from-gray-500 to-gray-700 shadow-lg ring-2 ring-gray-300';
+      case 'bronze': return 'bg-gradient-to-r from-orange-500 to-orange-700 shadow-lg ring-2 ring-orange-300';
+      default: return 'bg-gradient-to-r from-gray-500 to-gray-600 shadow-md';
+    }
+  };
+
   return (
     <Card className="p-0 overflow-hidden bg-white border border-gray-200/60 shadow-sm">
       {/* Premium Gold Header */}
@@ -92,12 +112,12 @@ const FriendsWidget = () => {
           </div>
         </div>
 
-        {/* Premium Member List */}
+        {/* Premium Member List with Tier-specific Backgrounds */}
         <div className="space-y-3 mb-6">
           {leagueMembers.map((member, index) => (
-            <div key={index} className="group relative p-4 bg-white rounded-xl border border-gray-100 hover:border-amber-200 hover:shadow-md transition-all duration-200">
-              {/* Gold Rank Badge */}
-              <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-gradient-to-r from-amber-500 to-yellow-600 text-white flex items-center justify-center text-xs font-bold shadow-lg border-2 border-white">
+            <div key={index} className={`group relative p-4 rounded-xl border hover:shadow-lg transition-all duration-200 ${getTierRowBackground(member.tier)}`}>
+              {/* Tier-specific Rank Badge */}
+              <div className={`absolute -top-2 -left-2 w-6 h-6 rounded-full text-white flex items-center justify-center text-xs font-bold border-2 border-white ${getRankBadgeStyle(member.tier)}`}>
                 {member.rank}
               </div>
 
