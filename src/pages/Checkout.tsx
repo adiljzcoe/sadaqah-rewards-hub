@@ -118,7 +118,7 @@ const Checkout = () => {
   const { user } = useAuth();
   const [mainDonation, setMainDonation] = useState(200);
   const [selectedMembership, setSelectedMembership] = useState('');
-  const [adminFeePercentage, setAdminFeePercentage] = useState(4); // Start at 4%
+  const [adminFeePercentage, setAdminFeePercentage] = useState(2.5); // Changed from 4 to 2.5
   const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(15); // Auto-select £15
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
