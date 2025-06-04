@@ -2,9 +2,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CreditCard, LogIn, Heart, Info } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import FloatingTooltip from '@/components/ui/floating-tooltip';
 import { useAuth } from '@/hooks/useAuth';
-import { createPortal } from 'react-dom';
 
 interface FloatingCheckoutWidgetProps {
   total: number;
@@ -65,25 +64,17 @@ const FloatingCheckoutWidget = ({
                 <div className="text-base font-semibold text-pink-300 drop-shadow-md">
                   £{impactTotal.toFixed(2)}
                 </div>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-3.5 w-3.5 text-cyan-400/80 hover:text-cyan-300 cursor-help ml-1" />
-                    </TooltipTrigger>
-                    {createPortal(
-                      <TooltipContent 
-                        side="top" 
-                        align="center"
-                        sideOffset={15}
-                        className="max-w-xs bg-slate-900 text-white border border-slate-700 shadow-2xl z-[99999] p-4 fixed"
-                        style={{ position: 'fixed' }}
-                      >
-                        <p className="text-sm leading-relaxed">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
-                      </TooltipContent>,
-                      document.body
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
+                <FloatingTooltip
+                  content={
+                    <p className="text-sm leading-relaxed">
+                      Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.
+                    </p>
+                  }
+                  side="top"
+                  align="center"
+                >
+                  <Info className="h-3.5 w-3.5 text-cyan-400/80 hover:text-cyan-300 cursor-help ml-1" />
+                </FloatingTooltip>
               </div>
             )}
           </div>
