@@ -1535,6 +1535,42 @@ export type Database = {
           },
         ]
       }
+      gps_good_deeds: {
+        Row: {
+          accuracy: number | null
+          created_at: string | null
+          good_deed_type: string
+          id: string
+          jannah_points_earned: number | null
+          latitude: number
+          longitude: number
+          notes: string | null
+          user_id: string | null
+        }
+        Insert: {
+          accuracy?: number | null
+          created_at?: string | null
+          good_deed_type: string
+          id?: string
+          jannah_points_earned?: number | null
+          latitude: number
+          longitude: number
+          notes?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          accuracy?: number | null
+          created_at?: string | null
+          good_deed_type?: string
+          id?: string
+          jannah_points_earned?: number | null
+          latitude?: number
+          longitude?: number
+          notes?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       kids_accounts: {
         Row: {
           age: number | null

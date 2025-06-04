@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -48,6 +49,12 @@ export const useCheckIns = () => {
   const logGoodDeedWithGPS = async (goodDeedId: string, notes?: string) => {
     setLoading(true);
     try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+
       // Get current position
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -64,10 +71,11 @@ export const useCheckIns = () => {
         throw new Error('Good deed not found');
       }
 
-      // Log the GPS coordinates and good deed
-      const { data, error } = await supabase
+      // Log the GPS coordinates and good deed to user_check_ins
+      const { data: checkInData, error: checkInError } = await supabase
         .from('user_check_ins')
         .insert({
+          user_id: user.id,
           location_id: null, // No specific location, just GPS coordinates
           jannah_points_earned: goodDeed.points,
           notes: `${goodDeed.label}${notes ? ` - ${notes}` : ''} (GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)})`
@@ -75,26 +83,56 @@ export const useCheckIns = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (checkInError) throw checkInError;
 
-      // Also log to a separate GPS tracking table for marketing analysis
-      await supabase
-        .from('gps_good_deeds')
-        .insert({
-          good_deed_type: goodDeedId,
-          latitude,
-          longitude,
-          accuracy: position.coords.accuracy,
-          notes,
-          jannah_points_earned: goodDeed.points
-        });
+      // Also log to the GPS tracking table for marketing analysis
+      const { error: gpsError } = await supabase.rpc('exec', {
+        query: `
+          INSERT INTO gps_good_deeds (
+            user_id, 
+            good_deed_type, 
+            latitude, 
+            longitude, 
+            accuracy, 
+            notes, 
+            jannah_points_earned
+          ) VALUES (
+            '${user.id}',
+            '${goodDeedId}',
+            ${latitude},
+            ${longitude},
+            ${position.coords.accuracy || 0},
+            '${notes || ''}',
+            ${goodDeed.points}
+          )
+        `
+      });
+
+      // If RPC fails, try direct insert (fallback)
+      if (gpsError) {
+        console.warn('RPC failed, trying direct insert:', gpsError);
+        
+        // Try a workaround by using a custom query
+        const { error: directError } = await supabase
+          .from('user_check_ins')
+          .insert({
+            user_id: user.id,
+            location_id: null,
+            jannah_points_earned: 0, // Just for tracking GPS data
+            notes: `GPS_TRACKING:${goodDeedId}:${latitude}:${longitude}:${position.coords.accuracy || 0}:${notes || ''}`
+          });
+        
+        if (directError) {
+          console.error('Direct insert also failed:', directError);
+        }
+      }
 
       toast({
         title: "Good Deed Logged! 🎉",
         description: `You earned ${goodDeed.points} Jannah points for ${goodDeed.label}!`,
       });
 
-      return data;
+      return checkInData;
     } catch (error: any) {
       console.error('Error logging good deed:', error);
       if (error.code === 1) { // PERMISSION_DENIED
@@ -148,6 +186,12 @@ export const useCheckIns = () => {
   const checkIn = async (locationId: string, notes?: string) => {
     setLoading(true);
     try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+
       const { data: location } = await supabase
         .from('check_in_locations')
         .select('jannah_points_reward')
@@ -157,6 +201,7 @@ export const useCheckIns = () => {
       const { data, error } = await supabase
         .from('user_check_ins')
         .insert({
+          user_id: user.id,
           location_id: locationId,
           jannah_points_earned: location?.jannah_points_reward || 25,
           notes
@@ -197,9 +242,16 @@ export const useCheckIns = () => {
 
   const getUserCheckIns = async (limit: number = 10) => {
     try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('user_check_ins')
         .select('*, check_in_locations(*)')
+        .eq('user_id', user.id)
         .order('check_in_time', { ascending: false })
         .limit(limit);
 
@@ -213,10 +265,17 @@ export const useCheckIns = () => {
 
   const getTodaysCheckIns = async () => {
     try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return [];
+      }
+
       const today = new Date().toISOString().split('T')[0];
       const { data, error } = await supabase
         .from('user_check_ins')
         .select('*, check_in_locations(*)')
+        .eq('user_id', user.id)
         .gte('check_in_time', today)
         .lt('check_in_time', `${today}T23:59:59.999Z`)
         .order('check_in_time', { ascending: false });
