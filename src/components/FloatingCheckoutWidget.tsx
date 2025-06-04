@@ -84,12 +84,18 @@ const FloatingCheckoutWidget = ({
         {/* Payment Methods Row */}
         <div className="mt-3 flex items-center justify-center space-x-4">
           <span className="text-xs text-cyan-200/80 drop-shadow-md">Secure payments via:</span>
-          <div className="flex items-center space-x-3">
-            <img 
-              src="/lovable-uploads/78afdaac-a12f-42b2-a9a1-06d4a13e8fb4.png" 
-              alt="Payment methods" 
-              className="h-6 opacity-90 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] filter brightness-110" 
-            />
+          <div className="flex items-center space-x-3 relative">
+            <div className="relative">
+              {/* Enhanced white glow background */}
+              <div className="absolute inset-0 bg-white/90 rounded-lg blur-md scale-110 opacity-80"></div>
+              <div className="absolute inset-0 bg-white/60 rounded-lg blur-sm scale-105 opacity-90"></div>
+              <div className="absolute inset-0 bg-white/40 rounded-lg blur-xs scale-102 opacity-95"></div>
+              <img 
+                src="/lovable-uploads/78afdaac-a12f-42b2-a9a1-06d4a13e8fb4.png" 
+                alt="Payment methods" 
+                className="relative h-6 opacity-100 filter brightness-110 contrast-110 saturate-110 z-10" 
+              />
+            </div>
           </div>
         </div>
 
