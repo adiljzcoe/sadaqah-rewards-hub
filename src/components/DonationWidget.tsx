@@ -53,6 +53,17 @@ const DonationWidget = ({
     }
   }, [justAdded]);
 
+  // Reset heart animation trigger
+  useEffect(() => {
+    if (heartAnimationTrigger) {
+      const timer = setTimeout(() => {
+        setHeartAnimationTrigger(false);
+        console.log('Heart animation trigger reset');
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [heartAnimationTrigger]);
+
   // Get currency symbol based on detected/selected currency
   const getCurrencySymbol = (curr: string) => {
     const symbols: { [key: string]: string } = {
@@ -103,6 +114,10 @@ const DonationWidget = ({
       return;
     }
 
+    console.log('Donate button clicked! Triggering heart animation...');
+    
+    // Trigger heart animation immediately
+    setHeartAnimationTrigger(true);
     setIsAdding(true);
 
     console.log('Adding donation to cart:', {
@@ -144,16 +159,12 @@ const DonationWidget = ({
       charityId,
       attribution: attributionData
     });
-
-    // Trigger heart animation
-    setHeartAnimationTrigger(true);
     
-    // Show success state
+    // Show success state after a short delay
     setTimeout(() => {
       setIsAdding(false);
       setJustAdded(true);
-      setHeartAnimationTrigger(false);
-    }, 500);
+    }, 1500);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -162,14 +173,16 @@ const DonationWidget = ({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto shadow-lg relative">
-      {/* Heart Animation Effect */}
-      <HeartDonationEffect 
-        trigger={heartAnimationTrigger}
-        amount={isCustom ? customAmount || '0' : amount}
-        currency={currencySymbol}
-        onComplete={() => console.log('Heart animation completed!')}
-      />
+    <Card className="w-full max-w-md mx-auto shadow-lg relative overflow-visible">
+      {/* Heart Animation Effect - positioned to cover the entire card area */}
+      <div className="absolute inset-0 pointer-events-none z-50">
+        <HeartDonationEffect 
+          trigger={heartAnimationTrigger}
+          amount={isCustom ? customAmount || '0' : amount}
+          currency={currencySymbol}
+          onComplete={() => console.log('Heart animation completed!')}
+        />
+      </div>
 
       <CardHeader className="text-center pb-4">
         <div className="flex items-center justify-center mb-2">
@@ -328,7 +341,7 @@ const DonationWidget = ({
           {/* Submit Button with enhanced feedback */}
           <Button 
             type="button"
-            className={`w-full transition-all duration-300 ${
+            className={`w-full transition-all duration-300 relative ${
               justAdded 
                 ? 'bg-green-600 hover:bg-green-700 scale-105' 
                 : isAdding 

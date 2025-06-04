@@ -4,6 +4,7 @@ import { TrendingUp, Pause, Play } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import PixarHeartMascot from './PixarHeartMascot';
 import CoinAnimation from './CoinAnimation';
+import HeartDonationEffect from './HeartDonationEffect';
 import { useCart } from '@/hooks/useCart';
 
 const FloatingDonationButton = () => {
@@ -12,6 +13,7 @@ const FloatingDonationButton = () => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [isStickyWidgetActive, setIsStickyWidgetActive] = useState(false);
   const [coinAnimationTrigger, setCoinAnimationTrigger] = useState(false);
+  const [heartAnimationTrigger, setHeartAnimationTrigger] = useState(false);
   const [messageIndex, setMessageIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -111,6 +113,17 @@ const FloatingDonationButton = () => {
     return () => clearTimeout(timer);
   }, [encouragingMessages, isPaused]);
 
+  // Reset heart animation trigger
+  useEffect(() => {
+    if (heartAnimationTrigger) {
+      const timer = setTimeout(() => {
+        setHeartAnimationTrigger(false);
+        console.log('FloatingDonationButton: Heart animation trigger reset');
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [heartAnimationTrigger]);
+
   // Updated touch handlers - now just move instead of swipe away
   const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.touches[0];
@@ -188,8 +201,8 @@ const FloatingDonationButton = () => {
 
   const handleFundraisingDonate = (amount: number) => {
     const valueReceived = amount * 7;
-    console.log(`Fundraising Donation: £${amount} = £${valueReceived} value!`);
-    console.log('About to trigger coin animation...');
+    console.log(`FloatingDonationButton: Fundraising Donation: £${amount} = £${valueReceived} value!`);
+    console.log('FloatingDonationButton: Triggering both coin and heart animations...');
     
     // Add to cart
     addItem({
@@ -199,11 +212,13 @@ const FloatingDonationButton = () => {
       type: 'donation'
     });
     
+    // Trigger both animations
     setCoinAnimationTrigger(true);
+    setHeartAnimationTrigger(true);
     
     setTimeout(() => {
       setCoinAnimationTrigger(false);
-      console.log('Coin animation trigger reset');
+      console.log('FloatingDonationButton: Coin animation trigger reset');
     }, 100);
     
     setIsExpanded(false);
@@ -286,6 +301,16 @@ const FloatingDonationButton = () => {
           transition: isDragging ? 'none' : 'transform 0.3s ease-out'
         }}
       >
+        {/* Heart Animation Effect - positioned to cover the entire floating widget area */}
+        <div className="absolute inset-0 pointer-events-none z-60 overflow-visible">
+          <HeartDonationEffect 
+            trigger={heartAnimationTrigger}
+            amount="0" // Will be overridden by the specific amount
+            currency="£"
+            onComplete={() => console.log('FloatingDonationButton: Heart animation completed!')}
+          />
+        </div>
+
         {/* Pause button - positioned at top right of mascot */}
         <div className="absolute -top-2 -right-2 z-30">
           <Button
