@@ -48,6 +48,7 @@ import DhikrCommunity from "./pages/DhikrCommunity";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PushNotificationTest from "./pages/PushNotificationTest";
+import FamilyAccount from "./pages/FamilyAccount";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -67,8 +68,9 @@ function App() {
                   <main className="flex-1">
                     <Routes>
                       <Route path="/" element={<Index />} />
-                      <Route path="/about" element={<About />} />
                       <Route path="/auth" element={<Auth />} />
+                      <Route path="/family" element={<FamilyAccount />} />
+                      
                       <Route path="/zakat-calculator" element={<ZakatCalculator />} />
                       <Route path="/quran-reader" element={<QuranReader />} />
                       <Route path="/duas-library" element={<DuasLibrary />} />
