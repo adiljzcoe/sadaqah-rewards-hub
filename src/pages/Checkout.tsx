@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,7 +45,6 @@ const membershipTiers = [
 ];
 
 const suggestedAmounts = [50, 100, 200, 500];
-const adminFeeOptions = [0, 5, 10, 15, 20];
 
 const fundraisingDonations = [
   { amount: 5, value: 35, label: '' },
@@ -59,7 +59,7 @@ const Checkout = () => {
   const { user } = useAuth();
   const [mainDonation, setMainDonation] = useState(200);
   const [selectedMembership, setSelectedMembership] = useState('');
-  const [adminFeeAmount, setAdminFeeAmount] = useState(20);
+  const [adminFeePercentage, setAdminFeePercentage] = useState(4); // Start at 4%
   const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(0);
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
@@ -79,15 +79,10 @@ const Checkout = () => {
   const selectedTier = membershipTiers.find(tier => tier.id === selectedMembership);
   const membershipPrice = selectedTier?.price || 0;
   const subtotal = mainDonation + membershipPrice + selectedFundraisingDonation;
+  const adminFeeAmount = (subtotal * adminFeePercentage) / 100;
   const grandTotal = subtotal + adminFeeAmount;
 
   const handleSubmit = async (data: any) => {
-    // Check minimum admin contribution
-    if (adminFeeAmount < 1.99) {
-      alert('Admin contribution must be at least £1.99.');
-      return;
-    }
-
     setIsProcessing(true);
     
     try {
@@ -97,7 +92,8 @@ const Checkout = () => {
         mainDonation,
         membership: selectedTier,
         fundraisingDonation: selectedFundraisingDonation,
-        adminFee: adminFeeAmount,
+        adminFeePercentage,
+        adminFeeAmount,
         total: grandTotal,
         frequency: paymentFrequency
       });
@@ -252,51 +248,51 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Admin Contribution - Updated with Enhanced Slider */}
+            {/* Admin Contribution - Updated with Percentage-based Slider */}
             <Card className="mb-6 shadow-sm border-gray-200">
               <CardContent className="pt-6">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-blue-600 mr-2" />
-                      <span className="text-lg font-semibold text-pink-600">Give admin contribution: £{adminFeeAmount.toFixed(2)}</span>
+                      <span className="text-lg font-semibold text-pink-600">
+                        Admin contribution: {adminFeePercentage}% (£{adminFeeAmount.toFixed(2)})
+                      </span>
                     </div>
                   </div>
                   
                   <div className="space-y-4">
                     <div className="px-4 py-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
                       <Slider
-                        value={[adminFeeAmount]}
-                        onValueChange={(value) => {
-                          const newValue = value[0];
-                          // Ensure minimum of £1.99
-                          if (newValue >= 1.99) {
-                            setAdminFeeAmount(newValue);
-                          } else {
-                            setAdminFeeAmount(1.99);
-                          }
-                        }}
-                        max={500}
-                        min={1.99}
-                        step={0.01}
+                        value={[adminFeePercentage]}
+                        onValueChange={(value) => setAdminFeePercentage(value[0])}
+                        max={20}
+                        min={0}
+                        step={0.5}
                         className="w-full h-3"
                       />
                       <div className="flex justify-between text-sm text-gray-600 mt-3 px-1">
-                        <span className="font-medium">£1.99</span>
-                        <span className="font-medium">£100</span>
-                        <span className="font-medium">£250</span>
-                        <span className="font-medium">£500</span>
+                        <span className="font-medium">0%</span>
+                        <span className="font-medium">5%</span>
+                        <span className="font-medium">10%</span>
+                        <span className="font-medium">15%</span>
+                        <span className="font-medium">20%</span>
                       </div>
                     </div>
                     
-                    {adminFeeAmount < 1.99 && (
-                      <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg">
-                        <p className="text-sm text-amber-800 flex items-center">
-                          <AlertTriangle className="h-4 w-4 mr-2" />
-                          Minimum admin contribution is £1.99.
-                        </p>
-                      </div>
-                    )}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      {[2, 4, 6, 8].map((percentage) => (
+                        <Button
+                          key={percentage}
+                          type="button"
+                          variant={adminFeePercentage === percentage ? "default" : "outline"}
+                          className="h-10"
+                          onClick={() => setAdminFeePercentage(percentage)}
+                        >
+                          {percentage}%
+                        </Button>
+                      ))}
+                    </div>
                   </div>
                   
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
@@ -384,7 +380,7 @@ const Checkout = () => {
             <Card className="mb-6 shadow-sm border-gray-200">
               <CardContent className="pt-6">
                 <div className="text-center mb-6">
-                  <div className="text-2xl font-bold text-gray-800 mb-2">Grand Total £{grandTotal}</div>
+                  <div className="text-2xl font-bold text-gray-800 mb-2">Grand Total £{grandTotal.toFixed(2)}</div>
                   <div className="flex items-center justify-center text-sm text-gray-600">
                     <div className="w-4 h-4 rounded-full bg-pink-500 mr-2"></div>
                     This is a one-off donation, you will donate only once
