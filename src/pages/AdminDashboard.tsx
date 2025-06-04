@@ -40,6 +40,7 @@ import GrowthOpportunities from '@/components/admin/GrowthOpportunities';
 import AdvancedUserManagement from '@/components/admin/AdvancedUserManagement';
 import CharityVerification from '@/components/admin/CharityVerification';
 import SMSNotifications from '@/components/admin/SMSNotifications';
+import DemoModeControl from '@/components/admin/DemoModeControl';
 
 const AdminDashboard = () => {
   const { user, fakeAdminLogin } = useAuth();
@@ -105,10 +106,14 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-12 gap-2 h-auto p-2">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-13 gap-2 h-auto p-2">
             <TabsTrigger value="overview" className="flex flex-col items-center gap-1 p-3">
               <BarChart3 className="h-4 w-4" />
               <span className="text-xs">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="demo-control" className="flex flex-col items-center gap-1 p-3">
+              <Database className="h-4 w-4" />
+              <span className="text-xs">Demo Control</span>
             </TabsTrigger>
             <TabsTrigger value="realtime" className="flex flex-col items-center gap-1 p-3">
               <Activity className="h-4 w-4" />
@@ -207,6 +212,10 @@ const AdminDashboard = () => {
               </Card>
             </div>
             <DashboardCharts />
+          </TabsContent>
+
+          <TabsContent value="demo-control">
+            <DemoModeControl />
           </TabsContent>
 
           <TabsContent value="realtime">

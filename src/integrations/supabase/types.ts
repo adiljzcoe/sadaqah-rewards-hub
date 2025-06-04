@@ -45,6 +45,30 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_settings: {
+        Row: {
+          created_at: string | null
+          id: string
+          setting_key: string
+          setting_value: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          setting_key: string
+          setting_value: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          setting_key?: string
+          setting_value?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       batch_disbursements: {
         Row: {
           activity_score_at_time: number
@@ -2589,6 +2613,14 @@ export type Database = {
       create_bulk_disbursement: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      disable_rls_for_testing: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      enable_rls_for_production: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       enable_rls_for_seeding_tables: {
         Args: Record<PropertyKey, never>
