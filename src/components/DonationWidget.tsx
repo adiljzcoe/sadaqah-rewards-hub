@@ -81,14 +81,19 @@ const DonationWidget = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleDonateClick = () => {
     const donationAmount = isCustom ? parseFloat(customAmount) : parseFloat(amount);
     
     if (!donationAmount || donationAmount <= 0) {
       alert('Please enter a valid donation amount');
       return;
     }
+
+    console.log('Adding donation to cart:', {
+      amount: donationAmount,
+      type: donationType,
+      title
+    });
 
     // Add to cart
     addItem({
@@ -125,6 +130,11 @@ const DonationWidget = ({
     });
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleDonateClick();
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto shadow-lg">
       <CardHeader className="text-center pb-4">
@@ -159,7 +169,7 @@ const DonationWidget = ({
 
           {/* Amount Selection */}
           <div>
-            <Label htmlFor="amount">Donation Amount ({currencySymbol})</Label>
+            <Label htmlFor="amount">Donation Amount ({currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'})</Label>
             <div className="grid grid-cols-3 gap-2 mt-2 mb-3">
               {predefinedAmounts.map((value) => (
                 <Button
@@ -283,13 +293,16 @@ const DonationWidget = ({
 
           {/* Submit Button */}
           <Button 
-            type="submit" 
+            type="button"
             className="w-full" 
             size="lg"
-            onClick={() => trackClick('donate-button', 'primary_cta')}
+            onClick={() => {
+              trackClick('donate-button', 'primary_cta');
+              handleDonateClick();
+            }}
           >
             <CreditCard className="h-4 w-4 mr-2" />
-            Donate {currencySymbol}{isCustom ? customAmount || '0' : amount}
+            Donate {currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'}{isCustom ? customAmount || '0' : amount}
           </Button>
 
           <div className="text-center">
