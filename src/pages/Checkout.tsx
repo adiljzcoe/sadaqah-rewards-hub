@@ -176,13 +176,14 @@ const Checkout = () => {
   const { user } = useAuth();
   const [mainDonation, setMainDonation] = useState(200);
   const [selectedMembership, setSelectedMembership] = useState('');
-  const [adminFeePercentage, setAdminFeePercentage] = useState(2.5); // Changed from 4 to 2.5
-  const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(15); // Auto-select £15
+  const [adminFeePercentage, setAdminFeePercentage] = useState(2.5);
+  const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(15);
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
   const [isProcessing, setIsProcessing] = useState(false);
   const [celebrationEmojis, setCelebrationEmojis] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
   const [fundraisingCelebrationEmojis, setFundraisingCelebrationEmojis] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
+  const [membershipCelebrationEmojis, setMembershipCelebrationEmojis] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
 
   const form = useForm({
     defaultValues: {
@@ -256,6 +257,13 @@ const Checkout = () => {
       triggerFundraisingCelebration(amount);
     }
     setSelectedFundraisingDonation(amount);
+  };
+
+  const handleMembershipSelect = (tierName: string) => {
+    if (tierName !== selectedMembership) {
+      triggerMembershipCelebration(tierName);
+    }
+    setSelectedMembership(tierName);
   };
 
   const handleSubmit = async (data: any) => {
@@ -591,6 +599,153 @@ const Checkout = () => {
                     <p className="text-sm text-gray-700 leading-relaxed font-medium">
                       We have agreed 100% donation with ALL our donation partners. Admin contribution helps us help them with their running costs - they work very hard to deliver aid and also have families to support.
                     </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Membership Upsell Section */}
+            <Card className="mb-6 shadow-lg border-2 border-gradient-to-r from-purple-200 to-pink-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 overflow-hidden relative">
+              {/* Celebration Emojis */}
+              {membershipCelebrationEmojis.map(({ id, emoji, x, y }) => (
+                <div
+                  key={id}
+                  className="absolute pointer-events-none text-2xl animate-float-up z-20"
+                  style={{ left: `${x}px`, top: `${y}px` }}
+                >
+                  {emoji}
+                </div>
+              ))}
+
+              <CardHeader className="pb-4 relative">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg transform rotate-3">
+                      <Crown className="h-8 w-8 text-white animate-pulse" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Upgrade Your Impact
+                      </CardTitle>
+                      <div className="flex items-center mt-2">
+                        <Badge className="bg-gradient-to-r from-purple-500 to-pink-600 text-white border-0 shadow-md">
+                          Earn More Points & Rewards
+                        </Badge>
+                        <div className="ml-3 text-lg">
+                          ✨👑💫
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">Choose a membership to multiply your impact and unlock exclusive benefits</p>
+              </CardHeader>
+
+              <CardContent className="space-y-6">
+                {/* Membership Tiers */}
+                <div className="grid md:grid-cols-3 gap-4">
+                  {membershipTiers.map((tier) => (
+                    <div
+                      key={tier.id}
+                      className={`relative p-6 border-2 rounded-2xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                        selectedMembership === tier.id
+                          ? 'border-purple-500 bg-gradient-to-br from-purple-100 to-pink-100 shadow-xl'
+                          : 'border-gray-200 bg-white hover:border-purple-300 hover:shadow-lg'
+                      }`}
+                      onClick={() => handleMembershipSelect(tier.id)}
+                    >
+                      {tier.badge && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-3 py-1 rounded-full shadow-md font-bold">
+                          {tier.badge}
+                        </div>
+                      )}
+                      
+                      <div className="text-center">
+                        <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Crown className="h-6 w-6 text-white" />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-2">{tier.name}</h3>
+                        
+                        <div className="mb-3">
+                          <div className="text-xs text-gray-500 line-through">£{tier.originalPrice}</div>
+                          <div className="text-2xl font-bold text-purple-600">£{tier.price}</div>
+                          <div className="text-sm text-gray-600">per month</div>
+                        </div>
+                        
+                        <Badge className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border border-purple-300 mb-4">
+                          {tier.multiplier}x Rewards
+                        </Badge>
+                        
+                        <div className="space-y-2 text-left">
+                          {tier.features.slice(0, 3).map((feature, index) => (
+                            <div key={index} className="flex items-center text-sm">
+                              <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </div>
+                          ))}
+                          {tier.features.length > 3 && (
+                            <div className="text-xs text-gray-500">
+                              +{tier.features.length - 3} more benefits
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {selectedMembership === tier.id && (
+                        <div className="absolute inset-0 rounded-2xl bg-purple-500 opacity-10"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Selected Membership Summary */}
+                {selectedTier && (
+                  <div className="mt-6 p-6 bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 rounded-2xl border-2 border-purple-200 shadow-inner">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mr-4">
+                          <Crown className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <span className="text-lg text-purple-800 font-semibold">
+                            {selectedTier.name} Membership
+                          </span>
+                          <div className="text-sm text-purple-600">
+                            Unlock {selectedTier.multiplier}x rewards on all donations!
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-purple-800">
+                          £{selectedTier.price}/month
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedMembership('')}
+                          className="text-purple-600 hover:text-purple-800 hover:bg-purple-100 rounded-full"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Benefits Explanation */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200 shadow-sm">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                      <Star className="h-4 w-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Why Upgrade?</h4>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        Membership multiplies your impact points, gives you priority support, and unlocks exclusive features. 
+                        Cancel anytime, and your benefits continue until the end of your billing period.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
