@@ -10,8 +10,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Slider } from '@/components/ui/slider';
 import { useForm } from 'react-hook-form';
 import Header from '@/components/Header';
-import { Heart, Plus, Minus, X, Crown, Zap, Star, Gift, TrendingUp, Users, Shield, CreditCard, Mail, Phone, User, AlertTriangle, Target, Check, Lock, Info } from 'lucide-react';
+import { Heart, Plus, Minus, X, Crown, Zap, Star, Gift, TrendingUp, Users, Shield, CreditCard, Mail, Phone, User, AlertTriangle, Target, Check, Lock, Info, LogIn } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const membershipTiers = [
   { 
@@ -176,7 +177,14 @@ const getFundraisingMessage = (amount: number) => {
 };
 
 const Checkout = () => {
-  const { user } = useAuth();
+  const { user, signIn, signUp } = useAuth();
+  const navigate = useNavigate();
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authName, setAuthName] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
   const [mainDonation, setMainDonation] = useState(200);
   const [selectedMembership, setSelectedMembership] = useState('');
   const [adminFeePercentage, setAdminFeePercentage] = useState(2.5);
@@ -198,6 +206,20 @@ const Checkout = () => {
       termsAccepted: false
     }
   });
+
+  // Auto-fill form when user logs in
+  useEffect(() => {
+    if (user) {
+      const fullName = user.user_metadata?.full_name || '';
+      const nameParts = fullName.split(' ');
+      
+      form.setValue('email', user.email || '');
+      form.setValue('firstName', nameParts[0] || '');
+      form.setValue('lastName', nameParts.slice(1).join(' ') || '');
+      form.setValue('isGuest', false);
+      setShowAuthForm(false);
+    }
+  }, [user, form]);
 
   const selectedTier = membershipTiers.find(tier => tier.id === selectedMembership);
   const membershipPrice = selectedTier?.price || 0;
@@ -313,6 +335,23 @@ const Checkout = () => {
       alert('Error processing donation. Please try again.');
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    
+    try {
+      if (authMode === 'signin') {
+        await signIn(authEmail, authPassword);
+      } else {
+        await signUp(authEmail, authPassword, authName);
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -803,76 +842,194 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Guest Information */}
-            {!user && (
-              <Card className="mb-6 shadow-sm border-gray-200">
-                <CardHeader className="pb-4">
+            {/* User Details Section with Login Options */}
+            <Card className="mb-6 shadow-sm border-gray-200">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
                   <CardTitle className="text-lg text-gray-800 flex items-center">
                     <User className="h-5 w-5 mr-2" />
                     Your Details
                   </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="firstName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>First Name</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                  {!user && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowAuthForm(!showAuthForm)}
+                      className="flex items-center gap-2 text-blue-600 border-blue-300 hover:bg-blue-50"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      Sign In to Auto-fill
+                    </Button>
+                  )}
+                </div>
+                {user && (
+                  <p className="text-sm text-green-600 font-medium">
+                    ✓ Signed in as {user.email}
+                  </p>
+                )}
+              </CardHeader>
+              <CardContent>
+                {/* Quick Login Form */}
+                {!user && showAuthForm && (
+                  <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <form onSubmit={handleAuth} className="space-y-4">
+                      <div className="flex justify-center mb-4">
+                        <div className="flex bg-white rounded-lg p-1 border">
+                          <button
+                            type="button"
+                            onClick={() => setAuthMode('signin')}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                              authMode === 'signin'
+                                ? 'bg-blue-600 text-white'
+                                : 'text-gray-600 hover:text-gray-800'
+                            }`}
+                          >
+                            Sign In
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAuthMode('signup')}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                              authMode === 'signup'
+                                ? 'bg-blue-600 text-white'
+                                : 'text-gray-600 hover:text-gray-800'
+                            }`}
+                          >
+                            Sign Up
+                          </button>
+                        </div>
+                      </div>
+
+                      {authMode === 'signup' && (
+                        <div>
+                          <Label htmlFor="auth-name" className="text-sm font-medium">Full Name</Label>
+                          <Input
+                            id="auth-name"
+                            type="text"
+                            value={authName}
+                            onChange={(e) => setAuthName(e.target.value)}
+                            placeholder="Enter your full name"
+                            required={authMode === 'signup'}
+                            className="mt-1"
+                          />
+                        </div>
                       )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="lastName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Last Name</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input type="email" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone (Optional)</FormLabel>
-                          <FormControl>
-                            <Input type="tel" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+
+                      <div>
+                        <Label htmlFor="auth-email" className="text-sm font-medium">Email</Label>
+                        <Input
+                          id="auth-email"
+                          type="email"
+                          value={authEmail}
+                          onChange={(e) => setAuthEmail(e.target.value)}
+                          placeholder="Enter your email"
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="auth-password" className="text-sm font-medium">Password</Label>
+                        <Input
+                          id="auth-password"
+                          type="password"
+                          value={authPassword}
+                          onChange={(e) => setAuthPassword(e.target.value)}
+                          placeholder="Enter your password"
+                          required
+                          minLength={6}
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <div className="flex gap-3">
+                        <Button
+                          type="submit"
+                          disabled={authLoading}
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          {authLoading ? 'Please wait...' : (authMode === 'signin' ? 'Sign In' : 'Sign Up')}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setShowAuthForm(false)}
+                          className="px-6"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+
+                      <p className="text-xs text-gray-600 text-center">
+                        {authMode === 'signin' 
+                          ? "Don't have an account? Click Sign Up above" 
+                          : "Already have an account? Click Sign In above"
+                        }
+                      </p>
+                    </form>
                   </div>
-                </CardContent>
-              </Card>
-            )}
+                )}
+
+                {/* User Details Form */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone (Optional)</FormLabel>
+                        <FormControl>
+                          <Input type="tel" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Total Summary */}
             <Card className="mb-6 shadow-sm border-gray-200">
