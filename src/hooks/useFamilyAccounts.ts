@@ -173,12 +173,12 @@ export const useFamilyAccounts = () => {
     }) => {
       if (!familyAccount?.id || !user?.id) throw new Error('Family account and user required');
       
-      // Update kids account balance using direct increment
+      // Update kids account balance
       const { error: updateError } = await supabase
         .from('kids_accounts')
         .update({
-          sadaqah_coins: data.sadaqahCoins, // We'll fetch current and add manually
-          jannah_points: data.jannahPoints,
+          sadaqah_coins: supabase.raw(`sadaqah_coins + ${data.sadaqahCoins}`),
+          jannah_points: supabase.raw(`jannah_points + ${data.jannahPoints}`),
         })
         .eq('id', data.kidsAccountId);
       
@@ -291,11 +291,11 @@ export const useKidsDonations = (kidsAccountId?: string) => {
       const jannahPointsEarned = Math.floor(data.amountCoins / 10);
 
       // Deduct coins and add points
-      const newCoins = account.sadaqah_coins - data.amountCoins;
       const { error: updateError } = await supabase
         .from('kids_accounts')
         .update({
-          sadaqah_coins: newCoins,
+          sadaqah_coins: supabase.raw(`sadaqah_coins - ${data.amountCoins}`),
+          jannah_points: supabase.raw(`jannah_points + ${jannahPointsEarned}`),
         })
         .eq('id', kidsAccountId);
       
