@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -43,69 +42,58 @@ const Auth = () => {
   const handleTestLogin = async () => {
     setLoading(true);
     try {
-      // First try to sign in with the test credentials
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // First try to sign up the test account
+      console.log('Attempting to create test account...');
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: 'test@test.com',
-        password: '12345',
-      });
-
-      if (error && error.message.includes('Invalid login credentials')) {
-        // If login fails, create the test account
-        const { error: signUpError } = await supabase.auth.signUp({
-          email: 'test@test.com',
-          password: '12345',
-          options: {
-            data: {
-              full_name: 'Test User'
-            }
-          }
-        });
-
-        if (signUpError) {
-          toast({
-            title: "Error creating test account",
-            description: signUpError.message,
-            variant: "destructive",
-          });
-        } else {
-          // Now try to sign in again
-          const { error: signInError } = await supabase.auth.signInWithPassword({
-            email: 'test@test.com',
-            password: '12345',
-          });
-
-          if (signInError) {
-            toast({
-              title: "Test account created but login failed",
-              description: "Please try signing in manually with test@test.com / 12345",
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: "Test account created and logged in!",
-              description: "You're now logged in with test@test.com",
-            });
-            navigate('/');
+        password: '1234567',
+        options: {
+          data: {
+            full_name: 'Test User'
           }
         }
-      } else if (error) {
+      });
+
+      if (signUpError && !signUpError.message.includes('User already registered')) {
+        console.error('Sign up error:', signUpError);
+        toast({
+          title: "Error creating test account",
+          description: signUpError.message,
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      console.log('Sign up result:', signUpData);
+
+      // Now try to sign in
+      console.log('Attempting to sign in with test credentials...');
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: 'test@test.com',
+        password: '1234567',
+      });
+
+      if (signInError) {
+        console.error('Sign in error:', signInError);
         toast({
           title: "Login failed",
-          description: error.message,
+          description: signInError.message,
           variant: "destructive",
         });
       } else {
+        console.log('Sign in successful:', signInData);
         toast({
-          title: "Logged in successfully!",
-          description: "You're now logged in with test@test.com",
+          title: "Test login successful!",
+          description: "You're now logged in as test@test.com",
         });
         navigate('/');
       }
     } catch (error) {
-      console.error('Test login error:', error);
+      console.error('Unexpected error during test login:', error);
       toast({
         title: "Unexpected error",
-        description: "Please try again",
+        description: "Please try again or use manual login",
         variant: "destructive",
       });
     }
@@ -144,7 +132,7 @@ const Auth = () => {
               {loading ? "Processing..." : "🚀 Quick Login (test@test.com)"}
             </Button>
             <p className="text-xs text-gray-500 text-center mt-2">
-              This will create and login with test@test.com / 12345
+              This will create and login with test@test.com / 1234567
             </p>
           </div>
 
