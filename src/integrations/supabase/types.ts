@@ -1153,87 +1153,6 @@ export type Database = {
           },
         ]
       }
-      family_accounts: {
-        Row: {
-          created_at: string
-          family_name: string
-          id: string
-          is_active: boolean | null
-          parent_user_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          family_name: string
-          id?: string
-          is_active?: boolean | null
-          parent_user_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          family_name?: string
-          id?: string
-          is_active?: boolean | null
-          parent_user_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      family_topups: {
-        Row: {
-          amount_paid: number | null
-          created_at: string
-          currency: string | null
-          family_id: string
-          id: string
-          jannah_points_added: number | null
-          kids_account_id: string
-          parent_user_id: string
-          sadaqah_coins_added: number | null
-          topup_reason: string | null
-        }
-        Insert: {
-          amount_paid?: number | null
-          created_at?: string
-          currency?: string | null
-          family_id: string
-          id?: string
-          jannah_points_added?: number | null
-          kids_account_id: string
-          parent_user_id: string
-          sadaqah_coins_added?: number | null
-          topup_reason?: string | null
-        }
-        Update: {
-          amount_paid?: number | null
-          created_at?: string
-          currency?: string | null
-          family_id?: string
-          id?: string
-          jannah_points_added?: number | null
-          kids_account_id?: string
-          parent_user_id?: string
-          sadaqah_coins_added?: number | null
-          topup_reason?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "family_topups_family_id_fkey"
-            columns: ["family_id"]
-            isOneToOne: false
-            referencedRelation: "family_accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "family_topups_kids_account_id_fkey"
-            columns: ["kids_account_id"]
-            isOneToOne: false
-            referencedRelation: "kids_accounts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       fundraising_campaigns: {
         Row: {
           cause_category: string
@@ -1486,101 +1405,6 @@ export type Database = {
             columns: ["assigned_charity_id"]
             isOneToOne: false
             referencedRelation: "charities"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      kids_accounts: {
-        Row: {
-          age: number | null
-          child_name: string
-          created_at: string
-          family_id: string
-          id: string
-          is_active: boolean | null
-          jannah_points: number | null
-          sadaqah_coins: number | null
-          spending_limit_daily: number | null
-          updated_at: string
-        }
-        Insert: {
-          age?: number | null
-          child_name: string
-          created_at?: string
-          family_id: string
-          id?: string
-          is_active?: boolean | null
-          jannah_points?: number | null
-          sadaqah_coins?: number | null
-          spending_limit_daily?: number | null
-          updated_at?: string
-        }
-        Update: {
-          age?: number | null
-          child_name?: string
-          created_at?: string
-          family_id?: string
-          id?: string
-          is_active?: boolean | null
-          jannah_points?: number | null
-          sadaqah_coins?: number | null
-          spending_limit_daily?: number | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "kids_accounts_family_id_fkey"
-            columns: ["family_id"]
-            isOneToOne: false
-            referencedRelation: "family_accounts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      kids_donations: {
-        Row: {
-          amount_coins: number
-          charity_id: string
-          created_at: string
-          donation_date: string | null
-          id: string
-          jannah_points_earned: number | null
-          kids_account_id: string
-          message: string | null
-        }
-        Insert: {
-          amount_coins: number
-          charity_id: string
-          created_at?: string
-          donation_date?: string | null
-          id?: string
-          jannah_points_earned?: number | null
-          kids_account_id: string
-          message?: string | null
-        }
-        Update: {
-          amount_coins?: number
-          charity_id?: string
-          created_at?: string
-          donation_date?: string | null
-          id?: string
-          jannah_points_earned?: number | null
-          kids_account_id?: string
-          message?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "kids_donations_charity_id_fkey"
-            columns: ["charity_id"]
-            isOneToOne: false
-            referencedRelation: "charities"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "kids_donations_kids_account_id_fkey"
-            columns: ["kids_account_id"]
-            isOneToOne: false
-            referencedRelation: "kids_accounts"
             referencedColumns: ["id"]
           },
         ]
@@ -2785,10 +2609,6 @@ export type Database = {
       calculate_charity_allocations: {
         Args: Record<PropertyKey, never>
         Returns: undefined
-      }
-      check_kids_daily_spending_limit: {
-        Args: { p_kids_account_id: string; p_amount_coins: number }
-        Returns: boolean
       }
       create_bulk_disbursement: {
         Args: Record<PropertyKey, never>
