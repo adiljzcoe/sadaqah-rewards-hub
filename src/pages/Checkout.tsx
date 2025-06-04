@@ -385,6 +385,9 @@ const Checkout = () => {
     authElement?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Calculate total impact value
+  const totalImpactValue = mainDonation + (fundraisingAmount * 7) + (selectedTier ? selectedTier.price : 0);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <div className="container mx-auto px-4 py-8 max-w-4xl pb-32">
@@ -601,6 +604,100 @@ const Checkout = () => {
                     </div>
                   </div>
                 )}
+              </CardContent>
+            </Card>
+
+            {/* Your Total Impact Section */}
+            <Card className="mb-6 shadow-lg border-2 border-gradient-to-r from-emerald-200 to-green-200 bg-gradient-to-br from-white via-emerald-50 to-green-50 overflow-hidden relative">
+              <CardHeader className="pb-4 relative">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg transform -rotate-3">
+                      <TrendingUp className="h-8 w-8 text-white animate-pulse" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                        Your Total Impact
+                      </CardTitle>
+                      <div className="flex items-center mt-2">
+                        <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white border-0 shadow-md">
+                          Worth £{totalImpactValue.toFixed(2)} to those in need
+                        </Badge>
+                        <div className="ml-3 text-lg">
+                          🌟💫✨
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">See the incredible value you're creating through our platform</p>
+              </CardHeader>
+
+              <CardContent className="space-y-6">
+                {/* Impact Breakdown */}
+                <div className="relative p-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500 border-2 border-emerald-300 shadow-xl">
+                  <div className="absolute inset-0 bg-white opacity-10 rounded-2xl"></div>
+                  <div className="relative">
+                    <div className="text-center mb-4">
+                      <div className="text-3xl font-bold text-white mb-2">
+                        £{totalImpactValue.toFixed(2)}
+                      </div>
+                      <div className="text-lg text-emerald-100 font-semibold">
+                        Total Value to Those in Need
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 bg-white/20 rounded-xl p-4">
+                      <div className="flex justify-between items-center text-white">
+                        <span className="flex items-center">
+                          <Heart className="h-4 w-4 mr-2" />
+                          Main Donation
+                        </span>
+                        <span className="font-semibold">£{mainDonation.toFixed(2)}</span>
+                      </div>
+                      
+                      {fundraisingAmount > 0 && (
+                        <div className="flex justify-between items-center text-white">
+                          <span className="flex items-center">
+                            <Gift className="h-4 w-4 mr-2" />
+                            Fundraising Impact (7x)
+                          </span>
+                          <span className="font-semibold">£{(fundraisingAmount * 7).toFixed(2)}</span>
+                        </div>
+                      )}
+                      
+                      {selectedTier && (
+                        <div className="flex justify-between items-center text-white">
+                          <span className="flex items-center">
+                            <Crown className="h-4 w-4 mr-2" />
+                            Membership Value
+                          </span>
+                          <span className="font-semibold">£{selectedTier.price.toFixed(2)}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Sparkle Effects */}
+                  <div className="absolute top-2 right-2 text-white opacity-70 animate-sparkle">✨</div>
+                  <div className="absolute bottom-2 left-2 text-white opacity-70 animate-sparkle" style={{ animationDelay: '1s' }}>⭐</div>
+                  <div className="absolute top-1/2 right-4 text-white opacity-70 animate-sparkle" style={{ animationDelay: '2s' }}>💫</div>
+                </div>
+
+                {/* Comparison Message */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200 shadow-sm">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                      <Info className="h-4 w-4 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-800 mb-2">Why Choose Our Platform?</h4>
+                      <p className="text-sm text-gray-700 leading-relaxed">
+                        Through our fundraising partnerships, your £{fundraisingAmount.toFixed(2)} donation becomes worth £{(fundraisingAmount * 7).toFixed(2)} to those in need - that's <span className="font-bold text-green-600">7x more impact</span> than donating anywhere else!
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
