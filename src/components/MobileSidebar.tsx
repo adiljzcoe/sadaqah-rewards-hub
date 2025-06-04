@@ -204,9 +204,9 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
           <Menu className="h-6 w-6" />
           {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+            <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center animate-pulse shadow-lg border border-pink-300/50">
               {totalItems}
-            </span>
+            </Badge>
           )}
         </Button>
       </SheetTrigger>
@@ -282,20 +282,27 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               Home
             </Link>
 
-            {/* Checkout Section - Add this before User Login Section */}
+            {/* Enhanced Checkout Section */}
             {totalItems > 0 && (
               <Link 
                 to="/checkout" 
                 onClick={handleLinkClick}
-                className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border border-pink-400/30 backdrop-blur-sm overflow-hidden relative"
               >
-                <div className="flex items-center">
-                  <ShoppingCart className="h-5 w-5 mr-3" />
-                  <span>Checkout</span>
+                {/* Glossy effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
+                
+                <div className="relative flex items-center">
+                  <div className="bg-white/20 rounded-lg p-2 mr-3 backdrop-blur-sm">
+                    <ShoppingCart className="h-5 w-5 drop-shadow-md" />
+                  </div>
+                  <div>
+                    <span className="drop-shadow-md">Checkout</span>
+                    <div className="text-xs text-white/80 drop-shadow-sm">{totalItems} item{totalItems !== 1 ? 's' : ''}</div>
+                  </div>
                 </div>
-                <div className="flex flex-col items-end">
-                  <span className="text-sm font-bold">£{totalAmount.toFixed(2)}</span>
-                  <span className="text-xs text-white/80">{totalItems} item{totalItems !== 1 ? 's' : ''}</span>
+                <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl px-3 py-2 shadow-lg border border-yellow-300/50">
+                  <span className="text-sm font-bold text-white drop-shadow-md">£{totalAmount.toFixed(2)}</span>
                 </div>
               </Link>
             )}

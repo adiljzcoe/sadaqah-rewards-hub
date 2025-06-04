@@ -275,7 +275,7 @@ const Header = () => {
                   <div className="absolute top-0 left-0 w-full h-full">
                     <div className="absolute top-2 left-8 w-14 h-5 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
                     <div className="absolute bottom-4 right-6 w-12 h-4 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
-                    <div className="absolute top-1/2 left-1/4 w-16 h-6 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+                    <div className="absolute top-1/2 left-1/3 w-16 h-6 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
                   </div>
                   
                   <div className="relative z-10 p-6 space-y-4">
@@ -703,18 +703,19 @@ const Header = () => {
 
           {/* Right Section - Cart, Desktop Menu, and Mobile Menu */}
           <div className="flex items-center space-x-4">
-            {/* Checkout Button */}
+            {/* Enhanced Checkout Button */}
             <Link to="/checkout">
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="relative border-cyan-400/50 text-cyan-300 hover:bg-cyan-900/50 backdrop-blur-sm"
-              >
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Checkout
+              <Button className="relative bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-xl ring-2 ring-pink-400/30 hover:ring-pink-300/50 backdrop-blur-sm">
+                <ShoppingCart className="h-4 w-4 mr-2 drop-shadow-md" />
+                <span className="drop-shadow-md">Checkout</span>
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full animate-bounce shadow-lg border border-yellow-300/50">
                     {totalItems}
+                  </Badge>
+                )}
+                {totalAmount > 0 && (
+                  <span className="ml-2 text-xs bg-white/20 rounded-lg px-2 py-1 backdrop-blur-sm">
+                    £{totalAmount.toFixed(0)}
                   </span>
                 )}
               </Button>
