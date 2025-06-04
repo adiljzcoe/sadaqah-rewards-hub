@@ -114,6 +114,64 @@ const getAdminContributionMessage = (percentage: number) => {
   }
 };
 
+const getFundraisingMessage = (amount: number) => {
+  if (amount >= 100) {
+    return {
+      emoji: "🌟✨🎉",
+      message: "You're a SUPERHERO! This will transform entire communities!",
+      bgGradient: "from-purple-400 via-pink-400 to-red-400",
+      textColor: "text-white",
+      borderColor: "border-purple-300",
+      celebrationEmojis: ["🎉", "🌟", "✨", "💫", "🎊"]
+    };
+  } else if (amount >= 50) {
+    return {
+      emoji: "😍🙌💖",
+      message: "AMAZING! You're making dreams come true!",
+      bgGradient: "from-blue-400 via-purple-400 to-pink-400",
+      textColor: "text-white",
+      borderColor: "border-blue-300",
+      celebrationEmojis: ["🙌", "😍", "💖", "🚀", "⭐"]
+    };
+  } else if (amount >= 25) {
+    return {
+      emoji: "😊💙🌈",
+      message: "Wonderful! Your generosity brings hope!",
+      bgGradient: "from-green-400 via-blue-400 to-purple-400",
+      textColor: "text-white",
+      borderColor: "border-green-300",
+      celebrationEmojis: ["😊", "💙", "🌈", "💚", "✨"]
+    };
+  } else if (amount >= 15) {
+    return {
+      emoji: "😌💚🤝",
+      message: "Perfect! You're making a real difference!",
+      bgGradient: "from-yellow-400 via-green-400 to-blue-400",
+      textColor: "text-white",
+      borderColor: "border-green-200",
+      celebrationEmojis: ["😌", "💚", "🤝", "👍", "💫"]
+    };
+  } else if (amount >= 5) {
+    return {
+      emoji: "🙂👍💪",
+      message: "Thank you! Every donation matters!",
+      bgGradient: "from-orange-300 via-yellow-400 to-green-400",
+      textColor: "text-white",
+      borderColor: "border-orange-200",
+      celebrationEmojis: ["🙂", "👍", "💪", "🌟", "💛"]
+    };
+  } else {
+    return {
+      emoji: "😊🤲",
+      message: "Your kindness helps families in need!",
+      bgGradient: "from-gray-300 via-blue-300 to-green-300",
+      textColor: "text-gray-800",
+      borderColor: "border-gray-200",
+      celebrationEmojis: ["😊", "🤲", "🏠", "💼", "🤗"]
+    };
+  }
+};
+
 const Checkout = () => {
   const { user } = useAuth();
   const [mainDonation, setMainDonation] = useState(200);
@@ -124,6 +182,7 @@ const Checkout = () => {
   const [currency] = useState('GBP');
   const [isProcessing, setIsProcessing] = useState(false);
   const [celebrationEmojis, setCelebrationEmojis] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
+  const [fundraisingCelebrationEmojis, setFundraisingCelebrationEmojis] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
 
   const form = useForm({
     defaultValues: {
@@ -148,6 +207,8 @@ const Checkout = () => {
 
   const adminMessage = getAdminContributionMessage(adminFeePercentage);
 
+  const fundraisingMessage = getFundraisingMessage(selectedFundraisingDonation);
+
   const triggerCelebration = (newPercentage: number) => {
     const message = getAdminContributionMessage(newPercentage);
     const newEmojis = message.celebrationEmojis.map((emoji, index) => ({
@@ -165,6 +226,23 @@ const Checkout = () => {
     }, 3000);
   };
 
+  const triggerFundraisingCelebration = (newAmount: number) => {
+    const message = getFundraisingMessage(newAmount);
+    const newEmojis = message.celebrationEmojis.map((emoji, index) => ({
+      id: Date.now() + index,
+      emoji,
+      x: Math.random() * 300 + 50,
+      y: Math.random() * 100 + 50
+    }));
+    
+    setFundraisingCelebrationEmojis(prev => [...prev, ...newEmojis]);
+    
+    // Remove emojis after animation
+    setTimeout(() => {
+      setFundraisingCelebrationEmojis(prev => prev.filter(e => !newEmojis.find(ne => ne.id === e.id)));
+    }, 3000);
+  };
+
   const handleSliderChange = (value: number[]) => {
     const newValue = value[0];
     if (newValue > adminFeePercentage) {
@@ -174,6 +252,9 @@ const Checkout = () => {
   };
 
   const handleFundraisingDonationClick = (amount: number) => {
+    if (amount > selectedFundraisingDonation) {
+      triggerFundraisingCelebration(amount);
+    }
     setSelectedFundraisingDonation(amount);
   };
 
@@ -287,29 +368,72 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Fundraising Donation Section */}
-            <Card className="mb-6 shadow-sm border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg text-gray-800 flex items-center">
-                  <Gift className="h-5 w-5 mr-2 text-green-600" />
-                  Fundraising Donation
-                </CardTitle>
-                <p className="text-sm text-gray-600">Your donation is multiplied by 7x through our fundraising partners</p>
+            {/* Enhanced Fundraising Donation Section */}
+            <Card className="mb-6 shadow-lg border-2 border-gradient-to-r from-green-200 to-emerald-200 bg-gradient-to-br from-white via-green-50 to-emerald-50 overflow-hidden relative">
+              {/* Celebration Emojis */}
+              {fundraisingCelebrationEmojis.map(({ id, emoji, x, y }) => (
+                <div
+                  key={id}
+                  className="absolute pointer-events-none text-2xl animate-float-up z-20"
+                  style={{ left: `${x}px`, top: `${y}px` }}
+                >
+                  {emoji}
+                </div>
+              ))}
+
+              <CardHeader className="pb-4 relative">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg transform -rotate-3">
+                      <Gift className="h-8 w-8 text-white animate-pulse" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                        Fundraising Donation
+                      </CardTitle>
+                      <div className="flex items-center mt-2">
+                        <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-md">
+                          £{fundraisingAmount.toFixed(2)} → Worth £{(fundraisingAmount * 7).toFixed(2)}
+                        </Badge>
+                        <div className="ml-3 text-lg">
+                          {fundraisingMessage.emoji}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">Your donation is multiplied by 7x through our fundraising partners</p>
               </CardHeader>
-              <CardContent>
+
+              <CardContent className="space-y-6">
+                {/* Animated Message Box */}
+                <div className={`relative p-6 rounded-2xl bg-gradient-to-r ${fundraisingMessage.bgGradient} border-2 ${fundraisingMessage.borderColor} shadow-xl transform transition-all duration-500 hover:scale-105`}>
+                  <div className="absolute inset-0 bg-white opacity-10 rounded-2xl"></div>
+                  <div className="relative">
+                    <p className={`text-lg ${fundraisingMessage.textColor} font-semibold text-center leading-relaxed`}>
+                      <span className="text-2xl mr-3">{fundraisingMessage.emoji}</span>
+                      {fundraisingMessage.message}
+                    </p>
+                  </div>
+                  {/* Sparkle Effects */}
+                  <div className="absolute top-2 right-2 text-white opacity-70 animate-sparkle">✨</div>
+                  <div className="absolute bottom-2 left-2 text-white opacity-70 animate-sparkle" style={{ animationDelay: '1s' }}>⭐</div>
+                </div>
+
+                {/* Enhanced Donation Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   {fundraisingDonations.map((donation) => (
                     <div
                       key={donation.amount}
-                      className={`relative p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      className={`relative p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                         selectedFundraisingDonation === donation.amount
-                          ? 'border-green-500 bg-green-100'
-                          : 'border-gray-200 bg-white hover:border-green-300'
+                          ? 'border-green-500 bg-gradient-to-br from-green-100 to-emerald-100 shadow-lg'
+                          : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-md'
                       }`}
                       onClick={() => handleFundraisingDonationClick(donation.amount)}
                     >
                       {donation.label && (
-                        <div className="absolute -top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
+                        <div className="absolute -top-2 left-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-2 py-1 rounded-full shadow-md">
                           {donation.label}
                         </div>
                       )}
@@ -318,22 +442,31 @@ const Checkout = () => {
                         <div className="text-sm text-green-600 font-medium">Worth £{donation.value}</div>
                         <div className="text-xs text-gray-500">to those in need</div>
                       </div>
+                      {selectedFundraisingDonation === donation.amount && (
+                        <div className="absolute inset-0 rounded-xl bg-green-500 opacity-10"></div>
+                      )}
                     </div>
                   ))}
                 </div>
                 
+                {/* Enhanced Summary Box */}
                 {fundraisingAmount > 0 && (
-                  <div className="mt-4 p-3 bg-green-100 rounded-lg">
+                  <div className="mt-4 p-6 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 rounded-2xl border-2 border-green-200 shadow-inner">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-green-800">
-                        Your £{fundraisingAmount.toFixed(2)} fundraising donation provides £{(fundraisingAmount * 7).toFixed(2)} worth of aid
-                      </span>
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-4">
+                          <Gift className="h-5 w-5 text-white" />
+                        </div>
+                        <span className="text-lg text-green-800 font-semibold">
+                          Your £{fundraisingAmount.toFixed(2)} provides £{(fundraisingAmount * 7).toFixed(2)} worth of aid!
+                        </span>
+                      </div>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
                         onClick={() => setSelectedFundraisingDonation(0)}
-                        className="text-green-600 hover:text-green-800"
+                        className="text-green-600 hover:text-green-800 hover:bg-green-100 rounded-full"
                       >
                         <X className="h-4 w-4" />
                       </Button>
