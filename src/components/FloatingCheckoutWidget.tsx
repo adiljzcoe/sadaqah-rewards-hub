@@ -57,7 +57,8 @@ const FloatingCheckoutWidget = ({
 
               {/* Your Total Impact - only show when fundraising donation selected */}
               {fundraisingAmount > 0 && (
-                <div className="flex items-center space-x-2 ml-7 mt-1">
+                <div className="flex items-center space-x-2 mt-1">
+                  <CreditCard className="h-5 w-5 text-transparent mr-2" />
                   <span className="text-xs text-cyan-300/90">The true value of your donation is:</span>
                   <div className="text-base font-semibold text-pink-300 drop-shadow-md">
                     £{impactTotal.toFixed(2)}
@@ -66,8 +67,8 @@ const FloatingCheckoutWidget = ({
                     <TooltipTrigger>
                       <Info className="h-3.5 w-3.5 text-cyan-400/80 hover:text-cyan-300 cursor-help ml-1" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-slate-800 border-cyan-400/20">
-                      <p className="text-sm">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
+                    <TooltipContent className="max-w-xs bg-white text-slate-800 border border-slate-200 shadow-lg">
+                      <p className="text-sm font-medium">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
                     </TooltipContent>
                   </Tooltip>
                 </div>
