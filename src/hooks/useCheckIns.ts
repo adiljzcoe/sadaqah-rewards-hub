@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -86,45 +85,21 @@ export const useCheckIns = () => {
       if (checkInError) throw checkInError;
 
       // Also log to the GPS tracking table for marketing analysis
-      const { error: gpsError } = await supabase.rpc('exec', {
-        query: `
-          INSERT INTO gps_good_deeds (
-            user_id, 
-            good_deed_type, 
-            latitude, 
-            longitude, 
-            accuracy, 
-            notes, 
-            jannah_points_earned
-          ) VALUES (
-            '${user.id}',
-            '${goodDeedId}',
-            ${latitude},
-            ${longitude},
-            ${position.coords.accuracy || 0},
-            '${notes || ''}',
-            ${goodDeed.points}
-          )
-        `
-      });
+      const { error: gpsError } = await supabase
+        .from('gps_good_deeds')
+        .insert({
+          user_id: user.id,
+          good_deed_type: goodDeedId,
+          latitude: latitude,
+          longitude: longitude,
+          accuracy: position.coords.accuracy || 0,
+          notes: notes || '',
+          jannah_points_earned: goodDeed.points
+        });
 
-      // If RPC fails, try direct insert (fallback)
       if (gpsError) {
-        console.warn('RPC failed, trying direct insert:', gpsError);
-        
-        // Try a workaround by using a custom query
-        const { error: directError } = await supabase
-          .from('user_check_ins')
-          .insert({
-            user_id: user.id,
-            location_id: null,
-            jannah_points_earned: 0, // Just for tracking GPS data
-            notes: `GPS_TRACKING:${goodDeedId}:${latitude}:${longitude}:${position.coords.accuracy || 0}:${notes || ''}`
-          });
-        
-        if (directError) {
-          console.error('Direct insert also failed:', directError);
-        }
+        console.warn('GPS tracking failed:', gpsError);
+        // Continue anyway since the main check-in succeeded
       }
 
       toast({
