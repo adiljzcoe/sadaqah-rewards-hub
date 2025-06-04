@@ -83,8 +83,8 @@ const Checkout = () => {
 
   const handleSubmit = async (data: any) => {
     // Check minimum admin contribution
-    if (adminFeeAmount > 0 && adminFeeAmount < 2) {
-      alert('Admin contribution must be at least £2 or £0 if you choose not to contribute.');
+    if (adminFeeAmount < 1.99) {
+      alert('Admin contribution must be at least £1.99.');
       return;
     }
 
@@ -259,16 +259,8 @@ const Checkout = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Info className="h-5 w-5 text-blue-600 mr-2" />
-                      <span className="text-lg font-semibold text-pink-600">Give admin contribution: £{adminFeeAmount}</span>
+                      <span className="text-lg font-semibold text-pink-600">Give admin contribution: £{adminFeeAmount.toFixed(2)}</span>
                     </div>
-                    <Button 
-                      variant="link" 
-                      className="text-blue-600 text-sm p-0 hover:text-blue-800"
-                      type="button"
-                      onClick={() => setAdminFeeAmount(0)}
-                    >
-                      Remove your admin contribution
-                    </Button>
                   </div>
                   
                   <div className="space-y-4">
@@ -277,31 +269,31 @@ const Checkout = () => {
                         value={[adminFeeAmount]}
                         onValueChange={(value) => {
                           const newValue = value[0];
-                          // Enforce minimum of £2 or allow £0
-                          if (newValue === 0 || newValue >= 2) {
+                          // Ensure minimum of £1.99
+                          if (newValue >= 1.99) {
                             setAdminFeeAmount(newValue);
-                          } else if (newValue > 0 && newValue < 2) {
-                            setAdminFeeAmount(2);
+                          } else {
+                            setAdminFeeAmount(1.99);
                           }
                         }}
                         max={500}
-                        min={0}
-                        step={1}
+                        min={1.99}
+                        step={0.01}
                         className="w-full h-3"
                       />
                       <div className="flex justify-between text-sm text-gray-600 mt-3 px-1">
-                        <span className="font-medium">£0</span>
+                        <span className="font-medium">£1.99</span>
                         <span className="font-medium">£100</span>
                         <span className="font-medium">£250</span>
                         <span className="font-medium">£500</span>
                       </div>
                     </div>
                     
-                    {adminFeeAmount > 0 && adminFeeAmount < 2 && (
+                    {adminFeeAmount < 1.99 && (
                       <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg">
                         <p className="text-sm text-amber-800 flex items-center">
                           <AlertTriangle className="h-4 w-4 mr-2" />
-                          Minimum admin contribution is £2. Please adjust or set to £0.
+                          Minimum admin contribution is £1.99.
                         </p>
                       </div>
                     )}
