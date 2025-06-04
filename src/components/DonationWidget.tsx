@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { Heart, CreditCard, Gift, Users } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { useCart } from '@/hooks/useCart';
 
 interface DonationWidgetProps {
   campaignId?: string;
@@ -37,6 +37,7 @@ const DonationWidget = ({
 
   const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
   const { currency } = useCurrency();
+  const { addItem } = useCart();
 
   // Get currency symbol based on detected/selected currency
   const getCurrencySymbol = (curr: string) => {
@@ -89,6 +90,14 @@ const DonationWidget = ({
       return;
     }
 
+    // Add to cart
+    addItem({
+      id: `donation-${Date.now()}`,
+      name: `${title} - ${donationType}`,
+      price: donationAmount,
+      type: 'donation'
+    });
+
     // Get attribution data
     const attributionData = getAttributionData();
 
@@ -104,7 +113,6 @@ const DonationWidget = ({
       ...attributionData
     });
 
-    // Here you would integrate with your payment system
     console.log('Processing donation with attribution:', {
       amount: donationAmount,
       currency,

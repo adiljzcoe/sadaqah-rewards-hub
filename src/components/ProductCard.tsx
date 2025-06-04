@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Heart, Users, Clock, ShoppingCart, Play } from 'lucide-react';
+import { useCart } from '@/hooks/useCart';
 
 interface ProductCardProps {
   id: string;
@@ -31,6 +31,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   title,
   charity,
   description,
@@ -56,6 +57,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [useCustomAmount, setUseCustomAmount] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
+  const { addItem } = useCart();
+
   const handlePriceSelection = (amount: number) => {
     setSelectedPrice(amount);
     setUseCustomAmount(false);
@@ -77,6 +80,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
       return !isNaN(numValue) ? numValue : 0;
     }
     return selectedPrice;
+  };
+
+  const handleDonateClick = () => {
+    const finalAmount = getFinalAmount();
+    if (finalAmount <= 0) return;
+
+    addItem({
+      id: `${id}-${Date.now()}`,
+      name: title,
+      price: finalAmount,
+      type: isFixedPrice ? 'product' : 'donation'
+    });
   };
 
   return (
@@ -243,6 +258,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Button 
             className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6"
             disabled={getFinalAmount() <= 0}
+            onClick={handleDonateClick}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             {isFixedPrice ? 'Order' : 'Donate'}

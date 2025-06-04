@@ -4,6 +4,7 @@ import { TrendingUp, Pause, Play } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import PixarHeartMascot from './PixarHeartMascot';
 import CoinAnimation from './CoinAnimation';
+import { useCart } from '@/hooks/useCart';
 
 const FloatingDonationButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -20,6 +21,8 @@ const FloatingDonationButton = () => {
   const dragStartRef = useRef({ x: 0, y: 0 });
   const dragCurrentRef = useRef({ x: 0, y: 0 });
   const mascotRef = useRef<HTMLDivElement>(null);
+
+  const { addItem } = useCart();
 
   // 50+ encouraging donation messages
   const encouragingMessages = [
@@ -188,10 +191,16 @@ const FloatingDonationButton = () => {
     console.log(`Fundraising Donation: £${amount} = £${valueReceived} value!`);
     console.log('About to trigger coin animation...');
     
-    // Trigger coin animation
+    // Add to cart
+    addItem({
+      id: `fundraising-${Date.now()}`,
+      name: `Fundraising Donation - £${amount}`,
+      price: amount,
+      type: 'donation'
+    });
+    
     setCoinAnimationTrigger(true);
     
-    // Reset the trigger after a short delay
     setTimeout(() => {
       setCoinAnimationTrigger(false);
       console.log('Coin animation trigger reset');
