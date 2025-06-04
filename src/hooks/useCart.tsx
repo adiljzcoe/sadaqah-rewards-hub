@@ -7,7 +7,6 @@ interface CartItem {
   price: number;
   quantity: number;
   type: 'donation' | 'membership' | 'product';
-  image?: string;
 }
 
 interface CartContextType {
@@ -23,16 +22,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([
-    {
-      id: 'dummy-1',
-      name: 'Emergency Food Relief',
-      price: 25.00,
-      quantity: 1,
-      type: 'donation',
-      image: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png'
-    }
-  ]);
+  const [items, setItems] = useState<CartItem[]>([]);
 
   const addItem = (newItem: Omit<CartItem, 'quantity'>) => {
     setItems(prev => {
