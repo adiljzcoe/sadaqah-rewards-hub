@@ -72,9 +72,8 @@ const FloatingCheckoutWidget = ({
                     <TooltipContent 
                       side="top" 
                       align="center"
-                      sideOffset={10}
-                      className="max-w-xs bg-slate-900 text-white border border-slate-700 shadow-2xl z-[9999] p-3"
-                      container={document.body}
+                      sideOffset={15}
+                      className="max-w-xs bg-slate-900 text-white border border-slate-700 shadow-2xl z-[9999] p-4"
                     >
                       <p className="text-sm leading-relaxed">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
                     </TooltipContent>
