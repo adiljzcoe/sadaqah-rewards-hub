@@ -22,7 +22,7 @@ const FloatingCheckoutWidget = ({
   const { user } = useAuth();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-gray-200 shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-50 to-purple-50 border-t-2 border-blue-200 shadow-2xl">
       <div className="container mx-auto px-4 py-4 max-w-4xl">
         <div className="flex items-center justify-between">
           {/* Total Section */}
