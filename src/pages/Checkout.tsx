@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Slider } from '@/components/ui/slider';
 import { useForm } from 'react-hook-form';
 import Header from '@/components/Header';
 import { Heart, Plus, Minus, X, Crown, Zap, Star, Gift, TrendingUp, Users, Shield, CreditCard, Mail, Phone, User, AlertTriangle, Target, Check, Lock, Info } from 'lucide-react';
@@ -246,43 +246,50 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Admin Contribution */}
+            {/* Admin Contribution - Updated with Slider */}
             <Card className="mb-6 shadow-sm border-gray-200">
               <CardContent className="pt-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center">
-                    <Info className="h-4 w-4 text-blue-600 mr-2" />
-                    <span className="text-sm font-medium text-pink-600">Give admin contribution: £{adminFeeAmount}</span>
-                    <Button variant="link" className="text-blue-600 text-sm p-0 ml-2">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Info className="h-4 w-4 text-blue-600 mr-2" />
+                      <span className="text-sm font-medium text-pink-600">Give admin contribution: £{adminFeeAmount}</span>
+                    </div>
+                    <Button 
+                      variant="link" 
+                      className="text-blue-600 text-sm p-0"
+                      type="button"
+                      onClick={() => setAdminFeeAmount(0)}
+                    >
                       Remove your admin contribution
                     </Button>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setAdminFeeAmount(Math.max(0, adminFeeAmount - 5))}
-                      className="w-8 h-8"
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    <span className="w-8 text-center">{adminFeeAmount}</span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setAdminFeeAmount(adminFeeAmount + 5)}
-                      className="w-8 h-8"
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
+                  
+                  <div className="space-y-3">
+                    <div className="px-3">
+                      <Slider
+                        value={[adminFeeAmount]}
+                        onValueChange={(value) => setAdminFeeAmount(value[0])}
+                        max={50}
+                        min={0}
+                        step={5}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>£0</span>
+                      <span>£25</span>
+                      <span>£50</span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-700 leading-relaxed">
+                      <Info className="h-4 w-4 inline mr-1 text-blue-600" />
+                      We have agreed 100% donation with ALL our donation partners. Admin contribution helps us help them with their running costs - they work very hard to deliver aid and also have families to support.
+                    </p>
                   </div>
                 </div>
-                <p className="text-xs text-gray-600 flex items-center">
-                  <Info className="h-3 w-3 mr-1" />
-                  This really helps us maintain our 100% donation policy
-                </p>
               </CardContent>
             </Card>
 
