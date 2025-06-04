@@ -57,6 +57,52 @@ const fundraisingDonations = [
   { amount: 200, value: 1400, label: '' }
 ];
 
+const getAdminContributionMessage = (percentage: number) => {
+  if (percentage >= 15) {
+    return {
+      emoji: "🌟✨",
+      message: "You're absolutely AMAZING! This incredible generosity will transform lives! 🎉💖",
+      bgColor: "from-purple-100 to-pink-100",
+      textColor: "text-purple-800"
+    };
+  } else if (percentage >= 10) {
+    return {
+      emoji: "😍🙌",
+      message: "WOW! You're a true hero! This makes such a huge difference! 💫",
+      bgColor: "from-blue-100 to-purple-100",
+      textColor: "text-blue-800"
+    };
+  } else if (percentage >= 6) {
+    return {
+      emoji: "😊💙",
+      message: "Thank you so much! Your kindness is truly appreciated! 🌈",
+      bgColor: "from-green-100 to-blue-100",
+      textColor: "text-green-800"
+    };
+  } else if (percentage >= 3) {
+    return {
+      emoji: "😌💚",
+      message: "That's wonderful! Every bit helps our partners deliver aid! 🤝",
+      bgColor: "from-yellow-100 to-green-100",
+      textColor: "text-green-700"
+    };
+  } else if (percentage >= 1) {
+    return {
+      emoji: "🙂👍",
+      message: "Thank you! This helps our hardworking partners! 💪",
+      bgColor: "from-orange-100 to-yellow-100",
+      textColor: "text-orange-700"
+    };
+  } else {
+    return {
+      emoji: "😊🤲",
+      message: "This helps our partners with their essential running costs! 🏠",
+      bgColor: "from-gray-100 to-orange-100",
+      textColor: "text-gray-700"
+    };
+  }
+};
+
 const Checkout = () => {
   const { user } = useAuth();
   const [mainDonation, setMainDonation] = useState(200);
@@ -87,6 +133,8 @@ const Checkout = () => {
   const subtotal = mainDonation + membershipPrice + fundraisingAmount;
   const adminFeeAmount = (subtotal * adminFeePercentage) / 100;
   const grandTotal = subtotal + adminFeeAmount;
+
+  const adminMessage = getAdminContributionMessage(adminFeePercentage);
 
   const handleFundraisingDonationClick = (amount: number) => {
     setSelectedFundraisingDonation(amount);
@@ -258,13 +306,13 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Admin Contribution - Percentage-based Slider */}
-            <Card className="mb-6 shadow-sm border-gray-200">
+            {/* Admin Contribution - Enhanced Design */}
+            <Card className="mb-6 shadow-sm border-gray-200 overflow-hidden">
               <CardContent className="pt-6">
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <Info className="h-5 w-5 text-blue-600 mr-2" />
+                      <div className="text-3xl mr-3">{adminMessage.emoji}</div>
                       <span className="text-lg font-semibold text-pink-600">
                         Admin contribution: {adminFeePercentage}% (£{adminFeeAmount.toFixed(2)})
                       </span>
@@ -272,17 +320,17 @@ const Checkout = () => {
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="px-4 py-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+                    <div className={`px-6 py-8 bg-gradient-to-r ${adminMessage.bgColor} rounded-xl border-2 border-opacity-20 border-current`}>
                       <Slider
                         value={[adminFeePercentage]}
                         onValueChange={(value) => setAdminFeePercentage(value[0])}
                         max={20}
-                        min={0}
+                        min={0.5}
                         step={0.5}
-                        className="w-full h-3"
+                        className="w-full h-4"
                       />
-                      <div className="flex justify-between text-sm text-gray-600 mt-3 px-1">
-                        <span className="font-medium">0%</span>
+                      <div className="flex justify-between text-sm text-gray-600 mt-4 px-1">
+                        <span className="font-medium">0.5%</span>
                         <span className="font-medium">5%</span>
                         <span className="font-medium">10%</span>
                         <span className="font-medium">15%</span>
@@ -296,13 +344,20 @@ const Checkout = () => {
                           key={percentage}
                           type="button"
                           variant={adminFeePercentage === percentage ? "default" : "outline"}
-                          className="h-10"
+                          className="h-12 text-base font-medium"
                           onClick={() => setAdminFeePercentage(percentage)}
                         >
                           {percentage}%
                         </Button>
                       ))}
                     </div>
+                  </div>
+                  
+                  <div className={`bg-gradient-to-r ${adminMessage.bgColor} p-6 rounded-xl border border-opacity-20 border-current`}>
+                    <p className={`text-base ${adminMessage.textColor} leading-relaxed font-medium text-center`}>
+                      <span className="text-2xl mr-2">{adminMessage.emoji}</span>
+                      {adminMessage.message}
+                    </p>
                   </div>
                   
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
