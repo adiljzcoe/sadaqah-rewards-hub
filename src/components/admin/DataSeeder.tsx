@@ -12,9 +12,48 @@ const DataSeeder = () => {
   const { fakeAdminLogin, user } = useAuth();
   const [isSeeding, setIsSeeding] = useState(false);
 
+  const createAdminProfile = async (userId: string) => {
+    console.log('🔧 Creating admin profile for user:', userId);
+    
+    try {
+      // Check if profile already exists
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', userId)
+        .single();
+
+      if (existingProfile) {
+        console.log('✅ Admin profile already exists');
+        return;
+      }
+
+      // Create the admin profile
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert({
+          id: userId,
+          email: 'admin@test.com',
+          full_name: 'Test Admin',
+          role: 'admin'
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('❌ Error creating admin profile:', error);
+        throw error;
+      }
+
+      console.log('✅ Admin profile created successfully:', data);
+    } catch (error) {
+      console.error('❌ Failed to create admin profile:', error);
+      throw error;
+    }
+  };
+
   const seedCharities = async () => {
     console.log('🌱 Seeding charities...');
-    console.log('👤 Current user:', user);
     
     const charities = [
       {
@@ -76,12 +115,6 @@ const DataSeeder = () => {
     ];
 
     try {
-      console.log('🔄 Attempting to insert charities...');
-      
-      // Test auth session first
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      console.log('🔐 Current session:', session ? 'Active' : 'None', sessionError);
-      
       const { data: insertedCharities, error } = await supabase
         .from('charities')
         .insert(charities)
@@ -89,17 +122,10 @@ const DataSeeder = () => {
 
       if (error) {
         console.error('❌ Insert failed:', error);
-        console.error('❌ Error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
         throw error;
       }
 
       console.log('✅ Charities seeded successfully:', insertedCharities?.length);
-      console.log('📊 Inserted charity IDs:', insertedCharities?.map(c => c.id));
       return insertedCharities || [];
 
     } catch (error) {
@@ -110,7 +136,6 @@ const DataSeeder = () => {
 
   const seedCharityAllocations = async (charities: any[]) => {
     console.log('🌱 Seeding charity allocations...');
-    console.log('🎯 Creating allocations for', charities.length, 'charities');
     
     const allocations = charities.map(charity => ({
       charity_id: charity.id,
@@ -122,7 +147,6 @@ const DataSeeder = () => {
     }));
 
     try {
-      console.log('🔄 Inserting charity allocations...');
       const { data, error } = await supabase
         .from('charity_allocations')
         .insert(allocations)
@@ -144,7 +168,7 @@ const DataSeeder = () => {
   const seedDonations = async (charities: any[]) => {
     console.log('🌱 Seeding donations...');
     
-    const userId = user?.id || 'fake-admin-id';
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
     console.log('👤 Using user ID for donations:', userId);
     
     const donations = [];
@@ -169,7 +193,6 @@ const DataSeeder = () => {
     }
 
     try {
-      console.log('🔄 Inserting donations...');
       const { data, error } = await supabase
         .from('donations')
         .insert(donations)
@@ -201,7 +224,11 @@ const DataSeeder = () => {
       console.log('⏳ Waiting for auth state to update...');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      console.log('👤 Auth state after fake login:', { user });
+      const currentUser = user || { id: '00000000-0000-0000-0000-000000000001' };
+      console.log('👤 Current user after setup:', currentUser);
+      
+      // Create admin profile first
+      await createAdminProfile(currentUser.id);
       
       toast({
         title: "Starting Data Seeding",
@@ -289,7 +316,7 @@ const DataSeeder = () => {
             <ul className="text-sm text-muted-foreground space-y-1">
               <li className="flex items-center gap-2">
                 <Users className="h-3 w-3" />
-                4 verified charities with realistic trust ratings
+                Admin profile + 4 verified charities with realistic trust ratings
               </li>
               <li className="flex items-center gap-2">
                 <Heart className="h-3 w-3" />
