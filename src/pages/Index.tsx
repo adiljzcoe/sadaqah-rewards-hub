@@ -17,8 +17,6 @@ import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
 import PushNotificationWidget from '@/components/PushNotificationWidget';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
@@ -27,19 +25,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
       <StickyDonationWidget />
-      
-      {/* Login button for non-authenticated users */}
-      {!user && (
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-end">
-            <Link to="/auth">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                Login / Sign Up
-              </Button>
-            </Link>
-          </div>
-        </div>
-      )}
       
       {/* Push Notification Widget - Add at the top */}
       <div className="container mx-auto px-4 py-4">
