@@ -32,10 +32,10 @@ const HeartDonationEffect: React.FC<HeartDonationEffectProps> = ({
       // Generate 4-6 hearts with random positions
       const newHearts = Array.from({ length: Math.floor(Math.random() * 3) + 4 }, (_, i) => ({
         id: Date.now() + i,
-        x: Math.random() * 60 - 30, // Wider horizontal spread
-        y: Math.random() * 20 + 20, // Start higher up
-        delay: i * 200, // Longer stagger for visibility
-        scale: 1.0 + Math.random() * 0.5, // Bigger for visibility
+        x: Math.random() * 100 - 50, // Wider horizontal spread for mobile
+        y: Math.random() * 30 + 10, // Start position
+        delay: i * 150, // Stagger timing
+        scale: 1.2 + Math.random() * 0.8, // Bigger for mobile visibility
       }));
 
       console.log('HeartDonationEffect: Generated hearts:', newHearts);
@@ -46,7 +46,7 @@ const HeartDonationEffect: React.FC<HeartDonationEffectProps> = ({
         console.log('HeartDonationEffect: Clearing hearts and calling onComplete');
         setHearts([]);
         onComplete?.();
-      }, 4500); // Longer duration
+      }, 5000);
 
       return () => clearTimeout(timeout);
     }
@@ -60,97 +60,92 @@ const HeartDonationEffect: React.FC<HeartDonationEffectProps> = ({
   }
 
   return (
-    <div 
-      className="fixed inset-0 pointer-events-none overflow-hidden" 
-      style={{ zIndex: 9999 }}
-    >
-      <div className="absolute inset-0 bg-black/5 pointer-events-none"></div>
-      {hearts.map((heart) => (
-        <div
-          key={heart.id}
-          className="absolute heart-floating"
-          style={{
-            left: `calc(50% + ${heart.x}px)`,
-            top: `calc(50% + ${heart.y}px)`,
-            animationDelay: `${heart.delay}ms`,
-            animationDuration: '4s',
-            animationTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-            animationFillMode: 'forwards',
-            transform: `scale(${heart.scale})`,
-            '--scale': heart.scale.toString(),
-          }}
-        >
-          <div className="relative">
-            {/* Outer halo effect - much larger and brighter */}
-            <div className="absolute -inset-4 animate-ping">
-              <div className="w-24 h-24 bg-pink-500/50 rounded-full blur-xl"></div>
-            </div>
-            
-            {/* Inner halo effect */}
-            <div className="absolute -inset-3 animate-pulse">
-              <div className="w-20 h-20 bg-red-500/60 rounded-full blur-lg"></div>
-            </div>
-            
-            {/* Main heart with amount - much larger */}
-            <div className="relative flex flex-col items-center">
-              <Heart 
-                className="w-16 h-16 text-red-500 fill-red-500 drop-shadow-2xl" 
-                style={{
-                  filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 1)) drop-shadow(0 0 40px rgba(239, 68, 68, 0.8))'
-                }}
-              />
-              <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-2xl border-2 border-pink-200 mt-3">
-                <span className="text-lg font-bold text-emerald-600 whitespace-nowrap">
-                  {currency}{amount}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-
+    <>
       <style>{`
         @keyframes heartFloat {
           0% {
-            transform: translateY(0) scale(var(--scale)) rotate(0deg);
+            transform: translateY(0) scale(1) rotate(0deg);
             opacity: 0;
           }
           10% {
             opacity: 1;
-            transform: translateY(-30px) scale(calc(var(--scale) * 1.5)) rotate(15deg);
+            transform: translateY(-40px) scale(1.6) rotate(15deg);
           }
           25% {
-            transform: translateY(-80px) scale(calc(var(--scale) * 1.4)) rotate(-10deg);
+            transform: translateY(-100px) scale(1.5) rotate(-10deg);
             opacity: 1;
           }
           40% {
-            transform: translateY(-130px) scale(calc(var(--scale) * 1.3)) rotate(8deg);
+            transform: translateY(-160px) scale(1.4) rotate(8deg);
             opacity: 1;
           }
           60% {
-            transform: translateY(-180px) scale(calc(var(--scale) * 1.2)) rotate(-5deg);
-            opacity: 0.9;
+            transform: translateY(-220px) scale(1.2) rotate(-5deg);
+            opacity: 0.8;
           }
           80% {
-            transform: translateY(-230px) scale(calc(var(--scale) * 1.0)) rotate(3deg);
-            opacity: 0.6;
-          }
-          95% {
-            transform: translateY(-280px) scale(calc(var(--scale) * 0.8)) rotate(0deg);
-            opacity: 0.3;
+            transform: translateY(-280px) scale(1.0) rotate(3deg);
+            opacity: 0.5;
           }
           100% {
-            transform: translateY(-320px) scale(calc(var(--scale) * 0.5)) rotate(0deg);
+            transform: translateY(-350px) scale(0.6) rotate(0deg);
             opacity: 0;
           }
         }
         
         .heart-floating {
-          animation-name: heartFloat;
-          --scale: 1;
+          animation: heartFloat 4.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
       `}</style>
-    </div>
+
+      <div 
+        className="fixed inset-0 pointer-events-none overflow-hidden" 
+        style={{ zIndex: 99999 }}
+      >
+        {/* Mobile-optimized overlay */}
+        <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
+        
+        {hearts.map((heart) => (
+          <div
+            key={heart.id}
+            className="absolute heart-floating"
+            style={{
+              left: `calc(50% + ${heart.x}px)`,
+              top: `calc(50% + ${heart.y}px)`,
+              animationDelay: `${heart.delay}ms`,
+              transform: `scale(${heart.scale})`,
+            }}
+          >
+            <div className="relative">
+              {/* Outer glow effect - enhanced for mobile */}
+              <div className="absolute -inset-6 animate-ping">
+                <div className="w-32 h-32 bg-pink-500/60 rounded-full blur-2xl"></div>
+              </div>
+              
+              {/* Inner glow effect */}
+              <div className="absolute -inset-4 animate-pulse">
+                <div className="w-24 h-24 bg-red-500/70 rounded-full blur-xl"></div>
+              </div>
+              
+              {/* Main heart with amount - optimized for mobile */}
+              <div className="relative flex flex-col items-center">
+                <Heart 
+                  className="w-20 h-20 text-red-500 fill-red-500 drop-shadow-2xl" 
+                  style={{
+                    filter: 'drop-shadow(0 0 25px rgba(239, 68, 68, 1)) drop-shadow(0 0 50px rgba(239, 68, 68, 0.9))'
+                  }}
+                />
+                <div className="bg-white/95 backdrop-blur-sm px-6 py-3 rounded-full shadow-2xl border-2 border-pink-200 mt-4">
+                  <span className="text-xl font-bold text-emerald-600 whitespace-nowrap">
+                    {currency}{amount}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
