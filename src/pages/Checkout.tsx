@@ -47,12 +47,14 @@ const membershipTiers = [
 const suggestedAmounts = [50, 100, 200, 500];
 
 const fundraisingDonations = [
+  { amount: 1.50, value: 10.50, label: '' },
   { amount: 5, value: 35, label: '' },
   { amount: 10, value: 70, label: '' },
   { amount: 15, value: 105, label: 'Most Beneficial' },
   { amount: 25, value: 175, label: '' },
   { amount: 50, value: 350, label: '' },
-  { amount: 100, value: 700, label: '' }
+  { amount: 100, value: 700, label: '' },
+  { amount: 200, value: 1400, label: '' }
 ];
 
 const Checkout = () => {
@@ -61,7 +63,6 @@ const Checkout = () => {
   const [selectedMembership, setSelectedMembership] = useState('');
   const [adminFeePercentage, setAdminFeePercentage] = useState(4); // Start at 4%
   const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(15); // Auto-select £15
-  const [customFundraisingAmount, setCustomFundraisingAmount] = useState('');
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -81,9 +82,7 @@ const Checkout = () => {
   const membershipPrice = selectedTier?.price || 0;
   
   // Calculate fundraising donation amount
-  const fundraisingAmount = customFundraisingAmount 
-    ? Math.max(1.50, parseFloat(customFundraisingAmount) || 0)
-    : selectedFundraisingDonation;
+  const fundraisingAmount = selectedFundraisingDonation;
   
   const subtotal = mainDonation + membershipPrice + fundraisingAmount;
   const adminFeeAmount = (subtotal * adminFeePercentage) / 100;
@@ -91,21 +90,9 @@ const Checkout = () => {
 
   const handleFundraisingDonationClick = (amount: number) => {
     setSelectedFundraisingDonation(amount);
-    setCustomFundraisingAmount('');
-  };
-
-  const handleCustomAmountChange = (value: string) => {
-    setCustomFundraisingAmount(value);
-    setSelectedFundraisingDonation(0);
   };
 
   const handleSubmit = async (data: any) => {
-    // Validate minimum fundraising donation
-    if (fundraisingAmount > 0 && fundraisingAmount < 1.50) {
-      alert('Minimum fundraising donation is £1.50');
-      return;
-    }
-
     setIsProcessing(true);
     
     try {
@@ -222,11 +209,10 @@ const Checkout = () => {
                   <Gift className="h-5 w-5 mr-2 text-green-600" />
                   Fundraising Donation
                 </CardTitle>
-                <p className="text-sm text-gray-600">Your £5 donation is worth £35 to the poor and needy through our fundraising multiplier</p>
-                <p className="text-xs text-orange-600 font-medium">Minimum donation: £1.50</p>
+                <p className="text-sm text-gray-600">Your donation is multiplied by 7x through our fundraising partners</p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   {fundraisingDonations.map((donation) => (
                     <div
                       key={donation.amount}
@@ -250,30 +236,6 @@ const Checkout = () => {
                     </div>
                   ))}
                 </div>
-
-                {/* Custom Amount Input */}
-                <div className="mt-4">
-                  <Label className="text-sm text-gray-600 mb-2 block">Custom Amount (Minimum £1.50)</Label>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-lg font-semibold">£</span>
-                    <Input
-                      type="number"
-                      placeholder="Enter custom amount"
-                      value={customFundraisingAmount}
-                      onChange={(e) => handleCustomAmountChange(e.target.value)}
-                      className={`flex-1 ${
-                        customFundraisingAmount && parseFloat(customFundraisingAmount) < 1.50 
-                          ? 'border-red-500 focus:border-red-500' 
-                          : 'border-green-300 focus:border-green-500'
-                      }`}
-                      min="1.50"
-                      step="0.01"
-                    />
-                  </div>
-                  {customFundraisingAmount && parseFloat(customFundraisingAmount) < 1.50 && (
-                    <p className="text-xs text-red-600 mt-1">Amount must be at least £1.50</p>
-                  )}
-                </div>
                 
                 {fundraisingAmount > 0 && (
                   <div className="mt-4 p-3 bg-green-100 rounded-lg">
@@ -285,10 +247,7 @@ const Checkout = () => {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => {
-                          setSelectedFundraisingDonation(0);
-                          setCustomFundraisingAmount('');
-                        }}
+                        onClick={() => setSelectedFundraisingDonation(0)}
                         className="text-green-600 hover:text-green-800"
                       >
                         <X className="h-4 w-4" />
@@ -299,7 +258,7 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Admin Contribution - Updated with Percentage-based Slider */}
+            {/* Admin Contribution - Percentage-based Slider */}
             <Card className="mb-6 shadow-sm border-gray-200">
               <CardContent className="pt-6">
                 <div className="space-y-6">
@@ -448,7 +407,7 @@ const Checkout = () => {
                   </Button>
                   <Button 
                     type="submit"
-                    disabled={isProcessing || !form.watch('termsAccepted') || (fundraisingAmount > 0 && fundraisingAmount < 1.50)}
+                    disabled={isProcessing || !form.watch('termsAccepted')}
                     className="flex-1 bg-pink-600 hover:bg-pink-700 text-white"
                   >
                     {isProcessing ? 'Processing...' : 'Next →'}
