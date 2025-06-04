@@ -1,53 +1,51 @@
 
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Building2, MapPin, Utensils, Crown, Loader2 } from 'lucide-react';
+import { Building2, MapPin, Utensils, Crown } from 'lucide-react';
 
-interface BusinessPartner {
-  id: string;
-  company_name: string;
-  total_matched: number;
+interface Business {
+  rank: number;
+  name: string;
   location?: string;
-  verified: boolean;
+  coins: number;
 }
 
 const BusinessLeaderboard = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'verified' | 'local'>('all');
+  const [activeTab, setActiveTab] = useState<'local' | 'restaurants' | 'national'>('local');
 
-  const { data: businesses, isLoading } = useQuery({
-    queryKey: ['business-partners', activeTab],
-    queryFn: async () => {
-      console.log('Fetching business partners...');
-      let query = supabase
-        .from('business_partners')
-        .select('*')
-        .order('total_matched', { ascending: false })
-        .limit(10);
+  const localBusinesses: Business[] = [
+    { rank: 1, name: 'Birmingham Islamic Centre', location: 'Birmingham', coins: 15420 },
+    { rank: 2, name: 'Al-Noor Grocery', location: 'London', coins: 11600 },
+    { rank: 3, name: 'Mosque Community Shop', location: 'Leeds', coins: 9800 },
+  ];
 
-      if (activeTab === 'verified') {
-        query = query.eq('verified', true);
-      }
+  const halalRestaurants: Business[] = [
+    { rank: 1, name: 'Halal Corner Restaurant', location: 'Manchester', coins: 12800 },
+    { rank: 2, name: 'Bismillah Kitchen', location: 'Birmingham', coins: 10500 },
+    { rank: 3, name: 'Al-Medina Grill', location: 'London', coins: 9200 },
+  ];
 
-      const { data, error } = await query;
+  const nationalBusinesses: Business[] = [
+    { rank: 1, name: 'Halal Food Network', coins: 45200 },
+    { rank: 2, name: 'Islamic Finance UK', coins: 38900 },
+    { rank: 3, name: 'Crescent Foods Ltd', coins: 32100 },
+  ];
 
-      if (error) {
-        console.error('Error fetching business partners:', error);
-        throw error;
-      }
-
-      console.log('Fetched business partners:', data);
-      return data as BusinessPartner[];
-    },
-  });
+  const getCurrentData = () => {
+    switch (activeTab) {
+      case 'local': return localBusinesses;
+      case 'restaurants': return halalRestaurants;
+      case 'national': return nationalBusinesses;
+      default: return localBusinesses;
+    }
+  };
 
   const getTabIcon = (tab: string) => {
     switch (tab) {
-      case 'all': return <Building2 className="h-3 w-3" />;
-      case 'verified': return <Crown className="h-3 w-3" />;
-      case 'local': return <MapPin className="h-3 w-3" />;
+      case 'local': return <Building2 className="h-3 w-3" />;
+      case 'restaurants': return <Utensils className="h-3 w-3" />;
+      case 'national': return <Crown className="h-3 w-3" />;
       default: return <Building2 className="h-3 w-3" />;
     }
   };
@@ -81,13 +79,13 @@ const BusinessLeaderboard = () => {
       {/* Tabs */}
       <div className="flex border-b border-gray-200">
         {[
-          { key: 'all', label: 'All' },
-          { key: 'verified', label: 'Verified' },
-          { key: 'local', label: 'Local' }
+          { key: 'local', label: 'Local' },
+          { key: 'restaurants', label: 'Halal' },
+          { key: 'national', label: 'National' }
         ].map((tab) => (
           <button
             key={tab.key}
-            onClick={() => setActiveTab(tab.key as 'all' | 'verified' | 'local')}
+            onClick={() => setActiveTab(tab.key as 'local' | 'restaurants' | 'national')}
             className={`flex-1 px-2 py-2 text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
               activeTab === tab.key
                 ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-500'
@@ -102,48 +100,28 @@ const BusinessLeaderboard = () => {
 
       {/* Business List */}
       <div className="p-3">
-        {isLoading ? (
-          <div className="text-center py-6">
-            <Loader2 className="h-5 w-5 animate-spin mx-auto mb-2 text-blue-600" />
-            <p className="text-xs text-gray-600">Loading businesses...</p>
-          </div>
-        ) : businesses && businesses.length > 0 ? (
-          <div className="space-y-2">
-            {businesses.map((business, index) => (
-              <div key={business.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  {getRankBadge(index + 1)}
-                  <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-gray-900 text-xs truncate flex items-center gap-1">
-                      {business.company_name}
-                      {business.verified && (
-                        <Crown className="h-3 w-3 text-yellow-500" />
-                      )}
+        <div className="space-y-2">
+          {getCurrentData().map((business) => (
+            <div key={business.rank} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                {getRankBadge(business.rank)}
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-gray-900 text-xs truncate">{business.name}</div>
+                  {activeTab !== 'national' && business.location && (
+                    <div className="text-xs text-gray-500 flex items-center gap-1">
+                      <MapPin className="h-2 w-2" />
+                      {business.location}
                     </div>
-                    {business.location && (
-                      <div className="text-xs text-gray-500 flex items-center gap-1">
-                        <MapPin className="h-2 w-2" />
-                        {business.location}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-blue-600 text-xs">
-                    £{business.total_matched?.toLocaleString() || '0'}
-                  </div>
-                  <div className="text-xs text-gray-500">matched</div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-6">
-            <Building2 className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-            <h3 className="text-sm font-medium text-gray-700 mb-1">No Business Partners</h3>
-            <p className="text-xs text-gray-500">Business partners will appear here!</p>
-          </div>
-        )}
+              <div className="text-right">
+                <div className="font-bold text-blue-600 text-xs">{business.coins.toLocaleString()}</div>
+                <div className="text-xs text-gray-500">coins</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </Card>
   );

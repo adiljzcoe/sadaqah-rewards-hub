@@ -1,4 +1,3 @@
-
 // Push Notification Service for Frontend
 export class PushNotificationService {
   private static instance: PushNotificationService;
@@ -23,12 +22,6 @@ export class PushNotificationService {
         return false;
       }
 
-      // Check if we're in a secure context
-      if (!window.isSecureContext) {
-        console.warn('Push notifications require HTTPS or localhost');
-        return false;
-      }
-
       // Register service worker
       this.registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/'
@@ -48,24 +41,9 @@ export class PushNotificationService {
 
   async requestPermission(): Promise<boolean> {
     try {
-      console.log('Current permission status:', Notification.permission);
-      
-      // Check if we're in a secure context
-      if (!window.isSecureContext) {
-        console.warn('Push notifications require HTTPS or localhost');
-        throw new Error('Push notifications require HTTPS or localhost');
-      }
-      
-      // Force the permission request - this should trigger the browser popup
-      if ('Notification' in window) {
-        console.log('Requesting notification permission...');
-        const permission = await Notification.requestPermission();
-        console.log('Permission request result:', permission);
-        return permission === 'granted';
-      }
-      
-      console.error('Notification API not available');
-      return false;
+      const permission = await Notification.requestPermission();
+      console.log('Notification permission:', permission);
+      return permission === 'granted';
     } catch (error) {
       console.error('Failed to request notification permission:', error);
       return false;
@@ -74,51 +52,21 @@ export class PushNotificationService {
 
   async subscribe(): Promise<PushSubscription | null> {
     try {
-      console.log('Starting subscription process...');
-      
-      // Initialize if not already done
       if (!this.registration) {
-        console.log('Initializing service worker...');
-        const initialized = await this.initialize();
-        if (!initialized) {
-          throw new Error('Failed to initialize service worker');
-        }
+        await this.initialize();
       }
 
       if (!this.registration) {
         throw new Error('Service worker not registered');
       }
 
-      console.log('Current notification permission:', Notification.permission);
-
-      // Check current permission status
-      if (Notification.permission === 'denied') {
-        console.error('Notification permission is denied');
-        throw new Error('Notification permission denied. Please enable notifications in your browser settings.');
-      }
-
-      // ALWAYS request permission explicitly to trigger popup
-      console.log('Requesting permission explicitly...');
-      const permissionGranted = await this.requestPermission();
-      
-      if (!permissionGranted) {
-        console.error('Permission was not granted');
-        throw new Error('Permission not granted');
-      }
-
-      console.log('Permission granted, checking existing subscription...');
-
       // Check if already subscribed
       this.subscription = await this.registration.pushManager.getSubscription();
       
       if (this.subscription) {
         console.log('Already subscribed to push notifications');
-        // Still save to database in case it's not there
-        await this.saveSubscriptionToDatabase(this.subscription);
         return this.subscription;
       }
-
-      console.log('Creating new subscription...');
 
       // Subscribe to push notifications
       this.subscription = await this.registration.pushManager.subscribe({
@@ -129,12 +77,12 @@ export class PushNotificationService {
       console.log('Successfully subscribed to push notifications:', this.subscription);
 
       // Send subscription to server
-      await this.saveSubscriptionToDatabase(this.subscription);
+      await this.sendSubscriptionToServer(this.subscription);
 
       return this.subscription;
     } catch (error) {
       console.error('Failed to subscribe to push notifications:', error);
-      throw error; // Re-throw so the UI can handle it
+      return null;
     }
   }
 
@@ -149,7 +97,7 @@ export class PushNotificationService {
         
         if (result) {
           // Remove subscription from server
-          await this.removeSubscriptionFromDatabase();
+          await this.removeSubscriptionFromServer();
           this.subscription = null;
           console.log('Successfully unsubscribed from push notifications');
         }
@@ -167,13 +115,6 @@ export class PushNotificationService {
   async isSubscribed(): Promise<boolean> {
     try {
       if (!this.registration) {
-        const initialized = await this.initialize();
-        if (!initialized) {
-          return false;
-        }
-      }
-
-      if (!this.registration) {
         return false;
       }
 
@@ -189,56 +130,49 @@ export class PushNotificationService {
     return Notification.permission;
   }
 
-  private async saveSubscriptionToDatabase(subscription: PushSubscription): Promise<void> {
+  private async sendSubscriptionToServer(subscription: PushSubscription): Promise<void> {
     try {
-      // Import supabase client dynamically to avoid circular imports
-      const { supabase } = await import('@/integrations/supabase/client');
-      
-      const subscriptionData = subscription.toJSON();
-      
-      const { error } = await supabase
-        .from('push_subscriptions')
-        .upsert({
-          endpoint: subscriptionData.endpoint,
-          p256dh_key: subscriptionData.keys?.p256dh,
-          auth_key: subscriptionData.keys?.auth,
-          user_agent: navigator.userAgent,
-          active: true
-        }, {
-          onConflict: 'endpoint'
-        });
+      const response = await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription: subscription.toJSON(),
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        })
+      });
 
-      if (error) {
-        console.error('Error saving subscription to database:', error);
-      } else {
-        console.log('Subscription saved to database successfully');
+      if (!response.ok) {
+        throw new Error('Failed to send subscription to server');
       }
+
+      console.log('Subscription sent to server successfully');
     } catch (error) {
-      console.error('Error saving subscription to database:', error);
+      console.error('Error sending subscription to server:', error);
     }
   }
 
-  private async removeSubscriptionFromDatabase(): Promise<void> {
+  private async removeSubscriptionFromServer(): Promise<void> {
     try {
-      // Import supabase client dynamically to avoid circular imports
-      const { supabase } = await import('@/integrations/supabase/client');
-      
-      if (!this.subscription) return;
-      
-      const subscriptionData = this.subscription.toJSON();
-      
-      const { error } = await supabase
-        .from('push_subscriptions')
-        .update({ active: false })
-        .eq('endpoint', subscriptionData.endpoint);
+      const response = await fetch('/api/push/unsubscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subscription: this.subscription?.toJSON()
+        })
+      });
 
-      if (error) {
-        console.error('Error removing subscription from database:', error);
-      } else {
-        console.log('Subscription removed from database successfully');
+      if (!response.ok) {
+        throw new Error('Failed to remove subscription from server');
       }
+
+      console.log('Subscription removed from server successfully');
     } catch (error) {
-      console.error('Error removing subscription from database:', error);
+      console.error('Error removing subscription from server:', error);
     }
   }
 

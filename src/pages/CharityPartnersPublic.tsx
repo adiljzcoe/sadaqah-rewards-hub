@@ -10,6 +10,74 @@ import FundraisersCarousel from '@/components/FundraisersCarousel';
 import { Heart, TrendingUp, Users, Globe, Shield } from 'lucide-react';
 
 const CharityPartnersPublic = () => {
+  // Mock data for featured campaigns across all charities
+  const featuredCampaigns = [
+    {
+      id: '1',
+      title: 'Gaza Emergency Relief Fund',
+      charity: 'Islamic Relief',
+      description: 'Immediate aid for families in crisis',
+      raised: 450000,
+      target: 500000,
+      donors: 2340,
+      daysLeft: 5,
+      image: 'Emergency aid supplies',
+      category: 'Emergency Aid'
+    },
+    {
+      id: '2',
+      title: 'Syria Education Initiative',
+      charity: 'Human Appeal',
+      description: 'Education for displaced children',
+      raised: 320000,
+      target: 400000,
+      donors: 1560,
+      daysLeft: 12,
+      image: 'Children in classroom',
+      category: 'Education'
+    },
+    {
+      id: '3',
+      title: 'Yemen Water Crisis Response',
+      charity: 'Muslim Aid',
+      description: 'Clean water for communities in need',
+      raised: 180000,
+      target: 250000,
+      donors: 890,
+      daysLeft: 8,
+      image: 'Water well construction',
+      category: 'Water & Sanitation'
+    }
+  ];
+
+  // Mock data for featured fundraisers
+  const featuredFundraisers = [
+    {
+      id: '1',
+      title: 'Build 50 Schools in Bangladesh',
+      charity: 'Education for All',
+      description: 'Long-term educational infrastructure development',
+      raised: 750000,
+      target: 1000000,
+      supporters: 3400,
+      deadline: 'Jun 2025',
+      image: 'School construction project',
+      category: 'Education'
+    },
+    {
+      id: '2',
+      title: 'Mobile Hospital Fleet',
+      charity: 'Medical Aid International',
+      description: 'Healthcare delivery to remote areas',
+      raised: 420000,
+      target: 600000,
+      supporters: 1890,
+      deadline: 'Apr 2025',
+      image: 'Mobile medical units',
+      category: 'Healthcare'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -75,14 +143,14 @@ const CharityPartnersPublic = () => {
           </Card>
         </div>
 
-        {/* Featured Campaigns - Now fetches from database */}
+        {/* Featured Campaigns */}
         <div className="mb-12">
-          <CampaignsCarousel title="Featured Campaigns" />
+          <CampaignsCarousel campaigns={featuredCampaigns} title="Featured Campaigns" />
         </div>
 
-        {/* Featured Fundraisers - Now fetches from database */}
+        {/* Featured Fundraisers */}
         <div className="mb-12">
-          <FundraisersCarousel title="Long-term Fundraisers" />
+          <FundraisersCarousel fundraisers={featuredFundraisers} title="Long-term Fundraisers" />
         </div>
 
         {/* Charity Partners Component */}

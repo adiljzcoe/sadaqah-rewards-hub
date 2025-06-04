@@ -1,8 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bell, X, AlertCircle } from 'lucide-react';
+import { Bell, X } from 'lucide-react';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { useToast } from '@/hooks/use-toast';
 
@@ -25,39 +25,26 @@ const PushNotificationWidget: React.FC<PushNotificationWidgetProps> = ({
   } = usePushNotifications();
   
   const { toast } = useToast();
-  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    // Check if user has already dismissed this session
-    const dismissed = sessionStorage.getItem('pushNotificationDismissed');
-    if (dismissed) {
-      setDismissed(true);
+    // Auto-initialize push notifications if supported and not already set
+    if (isSupported && permission === 'default' && !isSubscribed) {
+      // Show widget to encourage subscription
     }
-  }, []);
+  }, [isSupported, permission, isSubscribed]);
 
   const handleSubscribe = async () => {
-    try {
-      const success = await subscribe();
-      if (success) {
-        toast({
-          title: "🔔 Notifications Enabled!",
-          description: "You'll now receive important updates about urgent campaigns and donation opportunities.",
-        });
-        setDismissed(true);
-        sessionStorage.setItem('pushNotificationDismissed', 'true');
-        onClose?.();
-      } else {
-        toast({
-          title: "Permission Required",
-          description: "Please allow notifications when prompted by your browser, then try again.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error('Subscribe error:', error);
+    const success = await subscribe();
+    if (success) {
       toast({
-        title: "Unable to Enable Notifications",
-        description: "Your browser may be blocking notifications. Please check your browser settings and try again.",
+        title: "Notifications Enabled",
+        description: "You'll now receive important updates and donation reminders",
+      });
+      onClose?.();
+    } else {
+      toast({
+        title: "Subscription Failed",
+        description: "Unable to enable notifications. Please try again.",
         variant: "destructive",
       });
     }
@@ -73,32 +60,14 @@ const PushNotificationWidget: React.FC<PushNotificationWidgetProps> = ({
     }
   };
 
-  const handleDismiss = () => {
-    setDismissed(true);
-    sessionStorage.setItem('pushNotificationDismissed', 'true');
-    onClose?.();
-  };
-
-  // Don't show widget if dismissed, not supported, or already subscribed (unless minimal mode)
-  if (dismissed || !isSupported || (isSubscribed && !minimal)) {
+  // Don't show widget if not supported or already subscribed (unless minimal mode)
+  if (!isSupported || (isSubscribed && !minimal)) {
     return null;
   }
 
   // Don't show if permission is denied
   if (permission === 'denied') {
-    return (
-      <Card className="border-red-200 bg-red-50">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-2 text-red-700">
-            <AlertCircle className="h-5 w-5" />
-            <div>
-              <p className="font-medium">Notifications Blocked</p>
-              <p className="text-sm">Enable notifications in your browser settings to receive important updates.</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    return null;
   }
 
   if (minimal) {
@@ -112,48 +81,50 @@ const PushNotificationWidget: React.FC<PushNotificationWidgetProps> = ({
           className="flex items-center gap-2"
         >
           <Bell className="h-4 w-4" />
-          {isLoading ? 'Processing...' : (isSubscribed ? 'Notifications On' : 'Enable Notifications')}
+          {isSubscribed ? 'Notifications On' : 'Enable Notifications'}
         </Button>
       </div>
     );
   }
 
   return (
-    <Card className="border-emerald-200 bg-gradient-to-r from-emerald-50 to-blue-50 shadow-lg">
+    <Card className="border-islamic-green-200 bg-islamic-green-50">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bell className="h-5 w-5 text-emerald-600" />
-            <CardTitle className="text-lg text-emerald-900">
-              🔔 Stay Notified of Urgent Appeals
+            <Bell className="h-5 w-5 text-islamic-green-600" />
+            <CardTitle className="text-lg text-islamic-green-900">
+              Stay Connected
             </CardTitle>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleDismiss}
-            className="h-6 w-6 p-0 text-emerald-600 hover:text-emerald-800"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          {onClose && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="h-6 w-6 p-0 text-islamic-green-600 hover:text-islamic-green-800"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </div>
-        <CardDescription className="text-emerald-700">
-          Get instant alerts when urgent charity appeals need your help most
+        <CardDescription className="text-islamic-green-700">
+          Enable notifications to receive urgent charity appeals, daily reminders, and impact updates
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm text-emerald-800">
-            <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-            🚨 Emergency campaign alerts when lives are at stake
+          <div className="flex items-center gap-2 text-sm text-islamic-green-800">
+            <div className="w-2 h-2 bg-islamic-green-600 rounded-full"></div>
+            Urgent campaign alerts when help is needed most
           </div>
-          <div className="flex items-center gap-2 text-sm text-emerald-800">
-            <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-            🕌 Daily Sadaqah reminders to earn continuous rewards
+          <div className="flex items-center gap-2 text-sm text-islamic-green-800">
+            <div className="w-2 h-2 bg-islamic-green-600 rounded-full"></div>
+            Daily Sadaqah reminders to earn continuous rewards
           </div>
-          <div className="flex items-center gap-2 text-sm text-emerald-800">
-            <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-            📊 Impact updates showing how your donations help
+          <div className="flex items-center gap-2 text-sm text-islamic-green-800">
+            <div className="w-2 h-2 bg-islamic-green-600 rounded-full"></div>
+            Impact updates showing how your donations help
           </div>
         </div>
 
@@ -161,21 +132,23 @@ const PushNotificationWidget: React.FC<PushNotificationWidgetProps> = ({
           <Button
             onClick={handleSubscribe}
             disabled={isLoading}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+            className="flex-1 bg-islamic-green-600 hover:bg-islamic-green-700"
           >
-            {isLoading ? 'Enabling...' : '🔔 Enable Notifications'}
+            {isLoading ? 'Enabling...' : 'Enable Notifications'}
           </Button>
-          <Button
-            variant="outline"
-            onClick={handleDismiss}
-            className="border-emerald-300 text-emerald-700 hover:bg-emerald-100"
-          >
-            Maybe Later
-          </Button>
+          {onClose && (
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="border-islamic-green-300 text-islamic-green-700 hover:bg-islamic-green-100"
+            >
+              Maybe Later
+            </Button>
+          )}
         </div>
 
-        <p className="text-xs text-emerald-600 text-center">
-          🔒 Secure & private - you can disable anytime in your browser settings
+        <p className="text-xs text-islamic-green-600">
+          You can disable notifications anytime in your profile settings
         </p>
       </CardContent>
     </Card>

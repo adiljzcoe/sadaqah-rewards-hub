@@ -12,48 +12,9 @@ const DataSeeder = () => {
   const { fakeAdminLogin, user } = useAuth();
   const [isSeeding, setIsSeeding] = useState(false);
 
-  const createAdminProfile = async (userId: string) => {
-    console.log('🔧 Creating admin profile for user:', userId);
-    
-    try {
-      // Check if profile already exists
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('id', userId)
-        .single();
-
-      if (existingProfile) {
-        console.log('✅ Admin profile already exists');
-        return;
-      }
-
-      // Create the admin profile
-      const { data, error } = await supabase
-        .from('profiles')
-        .insert({
-          id: userId,
-          email: 'admin@test.com',
-          full_name: 'Test Admin',
-          role: 'admin'
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('❌ Error creating admin profile:', error);
-        throw error;
-      }
-
-      console.log('✅ Admin profile created successfully:', data);
-    } catch (error) {
-      console.error('❌ Failed to create admin profile:', error);
-      throw error;
-    }
-  };
-
   const seedCharities = async () => {
     console.log('🌱 Seeding charities...');
+    console.log('👤 Current user:', user);
     
     const charities = [
       {
@@ -115,6 +76,12 @@ const DataSeeder = () => {
     ];
 
     try {
+      console.log('🔄 Attempting to insert charities...');
+      
+      // Test auth session first
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      console.log('🔐 Current session:', session ? 'Active' : 'None', sessionError);
+      
       const { data: insertedCharities, error } = await supabase
         .from('charities')
         .insert(charities)
@@ -122,10 +89,17 @@ const DataSeeder = () => {
 
       if (error) {
         console.error('❌ Insert failed:', error);
+        console.error('❌ Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
         throw error;
       }
 
       console.log('✅ Charities seeded successfully:', insertedCharities?.length);
+      console.log('📊 Inserted charity IDs:', insertedCharities?.map(c => c.id));
       return insertedCharities || [];
 
     } catch (error) {
@@ -136,6 +110,7 @@ const DataSeeder = () => {
 
   const seedCharityAllocations = async (charities: any[]) => {
     console.log('🌱 Seeding charity allocations...');
+    console.log('🎯 Creating allocations for', charities.length, 'charities');
     
     const allocations = charities.map(charity => ({
       charity_id: charity.id,
@@ -147,6 +122,7 @@ const DataSeeder = () => {
     }));
 
     try {
+      console.log('🔄 Inserting charity allocations...');
       const { data, error } = await supabase
         .from('charity_allocations')
         .insert(allocations)
@@ -168,29 +144,14 @@ const DataSeeder = () => {
   const seedDonations = async (charities: any[]) => {
     console.log('🌱 Seeding donations...');
     
-    // First, try to get a real user from the profiles table
-    const { data: profiles, error: profilesError } = await supabase
-      .from('profiles')
-      .select('id')
-      .limit(5);
-
-    if (profilesError) {
-      console.error('❌ Error fetching profiles:', profilesError);
-    }
-
-    const availableUserIds = profiles?.map(p => p.id) || [];
-    console.log('👥 Available user IDs:', availableUserIds.length);
-
+    const userId = user?.id || 'fake-admin-id';
+    console.log('👤 Using user ID for donations:', userId);
+    
     const donations = [];
     
     for (let i = 0; i < 15; i++) {
       const charity = charities[i % charities.length];
       const amount = Math.floor(Math.random() * 50000) + 10000;
-      
-      // Use a real user ID if available, otherwise set to null
-      const userId = availableUserIds.length > 0 
-        ? availableUserIds[i % availableUserIds.length] 
-        : null;
       
       donations.push({
         user_id: userId,
@@ -208,6 +169,7 @@ const DataSeeder = () => {
     }
 
     try {
+      console.log('🔄 Inserting donations...');
       const { data, error } = await supabase
         .from('donations')
         .insert(donations)
@@ -239,11 +201,7 @@ const DataSeeder = () => {
       console.log('⏳ Waiting for auth state to update...');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const currentUser = user || { id: '00000000-0000-0000-0000-000000000001' };
-      console.log('👤 Current user after setup:', currentUser);
-      
-      // Create admin profile first
-      await createAdminProfile(currentUser.id);
+      console.log('👤 Auth state after fake login:', { user });
       
       toast({
         title: "Starting Data Seeding",
@@ -374,9 +332,9 @@ const DataSeeder = () => {
           </div>
         )}
 
-        <div className="mt-4 p-3 bg-amber-50 rounded-lg">
-          <p className="text-sm text-amber-700">
-            ⚠️ Create some users first using the "User Mgmt" tab for better donation seeding with real user IDs.
+        <div className="mt-4 p-3 bg-green-50 rounded-lg">
+          <p className="text-sm text-green-700">
+            ✅ RLS policies have been updated. Data seeding should now work properly.
           </p>
         </div>
       </CardContent>

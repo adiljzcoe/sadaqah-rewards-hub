@@ -7,26 +7,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Github, Shield, User } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user, fakeAdminLogin, fakeUserLogin } = useAuth();
+  const { signIn, signUp, signInWithGoogle, signInWithGitHub, fakeAdminLogin, fakeUserLogin, user } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
-      // Check if it's the fake admin user
-      if (user.id === '00000000-0000-0000-0000-000000000001' || user.email === 'admin@test.com') {
-        navigate('/admin-dashboard');
-      } else {
-        navigate('/');
-      }
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -45,81 +37,13 @@ const Auth = () => {
   };
 
   const handleFakeAdminLogin = () => {
-    setLoading(true);
     fakeAdminLogin();
-    // The useEffect will handle navigation after user state updates
-    setTimeout(() => setLoading(false), 1000);
+    navigate('/admin');
   };
 
   const handleFakeUserLogin = () => {
-    setLoading(true);
     fakeUserLogin();
-    // The useEffect will handle navigation after user state updates
-    setTimeout(() => setLoading(false), 1000);
-  };
-
-  const handleTestLogin = async () => {
-    setLoading(true);
-    try {
-      // Use a valid email format for testing
-      const testEmail = 'testuser@example.com';
-      const testPassword = '1234567';
-      
-      console.log('Attempting to create test account...');
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email: testEmail,
-        password: testPassword,
-        options: {
-          data: {
-            full_name: 'Test User'
-          }
-        }
-      });
-
-      if (signUpError && !signUpError.message.includes('User already registered')) {
-        console.error('Sign up error:', signUpError);
-        toast({
-          title: "Error creating test account",
-          description: signUpError.message,
-          variant: "destructive",
-        });
-        setLoading(false);
-        return;
-      }
-
-      console.log('Sign up result:', signUpData);
-
-      // Now try to sign in
-      console.log('Attempting to sign in with test credentials...');
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: testEmail,
-        password: testPassword,
-      });
-
-      if (signInError) {
-        console.error('Sign in error:', signInError);
-        toast({
-          title: "Login failed",
-          description: signInError.message,
-          variant: "destructive",
-        });
-      } else {
-        console.log('Sign in successful:', signInData);
-        toast({
-          title: "Test login successful!",
-          description: `You're now logged in as ${testEmail}`,
-        });
-        navigate('/');
-      }
-    } catch (error) {
-      console.error('Unexpected error during test login:', error);
-      toast({
-        title: "Unexpected error",
-        description: "Please try again or use manual login",
-        variant: "destructive",
-      });
-    }
-    setLoading(false);
+    navigate('/');
   };
 
   return (
@@ -134,67 +58,6 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Fake Login Buttons - Working Solution */}
-          <div className="mb-6 space-y-2">
-            <Button
-              onClick={handleFakeUserLogin}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
-              disabled={loading}
-            >
-              <User className="h-4 w-4 mr-2" />
-              {loading ? "Processing..." : "🚀 Fake User Login"}
-            </Button>
-            
-            <Button
-              onClick={handleFakeAdminLogin}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium"
-              disabled={loading}
-            >
-              <Shield className="h-4 w-4 mr-2" />
-              {loading ? "Processing..." : "👑 Fake Admin Login"}
-            </Button>
-            
-            <p className="text-xs text-gray-500 text-center">
-              These bypass authentication and create fake sessions
-            </p>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or try real auth (may not work)
-              </span>
-            </div>
-          </div>
-
-          {/* Quick Test Login Button */}
-          <div className="mb-6">
-            <Button
-              onClick={handleTestLogin}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
-              disabled={loading}
-            >
-              {loading ? "Processing..." : "🚀 Quick Test Login"}
-            </Button>
-            <p className="text-xs text-gray-500 text-center mt-2">
-              This will create and login with testuser@example.com
-            </p>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or use manual login
-              </span>
-            </div>
-          </div>
-
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -315,6 +178,42 @@ const Auth = () => {
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </Button>
+            </div>
+
+            {/* Test Login Section */}
+            <div className="mt-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Test Accounts
+                  </span>
+                </div>
+              </div>
+              
+              <div className="mt-4 space-y-2">
+                <Button
+                  variant="outline"
+                  onClick={handleFakeUserLogin}
+                  className="w-full bg-blue-50 text-blue-800 border-blue-300 hover:bg-blue-100"
+                  disabled={loading}
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Test User Login
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={handleFakeAdminLogin}
+                  className="w-full bg-yellow-50 text-yellow-800 border-yellow-300 hover:bg-yellow-100"
+                  disabled={loading}
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Test Admin Login
+                </Button>
+              </div>
             </div>
           </div>
         </CardContent>

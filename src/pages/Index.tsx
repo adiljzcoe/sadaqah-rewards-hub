@@ -1,3 +1,4 @@
+
 import React from 'react';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
@@ -16,20 +17,90 @@ import BusinessAdvert from '@/components/BusinessAdvert';
 import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
-import PushNotificationWidget from '@/components/PushNotificationWidget';
-import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
-  const { user } = useAuth();
+  // Mock data for campaigns
+  const campaigns = [
+    {
+      id: '1',
+      title: 'Orphans of Gaza Emergency Support',
+      charity: 'Islamic Relief',
+      description: 'Providing immediate support to orphaned children in Gaza',
+      raised: 45000,
+      target: 60000,
+      donors: 234,
+      daysLeft: 12,
+      image: 'Emergency orphan care',
+      category: 'Emergency Aid'
+    },
+    {
+      id: '2',
+      title: 'Winter Clothing for Syrian Refugees',
+      charity: 'Human Appeal',
+      description: 'Warm clothing for families facing winter hardships',
+      raised: 28000,
+      target: 40000,
+      donors: 156,
+      daysLeft: 8,
+      image: 'Winter clothing drive',
+      category: 'Emergency Aid'
+    },
+    {
+      id: '3',
+      title: 'Yemen Children Nutrition Program',
+      charity: 'Muslim Aid',
+      description: 'Nutritional support for malnourished children',
+      raised: 15000,
+      target: 25000,
+      donors: 89,
+      daysLeft: 15,
+      image: 'Child nutrition',
+      category: 'Healthcare'
+    }
+  ];
+
+  const fundraisers = [
+    {
+      id: '1',
+      title: 'Build 10 Water Wells in Somalia',
+      charity: 'Water Wells Foundation',
+      description: 'Providing clean water access to rural communities',
+      raised: 75000,
+      target: 100000,
+      supporters: 340,
+      deadline: 'Dec 2024',
+      image: 'Water well construction',
+      category: 'Infrastructure'
+    },
+    {
+      id: '2',
+      title: 'Mobile Medical Clinic Fleet',
+      charity: 'Medical Aid International',
+      description: 'Healthcare delivery to remote areas',
+      raised: 120000,
+      target: 200000,
+      supporters: 567,
+      deadline: 'Jan 2025',
+      image: 'Mobile medical unit',
+      category: 'Healthcare'
+    },
+    {
+      id: '3',
+      title: 'School Building Project Bangladesh',
+      charity: 'Education for All',
+      description: 'Building schools in underserved communities',
+      raised: 85000,
+      target: 150000,
+      supporters: 423,
+      deadline: 'Mar 2025',
+      image: 'School construction',
+      category: 'Education'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
       <StickyDonationWidget />
-      
-      {/* Push Notification Widget - Add at the top */}
-      <div className="container mx-auto px-4 py-4">
-        <PushNotificationWidget />
-      </div>
       
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">
@@ -94,12 +165,12 @@ const Index = () => {
 
       {/* Campaigns Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
-        <CampaignsCarousel title="Active Campaigns" />
+        <CampaignsCarousel campaigns={campaigns} title="Active Campaigns" />
       </section>
 
       {/* Fundraisers Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
-        <FundraisersCarousel title="Long-term Fundraisers" />
+        <FundraisersCarousel fundraisers={fundraisers} title="Long-term Fundraisers" />
       </section>
 
       {/* Charity Partners Section */}

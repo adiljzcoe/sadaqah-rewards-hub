@@ -24,9 +24,6 @@ export const usePushNotifications = () => {
   const initializeState = async () => {
     const isSupported = 'serviceWorker' in navigator && 'PushManager' in window;
     
-    console.log('Push notifications supported:', isSupported);
-    console.log('Current permission:', Notification.permission);
-    
     setState(prev => ({
       ...prev,
       isSupported,
@@ -35,7 +32,6 @@ export const usePushNotifications = () => {
 
     if (isSupported) {
       const isSubscribed = await pushNotificationService.isSubscribed();
-      console.log('Currently subscribed:', isSubscribed);
       setState(prev => ({
         ...prev,
         isSubscribed
@@ -44,31 +40,35 @@ export const usePushNotifications = () => {
   };
 
   const subscribe = async (): Promise<boolean> => {
-    console.log('Hook: Starting subscription...');
     setState(prev => ({ ...prev, isLoading: true }));
     
     try {
-      // This should trigger the browser permission popup
+      await pushNotificationService.initialize();
+      const permissionGranted = await pushNotificationService.requestPermission();
+      
+      if (!permissionGranted) {
+        setState(prev => ({ 
+          ...prev, 
+          isLoading: false,
+          permission: 'denied'
+        }));
+        return false;
+      }
+
       const subscription = await pushNotificationService.subscribe();
       const success = !!subscription;
-      
-      console.log('Hook: Subscription result:', success);
       
       setState(prev => ({
         ...prev,
         isLoading: false,
-        permission: success ? 'granted' : pushNotificationService.getPermissionStatus(),
+        permission: 'granted',
         isSubscribed: success
       }));
       
       return success;
     } catch (error) {
-      console.error('Hook: Subscribe error:', error);
-      setState(prev => ({ 
-        ...prev, 
-        isLoading: false,
-        permission: pushNotificationService.getPermissionStatus()
-      }));
+      console.error('Subscribe error:', error);
+      setState(prev => ({ ...prev, isLoading: false }));
       return false;
     }
   };
