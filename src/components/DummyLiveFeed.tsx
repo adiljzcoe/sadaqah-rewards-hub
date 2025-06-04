@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useDummyData } from '@/hooks/useDummyData';
-import { Heart, Users, Zap, TrendingUp, MapPin } from 'lucide-react';
+import { Heart, Users, Zap, TrendingUp, MapPin, Activity } from 'lucide-react';
 
 const DummyLiveFeed = () => {
   const { liveActivities, isDummyDataEnabled } = useDummyData();
