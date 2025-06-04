@@ -1,15 +1,18 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MapPin, Navigation, Clock, Users, Globe, Heart, Map, Activity, MessageCircle } from 'lucide-react';
+import { MapPin, Navigation, Clock, Users, Globe, Heart, Map, Activity, MessageCircle, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import WorldAdhanMap from '@/components/ummah/WorldAdhanMap';
 import MosqueList from '@/components/ummah/MosqueList';
 import CommunityPrayerTab from '@/components/ummah/CommunityPrayerTab';
 import UmmahPulse from '@/components/ummah/UmmahPulse';
 import DuaFeed from '@/components/dua/DuaFeed';
+import CheckInLocations from '@/components/checkin/CheckInLocations';
+import RecentCheckIns from '@/components/checkin/RecentCheckIns';
 
 const MyUmmah = () => {
   const { toast } = useToast();
@@ -184,9 +187,9 @@ const MyUmmah = () => {
           </CardContent>
         </Card>
 
-        {/* Main Tabs - Added Du'as tab */}
+        {/* Main Tabs - Added Check-ins tab */}
         <Tabs defaultValue="pulse" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
+          <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
             <TabsTrigger value="pulse" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
               Live Pulse
@@ -198,6 +201,10 @@ const MyUmmah = () => {
             <TabsTrigger value="community" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Prayer Groups
+            </TabsTrigger>
+            <TabsTrigger value="checkins" className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              Check-ins
             </TabsTrigger>
             <TabsTrigger value="duas" className="flex items-center gap-2">
               <MessageCircle className="h-4 w-4" />
@@ -297,6 +304,24 @@ const MyUmmah = () => {
 
           <TabsContent value="community">
             <CommunityPrayerTab currentPrayer={currentPrayer} />
+          </TabsContent>
+
+          <TabsContent value="checkins" className="space-y-6">
+            <div className="text-center space-y-4">
+              <h2 className="text-3xl font-bold text-gray-900">Islamic Check-ins</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Check in to Islamic locations near you and earn Jannah points. Track your spiritual journey and connect with your local Muslim community.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <CheckInLocations userLocation={userLocation} />
+              </div>
+              <div className="lg:col-span-1">
+                <RecentCheckIns />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="duas">

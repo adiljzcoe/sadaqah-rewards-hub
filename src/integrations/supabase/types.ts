@@ -523,6 +523,51 @@ export type Database = {
           },
         ]
       }
+      check_in_locations: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          jannah_points_reward: number | null
+          latitude: number | null
+          location_type: Database["public"]["Enums"]["check_in_location_type"]
+          longitude: number | null
+          name: string
+          updated_at: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          jannah_points_reward?: number | null
+          latitude?: number | null
+          location_type: Database["public"]["Enums"]["check_in_location_type"]
+          longitude?: number | null
+          name: string
+          updated_at?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          jannah_points_reward?: number | null
+          latitude?: number | null
+          location_type?: Database["public"]["Enums"]["check_in_location_type"]
+          longitude?: number | null
+          name?: string
+          updated_at?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
       dhikr_achievements: {
         Row: {
           badge_color: string | null
@@ -2687,6 +2732,44 @@ export type Database = {
           },
         ]
       }
+      user_check_ins: {
+        Row: {
+          check_in_time: string | null
+          created_at: string | null
+          id: string
+          jannah_points_earned: number | null
+          location_id: string | null
+          notes: string | null
+          user_id: string | null
+        }
+        Insert: {
+          check_in_time?: string | null
+          created_at?: string | null
+          id?: string
+          jannah_points_earned?: number | null
+          location_id?: string | null
+          notes?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          check_in_time?: string | null
+          created_at?: string | null
+          id?: string
+          jannah_points_earned?: number | null
+          location_id?: string | null
+          notes?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_check_ins_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "check_in_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_dhikr_achievements: {
         Row: {
           achievement_id: string | null
@@ -2814,6 +2897,15 @@ export type Database = {
     Enums: {
       animal_type: "sheep" | "goat" | "cow" | "buffalo" | "camel"
       campaign_status: "draft" | "active" | "paused" | "completed" | "cancelled"
+      check_in_location_type:
+        | "masjid"
+        | "family_home"
+        | "muslim_business"
+        | "islamic_center"
+        | "halal_restaurant"
+        | "islamic_school"
+        | "community_center"
+        | "charity_office"
       donation_status:
         | "pending"
         | "completed"
@@ -2957,6 +3049,16 @@ export const Constants = {
     Enums: {
       animal_type: ["sheep", "goat", "cow", "buffalo", "camel"],
       campaign_status: ["draft", "active", "paused", "completed", "cancelled"],
+      check_in_location_type: [
+        "masjid",
+        "family_home",
+        "muslim_business",
+        "islamic_center",
+        "halal_restaurant",
+        "islamic_school",
+        "community_center",
+        "charity_office",
+      ],
       donation_status: [
         "pending",
         "completed",
