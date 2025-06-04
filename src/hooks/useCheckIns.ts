@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -24,9 +23,98 @@ interface UserCheckIn {
   location?: CheckInLocation;
 }
 
+interface GoodDeedOption {
+  id: string;
+  label: string;
+  points: number;
+  icon: string;
+}
+
 export const useCheckIns = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+
+  const goodDeedOptions: GoodDeedOption[] = [
+    { id: 'visiting_family', label: 'Visiting Family', points: 25, icon: 'home' },
+    { id: 'mosque_visit', label: 'Mosque Visit', points: 50, icon: 'building2' },
+    { id: 'charity_work', label: 'Charity Work', points: 40, icon: 'heart' },
+    { id: 'helping_neighbor', label: 'Helping Neighbor', points: 30, icon: 'users' },
+    { id: 'community_service', label: 'Community Service', points: 35, icon: 'users' },
+    { id: 'islamic_study', label: 'Islamic Study Circle', points: 45, icon: 'graduationCap' },
+    { id: 'feeding_poor', label: 'Feeding the Poor', points: 60, icon: 'utensils' },
+    { id: 'visiting_sick', label: 'Visiting the Sick', points: 40, icon: 'heart' }
+  ];
+
+  const logGoodDeedWithGPS = async (goodDeedId: string, notes?: string) => {
+    setLoading(true);
+    try {
+      // Get current position
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      });
+
+      const { latitude, longitude } = position.coords;
+      const goodDeed = goodDeedOptions.find(deed => deed.id === goodDeedId);
+      
+      if (!goodDeed) {
+        throw new Error('Good deed not found');
+      }
+
+      // Log the GPS coordinates and good deed
+      const { data, error } = await supabase
+        .from('user_check_ins')
+        .insert({
+          location_id: null, // No specific location, just GPS coordinates
+          jannah_points_earned: goodDeed.points,
+          notes: `${goodDeed.label}${notes ? ` - ${notes}` : ''} (GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)})`
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Also log to a separate GPS tracking table for marketing analysis
+      await supabase
+        .from('gps_good_deeds')
+        .insert({
+          good_deed_type: goodDeedId,
+          latitude,
+          longitude,
+          accuracy: position.coords.accuracy,
+          notes,
+          jannah_points_earned: goodDeed.points
+        });
+
+      toast({
+        title: "Good Deed Logged! 🎉",
+        description: `You earned ${goodDeed.points} Jannah points for ${goodDeed.label}!`,
+      });
+
+      return data;
+    } catch (error: any) {
+      console.error('Error logging good deed:', error);
+      if (error.code === 1) { // PERMISSION_DENIED
+        toast({
+          title: "Location Access Required",
+          description: "Please enable location access to log good deeds.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Failed to Log Good Deed",
+          description: "Something went wrong. Please try again.",
+          variant: "destructive"
+        });
+      }
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchNearbyLocations = async (latitude: number, longitude: number, radiusKm: number = 10) => {
     try {
@@ -143,6 +231,8 @@ export const useCheckIns = () => {
 
   return {
     loading,
+    goodDeedOptions,
+    logGoodDeedWithGPS,
     fetchNearbyLocations,
     checkIn,
     getUserCheckIns,

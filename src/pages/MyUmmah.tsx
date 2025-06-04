@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import UmmahPulse from '@/components/ummah/UmmahPulse';
 import DuaFeed from '@/components/dua/DuaFeed';
 import CheckInLocations from '@/components/checkin/CheckInLocations';
 import RecentCheckIns from '@/components/checkin/RecentCheckIns';
+import GoodDeedLogger from '@/components/checkin/GoodDeedLogger';
 
 const MyUmmah = () => {
   const { toast } = useToast();
@@ -187,7 +187,7 @@ const MyUmmah = () => {
           </CardContent>
         </Card>
 
-        {/* Main Tabs - Added Check-ins tab */}
+        {/* Main Tabs - Updated check-ins tab */}
         <Tabs defaultValue="pulse" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
             <TabsTrigger value="pulse" className="flex items-center gap-2">
@@ -308,14 +308,15 @@ const MyUmmah = () => {
 
           <TabsContent value="checkins" className="space-y-6">
             <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900">Islamic Check-ins</h2>
+              <h2 className="text-3xl font-bold text-gray-900">Islamic Check-ins & Good Deeds</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Check in to Islamic locations near you and earn Jannah points. Track your spiritual journey and connect with your local Muslim community.
+                Check in to Islamic locations or log good deeds with GPS to earn Jannah points and help us understand where our community is most active.
               </p>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 space-y-6">
+                <GoodDeedLogger />
                 <CheckInLocations userLocation={userLocation} />
               </div>
               <div className="lg:col-span-1">
