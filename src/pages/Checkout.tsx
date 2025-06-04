@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Slider } from '@/components/ui/slider';
 import { useForm } from 'react-hook-form';
-import Header from '@/components/Header';
 import FloatingCheckoutWidget from '@/components/FloatingCheckoutWidget';
 import { Heart, Plus, Minus, X, Crown, Zap, Star, Gift, TrendingUp, Users, Shield, CreditCard, Mail, Phone, User, AlertTriangle, Target, Check, Lock, Info, LogIn } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -389,8 +387,6 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8 max-w-4xl pb-32">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
