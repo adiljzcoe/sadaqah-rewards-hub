@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Heart, CreditCard, Gift, Users, Check } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
+import HeartDonationEffect from './HeartDonationEffect';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { useCart } from '@/hooks/useCart';
@@ -36,6 +37,7 @@ const DonationWidget = ({
   const [showMembership, setShowMembership] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [heartAnimationTrigger, setHeartAnimationTrigger] = useState(false);
 
   const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
   const { currency } = useCurrency();
@@ -143,10 +145,14 @@ const DonationWidget = ({
       attribution: attributionData
     });
 
+    // Trigger heart animation
+    setHeartAnimationTrigger(true);
+    
     // Show success state
     setTimeout(() => {
       setIsAdding(false);
       setJustAdded(true);
+      setHeartAnimationTrigger(false);
     }, 500);
   };
 
@@ -156,7 +162,15 @@ const DonationWidget = ({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto shadow-lg">
+    <Card className="w-full max-w-md mx-auto shadow-lg relative">
+      {/* Heart Animation Effect */}
+      <HeartDonationEffect 
+        trigger={heartAnimationTrigger}
+        amount={isCustom ? customAmount || '0' : amount}
+        currency={currencySymbol}
+        onComplete={() => console.log('Heart animation completed!')}
+      />
+
       <CardHeader className="text-center pb-4">
         <div className="flex items-center justify-center mb-2">
           <Heart className="h-6 w-6 text-red-500 mr-2" />
