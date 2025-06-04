@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CartItem {
@@ -22,7 +23,16 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>([
+    {
+      id: 'dummy-1',
+      name: 'Emergency Food Relief',
+      price: 25.00,
+      quantity: 1,
+      type: 'donation',
+      image: '/lovable-uploads/7632d030-2eb4-430d-9c4c-8061492eceec.png'
+    }
+  ]);
 
   const addItem = (newItem: Omit<CartItem, 'quantity'>) => {
     setItems(prev => {
