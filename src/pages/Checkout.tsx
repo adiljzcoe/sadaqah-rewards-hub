@@ -82,6 +82,12 @@ const Checkout = () => {
   const grandTotal = subtotal + adminFeeAmount;
 
   const handleSubmit = async (data: any) => {
+    // Check minimum admin contribution
+    if (adminFeeAmount > 0 && adminFeeAmount < 2) {
+      alert('Admin contribution must be at least £2 or £0 if you choose not to contribute.');
+      return;
+    }
+
     setIsProcessing(true);
     
     try {
@@ -246,18 +252,18 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Admin Contribution - Updated with Slider */}
+            {/* Admin Contribution - Updated with Enhanced Slider */}
             <Card className="mb-6 shadow-sm border-gray-200">
               <CardContent className="pt-6">
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <Info className="h-4 w-4 text-blue-600 mr-2" />
-                      <span className="text-sm font-medium text-pink-600">Give admin contribution: £{adminFeeAmount}</span>
+                      <Info className="h-5 w-5 text-blue-600 mr-2" />
+                      <span className="text-lg font-semibold text-pink-600">Give admin contribution: £{adminFeeAmount}</span>
                     </div>
                     <Button 
                       variant="link" 
-                      className="text-blue-600 text-sm p-0"
+                      className="text-blue-600 text-sm p-0 hover:text-blue-800"
                       type="button"
                       onClick={() => setAdminFeeAmount(0)}
                     >
@@ -265,25 +271,43 @@ const Checkout = () => {
                     </Button>
                   </div>
                   
-                  <div className="space-y-3">
-                    <div className="px-3">
+                  <div className="space-y-4">
+                    <div className="px-4 py-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
                       <Slider
                         value={[adminFeeAmount]}
-                        onValueChange={(value) => setAdminFeeAmount(value[0])}
-                        max={50}
+                        onValueChange={(value) => {
+                          const newValue = value[0];
+                          // Enforce minimum of £2 or allow £0
+                          if (newValue === 0 || newValue >= 2) {
+                            setAdminFeeAmount(newValue);
+                          } else if (newValue > 0 && newValue < 2) {
+                            setAdminFeeAmount(2);
+                          }
+                        }}
+                        max={500}
                         min={0}
-                        step={5}
-                        className="w-full"
+                        step={1}
+                        className="w-full h-3"
                       />
+                      <div className="flex justify-between text-sm text-gray-600 mt-3 px-1">
+                        <span className="font-medium">£0</span>
+                        <span className="font-medium">£100</span>
+                        <span className="font-medium">£250</span>
+                        <span className="font-medium">£500</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>£0</span>
-                      <span>£25</span>
-                      <span>£50</span>
-                    </div>
+                    
+                    {adminFeeAmount > 0 && adminFeeAmount < 2 && (
+                      <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg">
+                        <p className="text-sm text-amber-800 flex items-center">
+                          <AlertTriangle className="h-4 w-4 mr-2" />
+                          Minimum admin contribution is £2. Please adjust or set to £0.
+                        </p>
+                      </div>
+                    )}
                   </div>
                   
-                  <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
                     <p className="text-sm text-gray-700 leading-relaxed">
                       <Info className="h-4 w-4 inline mr-1 text-blue-600" />
                       We have agreed 100% donation with ALL our donation partners. Admin contribution helps us help them with their running costs - they work very hard to deliver aid and also have families to support.
