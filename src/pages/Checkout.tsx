@@ -375,76 +375,23 @@ const Checkout = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
-            {/* Simplified Basket-style Donation Section */}
+            {/* Single Row Donation Section */}
             <Card className="mb-6 shadow-sm border-gray-200">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between gap-4">
+                  {/* Product Info */}
+                  <div className="flex items-center flex-1">
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                       <Heart className="h-6 w-6 text-blue-600" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg text-gray-800">Where Most Needed</CardTitle>
+                      <h3 className="font-semibold text-gray-800">Where Most Needed</h3>
                       <p className="text-sm text-gray-500">MKD-MN-001</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-blue-600 text-white text-lg px-4 py-2">£{mainDonation}</Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Amount Controls */}
-                  <div>
-                    <Label className="text-sm text-gray-600 mb-2 block">Amount</Label>
-                    <div className="flex items-center space-x-2 mb-4">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setMainDonation(Math.max(10, mainDonation - 10))}
-                        className="w-10 h-10"
-                      >
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                      <Input
-                        type="number"
-                        value={mainDonation}
-                        onChange={(e) => setMainDonation(Number(e.target.value))}
-                        className="text-center text-lg font-semibold flex-1"
-                        min="10"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setMainDonation(mainDonation + 10)}
-                        className="w-10 h-10"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    
-                    <div className="grid grid-cols-4 gap-2 mb-4">
-                      {suggestedAmounts.map((amount) => (
-                        <Button
-                          key={amount}
-                          type="button"
-                          variant={mainDonation === amount ? "default" : "outline"}
-                          className="h-10"
-                          onClick={() => setMainDonation(amount)}
-                        >
-                          £{amount}
-                        </Button>
-                      ))}
                     </div>
                   </div>
 
                   {/* Intention Dropdown */}
-                  <div>
-                    <Label className="text-sm text-gray-600 flex items-center mb-2">
-                      <Info className="h-4 w-4 mr-1" />
-                      Who is this donation on behalf of?
-                    </Label>
+                  <div className="flex-1 max-w-xs">
                     <Select value={donationIntention} onValueChange={setDonationIntention}>
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -457,6 +404,36 @@ const Checkout = () => {
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+
+                  {/* Amount Controls */}
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setMainDonation(Math.max(10, mainDonation - 10))}
+                      className="w-8 h-8"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <Input
+                      type="number"
+                      value={mainDonation}
+                      onChange={(e) => setMainDonation(Number(e.target.value))}
+                      className="text-center font-semibold w-20"
+                      min="10"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setMainDonation(mainDonation + 10)}
+                      className="w-8 h-8"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                    <span className="text-lg font-bold text-gray-800 ml-2">£{mainDonation}</span>
                   </div>
                 </div>
               </CardContent>
@@ -1154,7 +1131,7 @@ const Checkout = () => {
 
                 {/* Payment Methods */}
                 <div className="flex justify-center space-x-4 mb-6">
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwMzA4NyIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="PayPal" className="h-8" />
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="PayPal" className="h-8" />
                   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0iIzAwNTFBNSIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Visa" className="h-8" />
                   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0iI0VCMDAxQiIvPgo8Y2lyY2xlIGN4PSIxNSIgY3k9IjEyIiByPSI2IiBmaWxsPSIjRkY1RjAwIi8+CjxjaXJjbGUgY3g9IjI1IiBjeT0iMTIiIHI9IjYiIGZpbGw9IiNGRkY1RjAiLz4KPC9zdmc+" alt="Mastercard" className="h-8" />
                   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwMDAwMCIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Apple Pay" className="h-8" />
