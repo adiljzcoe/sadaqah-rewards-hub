@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Heart, CreditCard, Gift, Users } from 'lucide-react';
+import { Heart, CreditCard, Gift, Users, Check } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
 import { useCurrency } from '@/contexts/CurrencyContext';
@@ -34,10 +34,22 @@ const DonationWidget = ({
   const [anonymous, setAnonymous] = useState(false);
   const [isCustom, setIsCustom] = useState(false);
   const [showMembership, setShowMembership] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
   const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
   const { currency } = useCurrency();
   const { addItem } = useCart();
+
+  // Reset success state after 3 seconds
+  useEffect(() => {
+    if (justAdded) {
+      const timer = setTimeout(() => {
+        setJustAdded(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [justAdded]);
 
   // Get currency symbol based on detected/selected currency
   const getCurrencySymbol = (curr: string) => {
@@ -81,13 +93,15 @@ const DonationWidget = ({
     }
   };
 
-  const handleDonateClick = () => {
+  const handleDonateClick = async () => {
     const donationAmount = isCustom ? parseFloat(customAmount) : parseFloat(amount);
     
     if (!donationAmount || donationAmount <= 0) {
       alert('Please enter a valid donation amount');
       return;
     }
+
+    setIsAdding(true);
 
     console.log('Adding donation to cart:', {
       amount: donationAmount,
@@ -128,6 +142,12 @@ const DonationWidget = ({
       charityId,
       attribution: attributionData
     });
+
+    // Show success state
+    setTimeout(() => {
+      setIsAdding(false);
+      setJustAdded(true);
+    }, 500);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -291,18 +311,39 @@ const DonationWidget = ({
             </div>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button with enhanced feedback */}
           <Button 
             type="button"
-            className="w-full" 
+            className={`w-full transition-all duration-300 ${
+              justAdded 
+                ? 'bg-green-600 hover:bg-green-700 scale-105' 
+                : isAdding 
+                  ? 'bg-blue-500 hover:bg-blue-600' 
+                  : ''
+            }`}
             size="lg"
+            disabled={isAdding}
             onClick={() => {
               trackClick('donate-button', 'primary_cta');
               handleDonateClick();
             }}
           >
-            <CreditCard className="h-4 w-4 mr-2" />
-            Donate {currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'}{isCustom ? customAmount || '0' : amount}
+            {isAdding ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Adding to Cart...
+              </>
+            ) : justAdded ? (
+              <>
+                <Check className="h-4 w-4 mr-2 animate-bounce" />
+                Added to Cart!
+              </>
+            ) : (
+              <>
+                <CreditCard className="h-4 w-4 mr-2" />
+                Donate {currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'}{isCustom ? customAmount || '0' : amount}
+              </>
+            )}
           </Button>
 
           <div className="text-center">
