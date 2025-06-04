@@ -1347,6 +1347,7 @@ const Checkout = () => {
       <FloatingCheckoutWidget
         total={grandTotal}
         impactTotal={totalImpactValue}
+        fundraisingAmount={fundraisingAmount}
         isProcessing={isProcessing}
         onPayNow={handlePayNowFromWidget}
         onShowAuth={handleShowAuthFromWidget}

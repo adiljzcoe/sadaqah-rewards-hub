@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 interface FloatingCheckoutWidgetProps {
   total: number;
   impactTotal: number;
+  fundraisingAmount: number;
   isProcessing: boolean;
   onPayNow: () => void;
   onShowAuth: () => void;
@@ -16,6 +17,7 @@ interface FloatingCheckoutWidgetProps {
 const FloatingCheckoutWidget = ({ 
   total, 
   impactTotal,
+  fundraisingAmount,
   isProcessing, 
   onPayNow, 
   onShowAuth, 
@@ -38,18 +40,26 @@ const FloatingCheckoutWidget = ({
       
       <div className="relative z-20 container mx-auto px-4 py-4 max-w-4xl">
         <div className="flex items-center justify-between">
-          {/* Total Impact Section */}
+          {/* Payment Amount Section */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <Heart className="h-5 w-5 text-pink-500 mr-2 drop-shadow-lg" />
-              <span className="text-sm text-cyan-200 drop-shadow-md">Total Impact:</span>
+              <CreditCard className="h-5 w-5 text-cyan-400 mr-2 drop-shadow-lg" />
+              <span className="text-sm text-cyan-200 drop-shadow-md">Total to Pay:</span>
             </div>
-            <div className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
-              £{impactTotal.toFixed(2)}
+            <div className="text-3xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
+              £{total.toFixed(2)}
             </div>
-            {impactTotal > total && (
-              <div className="text-xs text-cyan-300 bg-cyan-900/30 px-2 py-1 rounded-full">
-                Pay £{total.toFixed(2)}
+            
+            {/* Your Total Impact - only show when fundraising donation selected */}
+            {fundraisingAmount > 0 && (
+              <div className="ml-4">
+                <div className="flex items-center">
+                  <Heart className="h-4 w-4 text-pink-400 mr-1" />
+                  <span className="text-xs text-cyan-300">Your Total Impact:</span>
+                </div>
+                <div className="text-lg font-bold text-pink-300 drop-shadow-md">
+                  £{impactTotal.toFixed(2)}
+                </div>
               </div>
             )}
           </div>
