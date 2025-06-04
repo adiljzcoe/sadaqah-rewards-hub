@@ -24,34 +24,47 @@ const HeartDonationEffect: React.FC<HeartDonationEffectProps> = ({
   }>>([]);
 
   useEffect(() => {
+    console.log('HeartDonationEffect: Effect triggered with:', { trigger, amount, currency });
+    
     if (trigger) {
-      console.log('HeartDonationEffect: Animation triggered!', { amount, currency });
+      console.log('HeartDonationEffect: Animation triggered! Creating hearts...');
       
       // Generate 4-6 hearts with random positions
       const newHearts = Array.from({ length: Math.floor(Math.random() * 3) + 4 }, (_, i) => ({
         id: Date.now() + i,
-        x: Math.random() * 40 - 20, // Smaller horizontal spread for mobile
-        y: Math.random() * 10 + 10, // Start from button area
-        delay: i * 150, // Slightly longer stagger
-        scale: 0.9 + Math.random() * 0.3, // Slightly larger for mobile visibility
+        x: Math.random() * 60 - 30, // Wider horizontal spread
+        y: Math.random() * 20 + 20, // Start higher up
+        delay: i * 200, // Longer stagger for visibility
+        scale: 1.0 + Math.random() * 0.5, // Bigger for visibility
       }));
 
       console.log('HeartDonationEffect: Generated hearts:', newHearts);
       setHearts(newHearts);
 
       // Clear hearts after animation completes
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
+        console.log('HeartDonationEffect: Clearing hearts and calling onComplete');
         setHearts([]);
         onComplete?.();
-        console.log('HeartDonationEffect: Animation completed');
-      }, 4000);
+      }, 4500); // Longer duration
+
+      return () => clearTimeout(timeout);
     }
   }, [trigger, onComplete, amount, currency]);
 
-  if (!hearts.length) return null;
+  console.log('HeartDonationEffect: Rendering with hearts count:', hearts.length);
+
+  if (!hearts.length) {
+    console.log('HeartDonationEffect: No hearts to render');
+    return null;
+  }
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 9999 }}>
+    <div 
+      className="fixed inset-0 pointer-events-none overflow-hidden" 
+      style={{ zIndex: 9999 }}
+    >
+      <div className="absolute inset-0 bg-black/5 pointer-events-none"></div>
       {hearts.map((heart) => (
         <div
           key={heart.id}
@@ -60,33 +73,34 @@ const HeartDonationEffect: React.FC<HeartDonationEffectProps> = ({
             left: `calc(50% + ${heart.x}px)`,
             top: `calc(50% + ${heart.y}px)`,
             animationDelay: `${heart.delay}ms`,
-            animationDuration: '3.5s',
+            animationDuration: '4s',
             animationTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             animationFillMode: 'forwards',
             transform: `scale(${heart.scale})`,
+            '--scale': heart.scale.toString(),
           }}
         >
           <div className="relative">
-            {/* Outer halo effect - larger for mobile */}
-            <div className="absolute -inset-3 animate-ping">
-              <div className="w-20 h-20 md:w-16 md:h-16 bg-pink-400/30 rounded-full blur-lg"></div>
+            {/* Outer halo effect - much larger and brighter */}
+            <div className="absolute -inset-4 animate-ping">
+              <div className="w-24 h-24 bg-pink-500/50 rounded-full blur-xl"></div>
             </div>
             
             {/* Inner halo effect */}
-            <div className="absolute -inset-2 animate-pulse">
-              <div className="w-16 h-16 md:w-14 md:h-14 bg-red-400/40 rounded-full blur-md"></div>
+            <div className="absolute -inset-3 animate-pulse">
+              <div className="w-20 h-20 bg-red-500/60 rounded-full blur-lg"></div>
             </div>
             
-            {/* Main heart with amount - larger for mobile */}
+            {/* Main heart with amount - much larger */}
             <div className="relative flex flex-col items-center">
               <Heart 
-                className="w-12 h-12 md:w-10 md:h-10 text-red-500 fill-red-500 drop-shadow-2xl" 
+                className="w-16 h-16 text-red-500 fill-red-500 drop-shadow-2xl" 
                 style={{
-                  filter: 'drop-shadow(0 0 15px rgba(239, 68, 68, 0.9)) drop-shadow(0 0 25px rgba(239, 68, 68, 0.5))'
+                  filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 1)) drop-shadow(0 0 40px rgba(239, 68, 68, 0.8))'
                 }}
               />
-              <div className="bg-white/98 backdrop-blur-sm px-4 py-2 md:px-3 md:py-1.5 rounded-full shadow-2xl border-2 border-pink-200 mt-2">
-                <span className="text-base md:text-sm font-bold text-emerald-600 whitespace-nowrap">
+              <div className="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-2xl border-2 border-pink-200 mt-3">
+                <span className="text-lg font-bold text-emerald-600 whitespace-nowrap">
                   {currency}{amount}
                 </span>
               </div>
@@ -103,30 +117,30 @@ const HeartDonationEffect: React.FC<HeartDonationEffectProps> = ({
           }
           10% {
             opacity: 1;
-            transform: translateY(-20px) scale(calc(var(--scale) * 1.4)) rotate(10deg);
+            transform: translateY(-30px) scale(calc(var(--scale) * 1.5)) rotate(15deg);
           }
           25% {
-            transform: translateY(-50px) scale(calc(var(--scale) * 1.3)) rotate(-8deg);
+            transform: translateY(-80px) scale(calc(var(--scale) * 1.4)) rotate(-10deg);
             opacity: 1;
           }
           40% {
-            transform: translateY(-80px) scale(calc(var(--scale) * 1.2)) rotate(5deg);
+            transform: translateY(-130px) scale(calc(var(--scale) * 1.3)) rotate(8deg);
             opacity: 1;
           }
           60% {
-            transform: translateY(-120px) scale(calc(var(--scale) * 1.1)) rotate(-3deg);
+            transform: translateY(-180px) scale(calc(var(--scale) * 1.2)) rotate(-5deg);
             opacity: 0.9;
           }
           80% {
-            transform: translateY(-160px) scale(calc(var(--scale) * 0.9)) rotate(2deg);
+            transform: translateY(-230px) scale(calc(var(--scale) * 1.0)) rotate(3deg);
             opacity: 0.6;
           }
           95% {
-            transform: translateY(-200px) scale(calc(var(--scale) * 0.7)) rotate(0deg);
-            opacity: 0.2;
+            transform: translateY(-280px) scale(calc(var(--scale) * 0.8)) rotate(0deg);
+            opacity: 0.3;
           }
           100% {
-            transform: translateY(-240px) scale(calc(var(--scale) * 0.4)) rotate(0deg);
+            transform: translateY(-320px) scale(calc(var(--scale) * 0.5)) rotate(0deg);
             opacity: 0;
           }
         }

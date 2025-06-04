@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -114,13 +115,19 @@ const DonationWidget = ({
       return;
     }
 
-    console.log('Donate button clicked! Triggering heart animation...');
+    console.log('DonationWidget: Donate button clicked!');
+    console.log('DonationWidget: Amount:', donationAmount);
+    console.log('DonationWidget: About to trigger heart animation...');
     
-    // Trigger heart animation immediately
-    setHeartAnimationTrigger(true);
+    // Trigger heart animation immediately - with explicit logging
+    setHeartAnimationTrigger(prev => {
+      console.log('DonationWidget: Setting heartAnimationTrigger from', prev, 'to true');
+      return true;
+    });
+    
     setIsAdding(true);
 
-    console.log('Adding donation to cart:', {
+    console.log('DonationWidget: Adding donation to cart:', {
       amount: donationAmount,
       type: donationType,
       title
@@ -149,7 +156,7 @@ const DonationWidget = ({
       ...attributionData
     });
 
-    console.log('Processing donation with attribution:', {
+    console.log('DonationWidget: Processing donation with attribution:', {
       amount: donationAmount,
       currency,
       type: donationType,
@@ -175,12 +182,17 @@ const DonationWidget = ({
   return (
     <Card className="w-full max-w-md mx-auto shadow-lg relative overflow-visible">
       {/* Heart Animation Effect - positioned to work on mobile */}
-      <HeartDonationEffect 
-        trigger={heartAnimationTrigger}
-        amount={isCustom ? customAmount || '0' : amount}
-        currency={currencySymbol}
-        onComplete={() => console.log('Heart animation completed!')}
-      />
+      <div className="absolute inset-0 pointer-events-none z-50 overflow-visible">
+        <HeartDonationEffect 
+          trigger={heartAnimationTrigger}
+          amount={isCustom ? customAmount || '0' : amount}
+          currency={currencySymbol}
+          onComplete={() => {
+            console.log('DonationWidget: Heart animation completed!');
+            setHeartAnimationTrigger(false);
+          }}
+        />
+      </div>
 
       <CardHeader className="text-center pb-4">
         <div className="flex items-center justify-center mb-2">
@@ -348,7 +360,9 @@ const DonationWidget = ({
             }`}
             size="lg"
             disabled={isAdding}
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('DonationWidget: Submit button clicked directly');
               trackClick('donate-button', 'primary_cta');
               handleDonateClick();
             }}
