@@ -1031,14 +1031,85 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Total Summary */}
+            {/* Total Summary with Detailed Breakdown */}
             <Card className="mb-6 shadow-sm border-gray-200">
-              <CardContent className="pt-6">
-                <div className="text-center mb-6">
-                  <div className="text-2xl font-bold text-gray-800 mb-2">Grand Total £{grandTotal.toFixed(2)}</div>
-                  <div className="flex items-center justify-center text-sm text-gray-600">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg text-gray-800 flex items-center">
+                  <CreditCard className="h-5 w-5 mr-2" />
+                  Order Summary
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                {/* Itemized Breakdown */}
+                <div className="space-y-3 mb-6">
+                  {/* Main Donation */}
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <div className="flex items-center">
+                      <Heart className="h-4 w-4 text-red-500 mr-2" />
+                      <div>
+                        <span className="font-medium text-gray-800">Where Most Needed Donation</span>
+                        <div className="text-xs text-gray-500">MKD-MN-001</div>
+                      </div>
+                    </div>
+                    <span className="font-semibold text-gray-800">£{mainDonation.toFixed(2)}</span>
+                  </div>
+
+                  {/* Membership */}
+                  {selectedTier && (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <div className="flex items-center">
+                        <Crown className="h-4 w-4 text-purple-500 mr-2" />
+                        <div>
+                          <span className="font-medium text-gray-800">{selectedTier.name} Membership</span>
+                          <div className="text-xs text-gray-500">Monthly subscription • {selectedTier.sadaqahCoins.toLocaleString()} coins</div>
+                        </div>
+                      </div>
+                      <span className="font-semibold text-gray-800">£{selectedTier.price.toFixed(2)}</span>
+                    </div>
+                  )}
+
+                  {/* Fundraising Donation */}
+                  {fundraisingAmount > 0 && (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <div className="flex items-center">
+                        <Gift className="h-4 w-4 text-green-500 mr-2" />
+                        <div>
+                          <span className="font-medium text-gray-800">Fundraising Donation</span>
+                          <div className="text-xs text-gray-500">Worth £{(fundraisingAmount * 7).toFixed(2)} to those in need</div>
+                        </div>
+                      </div>
+                      <span className="font-semibold text-gray-800">£{fundraisingAmount.toFixed(2)}</span>
+                    </div>
+                  )}
+
+                  {/* Subtotal */}
+                  <div className="flex justify-between items-center py-2 border-b border-gray-200">
+                    <span className="font-medium text-gray-700">Subtotal</span>
+                    <span className="font-semibold text-gray-800">£{subtotal.toFixed(2)}</span>
+                  </div>
+
+                  {/* Admin Fee */}
+                  <div className="flex justify-between items-center py-2">
+                    <div className="flex items-center">
+                      <Heart className="h-4 w-4 text-pink-500 mr-2" />
+                      <div>
+                        <span className="font-medium text-gray-700">Admin Contribution</span>
+                        <div className="text-xs text-gray-500">{adminFeePercentage}% • Supports our partners' operations</div>
+                      </div>
+                    </div>
+                    <span className="font-semibold text-gray-800">£{adminFeeAmount.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                {/* Grand Total */}
+                <div className="border-t-2 border-gray-300 pt-4 mb-6">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xl font-bold text-gray-800">Total</span>
+                    <span className="text-2xl font-bold text-gray-800">£{grandTotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center justify-center text-sm text-gray-600 mt-2">
                     <div className="w-4 h-4 rounded-full bg-pink-500 mr-2"></div>
-                    This is a one-off donation, you will donate only once
+                    This is a one-off payment
                   </div>
                 </div>
 
