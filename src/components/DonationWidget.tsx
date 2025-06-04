@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -105,16 +106,11 @@ const DonationWidget = ({
 
     console.log('DonationWidget: Donate button clicked!');
     console.log('DonationWidget: Amount:', donationAmount);
-    console.log('DonationWidget: Current heartAnimationTrigger state:', heartAnimationTrigger);
+    console.log('DonationWidget: About to trigger heart animation...');
     
-    // Reset trigger first to ensure a clean state change
-    setHeartAnimationTrigger(false);
-    
-    // Use setTimeout to ensure state change is processed
-    setTimeout(() => {
-      console.log('DonationWidget: Setting heartAnimationTrigger to true');
-      setHeartAnimationTrigger(true);
-    }, 50);
+    // Trigger heart animation FIRST
+    setHeartAnimationTrigger(true);
+    console.log('DonationWidget: Heart animation trigger set to TRUE');
     
     setIsAdding(true);
 
@@ -170,6 +166,11 @@ const DonationWidget = ({
     handleDonateClick();
   };
 
+  const handleHeartAnimationComplete = () => {
+    console.log('DonationWidget: Heart animation completed! Resetting trigger.');
+    setHeartAnimationTrigger(false);
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto shadow-lg relative overflow-visible">
       {/* Heart Animation Effect - positioned to work on mobile */}
@@ -178,10 +179,7 @@ const DonationWidget = ({
           trigger={heartAnimationTrigger}
           amount={isCustom ? customAmount || '0' : amount}
           currency={currencySymbol}
-          onComplete={() => {
-            console.log('DonationWidget: Heart animation completed! Resetting trigger.');
-            setHeartAnimationTrigger(false);
-          }}
+          onComplete={handleHeartAnimationComplete}
         />
       </div>
 
