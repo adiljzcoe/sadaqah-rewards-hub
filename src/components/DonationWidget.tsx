@@ -174,15 +174,13 @@ const DonationWidget = ({
 
   return (
     <Card className="w-full max-w-md mx-auto shadow-lg relative overflow-visible">
-      {/* Heart Animation Effect - positioned to cover the entire card area */}
-      <div className="absolute inset-0 pointer-events-none z-50">
-        <HeartDonationEffect 
-          trigger={heartAnimationTrigger}
-          amount={isCustom ? customAmount || '0' : amount}
-          currency={currencySymbol}
-          onComplete={() => console.log('Heart animation completed!')}
-        />
-      </div>
+      {/* Heart Animation Effect - positioned to work on mobile */}
+      <HeartDonationEffect 
+        trigger={heartAnimationTrigger}
+        amount={isCustom ? customAmount || '0' : amount}
+        currency={currencySymbol}
+        onComplete={() => console.log('Heart animation completed!')}
+      />
 
       <CardHeader className="text-center pb-4">
         <div className="flex items-center justify-center mb-2">
