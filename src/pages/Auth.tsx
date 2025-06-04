@@ -16,7 +16,7 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user } = useAuth();
+  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user, fakeAdminLogin, fakeUserLogin } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -116,6 +116,42 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Fake Login Buttons - Working Solution */}
+          <div className="mb-6 space-y-2">
+            <Button
+              onClick={fakeUserLogin}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
+              disabled={loading}
+            >
+              <User className="h-4 w-4 mr-2" />
+              {loading ? "Processing..." : "🚀 Fake User Login"}
+            </Button>
+            
+            <Button
+              onClick={fakeAdminLogin}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium"
+              disabled={loading}
+            >
+              <Shield className="h-4 w-4 mr-2" />
+              {loading ? "Processing..." : "👑 Fake Admin Login"}
+            </Button>
+            
+            <p className="text-xs text-gray-500 text-center">
+              These bypass authentication and create fake sessions
+            </p>
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or try real auth (may not work)
+              </span>
+            </div>
+          </div>
+
           {/* Quick Test Login Button */}
           <div className="mb-6">
             <Button
