@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -97,19 +96,33 @@ const DonationWidget = ({
   };
 
   const handleDonateClick = async () => {
+    // Get the actual donation amount
     const donationAmount = isCustom ? parseFloat(customAmount) : parseFloat(amount);
     
+    console.log('DonationWidget: Starting donation process');
+    console.log('DonationWidget: isCustom:', isCustom);
+    console.log('DonationWidget: amount state:', amount);
+    console.log('DonationWidget: customAmount state:', customAmount);
+    console.log('DonationWidget: calculated donationAmount:', donationAmount);
+    
     if (!donationAmount || donationAmount <= 0) {
+      console.log('DonationWidget: Invalid donation amount, showing alert');
       alert('Please enter a valid donation amount');
       return;
     }
 
-    console.log('DonationWidget: Donate button clicked!');
-    console.log('DonationWidget: Amount:', donationAmount);
+    // Get the display amount for animation
+    const displayAmount = isCustom ? customAmount : amount;
+    
+    console.log('DonationWidget: displayAmount for animation:', displayAmount);
     console.log('DonationWidget: About to trigger heart animation...');
     
-    // Trigger heart animation FIRST
-    setHeartAnimationTrigger(true);
+    // Force trigger the heart animation
+    setHeartAnimationTrigger(prev => {
+      console.log('DonationWidget: Previous trigger state:', prev);
+      return true;
+    });
+    
     console.log('DonationWidget: Heart animation trigger set to TRUE');
     
     setIsAdding(true);
@@ -171,13 +184,21 @@ const DonationWidget = ({
     setHeartAnimationTrigger(false);
   };
 
+  // Get the current display amount for the heart animation
+  const getDisplayAmount = () => {
+    if (isCustom) {
+      return customAmount || '0';
+    }
+    return amount || '25'; // fallback to default
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto shadow-lg relative overflow-visible">
       {/* Heart Animation Effect - positioned to work on mobile */}
       <div className="absolute inset-0 pointer-events-none z-50 overflow-visible">
         <HeartDonationEffect 
           trigger={heartAnimationTrigger}
-          amount={isCustom ? customAmount || '0' : amount}
+          amount={getDisplayAmount()}
           currency={currencySymbol}
           onComplete={handleHeartAnimationComplete}
         />
@@ -369,7 +390,7 @@ const DonationWidget = ({
             ) : (
               <>
                 <CreditCard className="h-4 w-4 mr-2" />
-                Donate {currency === 'GBP' ? '£' : currency === 'USD' ? '$' : '€'}{isCustom ? customAmount || '0' : amount}
+                Donate {currencySymbol}{getDisplayAmount()}
               </>
             )}
           </Button>
