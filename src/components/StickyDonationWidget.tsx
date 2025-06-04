@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -88,6 +87,11 @@ const donationTypeStyles = {
     text: 'text-white',
     icon: '☪️'
   },
+  fundraising: {
+    gradient: 'bg-orange-600 hover:bg-orange-700',
+    text: 'text-white',
+    icon: '📈'
+  },
   lillah: {
     gradient: 'bg-purple-600 hover:bg-purple-700',
     text: 'text-white',
@@ -107,11 +111,6 @@ const donationTypeStyles = {
     gradient: 'bg-pink-600 hover:bg-pink-700',
     text: 'text-white',
     icon: '🎁'
-  },
-  fundraising: {
-    gradient: 'bg-orange-600 hover:bg-orange-700',
-    text: 'text-white',
-    icon: '📈'
   },
   coins: {
     gradient: 'bg-yellow-600 hover:bg-yellow-700',
@@ -287,9 +286,13 @@ const StickyDonationWidget = () => {
                     activeTab === key 
                       ? `${style.gradient} ${style.text}` 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
-                  } ${key === 'fundraising' && activeTab === key ? 'animate-pulse' : ''}`}
+                  } ${key === 'fundraising' && activeTab === key ? 'animate-pulse' : ''} ${
+                    key === 'fundraising' && activeTab !== key ? 'shadow-lg' : ''
+                  }`}
                   style={key === 'fundraising' && activeTab === key ? {
                     animation: 'orange-fundraising-glow 2s ease-in-out infinite'
+                  } : key === 'fundraising' && activeTab !== key ? {
+                    animation: 'golden-glow 2s ease-in-out infinite'
                   } : {}}
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-0 sm:space-y-0 sm:space-x-1">
