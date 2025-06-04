@@ -97,12 +97,10 @@ const DonationWidget = ({
   };
 
   const handleDonateClick = () => {
-    console.log('DonationWidget: handleDonateClick called!');
-    console.log('DonationWidget: isCustom:', isCustom);
-    console.log('DonationWidget: amount state:', amount);
-    console.log('DonationWidget: customAmount state:', customAmount);
+    console.log('🎯 DONATE BUTTON CLICKED!');
+    console.log('Current state - isCustom:', isCustom, 'amount:', amount, 'customAmount:', customAmount);
     
-    // Get the actual donation amount - fix the logic here
+    // Get the actual donation amount
     let donationAmount = 0;
     let displayAmount = '';
     
@@ -114,30 +112,22 @@ const DonationWidget = ({
       displayAmount = amount || '25';
     }
     
-    console.log('DonationWidget: calculated donationAmount:', donationAmount);
-    console.log('DonationWidget: displayAmount for animation:', displayAmount);
+    console.log('💰 Calculated donation amount:', donationAmount);
+    console.log('📱 Display amount for animation:', displayAmount);
     
     if (!donationAmount || donationAmount <= 0) {
-      console.log('DonationWidget: Invalid donation amount, showing alert');
+      console.log('❌ Invalid donation amount, showing alert');
       alert('Please enter a valid donation amount');
       return;
     }
 
-    console.log('DonationWidget: About to trigger heart animation...');
+    console.log('🚀 Starting donation process...');
     
-    // Trigger the heart animation
-    setHeartAnimationTrigger(true);
-    console.log('DonationWidget: Heart animation trigger set to TRUE');
-    
+    // Set loading state
     setIsAdding(true);
-
-    console.log('DonationWidget: Adding donation to cart:', {
-      amount: donationAmount,
-      type: donationType,
-      title
-    });
-
+    
     // Add to cart
+    console.log('🛒 Adding to cart...');
     addItem({
       id: `donation-${Date.now()}`,
       name: `${title} - ${donationType}`,
@@ -160,32 +150,21 @@ const DonationWidget = ({
       ...attributionData
     });
 
-    console.log('DonationWidget: Processing donation with attribution:', {
-      amount: donationAmount,
-      currency,
-      type: donationType,
-      message,
-      anonymous,
-      campaignId,
-      charityId,
-      attribution: attributionData
-    });
+    console.log('💖 Triggering heart animation with amount:', displayAmount);
+    
+    // Trigger the heart animation
+    setHeartAnimationTrigger(true);
     
     // Show success state after a short delay
     setTimeout(() => {
       setIsAdding(false);
       setJustAdded(true);
+      console.log('✅ Donation process completed!');
     }, 1500);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('DonationWidget: Form submitted!');
-    handleDonateClick();
-  };
-
   const handleHeartAnimationComplete = () => {
-    console.log('DonationWidget: Heart animation completed! Resetting trigger.');
+    console.log('💖 Heart animation completed! Resetting trigger.');
     setHeartAnimationTrigger(false);
   };
 
@@ -223,7 +202,7 @@ const DonationWidget = ({
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
           {/* Donation Type */}
           <div>
             <Label htmlFor="donation-type">Donation Type</Label>
@@ -363,9 +342,9 @@ const DonationWidget = ({
             </div>
           </div>
 
-          {/* Submit Button with enhanced feedback */}
+          {/* Submit Button - FIXED: Removed form wrapper and conflicting handlers */}
           <Button 
-            type="submit"
+            type="button"
             className={`w-full transition-all duration-300 relative ${
               justAdded 
                 ? 'bg-green-600 hover:bg-green-700 scale-105' 
@@ -375,12 +354,7 @@ const DonationWidget = ({
             }`}
             size="lg"
             disabled={isAdding}
-            onClick={(e) => {
-              e.preventDefault();
-              console.log('DonationWidget: Submit button clicked directly');
-              trackClick('donate-button', 'primary_cta');
-              handleDonateClick();
-            }}
+            onClick={handleDonateClick}
           >
             {isAdding ? (
               <>
@@ -410,7 +384,7 @@ const DonationWidget = ({
               Send as Gift Card Instead
             </Button>
           </div>
-        </form>
+        </div>
       </CardContent>
     </Card>
   );
