@@ -67,7 +67,11 @@ const FloatingCheckoutWidget = ({
                     <TooltipTrigger>
                       <Info className="h-3.5 w-3.5 text-cyan-400/80 hover:text-cyan-300 cursor-help ml-1" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-white text-slate-800 border border-slate-200 shadow-lg">
+                    <TooltipContent 
+                      side="top" 
+                      align="end"
+                      className="max-w-xs bg-white text-slate-800 border border-slate-200 shadow-lg z-[60]"
+                    >
                       <p className="text-sm font-medium">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
                     </TooltipContent>
                   </Tooltip>
