@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -306,10 +307,10 @@ const StickyDonationWidget = () => {
                   <div className="flex items-center mb-2">
                     <TrendingUp className="h-4 w-4 mr-2 text-orange-600" />
                     <h4 className="text-sm font-semibold text-orange-900">Fundraising Donation</h4>
-                    <Badge className="ml-2 bg-orange-600 text-white text-xs">7x Growth Value</Badge>
+                    <Badge className="ml-2 bg-orange-600 text-white text-xs">7x Jannah Points</Badge>
                   </div>
                   <p className="text-xs text-orange-700 mb-2">
-                    Help us grow and reach more donors! Your fundraising donation helps us advertise and expand our platform to help more people give.
+                    <strong>Get 7x Jannah points when you do a fundraising donation!</strong> Each pound you donate actually helps us generate £7 more! Talk about an amazing investment for your akhirah. We get £7 as we fundraise and our system shows for every £1 put into fundraising we can generate £7 or even more.
                   </p>
                 </div>
               )}
