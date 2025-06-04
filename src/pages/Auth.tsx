@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +16,7 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle, signInWithGitHub, fakeAdminLogin, fakeUserLogin, user } = useAuth();
+  const { signIn, signUp, signInWithGoogle, signInWithGitHub, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -42,11 +43,14 @@ const Auth = () => {
   const handleTestLogin = async () => {
     setLoading(true);
     try {
-      // First try to sign up the test account
+      // Use a valid email format for testing
+      const testEmail = 'testuser@example.com';
+      const testPassword = '1234567';
+      
       console.log('Attempting to create test account...');
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email: 'test@test.com',
-        password: '1234567',
+        email: testEmail,
+        password: testPassword,
         options: {
           data: {
             full_name: 'Test User'
@@ -70,8 +74,8 @@ const Auth = () => {
       // Now try to sign in
       console.log('Attempting to sign in with test credentials...');
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: 'test@test.com',
-        password: '1234567',
+        email: testEmail,
+        password: testPassword,
       });
 
       if (signInError) {
@@ -85,7 +89,7 @@ const Auth = () => {
         console.log('Sign in successful:', signInData);
         toast({
           title: "Test login successful!",
-          description: "You're now logged in as test@test.com",
+          description: `You're now logged in as ${testEmail}`,
         });
         navigate('/');
       }
@@ -98,16 +102,6 @@ const Auth = () => {
       });
     }
     setLoading(false);
-  };
-
-  const handleFakeAdminLogin = () => {
-    fakeAdminLogin();
-    navigate('/admin');
-  };
-
-  const handleFakeUserLogin = () => {
-    fakeUserLogin();
-    navigate('/');
   };
 
   return (
@@ -129,10 +123,10 @@ const Auth = () => {
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
               disabled={loading}
             >
-              {loading ? "Processing..." : "🚀 Quick Login (test@test.com)"}
+              {loading ? "Processing..." : "🚀 Quick Test Login"}
             </Button>
             <p className="text-xs text-gray-500 text-center mt-2">
-              This will create and login with test@test.com / 1234567
+              This will create and login with testuser@example.com
             </p>
           </div>
 
@@ -267,42 +261,6 @@ const Auth = () => {
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </Button>
-            </div>
-
-            {/* Test Login Section */}
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Test Accounts
-                  </span>
-                </div>
-              </div>
-              
-              <div className="mt-4 space-y-2">
-                <Button
-                  variant="outline"
-                  onClick={handleFakeUserLogin}
-                  className="w-full bg-blue-50 text-blue-800 border-blue-300 hover:bg-blue-100"
-                  disabled={loading}
-                >
-                  <User className="h-4 w-4 mr-2" />
-                  Test User Login
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  onClick={handleFakeAdminLogin}
-                  className="w-full bg-yellow-50 text-yellow-800 border-yellow-300 hover:bg-yellow-100"
-                  disabled={loading}
-                >
-                  <Shield className="h-4 w-4 mr-2" />
-                  Test Admin Login
-                </Button>
-              </div>
             </div>
           </div>
         </CardContent>
