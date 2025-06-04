@@ -60,6 +60,18 @@ const fundraisingDonations = [
   { amount: 200, value: 1400, label: '' }
 ];
 
+// Intention options for "Where Most Needed" product
+const intentionOptions = [
+  "For the sake of Allah SWT",
+  "In memory of my beloved family member",
+  "For my health and well-being",
+  "For my family's protection",
+  "For forgiveness of my sins",
+  "For success in this life and the next",
+  "For my parents' well-being",
+  "For the Ummah worldwide"
+];
+
 const getAdminContributionMessage = (percentage: number) => {
   if (percentage >= 15) {
     return {
@@ -186,6 +198,7 @@ const Checkout = () => {
   const [authName, setAuthName] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const [mainDonation, setMainDonation] = useState(200);
+  const [donationIntention, setDonationIntention] = useState("For the sake of Allah SWT");
   const [selectedMembership, setSelectedMembership] = useState('');
   const [adminFeePercentage, setAdminFeePercentage] = useState(2.5);
   const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(15);
@@ -362,24 +375,25 @@ const Checkout = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
-            {/* Main Donation Section */}
+            {/* Simplified Basket-style Donation Section */}
             <Card className="mb-6 shadow-sm border-gray-200">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                      <Heart className="h-8 w-8 text-blue-600" />
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                      <Heart className="h-6 w-6 text-blue-600" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl text-gray-800">Where Most Needed</CardTitle>
-                      <p className="text-sm text-gray-600">MKD-MN-001</p>
+                      <CardTitle className="text-lg text-gray-800">Where Most Needed</CardTitle>
+                      <p className="text-sm text-gray-500">MKD-MN-001</p>
                     </div>
                   </div>
-                  <Badge className="bg-blue-600 text-white">£200</Badge>
+                  <Badge className="bg-blue-600 text-white text-lg px-4 py-2">£{mainDonation}</Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
+                  {/* Amount Controls */}
                   <div>
                     <Label className="text-sm text-gray-600 mb-2 block">Amount</Label>
                     <div className="flex items-center space-x-2 mb-4">
@@ -410,7 +424,7 @@ const Checkout = () => {
                       </Button>
                     </div>
                     
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-4 gap-2 mb-4">
                       {suggestedAmounts.map((amount) => (
                         <Button
                           key={amount}
@@ -425,16 +439,24 @@ const Checkout = () => {
                     </div>
                   </div>
 
+                  {/* Intention Dropdown */}
                   <div>
                     <Label className="text-sm text-gray-600 flex items-center mb-2">
                       <Info className="h-4 w-4 mr-1" />
                       Who is this donation on behalf of?
                     </Label>
-                    <Input
-                      placeholder="For the sake of Allah SWT"
-                      className="border-pink-300 focus:border-pink-500"
-                      style={{ borderColor: '#ec4899' }}
-                    />
+                    <Select value={donationIntention} onValueChange={setDonationIntention}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {intentionOptions.map((intention) => (
+                          <SelectItem key={intention} value={intention}>
+                            {intention}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </CardContent>
@@ -1133,10 +1155,10 @@ const Checkout = () => {
                 {/* Payment Methods */}
                 <div className="flex justify-center space-x-4 mb-6">
                   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwMzA4NyIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="PayPal" className="h-8" />
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNTFBNSIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Visa" className="h-8" />
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8Y2lyY2xlIGN4PSIxNSIgY3k9IjEyIiByPSI2IiBmaWxsPSIjRkY1RjAwIi8+CjxjaXJjbGUgY3g9IjI1IiBjeT0iMTIiIHI9IjYiIGZpbGw9IiNGRkY1RjAiLz4KPC9zdmc+" alt="Mastercard" className="h-8" />
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0iIzAwNTFBNSIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Visa" className="h-8" />
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0iI0VCMDAxQiIvPgo8Y2lyY2xlIGN4PSIxNSIgY3k9IjEyIiByPSI2IiBmaWxsPSIjRkY1RjAwIi8+CjxjaXJjbGUgY3g9IjI1IiBjeT0iMTIiIHI9IjYiIGZpbGw9IiNGRkY1RjAiLz4KPC9zdmc+" alt="Mastercard" className="h-8" />
                   <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwMDAwMCIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Apple Pay" className="h-8" />
-                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzQyODVGNCIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Google Pay" className="h-8" />
+                  <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0iIzQyODVGNCIvPgo8cGF0aCBkPSJNMTcuNSA5LjVoLTNWMTVoM3YtNS41eiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+" alt="Google Pay" className="h-8" />
                 </div>
 
                 {/* Trust Indicators */}
