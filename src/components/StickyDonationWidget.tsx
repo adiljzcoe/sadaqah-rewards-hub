@@ -313,7 +313,7 @@ const StickyDonationWidget = () => {
                     <Badge className="ml-2 bg-orange-600 text-white text-xs">7x Jannah Points</Badge>
                   </div>
                   <p className="text-xs text-orange-700 mb-2">
-                    <strong>Get 7x Jannah points when you do a fundraising donation!</strong> Each pound you donate actually helps us generate £7 more! Talk about an amazing investment for your akhirah. We get £7 as we fundraise and our system shows for every £1 put into fundraising we can generate £7 or even more.
+                    <strong>Get 7x Jannah points when you do a fundraising donation!</strong> Each pound you donate actually helps us generate £7 more! Talk about an amazing investment for your akhirah. Our proven fundraising system multiplies your impact - for every £1 donated, we can raise an additional £7 or more through our network.
                   </p>
                 </div>
               )}
