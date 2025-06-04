@@ -244,6 +244,23 @@ const Checkout = () => {
     }, 3000);
   };
 
+  const triggerMembershipCelebration = (tierName: string) => {
+    const celebrationEmojis = ["👑", "✨", "🎉", "⭐", "💫"];
+    const newEmojis = celebrationEmojis.map((emoji, index) => ({
+      id: Date.now() + index,
+      emoji,
+      x: Math.random() * 300 + 50,
+      y: Math.random() * 100 + 50
+    }));
+    
+    setMembershipCelebrationEmojis(prev => [...prev, ...newEmojis]);
+    
+    // Remove emojis after animation
+    setTimeout(() => {
+      setMembershipCelebrationEmojis(prev => prev.filter(e => !newEmojis.find(ne => ne.id === e.id)));
+    }, 3000);
+  };
+
   const handleSliderChange = (value: number[]) => {
     const newValue = value[0];
     if (newValue > adminFeePercentage) {
@@ -692,7 +709,7 @@ const Checkout = () => {
                       </div>
                       
                       {selectedMembership === tier.id && (
-                        <div className="absolute inset-0 rounded-2xl bg-purple-500 opacity-10"></div>
+                        <div className="absolute inset-0 rounded-xl bg-purple-500 opacity-10"></div>
                       )}
                     </div>
                   ))}
