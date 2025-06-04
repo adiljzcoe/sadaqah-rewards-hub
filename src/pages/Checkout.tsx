@@ -60,7 +60,8 @@ const Checkout = () => {
   const [mainDonation, setMainDonation] = useState(200);
   const [selectedMembership, setSelectedMembership] = useState('');
   const [adminFeePercentage, setAdminFeePercentage] = useState(4); // Start at 4%
-  const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(0);
+  const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(15); // Auto-select £15
+  const [customFundraisingAmount, setCustomFundraisingAmount] = useState('');
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -78,11 +79,33 @@ const Checkout = () => {
 
   const selectedTier = membershipTiers.find(tier => tier.id === selectedMembership);
   const membershipPrice = selectedTier?.price || 0;
-  const subtotal = mainDonation + membershipPrice + selectedFundraisingDonation;
+  
+  // Calculate fundraising donation amount
+  const fundraisingAmount = customFundraisingAmount 
+    ? Math.max(1.50, parseFloat(customFundraisingAmount) || 0)
+    : selectedFundraisingDonation;
+  
+  const subtotal = mainDonation + membershipPrice + fundraisingAmount;
   const adminFeeAmount = (subtotal * adminFeePercentage) / 100;
   const grandTotal = subtotal + adminFeeAmount;
 
+  const handleFundraisingDonationClick = (amount: number) => {
+    setSelectedFundraisingDonation(amount);
+    setCustomFundraisingAmount('');
+  };
+
+  const handleCustomAmountChange = (value: string) => {
+    setCustomFundraisingAmount(value);
+    setSelectedFundraisingDonation(0);
+  };
+
   const handleSubmit = async (data: any) => {
+    // Validate minimum fundraising donation
+    if (fundraisingAmount > 0 && fundraisingAmount < 1.50) {
+      alert('Minimum fundraising donation is £1.50');
+      return;
+    }
+
     setIsProcessing(true);
     
     try {
@@ -91,7 +114,7 @@ const Checkout = () => {
         ...data,
         mainDonation,
         membership: selectedTier,
-        fundraisingDonation: selectedFundraisingDonation,
+        fundraisingDonation: fundraisingAmount,
         adminFeePercentage,
         adminFeeAmount,
         total: grandTotal,
@@ -200,9 +223,10 @@ const Checkout = () => {
                   Fundraising Donation
                 </CardTitle>
                 <p className="text-sm text-gray-600">Your £5 donation is worth £35 to the poor and needy through our fundraising multiplier</p>
+                <p className="text-xs text-orange-600 font-medium">Minimum donation: £1.50</p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                   {fundraisingDonations.map((donation) => (
                     <div
                       key={donation.amount}
@@ -211,7 +235,7 @@ const Checkout = () => {
                           ? 'border-green-500 bg-green-100'
                           : 'border-gray-200 bg-white hover:border-green-300'
                       }`}
-                      onClick={() => setSelectedFundraisingDonation(donation.amount)}
+                      onClick={() => handleFundraisingDonationClick(donation.amount)}
                     >
                       {donation.label && (
                         <div className="absolute -top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
@@ -226,18 +250,45 @@ const Checkout = () => {
                     </div>
                   ))}
                 </div>
+
+                {/* Custom Amount Input */}
+                <div className="mt-4">
+                  <Label className="text-sm text-gray-600 mb-2 block">Custom Amount (Minimum £1.50)</Label>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg font-semibold">£</span>
+                    <Input
+                      type="number"
+                      placeholder="Enter custom amount"
+                      value={customFundraisingAmount}
+                      onChange={(e) => handleCustomAmountChange(e.target.value)}
+                      className={`flex-1 ${
+                        customFundraisingAmount && parseFloat(customFundraisingAmount) < 1.50 
+                          ? 'border-red-500 focus:border-red-500' 
+                          : 'border-green-300 focus:border-green-500'
+                      }`}
+                      min="1.50"
+                      step="0.01"
+                    />
+                  </div>
+                  {customFundraisingAmount && parseFloat(customFundraisingAmount) < 1.50 && (
+                    <p className="text-xs text-red-600 mt-1">Amount must be at least £1.50</p>
+                  )}
+                </div>
                 
-                {selectedFundraisingDonation > 0 && (
+                {fundraisingAmount > 0 && (
                   <div className="mt-4 p-3 bg-green-100 rounded-lg">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-green-800">
-                        Your £{selectedFundraisingDonation} fundraising donation provides £{fundraisingDonations.find(d => d.amount === selectedFundraisingDonation)?.value} worth of aid
+                        Your £{fundraisingAmount.toFixed(2)} fundraising donation provides £{(fundraisingAmount * 7).toFixed(2)} worth of aid
                       </span>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => setSelectedFundraisingDonation(0)}
+                        onClick={() => {
+                          setSelectedFundraisingDonation(0);
+                          setCustomFundraisingAmount('');
+                        }}
                         className="text-green-600 hover:text-green-800"
                       >
                         <X className="h-4 w-4" />
@@ -397,7 +448,7 @@ const Checkout = () => {
                   </Button>
                   <Button 
                     type="submit"
-                    disabled={isProcessing || !form.watch('termsAccepted')}
+                    disabled={isProcessing || !form.watch('termsAccepted') || (fundraisingAmount > 0 && fundraisingAmount < 1.50)}
                     className="flex-1 bg-pink-600 hover:bg-pink-700 text-white"
                   >
                     {isProcessing ? 'Processing...' : 'Next →'}
