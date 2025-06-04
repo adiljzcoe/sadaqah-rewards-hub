@@ -57,9 +57,11 @@ const FloatingCheckoutWidget = ({
 
               {/* Your Total Impact - only show when fundraising donation selected */}
               {fundraisingAmount > 0 && (
-                <div className="flex items-center space-x-2 mt-1">
-                  <CreditCard className="h-5 w-5 text-transparent mr-2" />
-                  <span className="text-xs text-cyan-300/90">The true value of your donation is:</span>
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center">
+                    <CreditCard className="h-5 w-5 text-transparent mr-2" />
+                    <span className="text-xs text-cyan-300/90">The true value of your donation is:</span>
+                  </div>
                   <div className="text-base font-semibold text-pink-300 drop-shadow-md">
                     £{impactTotal.toFixed(2)}
                   </div>
@@ -69,10 +71,12 @@ const FloatingCheckoutWidget = ({
                     </TooltipTrigger>
                     <TooltipContent 
                       side="top" 
-                      align="end"
-                      className="max-w-xs bg-white text-slate-800 border border-slate-200 shadow-lg z-[60]"
+                      align="center"
+                      sideOffset={10}
+                      className="max-w-xs bg-slate-900 text-white border border-slate-700 shadow-2xl z-[9999] p-3"
+                      container={document.body}
                     >
-                      <p className="text-sm font-medium">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
+                      <p className="text-sm leading-relaxed">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
                     </TooltipContent>
                   </Tooltip>
                 </div>
