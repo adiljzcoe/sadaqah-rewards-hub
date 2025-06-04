@@ -179,36 +179,81 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Payment Frequency */}
-            <Card className="mb-6 shadow-sm border-gray-200">
+            {/* Fundraising Donation Features */}
+            <Card className="mb-6 shadow-sm border-gray-200 bg-gradient-to-br from-emerald-50 to-blue-50">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg text-gray-800">How often would you like to pay this?</CardTitle>
+                <CardTitle className="text-lg text-gray-800 flex items-center">
+                  <Gift className="h-5 w-5 mr-2 text-emerald-600" />
+                  Boost Your Impact - Join Our Fundraising Community!
+                </CardTitle>
+                <p className="text-sm text-gray-600">Create lasting change by starting your own fundraising campaign</p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[
-                    { id: 'one-time', label: 'Single/One-Time', selected: true },
-                    { id: 'weekly', label: 'Weekly' },
-                    { id: 'monthly', label: 'Monthly' },
-                    { id: 'yearly', label: 'Yearly' }
-                  ].map((freq) => (
-                    <Button
-                      key={freq.id}
-                      type="button"
-                      variant={paymentFrequency === freq.id ? "default" : "outline"}
-                      onClick={() => setPaymentFrequency(freq.id)}
-                      className={`h-20 flex flex-col items-center justify-center ${
-                        freq.selected ? 'bg-blue-600 text-white' : ''
-                      }`}
-                    >
-                      <div className="flex items-center mb-1">
-                        <Gift className="h-4 w-4 mr-1" />
-                        Donate
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Start Your Own Campaign */}
+                  <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3">
+                        <Target className="h-5 w-5 text-emerald-600" />
                       </div>
-                      <div className="text-sm font-medium">{freq.label}</div>
-                      {freq.selected && <Check className="h-4 w-4 mt-1" />}
+                      <div>
+                        <h4 className="font-semibold text-gray-800">Start Your Campaign</h4>
+                        <p className="text-xs text-gray-600">Rally your network for good</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700 mb-3">
+                      Turn your donation into a movement. Create your own fundraising page and invite friends and family to join your cause.
+                    </p>
+                    <Button 
+                      type="button" 
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                      size="sm"
+                    >
+                      <Users className="h-4 w-4 mr-2" />
+                      Create Fundraiser
                     </Button>
-                  ))}
+                  </div>
+
+                  {/* Join a Team */}
+                  <div className="bg-white rounded-lg p-4 border border-blue-200">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                        <Users className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-800">Join a Team</h4>
+                        <p className="text-xs text-gray-600">Multiply your impact together</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700 mb-3">
+                      Join existing fundraising teams from your mosque, community, or workplace. Together we achieve more!
+                    </p>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
+                      size="sm"
+                    >
+                      <TrendingUp className="h-4 w-4 mr-2" />
+                      Browse Teams
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Impact Stats */}
+                <div className="mt-6 grid grid-cols-3 gap-4">
+                  <div className="text-center bg-white/60 rounded-lg p-3">
+                    <div className="text-lg font-bold text-emerald-600">1,247</div>
+                    <div className="text-xs text-gray-600">Active Fundraisers</div>
+                  </div>
+                  <div className="text-center bg-white/60 rounded-lg p-3">
+                    <div className="text-lg font-bold text-blue-600">£2.3M</div>
+                    <div className="text-xs text-gray-600">Raised This Year</div>
+                  </div>
+                  <div className="text-center bg-white/60 rounded-lg p-3">
+                    <div className="text-lg font-bold text-purple-600">95%</div>
+                    <div className="text-xs text-gray-600">Success Rate</div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
