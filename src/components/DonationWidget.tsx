@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -54,17 +53,6 @@ const DonationWidget = ({
     }
   }, [justAdded]);
 
-  // Reset heart animation trigger
-  useEffect(() => {
-    if (heartAnimationTrigger) {
-      const timer = setTimeout(() => {
-        setHeartAnimationTrigger(false);
-        console.log('Heart animation trigger reset');
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [heartAnimationTrigger]);
-
   // Get currency symbol based on detected/selected currency
   const getCurrencySymbol = (curr: string) => {
     const symbols: { [key: string]: string } = {
@@ -117,13 +105,16 @@ const DonationWidget = ({
 
     console.log('DonationWidget: Donate button clicked!');
     console.log('DonationWidget: Amount:', donationAmount);
-    console.log('DonationWidget: About to trigger heart animation...');
+    console.log('DonationWidget: Current heartAnimationTrigger state:', heartAnimationTrigger);
     
-    // Trigger heart animation immediately - with explicit logging
-    setHeartAnimationTrigger(prev => {
-      console.log('DonationWidget: Setting heartAnimationTrigger from', prev, 'to true');
-      return true;
-    });
+    // Reset trigger first to ensure a clean state change
+    setHeartAnimationTrigger(false);
+    
+    // Use setTimeout to ensure state change is processed
+    setTimeout(() => {
+      console.log('DonationWidget: Setting heartAnimationTrigger to true');
+      setHeartAnimationTrigger(true);
+    }, 50);
     
     setIsAdding(true);
 
@@ -188,7 +179,7 @@ const DonationWidget = ({
           amount={isCustom ? customAmount || '0' : amount}
           currency={currencySymbol}
           onComplete={() => {
-            console.log('DonationWidget: Heart animation completed!');
+            console.log('DonationWidget: Heart animation completed! Resetting trigger.');
             setHeartAnimationTrigger(false);
           }}
         />
