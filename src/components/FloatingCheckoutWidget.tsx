@@ -22,16 +22,27 @@ const FloatingCheckoutWidget = ({
   const { user } = useAuth();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-50 to-purple-50 border-t-2 border-blue-200 shadow-2xl">
-      <div className="container mx-auto px-4 py-4 max-w-4xl">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 backdrop-blur-md shadow-2xl overflow-hidden border-t-2 border-cyan-400/30">
+      {/* Final Fantasy inspired crystalline background effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/60 via-indigo-900/40 to-cyan-900/60"></div>
+      <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-2 left-10 w-20 h-8 bg-cyan-300/20 rounded-full blur-sm animate-pulse shadow-cyan-400/50"></div>
+        <div className="absolute top-4 right-32 w-16 h-6 bg-blue-300/15 rounded-full blur-sm animate-pulse delay-300 shadow-blue-400/50"></div>
+        <div className="absolute top-1 left-1/3 w-24 h-10 bg-indigo-300/20 rounded-full blur-sm animate-pulse delay-500 shadow-indigo-400/50"></div>
+        <div className="absolute top-3 right-1/4 w-18 h-7 bg-cyan-400/25 rounded-full blur-sm animate-pulse delay-700 shadow-cyan-300/60"></div>
+        <div className="absolute top-6 left-20 w-2 h-2 bg-cyan-300 rounded-full animate-pulse shadow-lg shadow-cyan-300/80"></div>
+        <div className="absolute top-8 right-40 w-1.5 h-1.5 bg-blue-300 rounded-full animate-pulse delay-1000 shadow-md shadow-blue-300/70"></div>
+      </div>
+      
+      <div className="relative z-20 container mx-auto px-4 py-4 max-w-4xl">
         <div className="flex items-center justify-between">
           {/* Total Section */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
-              <Heart className="h-5 w-5 text-pink-500 mr-2" />
-              <span className="text-sm text-gray-600">Total:</span>
+              <Heart className="h-5 w-5 text-pink-500 mr-2 drop-shadow-lg" />
+              <span className="text-sm text-cyan-200 drop-shadow-md">Total:</span>
             </div>
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent drop-shadow-lg">
               £{total.toFixed(2)}
             </div>
           </div>
@@ -43,7 +54,7 @@ const FloatingCheckoutWidget = ({
                 <Button
                   variant="outline"
                   onClick={onShowAuth}
-                  className="flex items-center gap-2 border-blue-300 text-blue-600 hover:bg-blue-50"
+                  className="flex items-center gap-2 border-cyan-400/50 text-cyan-300 hover:bg-cyan-900/50 backdrop-blur-sm"
                 >
                   <LogIn className="h-4 w-4" />
                   Sign In
@@ -72,16 +83,16 @@ const FloatingCheckoutWidget = ({
 
         {/* Payment Methods Row */}
         <div className="mt-3 flex items-center justify-center space-x-4">
-          <span className="text-xs text-gray-500">Secure payments via:</span>
+          <span className="text-xs text-cyan-200/80 drop-shadow-md">Secure payments via:</span>
           <div className="flex items-center space-x-3">
-            <img src="/lovable-uploads/78afdaac-a12f-42b2-a9a1-06d4a13e8fb4.png" alt="Payment methods" className="h-6 opacity-80" />
+            <img src="/lovable-uploads/78afdaac-a12f-42b2-a9a1-06d4a13e8fb4.png" alt="Payment methods" className="h-6 opacity-90 drop-shadow-md" />
           </div>
         </div>
 
         {/* Terms Warning */}
         {!termsAccepted && (
           <div className="mt-2 text-center">
-            <span className="text-xs text-red-500">
+            <span className="text-xs text-red-300 drop-shadow-md">
               Please accept the terms and conditions to continue
             </span>
           </div>
