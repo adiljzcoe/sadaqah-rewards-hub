@@ -46,11 +46,21 @@ const membershipTiers = [
 const suggestedAmounts = [50, 100, 200, 500];
 const adminFeeOptions = [0, 5, 10, 15, 20];
 
+const fundraisingDonations = [
+  { amount: 5, value: 35, label: '' },
+  { amount: 10, value: 70, label: '' },
+  { amount: 15, value: 105, label: 'Most Beneficial' },
+  { amount: 25, value: 175, label: '' },
+  { amount: 50, value: 350, label: '' },
+  { amount: 100, value: 700, label: '' }
+];
+
 const Checkout = () => {
   const { user } = useAuth();
   const [mainDonation, setMainDonation] = useState(200);
   const [selectedMembership, setSelectedMembership] = useState('');
   const [adminFeeAmount, setAdminFeeAmount] = useState(20);
+  const [selectedFundraisingDonation, setSelectedFundraisingDonation] = useState(0);
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -68,7 +78,7 @@ const Checkout = () => {
 
   const selectedTier = membershipTiers.find(tier => tier.id === selectedMembership);
   const membershipPrice = selectedTier?.price || 0;
-  const subtotal = mainDonation + membershipPrice;
+  const subtotal = mainDonation + membershipPrice + selectedFundraisingDonation;
   const grandTotal = subtotal + adminFeeAmount;
 
   const handleSubmit = async (data: any) => {
@@ -80,6 +90,7 @@ const Checkout = () => {
         ...data,
         mainDonation,
         membership: selectedTier,
+        fundraisingDonation: selectedFundraisingDonation,
         adminFee: adminFeeAmount,
         total: grandTotal,
         frequency: paymentFrequency
@@ -179,82 +190,59 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Fundraising Donation Features */}
-            <Card className="mb-6 shadow-sm border-gray-200 bg-gradient-to-br from-emerald-50 to-blue-50">
+            {/* Fundraising Donation Section */}
+            <Card className="mb-6 shadow-sm border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg text-gray-800 flex items-center">
-                  <Gift className="h-5 w-5 mr-2 text-emerald-600" />
-                  Boost Your Impact - Join Our Fundraising Community!
+                  <Gift className="h-5 w-5 mr-2 text-green-600" />
+                  Fundraising Donation
                 </CardTitle>
-                <p className="text-sm text-gray-600">Create lasting change by starting your own fundraising campaign</p>
+                <p className="text-sm text-gray-600">Your £5 donation is worth £35 to the poor and needy through our fundraising multiplier</p>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Start Your Own Campaign */}
-                  <div className="bg-white rounded-lg p-4 border border-emerald-200">
-                    <div className="flex items-center mb-3">
-                      <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3">
-                        <Target className="h-5 w-5 text-emerald-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-800">Start Your Campaign</h4>
-                        <p className="text-xs text-gray-600">Rally your network for good</p>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {fundraisingDonations.map((donation) => (
+                    <div
+                      key={donation.amount}
+                      className={`relative p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        selectedFundraisingDonation === donation.amount
+                          ? 'border-green-500 bg-green-100'
+                          : 'border-gray-200 bg-white hover:border-green-300'
+                      }`}
+                      onClick={() => setSelectedFundraisingDonation(donation.amount)}
+                    >
+                      {donation.label && (
+                        <div className="absolute -top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
+                          {donation.label}
+                        </div>
+                      )}
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-gray-800">£{donation.amount}</div>
+                        <div className="text-sm text-green-600 font-medium">Worth £{donation.value}</div>
+                        <div className="text-xs text-gray-500">to those in need</div>
                       </div>
                     </div>
-                    <p className="text-sm text-gray-700 mb-3">
-                      Turn your donation into a movement. Create your own fundraising page and invite friends and family to join your cause.
-                    </p>
-                    <Button 
-                      type="button" 
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                      size="sm"
-                    >
-                      <Users className="h-4 w-4 mr-2" />
-                      Create Fundraiser
-                    </Button>
-                  </div>
-
-                  {/* Join a Team */}
-                  <div className="bg-white rounded-lg p-4 border border-blue-200">
-                    <div className="flex items-center mb-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                        <Users className="h-5 w-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-800">Join a Team</h4>
-                        <p className="text-xs text-gray-600">Multiply your impact together</p>
-                      </div>
+                  ))}
+                </div>
+                
+                {selectedFundraisingDonation > 0 && (
+                  <div className="mt-4 p-3 bg-green-100 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-green-800">
+                        Your £{selectedFundraisingDonation} fundraising donation provides £{fundraisingDonations.find(d => d.amount === selectedFundraisingDonation)?.value} worth of aid
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedFundraisingDonation(0)}
+                        className="text-green-600 hover:text-green-800"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <p className="text-sm text-gray-700 mb-3">
-                      Join existing fundraising teams from your mosque, community, or workplace. Together we achieve more!
-                    </p>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
-                      size="sm"
-                    >
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      Browse Teams
-                    </Button>
                   </div>
-                </div>
-
-                {/* Impact Stats */}
-                <div className="mt-6 grid grid-cols-3 gap-4">
-                  <div className="text-center bg-white/60 rounded-lg p-3">
-                    <div className="text-lg font-bold text-emerald-600">1,247</div>
-                    <div className="text-xs text-gray-600">Active Fundraisers</div>
-                  </div>
-                  <div className="text-center bg-white/60 rounded-lg p-3">
-                    <div className="text-lg font-bold text-blue-600">£2.3M</div>
-                    <div className="text-xs text-gray-600">Raised This Year</div>
-                  </div>
-                  <div className="text-center bg-white/60 rounded-lg p-3">
-                    <div className="text-lg font-bold text-purple-600">95%</div>
-                    <div className="text-xs text-gray-600">Success Rate</div>
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 
