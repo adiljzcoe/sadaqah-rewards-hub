@@ -119,10 +119,10 @@ const MasjidCommunity = () => {
               </div>
             </Card>
 
-            {/* Full Leaderboard */}
+            {/* Full Leaderboard - removed userMasjidId prop */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">National Masjid Rankings</h2>
-              <MasjidLeaderboard userMasjidId={selectedMasjid.id} />
+              <MasjidLeaderboard />
             </div>
           </div>
         )}
