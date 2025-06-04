@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +17,8 @@ import {
   MousePointer, 
   Target,
   Mail,
-  Bell
+  Bell,
+  UserPlus
 } from 'lucide-react';
 
 // Import all the admin components
