@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +17,9 @@ import {
   Target,
   Mail,
   Bell,
-  UserPlus
+  UserPlus,
+  Layout,
+  FileText
 } from 'lucide-react';
 
 // Import all the admin components
@@ -44,6 +45,9 @@ import CharityVerification from '@/components/admin/CharityVerification';
 import SMSNotifications from '@/components/admin/SMSNotifications';
 import DemoModeControl from '@/components/admin/DemoModeControl';
 import UserManagement from '@/components/admin/UserManagement';
+
+// Import new CMS component
+import CMSAdminPanel from '@/components/cms/CMSAdminPanel';
 
 const AdminDashboard = () => {
   const { user, fakeAdminLogin } = useAuth();
@@ -109,10 +113,14 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-14 gap-2 h-auto p-2">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-15 gap-2 h-auto p-2">
             <TabsTrigger value="overview" className="flex flex-col items-center gap-1 p-3">
               <BarChart3 className="h-4 w-4" />
               <span className="text-xs">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="cms" className="flex flex-col items-center gap-1 p-3">
+              <FileText className="h-4 w-4" />
+              <span className="text-xs">CMS</span>
             </TabsTrigger>
             <TabsTrigger value="demo-control" className="flex flex-col items-center gap-1 p-3">
               <Database className="h-4 w-4" />
@@ -219,6 +227,10 @@ const AdminDashboard = () => {
               </Card>
             </div>
             <DashboardCharts />
+          </TabsContent>
+
+          <TabsContent value="cms">
+            <CMSAdminPanel />
           </TabsContent>
 
           <TabsContent value="demo-control">
