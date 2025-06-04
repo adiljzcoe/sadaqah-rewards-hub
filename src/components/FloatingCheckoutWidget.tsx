@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { CreditCard, LogIn, Heart, Info } from 'lucide-react';
+import { CreditCard, LogIn, Heart, Info, BadgeDollarSign } from 'lucide-react';
 import FloatingTooltip from '@/components/ui/floating-tooltip';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -58,7 +57,7 @@ const FloatingCheckoutWidget = ({
             {fundraisingAmount > 0 && (
               <div className="flex items-center space-x-2">
                 <div className="flex items-center">
-                  <CreditCard className="h-5 w-5 text-transparent mr-2" />
+                  <BadgeDollarSign className="h-5 w-5 text-pink-400 mr-2 drop-shadow-lg" />
                   <span className="text-xs text-cyan-300/90">The true value of your donation is:</span>
                 </div>
                 <div className="text-base font-semibold text-pink-300 drop-shadow-md">
