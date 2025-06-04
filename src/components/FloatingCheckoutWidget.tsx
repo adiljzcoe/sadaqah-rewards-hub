@@ -70,6 +70,14 @@ const FloatingCheckoutWidget = ({
           </div>
         </div>
 
+        {/* Payment Methods Row */}
+        <div className="mt-3 flex items-center justify-center space-x-4">
+          <span className="text-xs text-gray-500">Secure payments via:</span>
+          <div className="flex items-center space-x-3">
+            <img src="/lovable-uploads/78afdaac-a12f-42b2-a9a1-06d4a13e8fb4.png" alt="Payment methods" className="h-6 opacity-80" />
+          </div>
+        </div>
+
         {/* Terms Warning */}
         {!termsAccepted && (
           <div className="mt-2 text-center">
