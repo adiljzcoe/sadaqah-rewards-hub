@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertCircle, Coins, Flower, Gift, TrendingUp } from 'lucide-react';
-import { useCart } from '@/hooks/useCart';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -142,9 +141,6 @@ const StickyDonationWidget = () => {
   const [selectedBlessing, setSelectedBlessing] = useState('general');
   const [customMessage, setCustomMessage] = useState('');
 
-  // Cart integration
-  const { addItem } = useCart();
-
   // Mock user membership status - in real app this would come from auth/database
   const isMember = true;
 
@@ -197,38 +193,6 @@ const StickyDonationWidget = () => {
 
   // Get the selected blessing details
   const selectedBlessingDetails = giftBlessingOptions.find(b => b.id === selectedBlessing);
-
-  const handleAddToCart = () => {
-    const amount = Number(customAmount) || selectedAmount;
-    if (amount <= 0) return;
-
-    let itemName = '';
-    let itemType: 'donation' | 'membership' | 'product' = 'donation';
-
-    // Build item name based on donation type
-    if (activeTab === 'coins') {
-      itemName = `Sadaqah Coins Top-up (${currentCurrency?.symbol}${amount})`;
-      itemType = 'product';
-    } else if (activeTab === 'gift') {
-      itemName = `Gift Donation to ${friendName || 'Friend'} (${currentCurrency?.symbol}${amount})`;
-    } else if (activeTab === 'honoring' && finalMemoryPerson) {
-      itemName = `Honoring ${finalMemoryPerson} (${currentCurrency?.symbol}${amount})`;
-    } else if (activeTab === 'fundraising') {
-      itemName = `Fundraising Donation (${currentCurrency?.symbol}${amount})`;
-    } else {
-      const causeName = emergencyCauses.find(c => c.id === selectedCause)?.name || 'General';
-      itemName = `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} - ${causeName} (${currentCurrency?.symbol}${amount})`;
-    }
-
-    addItem({
-      id: `${activeTab}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      name: itemName,
-      price: amount,
-      type: itemType
-    });
-
-    console.log('Added to cart:', itemName, amount);
-  };
 
   return (
     <>
@@ -725,30 +689,27 @@ const StickyDonationWidget = () => {
                 <div className="sm:col-span-4 flex space-x-2">
                   {activeTab === 'coins' ? (
                     /* Coins Top-up Button */
-                    <Button 
-                      onClick={handleAddToCart}
-                      className={`flex-1 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                    <Button className={`flex-1 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                       style={{
                         animation: 'golden-glow 2.8s ease-in-out infinite'
                       }}
                     >
                       <span className="relative z-10 flex items-center justify-center">
                         <Coins className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
-                        Add to Cart {currentCurrency?.symbol}{donationAmount}
+                        Top-up {currentCurrency?.symbol}{donationAmount}
                       </span>
                     </Button>
                   ) : activeTab === 'gift' ? (
-                    /* Gift Donation Button */
-                    <Button 
-                      onClick={handleAddToCart}
-                      className={`flex-1 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                    /* Gift Donation Button with special pink glow */
+                    <Button className={`flex-1 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                       style={{
                         animation: 'gentle-pulse 3s ease-in-out infinite, pink-gift-glow 2.5s ease-in-out infinite'
                       }}
                     >
                       <span className="relative z-10 flex items-center justify-center">
                         <Gift className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
-                        Add Gift {currentCurrency?.symbol}{donationAmount}
+                        Send Gift {currentCurrency?.symbol}{donationAmount}
+                        {friendName && ` to ${friendName}`}
                       </span>
                       
                       {isMember && (
@@ -758,17 +719,15 @@ const StickyDonationWidget = () => {
                       )}
                     </Button>
                   ) : activeTab === 'fundraising' ? (
-                    /* Fundraising Button */
-                    <Button 
-                      onClick={handleAddToCart}
-                      className={`flex-1 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                    /* Fundraising Button with special orange glow */
+                    <Button className={`flex-1 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                       style={{
                         animation: 'gentle-pulse 3s ease-in-out infinite, orange-fundraising-glow 2.5s ease-in-out infinite'
                       }}
                     >
                       <span className="relative z-10 flex items-center justify-center">
                         <TrendingUp className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
-                        Add to Cart {currentCurrency?.symbol}{donationAmount}
+                        Fund Growth {currentCurrency?.symbol}{donationAmount}
                       </span>
                       
                       {isMember && (
@@ -778,16 +737,14 @@ const StickyDonationWidget = () => {
                       )}
                     </Button>
                   ) : (
-                    /* Main Donate Button */
-                    <Button 
-                      onClick={handleAddToCart}
-                      className={`flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                    /* Main Donate Button with gentle pulse animation and green glow */
+                    <Button className={`flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
                       style={{
                         animation: 'gentle-pulse 3s ease-in-out infinite, green-glow-resonate 2.5s ease-in-out infinite'
                       }}
                     >
                       <span className="relative z-10">
-                        Add to Cart {currentCurrency?.symbol}{donationAmount}
+                        Donate {currentCurrency?.symbol}{donationAmount}
                         {activeTab === 'honoring' && finalMemoryPerson && ` honoring ${finalMemoryPerson}`}
                       </span>
                       
