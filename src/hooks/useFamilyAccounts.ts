@@ -177,8 +177,8 @@ export const useFamilyAccounts = () => {
       const { error: updateError } = await supabase
         .from('kids_accounts')
         .update({
-          sadaqah_coins: supabase.raw(`sadaqah_coins + ${data.sadaqahCoins}`),
-          jannah_points: supabase.raw(`jannah_points + ${data.jannahPoints}`),
+          sadaqah_coins: data.sadaqahCoins,
+          jannah_points: data.jannahPoints,
         })
         .eq('id', data.kidsAccountId);
       
@@ -294,8 +294,8 @@ export const useKidsDonations = (kidsAccountId?: string) => {
       const { error: updateError } = await supabase
         .from('kids_accounts')
         .update({
-          sadaqah_coins: supabase.raw(`sadaqah_coins - ${data.amountCoins}`),
-          jannah_points: supabase.raw(`jannah_points + ${jannahPointsEarned}`),
+          sadaqah_coins: account.sadaqah_coins - data.amountCoins,
+          jannah_points: jannahPointsEarned,
         })
         .eq('id', kidsAccountId);
       
