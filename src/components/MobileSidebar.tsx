@@ -270,32 +270,34 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </div>
           </div>
 
-          {/* Enhanced Checkout Section - Positioned under the badge */}
-          {totalItems > 0 && (
-            <div className="px-4 pb-4">
-              <Link 
-                to="/checkout" 
-                onClick={handleLinkClick}
-                className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border border-pink-400/30 backdrop-blur-sm overflow-hidden relative"
-              >
-                {/* Glossy effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
-                
-                <div className="relative flex items-center">
-                  <div className="bg-white/20 rounded-lg p-2 mr-3 backdrop-blur-sm">
-                    <ShoppingCart className="h-5 w-5 drop-shadow-md" />
-                  </div>
-                  <div>
-                    <span className="drop-shadow-md">Checkout</span>
-                    <div className="text-xs text-white/80 drop-shadow-sm">{totalItems} item{totalItems !== 1 ? 's' : ''}</div>
+          {/* Enhanced Checkout Section - Always visible for testing */}
+          <div className="px-4 pb-4">
+            <Link 
+              to="/checkout" 
+              onClick={handleLinkClick}
+              className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border border-pink-400/30 backdrop-blur-sm overflow-hidden relative"
+            >
+              {/* Glossy effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
+              
+              <div className="relative flex items-center">
+                <div className="bg-white/20 rounded-lg p-2 mr-3 backdrop-blur-sm">
+                  <ShoppingCart className="h-5 w-5 drop-shadow-md" />
+                </div>
+                <div>
+                  <span className="drop-shadow-md">Checkout</span>
+                  <div className="text-xs text-white/80 drop-shadow-sm">
+                    {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Cart is empty'}
                   </div>
                 </div>
-                <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl px-3 py-2 shadow-lg border border-yellow-300/50">
-                  <span className="text-sm font-bold text-white drop-shadow-md">£{totalAmount.toFixed(2)}</span>
-                </div>
-              </Link>
-            </div>
-          )}
+              </div>
+              <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl px-3 py-2 shadow-lg border border-yellow-300/50">
+                <span className="text-sm font-bold text-white drop-shadow-md">
+                  £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
+                </span>
+              </div>
+            </Link>
+          </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             
