@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -369,11 +368,28 @@ const Checkout = () => {
     }
   };
 
+  const handlePayNowFromWidget = () => {
+    if (!form.watch('termsAccepted')) {
+      // Scroll to terms section
+      const termsElement = document.querySelector('[name="termsAccepted"]');
+      termsElement?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    form.handleSubmit(handleSubmit)();
+  };
+
+  const handleShowAuthFromWidget = () => {
+    setShowAuthForm(true);
+    // Scroll to auth section
+    const authElement = document.querySelector('[data-auth-form]');
+    authElement?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-4xl pb-32">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
             {/* Enhanced Main Donation Section */}
@@ -383,55 +399,41 @@ const Checkout = () => {
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-200/20 to-blue-200/20 rounded-full translate-y-12 -translate-x-12"></div>
               
               <CardContent className="p-8 relative z-10">
-                <div className="flex items-center justify-between gap-8 mb-6">
+                {/* Single Row Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center mb-6">
                   {/* Product Info Section */}
-                  <div className="flex items-center flex-1 min-w-0">
-                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mr-6 shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300 flex-shrink-0">
-                      <Heart className="h-10 w-10 text-white animate-pulse" />
+                  <div className="flex items-center lg:col-span-1">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300 flex-shrink-0">
+                      <Heart className="h-8 w-8 text-white animate-pulse" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                      <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-1">
                         Where Most Needed
                       </h3>
-                      <div className="flex items-center flex-wrap gap-3">
-                        <Badge className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm border-0 font-medium">
+                      <div className="flex items-center flex-wrap gap-2">
+                        <Badge className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-xs border-0 font-medium">
                           MKD-MN-001
                         </Badge>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                          <span>Helping families worldwide</span>
-                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Total Amount Display */}
-                  <div className="text-right flex-shrink-0">
-                    <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      £{mainDonation}
-                    </div>
-                    <div className="text-sm text-gray-500 mt-1">Total amount</div>
-                  </div>
-                </div>
-
-                {/* Controls Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Intention Section */}
-                  <div className="space-y-3">
-                    <Label className="text-lg font-semibold text-gray-800 flex items-center">
-                      <Heart className="h-5 w-5 text-pink-500 mr-2" />
+                  <div className="lg:col-span-1">
+                    <Label className="text-sm font-semibold text-gray-800 flex items-center mb-2">
+                      <Heart className="h-4 w-4 text-pink-500 mr-2" />
                       Donation Intention
                     </Label>
                     <Select value={donationIntention} onValueChange={setDonationIntention}>
-                      <SelectTrigger className="h-12 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 hover:border-blue-300 focus:border-purple-400 transition-colors shadow-sm text-base">
+                      <SelectTrigger className="h-11 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 hover:border-blue-300 focus:border-purple-400 transition-colors shadow-sm">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border-2 border-blue-200 shadow-xl rounded-xl max-h-72">
+                      <SelectContent className="bg-white border-2 border-blue-200 shadow-xl rounded-xl max-h-60">
                         {intentionOptions.map((intention) => (
                           <SelectItem 
                             key={intention} 
                             value={intention}
-                            className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 cursor-pointer text-base py-3"
+                            className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 cursor-pointer py-2"
                           >
                             {intention}
                           </SelectItem>
@@ -441,10 +443,10 @@ const Checkout = () => {
                   </div>
 
                   {/* Amount Controls Section */}
-                  <div className="space-y-3">
-                    <Label className="text-lg font-semibold text-gray-800 flex items-center">
-                      <CreditCard className="h-5 w-5 text-green-500 mr-2" />
-                      Donation Amount
+                  <div className="lg:col-span-1">
+                    <Label className="text-sm font-semibold text-gray-800 flex items-center mb-2">
+                      <CreditCard className="h-4 w-4 text-green-500 mr-2" />
+                      Amount
                     </Label>
                     <div className="flex items-center space-x-3">
                       <Button
@@ -452,15 +454,15 @@ const Checkout = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => setMainDonation(Math.max(10, mainDonation - 10))}
-                        className="w-12 h-12 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-200 transform hover:scale-105 shadow-md flex-shrink-0"
+                        className="w-11 h-11 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-200 transform hover:scale-105 shadow-md flex-shrink-0"
                       >
-                        <Minus className="h-5 w-5 text-blue-600" />
+                        <Minus className="h-4 w-4 text-blue-600" />
                       </Button>
                       <Input
                         type="number"
                         value={mainDonation}
                         onChange={(e) => setMainDonation(Number(e.target.value))}
-                        className="text-center font-bold text-xl h-12 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 focus:border-purple-400 shadow-sm flex-1"
+                        className="text-center font-bold text-lg h-11 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 focus:border-purple-400 shadow-sm flex-1 min-w-0"
                         min="10"
                       />
                       <Button
@@ -468,27 +470,27 @@ const Checkout = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => setMainDonation(mainDonation + 10)}
-                        className="w-12 h-12 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-200 transform hover:scale-105 shadow-md flex-shrink-0"
+                        className="w-11 h-11 border-2 border-blue-200 bg-gradient-to-r from-white to-blue-50 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-200 transform hover:scale-105 shadow-md flex-shrink-0"
                       >
-                        <Plus className="h-5 w-5 text-blue-600" />
+                        <Plus className="h-4 w-4 text-blue-600" />
                       </Button>
                     </div>
                   </div>
                 </div>
                 
                 {/* Enhanced Info Bar */}
-                <div className="p-6 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 rounded-2xl border-2 border-green-200 shadow-inner">
+                <div className="p-4 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 rounded-xl border-2 border-green-200 shadow-inner">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-4">
-                        <Check className="h-5 w-5 text-white" />
+                      <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-3">
+                        <Check className="h-4 w-4 text-white" />
                       </div>
-                      <span className="text-lg font-semibold text-green-800">
+                      <span className="text-sm font-semibold text-green-800">
                         100% of your donation reaches those in need
                       </span>
                     </div>
-                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-md text-sm px-4 py-2">
-                      <Shield className="h-4 w-4 mr-2" />
+                    <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-md text-xs px-3 py-1">
+                      <Shield className="h-3 w-3 mr-1" />
                       Verified Impact
                     </Badge>
                   </div>
@@ -924,7 +926,7 @@ const Checkout = () => {
                   </p>
                 )}
               </CardHeader>
-              <CardContent>
+              <CardContent data-auth-form>
                 {/* Quick Login Form */}
                 {!user && showAuthForm && (
                   <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
@@ -1245,6 +1247,15 @@ const Checkout = () => {
           </form>
         </Form>
       </div>
+
+      {/* Floating Checkout Widget */}
+      <FloatingCheckoutWidget
+        total={grandTotal}
+        isProcessing={isProcessing}
+        onPayNow={handlePayNowFromWidget}
+        onShowAuth={handleShowAuthFromWidget}
+        termsAccepted={form.watch('termsAccepted')}
+      />
     </div>
   );
 };
