@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -36,10 +36,21 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   const [rewardsOpen, setRewardsOpen] = useState(false);
   const [developerOpen, setDeveloperOpen] = useState(false);
   const [userLoginOpen, setUserLoginOpen] = useState(false);
+  const [cartAnimating, setCartAnimating] = useState(false);
+  const [prevTotalItems, setPrevTotalItems] = useState(0);
 
   const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
   const { totalItems, totalAmount } = useCart();
   const progress = (currentPoints / nextLevelPoints) * 100;
+
+  // Watch for cart changes and trigger animation
+  useEffect(() => {
+    if (totalItems > prevTotalItems) {
+      setCartAnimating(true);
+      setTimeout(() => setCartAnimating(false), 1000);
+    }
+    setPrevTotalItems(totalItems);
+  }, [totalItems, prevTotalItems]);
 
   const handleLinkClick = () => {
     setOpen(false);
@@ -204,7 +215,9 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
           <Menu className="h-6 w-6" />
           {totalItems > 0 && (
-            <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center animate-pulse shadow-lg border border-pink-300/50">
+            <Badge className={`absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center border border-pink-300/50 transition-all duration-300 ${
+              cartAnimating ? 'animate-pulse scale-125 bg-gradient-to-r from-green-400 to-emerald-500' : 'animate-pulse'
+            }`}>
               {totalItems}
             </Badge>
           )}
@@ -270,28 +283,42 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </div>
           </div>
 
-          {/* Enhanced Checkout Section - Always visible for testing */}
+          {/* Enhanced Checkout Section with Animation */}
           <div className="px-4 pb-4">
             <Link 
               to="/checkout" 
               onClick={handleLinkClick}
-              className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border border-pink-400/30 backdrop-blur-sm overflow-hidden relative"
+              className={`flex items-center justify-between p-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border backdrop-blur-sm overflow-hidden relative ${
+                cartAnimating 
+                  ? 'bg-gradient-to-r from-green-500 via-emerald-600 to-green-500 border-green-400/50 animate-pulse' 
+                  : 'bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 border-pink-400/30'
+              }`}
             >
               {/* Glossy effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
               
               <div className="relative flex items-center">
-                <div className="bg-white/20 rounded-lg p-2 mr-3 backdrop-blur-sm">
-                  <ShoppingCart className="h-5 w-5 drop-shadow-md" />
+                <div className={`rounded-lg p-2 mr-3 backdrop-blur-sm transition-all duration-300 ${
+                  cartAnimating ? 'bg-white/30 scale-110' : 'bg-white/20'
+                }`}>
+                  <ShoppingCart className={`h-5 w-5 drop-shadow-md transition-all duration-300 ${
+                    cartAnimating ? 'animate-bounce' : ''
+                  }`} />
                 </div>
                 <div>
-                  <span className="drop-shadow-md">Checkout</span>
+                  <span className="drop-shadow-md">
+                    {cartAnimating ? 'Added to Cart!' : 'Checkout'}
+                  </span>
                   <div className="text-xs text-white/80 drop-shadow-sm">
                     {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Cart is empty'}
                   </div>
                 </div>
               </div>
-              <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl px-3 py-2 shadow-lg border border-yellow-300/50">
+              <div className={`relative rounded-xl px-3 py-2 shadow-lg border transition-all duration-300 ${
+                cartAnimating 
+                  ? 'bg-gradient-to-r from-yellow-300 to-orange-400 border-yellow-200/60 scale-110' 
+                  : 'bg-gradient-to-r from-yellow-400 to-orange-500 border-yellow-300/50'
+              }`}>
                 <span className="text-sm font-bold text-white drop-shadow-md">
                   £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
                 </span>
