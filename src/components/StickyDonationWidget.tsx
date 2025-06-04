@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { AlertCircle, Coins, Flower, Gift } from 'lucide-react';
+import { AlertCircle, Coins, Flower, Gift, TrendingUp } from 'lucide-react';
 
 const quickAmounts = [25, 50, 100];
 const currencies = [
@@ -111,6 +111,11 @@ const donationTypeStyles = {
     gradient: 'bg-yellow-600 hover:bg-yellow-700',
     text: 'text-white',
     icon: '🪙'
+  },
+  fundraising: {
+    gradient: 'bg-orange-600 hover:bg-orange-700',
+    text: 'text-white',
+    icon: '📈'
   }
 };
 
@@ -254,13 +259,25 @@ const StickyDonationWidget = () => {
             box-shadow: 0 0 5px rgba(236, 72, 153, 0.4), 0 0 10px rgba(236, 72, 153, 0.3), 0 0 15px rgba(236, 72, 153, 0.2);
           }
         }
+
+        @keyframes fundraising-glow {
+          0% {
+            box-shadow: 0 0 5px rgba(249, 115, 22, 0.4), 0 0 10px rgba(249, 115, 22, 0.3), 0 0 15px rgba(249, 115, 22, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.6), 0 0 20px rgba(249, 115, 22, 0.4), 0 0 30px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.1);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(249, 115, 22, 0.4), 0 0 10px rgba(249, 115, 22, 0.3), 0 0 15px rgba(249, 115, 22, 0.2);
+          }
+        }
       `}</style>
       
       <div className={`${isSticky ? 'fixed bottom-0' : 'relative'} left-0 right-0 z-50 transition-all duration-300 bg-white border-t border-gray-200 shadow-lg`}>
         <div className={`relative z-10 container mx-auto px-2 sm:px-4 transition-all duration-300 ${isSticky ? 'py-2' : 'py-3'}`}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             {/* Responsive TabsList - Stack on mobile, grid on larger screens */}
-            <div className={`grid grid-cols-3 sm:grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
+            <div className={`grid grid-cols-4 sm:grid-cols-8 gap-1 sm:gap-2 mb-2 sm:mb-3 transition-all duration-300 ${isSticky ? 'mb-2' : 'mb-3'}`}>
               {Object.entries(donationTypeStyles).map(([key, style]) => (
                 <button
                   key={key}
@@ -269,7 +286,10 @@ const StickyDonationWidget = () => {
                     activeTab === key 
                       ? `${style.gradient} ${style.text}` 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
-                  }`}
+                  } ${key === 'fundraising' && activeTab === key ? 'animate-pulse' : ''}`}
+                  style={key === 'fundraising' && activeTab === key ? {
+                    animation: 'fundraising-glow 2s ease-in-out infinite'
+                  } : {}}
                 >
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-0 sm:space-y-0 sm:space-x-1">
                     <span className="text-xs">{style.icon}</span>
@@ -280,6 +300,25 @@ const StickyDonationWidget = () => {
             </div>
 
             <TabsContent value={activeTab} className="mt-0">
+              {/* Fundraising Section */}
+              {activeTab === 'fundraising' && (
+                <div className="mb-3 p-3 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-xl">
+                  <div className="flex items-center mb-2">
+                    <TrendingUp className="h-4 w-4 mr-2 text-orange-600" />
+                    <h4 className="text-sm font-semibold text-orange-900">Fundraising Donation</h4>
+                    <Badge className="ml-2 bg-orange-600 text-white text-xs">7x Value</Badge>
+                  </div>
+                  <p className="text-xs text-orange-700 mb-2">
+                    Help us grow our organization and reach more donors! Every £1 helps us advertise and expand our reach.
+                  </p>
+                  <div className="bg-white p-2 rounded-lg border border-orange-200">
+                    <div className="text-xs text-orange-700">
+                      <span className="font-medium">Impact:</span> Your donation helps us advertise YourJannah to attract new donors and grow our charitable impact globally.
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Gift Section - Enhanced with cause selection and solid backgrounds */}
               {activeTab === 'gift' && (
                 <div className="mb-3 p-3 bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-200 rounded-xl">
@@ -519,6 +558,10 @@ const StickyDonationWidget = () => {
                       <div className="text-xs bg-pink-50 border border-pink-300 rounded-xl px-3 py-1.5 text-pink-700">
                         Gift Donation
                       </div>
+                    ) : activeTab === 'fundraising' ? (
+                      <div className="text-xs bg-orange-50 border border-orange-300 rounded-xl px-3 py-1.5 text-orange-700">
+                        Fundraising Donation
+                      </div>
                     ) : (
                       <Select value={selectedCause} onValueChange={setSelectedCause}>
                         <SelectTrigger className={`text-xs w-full rounded-xl ${isSticky ? 'h-7' : 'h-8'} ${
@@ -675,6 +718,22 @@ const StickyDonationWidget = () => {
                           2x
                         </Badge>
                       )}
+                    </Button>
+                  ) : activeTab === 'fundraising' ? (
+                    /* Fundraising Button with special orange glow */
+                    <Button className={`flex-1 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold transition-all duration-300 rounded-xl ${isSticky ? 'h-7' : 'h-8'} relative overflow-hidden`}
+                      style={{
+                        animation: 'gentle-pulse 3s ease-in-out infinite, fundraising-glow 2.5s ease-in-out infinite'
+                      }}
+                    >
+                      <span className="relative z-10 flex items-center justify-center">
+                        <TrendingUp className={`${isSticky ? 'h-3 w-3' : 'h-4 w-4'} mr-2`} />
+                        Fund Growth {currentCurrency?.symbol}{donationAmount}
+                      </span>
+                      
+                      <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-[8px] px-1 py-0 z-20 rounded-lg">
+                        7x
+                      </Badge>
                     </Button>
                   ) : (
                     /* Main Donate Button with gentle pulse animation and green glow */
