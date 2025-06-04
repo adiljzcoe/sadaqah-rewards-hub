@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,45 +59,57 @@ const fundraisingDonations = [
 const getAdminContributionMessage = (percentage: number) => {
   if (percentage >= 15) {
     return {
-      emoji: "🌟✨",
-      message: "You're absolutely AMAZING! This incredible generosity will transform lives! 🎉💖",
-      bgColor: "from-purple-100 to-pink-100",
-      textColor: "text-purple-800"
+      emoji: "🌟✨🎉",
+      message: "You're absolutely AMAZING! This incredible generosity will transform lives!",
+      bgGradient: "from-purple-400 via-pink-400 to-red-400",
+      textColor: "text-white",
+      borderColor: "border-purple-300",
+      celebrationEmojis: ["🎉", "🌟", "✨", "💫", "🎊"]
     };
   } else if (percentage >= 10) {
     return {
-      emoji: "😍🙌",
-      message: "WOW! You're a true hero! This makes such a huge difference! 💫",
-      bgColor: "from-blue-100 to-purple-100",
-      textColor: "text-blue-800"
+      emoji: "😍🙌💖",
+      message: "WOW! You're a true hero! This makes such a huge difference!",
+      bgGradient: "from-blue-400 via-purple-400 to-pink-400",
+      textColor: "text-white",
+      borderColor: "border-blue-300",
+      celebrationEmojis: ["🙌", "😍", "💖", "🚀", "⭐"]
     };
   } else if (percentage >= 6) {
     return {
-      emoji: "😊💙",
-      message: "Thank you so much! Your kindness is truly appreciated! 🌈",
-      bgColor: "from-green-100 to-blue-100",
-      textColor: "text-green-800"
+      emoji: "😊💙🌈",
+      message: "Thank you so much! Your kindness is truly appreciated!",
+      bgGradient: "from-green-400 via-blue-400 to-purple-400",
+      textColor: "text-white",
+      borderColor: "border-green-300",
+      celebrationEmojis: ["😊", "💙", "🌈", "💚", "✨"]
     };
   } else if (percentage >= 3) {
     return {
-      emoji: "😌💚",
-      message: "That's wonderful! Every bit helps our partners deliver aid! 🤝",
-      bgColor: "from-yellow-100 to-green-100",
-      textColor: "text-green-700"
+      emoji: "😌💚🤝",
+      message: "That's wonderful! Every bit helps our partners deliver aid!",
+      bgGradient: "from-yellow-400 via-green-400 to-blue-400",
+      textColor: "text-white",
+      borderColor: "border-green-200",
+      celebrationEmojis: ["😌", "💚", "🤝", "👍", "💫"]
     };
   } else if (percentage >= 1) {
     return {
-      emoji: "🙂👍",
-      message: "Thank you! This helps our hardworking partners! 💪",
-      bgColor: "from-orange-100 to-yellow-100",
-      textColor: "text-orange-700"
+      emoji: "🙂👍💪",
+      message: "Thank you! This helps our hardworking partners!",
+      bgGradient: "from-orange-300 via-yellow-400 to-green-400",
+      textColor: "text-white",
+      borderColor: "border-orange-200",
+      celebrationEmojis: ["🙂", "👍", "💪", "🌟", "💛"]
     };
   } else {
     return {
       emoji: "😊🤲",
-      message: "This helps our partners with their essential running costs! 🏠",
-      bgColor: "from-gray-100 to-orange-100",
-      textColor: "text-gray-700"
+      message: "This helps our partners with their essential running costs!",
+      bgGradient: "from-gray-300 via-blue-300 to-green-300",
+      textColor: "text-gray-800",
+      borderColor: "border-gray-200",
+      celebrationEmojis: ["😊", "🤲", "🏠", "💼", "🤗"]
     };
   }
 };
@@ -112,6 +123,7 @@ const Checkout = () => {
   const [paymentFrequency, setPaymentFrequency] = useState('one-time');
   const [currency] = useState('GBP');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [celebrationEmojis, setCelebrationEmojis] = useState<Array<{id: number, emoji: string, x: number, y: number}>>([]);
 
   const form = useForm({
     defaultValues: {
@@ -135,6 +147,31 @@ const Checkout = () => {
   const grandTotal = subtotal + adminFeeAmount;
 
   const adminMessage = getAdminContributionMessage(adminFeePercentage);
+
+  const triggerCelebration = (newPercentage: number) => {
+    const message = getAdminContributionMessage(newPercentage);
+    const newEmojis = message.celebrationEmojis.map((emoji, index) => ({
+      id: Date.now() + index,
+      emoji,
+      x: Math.random() * 300 + 50,
+      y: Math.random() * 100 + 50
+    }));
+    
+    setCelebrationEmojis(prev => [...prev, ...newEmojis]);
+    
+    // Remove emojis after animation
+    setTimeout(() => {
+      setCelebrationEmojis(prev => prev.filter(e => !newEmojis.find(ne => ne.id === e.id)));
+    }, 3000);
+  };
+
+  const handleSliderChange = (value: number[]) => {
+    const newValue = value[0];
+    if (newValue > adminFeePercentage) {
+      triggerCelebration(newValue);
+    }
+    setAdminFeePercentage(newValue);
+  };
 
   const handleFundraisingDonationClick = (amount: number) => {
     setSelectedFundraisingDonation(amount);
@@ -306,63 +343,119 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Admin Contribution - Enhanced Design */}
-            <Card className="mb-6 shadow-sm border-gray-200 overflow-hidden">
-              <CardContent className="pt-6">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="text-3xl mr-3">{adminMessage.emoji}</div>
-                      <span className="text-lg font-semibold text-pink-600">
-                        Admin contribution: {adminFeePercentage}% (£{adminFeeAmount.toFixed(2)})
-                      </span>
+            {/* Enhanced Admin Contribution Section */}
+            <Card className="mb-6 shadow-lg border-2 border-gradient-to-r from-pink-200 to-purple-200 bg-gradient-to-br from-white via-blue-50 to-purple-50 overflow-hidden relative">
+              {/* Celebration Emojis */}
+              {celebrationEmojis.map(({ id, emoji, x, y }) => (
+                <div
+                  key={id}
+                  className="absolute pointer-events-none text-2xl animate-float-up z-20"
+                  style={{ left: `${x}px`, top: `${y}px` }}
+                >
+                  {emoji}
+                </div>
+              ))}
+
+              <CardHeader className="pb-4 relative">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg transform rotate-3">
+                      <Heart className="h-8 w-8 text-white animate-pulse" />
                     </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className={`px-6 py-8 bg-gradient-to-r ${adminMessage.bgColor} rounded-xl border-2 border-opacity-20 border-current`}>
-                      <Slider
-                        value={[adminFeePercentage]}
-                        onValueChange={(value) => setAdminFeePercentage(value[0])}
-                        max={20}
-                        min={0.5}
-                        step={0.5}
-                        className="w-full h-4"
-                      />
-                      <div className="flex justify-between text-sm text-gray-600 mt-4 px-1">
-                        <span className="font-medium">0.5%</span>
-                        <span className="font-medium">5%</span>
-                        <span className="font-medium">10%</span>
-                        <span className="font-medium">15%</span>
-                        <span className="font-medium">20%</span>
+                    <div>
+                      <CardTitle className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                        Admin Contribution
+                      </CardTitle>
+                      <div className="flex items-center mt-2">
+                        <Badge className="bg-gradient-to-r from-pink-500 to-purple-600 text-white border-0 shadow-md">
+                          {adminFeePercentage}% (£{adminFeeAmount.toFixed(2)})
+                        </Badge>
+                        <div className="ml-3 text-lg">
+                          {adminMessage.emoji}
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                      {[2, 4, 6, 8].map((percentage) => (
-                        <Button
-                          key={percentage}
-                          type="button"
-                          variant={adminFeePercentage === percentage ? "default" : "outline"}
-                          className="h-12 text-base font-medium"
-                          onClick={() => setAdminFeePercentage(percentage)}
-                        >
-                          {percentage}%
-                        </Button>
-                      ))}
-                    </div>
                   </div>
-                  
-                  <div className={`bg-gradient-to-r ${adminMessage.bgColor} p-6 rounded-xl border border-opacity-20 border-current`}>
-                    <p className={`text-base ${adminMessage.textColor} leading-relaxed font-medium text-center`}>
-                      <span className="text-2xl mr-2">{adminMessage.emoji}</span>
+                </div>
+              </CardHeader>
+
+              <CardContent className="space-y-6">
+                {/* Animated Message Box */}
+                <div className={`relative p-6 rounded-2xl bg-gradient-to-r ${adminMessage.bgGradient} border-2 ${adminMessage.borderColor} shadow-xl transform transition-all duration-500 hover:scale-105`}>
+                  <div className="absolute inset-0 bg-white opacity-10 rounded-2xl"></div>
+                  <div className="relative">
+                    <p className={`text-lg ${adminMessage.textColor} font-semibold text-center leading-relaxed`}>
+                      <span className="text-2xl mr-3">{adminMessage.emoji}</span>
                       {adminMessage.message}
                     </p>
                   </div>
+                  {/* Sparkle Effects */}
+                  <div className="absolute top-2 right-2 text-white opacity-70 animate-sparkle">✨</div>
+                  <div className="absolute bottom-2 left-2 text-white opacity-70 animate-sparkle" style={{ animationDelay: '1s' }}>⭐</div>
+                </div>
+
+                {/* Enhanced Slider */}
+                <div className="space-y-6">
+                  <div className="relative p-6 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-2xl border-2 border-gradient-to-r from-blue-200 to-purple-200 shadow-inner">
+                    <div className="relative">
+                      <Slider
+                        value={[adminFeePercentage]}
+                        onValueChange={handleSliderChange}
+                        max={20}
+                        min={0.5}
+                        step={0.5}
+                        className="w-full h-6 relative z-10"
+                      />
+                      
+                      {/* Custom track styling */}
+                      <div className="absolute inset-0 pointer-events-none">
+                        <div className="h-6 flex items-center">
+                          <div className="w-full h-3 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full shadow-inner"></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between text-sm font-medium text-gray-600 mt-4 px-2">
+                      <span className="bg-white px-2 py-1 rounded-full shadow-sm">0.5%</span>
+                      <span className="bg-white px-2 py-1 rounded-full shadow-sm">5%</span>
+                      <span className="bg-white px-2 py-1 rounded-full shadow-sm">10%</span>
+                      <span className="bg-white px-2 py-1 rounded-full shadow-sm">15%</span>
+                      <span className="bg-white px-2 py-1 rounded-full shadow-sm">20%</span>
+                    </div>
+                  </div>
                   
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      <Info className="h-4 w-4 inline mr-1 text-blue-600" />
+                  {/* Quick Selection Buttons */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[2, 4, 6, 8].map((percentage) => (
+                      <Button
+                        key={percentage}
+                        type="button"
+                        variant={adminFeePercentage === percentage ? "default" : "outline"}
+                        className={`h-14 text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-md ${
+                          adminFeePercentage === percentage 
+                            ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border-0 shadow-lg' 
+                            : 'bg-white border-2 border-gray-200 hover:border-pink-300 hover:bg-pink-50'
+                        }`}
+                        onClick={() => {
+                          if (percentage > adminFeePercentage) {
+                            triggerCelebration(percentage);
+                          }
+                          setAdminFeePercentage(percentage);
+                        }}
+                      >
+                        {percentage}%
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Info Section */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200 shadow-sm">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                      <Info className="h-4 w-4 text-white" />
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed font-medium">
                       We have agreed 100% donation with ALL our donation partners. Admin contribution helps us help them with their running costs - they work very hard to deliver aid and also have families to support.
                     </p>
                   </div>
