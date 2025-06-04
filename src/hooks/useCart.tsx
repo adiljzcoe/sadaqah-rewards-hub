@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CartItem {
@@ -7,6 +6,7 @@ interface CartItem {
   price: number;
   quantity: number;
   type: 'donation' | 'membership' | 'product';
+  image?: string;
 }
 
 interface CartContextType {
