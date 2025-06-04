@@ -270,20 +270,9 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            
-            {/* Home */}
-            <Link 
-              to="/" 
-              onClick={handleLinkClick}
-              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              <span className="text-lg mr-3">🏠</span>
-              Home
-            </Link>
-
-            {/* Enhanced Checkout Section */}
-            {totalItems > 0 && (
+          {/* Enhanced Checkout Section - Positioned under the badge */}
+          {totalItems > 0 && (
+            <div className="px-4 pb-4">
               <Link 
                 to="/checkout" 
                 onClick={handleLinkClick}
@@ -305,7 +294,20 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                   <span className="text-sm font-bold text-white drop-shadow-md">£{totalAmount.toFixed(2)}</span>
                 </div>
               </Link>
-            )}
+            </div>
+          )}
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            
+            {/* Home */}
+            <Link 
+              to="/" 
+              onClick={handleLinkClick}
+              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
+              <span className="text-lg mr-3">🏠</span>
+              Home
+            </Link>
 
             {/* User Login Section */}
             <Collapsible open={userLoginOpen} onOpenChange={(isOpen) => {

@@ -701,10 +701,10 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Right Section - Cart, Desktop Menu, and Mobile Menu */}
+          {/* Right Section - Desktop Checkout and Mobile Menu */}
           <div className="flex items-center space-x-4">
-            {/* Enhanced Checkout Button */}
-            <Link to="/checkout">
+            {/* Desktop Checkout Button */}
+            <Link to="/checkout" className="hidden lg:block">
               <Button className="relative bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-xl ring-2 ring-pink-400/30 hover:ring-pink-300/50 backdrop-blur-sm">
                 <ShoppingCart className="h-4 w-4 mr-2 drop-shadow-md" />
                 <span className="drop-shadow-md">Checkout</span>
