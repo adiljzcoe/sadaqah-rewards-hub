@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +21,12 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      // Check if it's the fake admin user
+      if (user.id === '00000000-0000-0000-0000-000000000001' || user.email === 'admin@test.com') {
+        navigate('/admin-dashboard');
+      } else {
+        navigate('/');
+      }
     }
   }, [user, navigate]);
 
@@ -38,6 +42,20 @@ const Auth = () => {
     setLoading(true);
     await signUp(email, password, fullName);
     setLoading(false);
+  };
+
+  const handleFakeAdminLogin = () => {
+    setLoading(true);
+    fakeAdminLogin();
+    // The useEffect will handle navigation after user state updates
+    setTimeout(() => setLoading(false), 1000);
+  };
+
+  const handleFakeUserLogin = () => {
+    setLoading(true);
+    fakeUserLogin();
+    // The useEffect will handle navigation after user state updates
+    setTimeout(() => setLoading(false), 1000);
   };
 
   const handleTestLogin = async () => {
@@ -119,7 +137,7 @@ const Auth = () => {
           {/* Fake Login Buttons - Working Solution */}
           <div className="mb-6 space-y-2">
             <Button
-              onClick={fakeUserLogin}
+              onClick={handleFakeUserLogin}
               className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
               disabled={loading}
             >
@@ -128,7 +146,7 @@ const Auth = () => {
             </Button>
             
             <Button
-              onClick={fakeAdminLogin}
+              onClick={handleFakeAdminLogin}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium"
               disabled={loading}
             >
