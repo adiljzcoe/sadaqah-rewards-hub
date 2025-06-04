@@ -43,9 +43,9 @@ const FloatingCheckoutWidget = ({
         <div className="relative z-20 container mx-auto px-4 py-4 max-w-4xl">
           <div className="flex items-center justify-between">
             {/* Payment Amount Section */}
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-1">
               {/* Total to Pay */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <div className="flex items-center">
                   <CreditCard className="h-5 w-5 text-cyan-400 mr-2 drop-shadow-lg" />
                   <span className="text-sm text-cyan-200 drop-shadow-md">Total to Pay:</span>
@@ -57,17 +57,17 @@ const FloatingCheckoutWidget = ({
 
               {/* Your Total Impact - only show when fundraising donation selected */}
               {fundraisingAmount > 0 && (
-                <div className="flex items-center space-x-2 ml-7">
-                  <span className="text-xs text-cyan-300">The true value of your donation is:</span>
-                  <div className="text-lg font-bold text-pink-300 drop-shadow-md">
+                <div className="flex items-center space-x-2 ml-7 mt-1">
+                  <span className="text-xs text-cyan-300/90">The true value of your donation is:</span>
+                  <div className="text-base font-semibold text-pink-300 drop-shadow-md">
                     £{impactTotal.toFixed(2)}
                   </div>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-4 w-4 text-cyan-400 hover:text-cyan-300 cursor-help" />
+                      <Info className="h-3.5 w-3.5 text-cyan-400/80 hover:text-cyan-300 cursor-help ml-1" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p>Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
+                    <TooltipContent className="max-w-xs bg-slate-800 border-cyan-400/20">
+                      <p className="text-sm">Your donation creates multiplied impact through our fundraising platform. The true value includes the additional funds raised by your contribution to the campaign.</p>
                     </TooltipContent>
                   </Tooltip>
                 </div>
