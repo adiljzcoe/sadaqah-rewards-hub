@@ -33,6 +33,7 @@ const DonationWidget = ({
   const [message, setMessage] = useState('');
   const [anonymous, setAnonymous] = useState(false);
   const [isCustom, setIsCustom] = useState(false);
+  const [showMembership, setShowMembership] = useState(false);
 
   const { trackDonation, trackClick, getAttributionData } = useUTMTracking();
   const { currency } = useCurrency();
@@ -207,6 +208,53 @@ const DonationWidget = ({
             <Label htmlFor="anonymous" className="text-sm">
               Make this donation anonymous
             </Label>
+          </div>
+
+          {/* Membership Upsell */}
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-semibold text-purple-800">Multiply Your Impact</h4>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowMembership(!showMembership)}
+                className="text-purple-600 p-1"
+              >
+                {showMembership ? '−' : '+'}
+              </Button>
+            </div>
+            
+            {showMembership ? (
+              <div className="space-y-3">
+                <p className="text-sm text-purple-700">
+                  Join our membership to earn 1000 sadaqah coins per £1 spent, plus multiplied rewards on all donations.
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="bg-white p-2 rounded border">
+                    <div className="font-medium text-purple-800">VIP - £9.99</div>
+                    <div className="text-purple-600">2x rewards + 9,990 coins</div>
+                  </div>
+                  <div className="bg-white p-2 rounded border">
+                    <div className="font-medium text-purple-800">Elite - £19.99</div>
+                    <div className="text-purple-600">3x rewards + 19,990 coins</div>
+                  </div>
+                </div>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-purple-300 text-purple-700 hover:bg-purple-100"
+                  onClick={() => trackClick('membership-upsell', 'membership_cta')}
+                >
+                  Learn More About Membership
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-purple-700">
+                Get 1000 sadaqah coins per £1 with membership + multiplied rewards
+              </p>
+            )}
           </div>
 
           {/* Trust Information */}

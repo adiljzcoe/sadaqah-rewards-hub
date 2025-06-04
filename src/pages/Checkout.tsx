@@ -20,7 +20,8 @@ const membershipTiers = [
     price: 19.99, 
     originalPrice: 29.99,
     multiplier: 2, 
-    features: ['2x Points', '2x Coins', 'Priority Support', 'Monthly Newsletter'],
+    sadaqahCoins: 19990, // 1000 coins per £1
+    features: ['2x Points', '2x Coins', 'Priority Support', 'Monthly Newsletter', '19,990 Sadaqah Coins'],
     badge: 'POPULAR'
   },
   { 
@@ -29,7 +30,8 @@ const membershipTiers = [
     price: 39.99, 
     originalPrice: 59.99,
     multiplier: 3, 
-    features: ['3x Points', '3x Coins', 'VIP Access', 'Monthly Rewards', 'Exclusive Content'],
+    sadaqahCoins: 39990, // 1000 coins per £1
+    features: ['3x Points', '3x Coins', 'VIP Access', 'Monthly Rewards', 'Exclusive Content', '39,990 Sadaqah Coins'],
     badge: 'BEST VALUE'
   },
   { 
@@ -38,7 +40,8 @@ const membershipTiers = [
     price: 79.99, 
     originalPrice: 119.99,
     multiplier: 5, 
-    features: ['5x Points', '5x Coins', 'Exclusive Events', 'Personal Manager', 'Early Access'],
+    sadaqahCoins: 79990, // 1000 coins per £1
+    features: ['5x Points', '5x Coins', 'Exclusive Events', 'Personal Manager', 'Early Access', '79,990 Sadaqah Coins'],
     badge: 'PREMIUM'
   }
 ];
@@ -198,6 +201,11 @@ const Checkout = () => {
 
   const selectedTier = membershipTiers.find(tier => tier.id === selectedMembership);
   const membershipPrice = selectedTier?.price || 0;
+  
+  // Calculate membership fee breakdown
+  const membershipAdminFee = membershipPrice * 0.05; // 5% admin
+  const membershipFundraisingFee = membershipPrice * 0.05; // 5% fundraising
+  const membershipNetAmount = membershipPrice - membershipAdminFee - membershipFundraisingFee; // 90% to platform
   
   // Calculate fundraising donation amount
   const fundraisingAmount = selectedFundraisingDonation;
@@ -621,7 +629,7 @@ const Checkout = () => {
               </CardContent>
             </Card>
 
-            {/* Membership Upsell Section */}
+            {/* Enhanced Membership Upsell Section */}
             <Card className="mb-6 shadow-lg border-2 border-gradient-to-r from-purple-200 to-pink-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 overflow-hidden relative">
               {/* Celebration Emojis */}
               {membershipCelebrationEmojis.map(({ id, emoji, x, y }) => (
@@ -646,7 +654,7 @@ const Checkout = () => {
                       </CardTitle>
                       <div className="flex items-center mt-2">
                         <Badge className="bg-gradient-to-r from-purple-500 to-pink-600 text-white border-0 shadow-md">
-                          Earn More Points & Rewards
+                          1000 Sadaqah Coins per £1
                         </Badge>
                         <div className="ml-3 text-lg">
                           ✨👑💫
@@ -655,7 +663,7 @@ const Checkout = () => {
                     </div>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 mt-2">Choose a membership to multiply your impact and unlock exclusive benefits</p>
+                <p className="text-sm text-gray-600 mt-2">Earn sadaqah coins for every £1 spent - use for micropayments within our system</p>
               </CardHeader>
 
               <CardContent className="space-y-6">
@@ -689,20 +697,24 @@ const Checkout = () => {
                           <div className="text-sm text-gray-600">per month</div>
                         </div>
                         
-                        <Badge className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border border-purple-300 mb-4">
+                        <Badge className="bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 border border-purple-300 mb-2">
                           {tier.multiplier}x Rewards
                         </Badge>
                         
+                        <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-300 mb-4 block">
+                          {tier.sadaqahCoins.toLocaleString()} Coins
+                        </Badge>
+                        
                         <div className="space-y-2 text-left">
-                          {tier.features.slice(0, 3).map((feature, index) => (
+                          {tier.features.slice(0, 4).map((feature, index) => (
                             <div key={index} className="flex items-center text-sm">
                               <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
                               <span>{feature}</span>
                             </div>
                           ))}
-                          {tier.features.length > 3 && (
+                          {tier.features.length > 4 && (
                             <div className="text-xs text-gray-500">
-                              +{tier.features.length - 3} more benefits
+                              +{tier.features.length - 4} more benefits
                             </div>
                           )}
                         </div>
@@ -718,7 +730,7 @@ const Checkout = () => {
                 {/* Selected Membership Summary */}
                 {selectedTier && (
                   <div className="mt-6 p-6 bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 rounded-2xl border-2 border-purple-200 shadow-inner">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center">
                         <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center mr-4">
                           <Crown className="h-5 w-5 text-white" />
@@ -728,7 +740,7 @@ const Checkout = () => {
                             {selectedTier.name} Membership
                           </span>
                           <div className="text-sm text-purple-600">
-                            Unlock {selectedTier.multiplier}x rewards on all donations!
+                            Unlock {selectedTier.multiplier}x rewards + {selectedTier.sadaqahCoins.toLocaleString()} coins!
                           </div>
                         </div>
                       </div>
@@ -747,20 +759,43 @@ const Checkout = () => {
                         </Button>
                       </div>
                     </div>
+                    
+                    {/* Fee Breakdown */}
+                    <div className="bg-white p-4 rounded-xl border border-purple-200 space-y-2">
+                      <h4 className="font-semibold text-gray-800 mb-2">Monthly Fee Breakdown:</h4>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Platform Access (90%)</span>
+                        <span className="font-medium">£{membershipNetAmount.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Admin Support (5%)</span>
+                        <span className="font-medium">£{membershipAdminFee.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Fundraising Pool (5%)</span>
+                        <span className="font-medium">£{membershipFundraisingFee.toFixed(2)}</span>
+                      </div>
+                      <div className="border-t pt-2 flex justify-between font-bold">
+                        <span>Total Monthly</span>
+                        <span>£{selectedTier.price}</span>
+                      </div>
+                    </div>
                   </div>
                 )}
 
-                {/* Benefits Explanation */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200 shadow-sm">
+                {/* Sadaqah Coins Explanation */}
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border-2 border-green-200 shadow-sm">
                   <div className="flex items-start">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                    <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
                       <Star className="h-4 w-4 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-800 mb-2">Why Upgrade?</h4>
+                      <h4 className="font-semibold text-gray-800 mb-2">How Sadaqah Coins Work</h4>
+                      <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                        Receive 1000 sadaqah coins for every £1 of your membership fee. Use these coins for micropayments within our system throughout the month.
+                      </p>
                       <p className="text-sm text-gray-700 leading-relaxed">
-                        Membership multiplies your impact points, gives you priority support, and unlocks exclusive features. 
-                        Cancel anytime, and your benefits continue until the end of your billing period.
+                        At month's end, all coin usage is totaled and the equivalent amount is distributed to verified charities based on your preferences.
                       </p>
                     </div>
                   </div>
