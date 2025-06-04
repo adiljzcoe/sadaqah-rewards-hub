@@ -168,14 +168,29 @@ const DataSeeder = () => {
   const seedDonations = async (charities: any[]) => {
     console.log('🌱 Seeding donations...');
     
-    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
-    console.log('👤 Using user ID for donations:', userId);
-    
+    // First, try to get a real user from the profiles table
+    const { data: profiles, error: profilesError } = await supabase
+      .from('profiles')
+      .select('id')
+      .limit(5);
+
+    if (profilesError) {
+      console.error('❌ Error fetching profiles:', profilesError);
+    }
+
+    const availableUserIds = profiles?.map(p => p.id) || [];
+    console.log('👥 Available user IDs:', availableUserIds.length);
+
     const donations = [];
     
     for (let i = 0; i < 15; i++) {
       const charity = charities[i % charities.length];
       const amount = Math.floor(Math.random() * 50000) + 10000;
+      
+      // Use a real user ID if available, otherwise set to null
+      const userId = availableUserIds.length > 0 
+        ? availableUserIds[i % availableUserIds.length] 
+        : null;
       
       donations.push({
         user_id: userId,
@@ -316,7 +331,7 @@ const DataSeeder = () => {
             <ul className="text-sm text-muted-foreground space-y-1">
               <li className="flex items-center gap-2">
                 <Users className="h-3 w-3" />
-                Admin profile + 4 verified charities with realistic trust ratings
+                4 verified charities with realistic trust ratings
               </li>
               <li className="flex items-center gap-2">
                 <Heart className="h-3 w-3" />
@@ -359,9 +374,9 @@ const DataSeeder = () => {
           </div>
         )}
 
-        <div className="mt-4 p-3 bg-green-50 rounded-lg">
-          <p className="text-sm text-green-700">
-            ✅ RLS policies have been updated. Data seeding should now work properly.
+        <div className="mt-4 p-3 bg-amber-50 rounded-lg">
+          <p className="text-sm text-amber-700">
+            ⚠️ Create some users first using the "User Mgmt" tab for better donation seeding with real user IDs.
           </p>
         </div>
       </CardContent>
