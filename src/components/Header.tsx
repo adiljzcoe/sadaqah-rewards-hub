@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -703,20 +702,24 @@ const Header = () => {
           </nav>
 
           {/* Right Section - Cart, Desktop Menu, and Mobile Menu */}
-          <div className="flex items-center space-x-3 relative z-40">
-            {/* Checkout Button - Only show when there are items */}
-            {totalItems > 0 && (
-              <Link to="/checkout">
-                <Button className="relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl rounded-xl ring-2 ring-green-400/30 hover:ring-green-300/50">
-                  <ShoppingCart className="h-5 w-5 mr-2" />
-                  <span className="hidden sm:inline">Checkout</span>
-                  <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center rounded-full animate-pulse">
+          <div className="flex items-center space-x-4">
+            {/* Checkout Button */}
+            <Link to="/checkout">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="relative border-cyan-400/50 text-cyan-300 hover:bg-cyan-900/50 backdrop-blur-sm"
+              >
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Checkout
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {totalItems}
-                  </Badge>
-                </Button>
-              </Link>
-            )}
-
+                  </span>
+                )}
+              </Button>
+            </Link>
+            
             {/* Desktop Menu - Hidden on mobile, visible on desktop */}
             <div className="hidden md:block lg:hidden relative z-30">
               <MobileSidebar 

@@ -17,6 +17,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
+import { ShoppingCart } from 'lucide-react';
 
 interface MobileSidebarProps {
   userLevel: number;
@@ -36,6 +38,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   const [userLoginOpen, setUserLoginOpen] = useState(false);
 
   const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
+  const { totalItems, totalAmount } = useCart();
   const progress = (currentPoints / nextLevelPoints) * 100;
 
   const handleLinkClick = () => {
@@ -198,14 +201,19 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
           <Menu className="h-6 w-6" />
+          {totalItems > 0 && (
+            <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+              {totalItems}
+            </span>
+          )}
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
         
         <div className="flex flex-col h-full">
-          {/* Enhanced Golden User Plaque - Moved Higher */}
+          {/* Enhanced Golden User Plaque */}
           <div className="p-4">
             <div className="text-center">
               {/* Golden Plaque Container */}
@@ -273,6 +281,24 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <span className="text-lg mr-3">🏠</span>
               Home
             </Link>
+
+            {/* Checkout Section - Add this before User Login Section */}
+            {totalItems > 0 && (
+              <Link 
+                to="/checkout" 
+                onClick={handleLinkClick}
+                className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              >
+                <div className="flex items-center">
+                  <ShoppingCart className="h-5 w-5 mr-3" />
+                  <span>Checkout</span>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-sm font-bold">£{totalAmount.toFixed(2)}</span>
+                  <span className="text-xs text-white/80">{totalItems} item{totalItems !== 1 ? 's' : ''}</span>
+                </div>
+              </Link>
+            )}
 
             {/* User Login Section */}
             <Collapsible open={userLoginOpen} onOpenChange={(isOpen) => {
