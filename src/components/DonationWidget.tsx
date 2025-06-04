@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,15 +96,26 @@ const DonationWidget = ({
     }
   };
 
-  const handleDonateClick = async () => {
-    // Get the actual donation amount
-    const donationAmount = isCustom ? parseFloat(customAmount) : parseFloat(amount);
-    
-    console.log('DonationWidget: Starting donation process');
+  const handleDonateClick = () => {
+    console.log('DonationWidget: handleDonateClick called!');
     console.log('DonationWidget: isCustom:', isCustom);
     console.log('DonationWidget: amount state:', amount);
     console.log('DonationWidget: customAmount state:', customAmount);
+    
+    // Get the actual donation amount - fix the logic here
+    let donationAmount = 0;
+    let displayAmount = '';
+    
+    if (isCustom) {
+      donationAmount = parseFloat(customAmount) || 0;
+      displayAmount = customAmount || '0';
+    } else {
+      donationAmount = parseFloat(amount) || 0;
+      displayAmount = amount || '25';
+    }
+    
     console.log('DonationWidget: calculated donationAmount:', donationAmount);
+    console.log('DonationWidget: displayAmount for animation:', displayAmount);
     
     if (!donationAmount || donationAmount <= 0) {
       console.log('DonationWidget: Invalid donation amount, showing alert');
@@ -111,18 +123,10 @@ const DonationWidget = ({
       return;
     }
 
-    // Get the display amount for animation
-    const displayAmount = isCustom ? customAmount : amount;
-    
-    console.log('DonationWidget: displayAmount for animation:', displayAmount);
     console.log('DonationWidget: About to trigger heart animation...');
     
-    // Force trigger the heart animation
-    setHeartAnimationTrigger(prev => {
-      console.log('DonationWidget: Previous trigger state:', prev);
-      return true;
-    });
-    
+    // Trigger the heart animation
+    setHeartAnimationTrigger(true);
     console.log('DonationWidget: Heart animation trigger set to TRUE');
     
     setIsAdding(true);
@@ -176,6 +180,7 @@ const DonationWidget = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('DonationWidget: Form submitted!');
     handleDonateClick();
   };
 
@@ -360,7 +365,7 @@ const DonationWidget = ({
 
           {/* Submit Button with enhanced feedback */}
           <Button 
-            type="button"
+            type="submit"
             className={`w-full transition-all duration-300 relative ${
               justAdded 
                 ? 'bg-green-600 hover:bg-green-700 scale-105' 
