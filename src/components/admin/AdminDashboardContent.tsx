@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,7 +23,7 @@ import RealTimeMonitoring from './RealTimeMonitoring';
 import ProductManagement from './ProductManagement';
 import GiftCardManagement from './GiftCardManagement';
 import AffiliateSystem from './AffiliateSystem';
-import DisbursementManagement;
+import DisbursementManagement from './DisbursementManagement';
 import CharityPartnerManagement from './CharityPartnerManagement';
 
 const AdminDashboardContent = () => {
@@ -53,50 +54,52 @@ const AdminDashboardContent = () => {
 
       <main className="flex-1 overflow-y-auto">
         <div className="p-6">
-          {activeTab === 'dashboard' && (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">2,847</div>
-                  <p className="text-xs text-muted-foreground">+12% from last month</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Donations</CardTitle>
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">£247,891</div>
-                  <p className="text-xs text-muted-foreground">+18% from last month</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">156</div>
-                  <p className="text-xs text-muted-foreground">+5% from last month</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Platform Health</CardTitle>
-                  <Activity className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">98.9%</div>
-                  <p className="text-xs text-muted-foreground">Uptime this month</p>
-                </CardContent>
-              </Card>
-            </div>
-            <DashboardCharts />
+          {activeTab === 'overview' && (
+            <>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">2,847</div>
+                    <p className="text-xs text-muted-foreground">+12% from last month</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Donations</CardTitle>
+                    <DollarSign className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">£247,891</div>
+                    <p className="text-xs text-muted-foreground">+18% from last month</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+                    <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">156</div>
+                    <p className="text-xs text-muted-foreground">+5% from last month</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Platform Health</CardTitle>
+                    <Activity className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">98.9%</div>
+                    <p className="text-xs text-muted-foreground">Uptime this month</p>
+                  </CardContent>
+                </Card>
+              </div>
+              <DashboardCharts />
+            </>
           )}
           
           {activeTab === 'charity-partners' && <CharityPartnerManagement />}
@@ -104,43 +107,51 @@ const AdminDashboardContent = () => {
           {activeTab === 'users' && <AdvancedUserManagement />}
           
           {activeTab === 'financial' && (
-            <div className="grid gap-6 md:grid-cols-2">
-              <FinancialManagement />
-              <DisbursementManagement />
-            </div>
-            <CharityVerification />
+            <>
+              <div className="grid gap-6 md:grid-cols-2">
+                <FinancialManagement />
+                <DisbursementManagement />
+              </div>
+              <CharityVerification />
+            </>
           )}
           
           {activeTab === 'data' && (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <SimpleDataSeeder />
-              <DuaDataSeeder />
-              <DuasLibrarySeeder />
-            </div>
-            <DataSeeder />
+            <>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <SimpleDataSeeder />
+                <DuaDataSeeder />
+                <DuasLibrarySeeder />
+              </div>
+              <DataSeeder />
+            </>
           )}
           
           {activeTab === 'security' && <ComplianceAndSecurity />}
           
           {activeTab === 'marketing' && (
-            <div className="grid gap-6">
-              <div className="grid gap-6 md:grid-cols-3">
-                <PushNotifications />
-                <SMSNotifications />
-                <EmailMarketing />
+            <>
+              <div className="grid gap-6">
+                <div className="grid gap-6 md:grid-cols-3">
+                  <PushNotifications />
+                  <SMSNotifications />
+                  <EmailMarketing />
+                </div>
+                <MarketingCampaigns />
+                <UTMAnalytics />
+                <GrowthOpportunities />
               </div>
-              <MarketingCampaigns />
-              <UTMAnalytics />
-              <GrowthOpportunities />
-            </div>
+            </>
           )}
           
           {activeTab === 'products' && (
-            <div className="grid gap-6 md:grid-cols-2">
-              <ProductManagement />
-              <GiftCardManagement />
-            </div>
-            <AffiliateSystem />
+            <>
+              <div className="grid gap-6 md:grid-cols-2">
+                <ProductManagement />
+                <GiftCardManagement />
+              </div>
+              <AffiliateSystem />
+            </>
           )}
           
           {activeTab === 'monitoring' && (
