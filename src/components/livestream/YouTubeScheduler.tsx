@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, Volume2, VolumeX, Clock, Mosque } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Clock, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface YouTubeChannel {
@@ -171,7 +171,7 @@ const YouTubeScheduler = () => {
             <div className="flex items-center gap-2">
               {isAthanTime && (
                 <Badge className="bg-green-600 animate-pulse">
-                  <Mosque className="h-3 w-3 mr-1" />
+                  <Star className="h-3 w-3 mr-1" />
                   {currentAhan?.prayer_name} Time
                 </Badge>
               )}
@@ -201,7 +201,7 @@ const YouTubeScheduler = () => {
             {isAthanTime && (
               <div className="aspect-video bg-gradient-to-br from-green-800 to-emerald-900 rounded-lg flex items-center justify-center">
                 <div className="text-center text-white">
-                  <Mosque className="h-24 w-24 mx-auto mb-4 animate-pulse" />
+                  <Star className="h-24 w-24 mx-auto mb-4 animate-pulse" />
                   <h2 className="text-3xl font-bold mb-2">{currentAhan?.prayer_name}</h2>
                   <p className="text-lg opacity-90">Adhan is now playing</p>
                   <div className="mt-4 animate-pulse">
