@@ -23,7 +23,7 @@ export const useTranslation = () => {
 const translations = {
   en: {
     // Common
-    'home': 'Donate Feels Great',
+    'home': 'Home',
     'donate': 'Donate',
     'community': 'Community',
     'profile': 'Profile',
@@ -35,8 +35,6 @@ const translations = {
     'total': 'Total',
     'checkout': 'Checkout',
     'cart': 'Cart',
-    'level': 'Level',
-    'item_added': 'Added!',
     
     // Navigation sections
     'islamic_life': 'Islamic Life',
@@ -67,23 +65,6 @@ const translations = {
     'my_jannah': 'My Jannah',
     'membership_tiers': 'Membership Tiers',
     'gift_cards': 'Gift Cards',
-    'long_term_fundraisers': 'Long-term Fundraisers',
-    
-    // Homepage content
-    'tagline': 'Make a difference today',
-    'why_choose_platform': 'Why Choose Donate Feels Great?',
-    'platform_description': 'Our platform combines the spiritual reward of giving with engaging features that make charity meaningful and rewarding',
-    'gamified_giving': 'Gamified Giving',
-    'gamified_giving_desc': 'Earn points, badges, and compete with your community while doing good!',
-    'league_tables': 'League Tables',
-    'league_tables_desc': 'See how your city, mosque, and community rank in giving!',
-    'live_impact': 'Live Impact',
-    'live_impact_desc': 'Watch your donations make a real difference in real-time!',
-    'community_impact': 'Community Impact',
-    'active_donors': 'Active Donors',
-    'raised_today': 'Raised Today',
-    'cities_competing': 'Cities Competing',
-    'satisfaction_rate': 'Satisfaction Rate',
     
     // Messages
     'sign_in_to_participate': 'Sign In to Participate',
@@ -96,7 +77,7 @@ const translations = {
   },
   ar: {
     // Common
-    'home': 'التبرع يشعرك بالرضا',
+    'home': 'الرئيسية',
     'donate': 'تبرع',
     'community': 'المجتمع',
     'profile': 'الملف الشخصي',
@@ -108,8 +89,6 @@ const translations = {
     'total': 'المجموع',
     'checkout': 'الدفع',
     'cart': 'السلة',
-    'level': 'المستوى',
-    'item_added': 'تمت الإضافة!',
     
     // Navigation sections
     'islamic_life': 'الحياة الإسلامية',
@@ -140,23 +119,6 @@ const translations = {
     'my_jannah': 'جنتي',
     'membership_tiers': 'مستويات العضوية',
     'gift_cards': 'بطاقات الهدايا',
-    'long_term_fundraisers': 'جمع التبرعات طويلة المدى',
-    
-    // Homepage content
-    'tagline': 'اصنع فرقاً اليوم',
-    'why_choose_platform': 'لماذا تختار منصة التبرع تشعرك بالرضا؟',
-    'platform_description': 'تجمع منصتنا بين الأجر الروحي للعطاء والميزات الجذابة التي تجعل العمل الخيري ذا معنى ومجزياً',
-    'gamified_giving': 'العطاء التفاعلي',
-    'gamified_giving_desc': 'اكسب النقاط والشارات وتنافس مع مجتمعك أثناء فعل الخير!',
-    'league_tables': 'جداول الدوري',
-    'league_tables_desc': 'انظر كيف تحتل مدينتك ومسجدك ومجتمعك مرتبة في العطاء!',
-    'live_impact': 'التأثير المباشر',
-    'live_impact_desc': 'شاهد تبرعاتك تحدث فرقاً حقيقياً في الوقت الفعلي!',
-    'community_impact': 'تأثير المجتمع',
-    'active_donors': 'المتبرعون النشطون',
-    'raised_today': 'تم جمعه اليوم',
-    'cities_competing': 'المدن المتنافسة',
-    'satisfaction_rate': 'معدل الرضا',
     
     // Messages
     'sign_in_to_participate': 'سجل دخولك للمشاركة',
@@ -169,7 +131,7 @@ const translations = {
   },
   fr: {
     // Common
-    'home': 'Donner Fait du Bien',
+    'home': 'Accueil',
     'donate': 'Faire un don',
     'community': 'Communauté',
     'profile': 'Profil',
@@ -181,8 +143,6 @@ const translations = {
     'total': 'Total',
     'checkout': 'Commande',
     'cart': 'Panier',
-    'level': 'Niveau',
-    'item_added': 'Ajouté!',
     
     // Navigation sections
     'islamic_life': 'Vie Islamique',
@@ -213,23 +173,6 @@ const translations = {
     'my_jannah': 'Mon Jannah',
     'membership_tiers': 'Niveaux d\'Adhésion',
     'gift_cards': 'Cartes Cadeaux',
-    'long_term_fundraisers': 'Collectes de Fonds à Long Terme',
-    
-    // Homepage content
-    'tagline': 'Faites une différence aujourd\'hui',
-    'why_choose_platform': 'Pourquoi Choisir Donner Fait du Bien?',
-    'platform_description': 'Notre plateforme combine la récompense spirituelle du don avec des fonctionnalités engageantes qui rendent la charité significative et gratifiante',
-    'gamified_giving': 'Don Gamifié',
-    'gamified_giving_desc': 'Gagnez des points, des badges et entrez en compétition avec votre communauté tout en faisant le bien!',
-    'league_tables': 'Tableaux de Classement',
-    'league_tables_desc': 'Voyez comment votre ville, mosquée et communauté se classent dans les dons!',
-    'live_impact': 'Impact en Direct',
-    'live_impact_desc': 'Regardez vos dons faire une vraie différence en temps réel!',
-    'community_impact': 'Impact Communautaire',
-    'active_donors': 'Donateurs Actifs',
-    'raised_today': 'Collecté Aujourd\'hui',
-    'cities_competing': 'Villes en Compétition',
-    'satisfaction_rate': 'Taux de Satisfaction',
     
     // Messages
     'sign_in_to_participate': 'Connectez-vous pour participer',
@@ -242,7 +185,7 @@ const translations = {
   },
   ur: {
     // Common
-    'home': 'عطیہ اچھا لگتا ہے',
+    'home': 'گھر',
     'donate': 'عطیہ',
     'community': 'کمیونٹی',
     'profile': 'پروفائل',
@@ -254,8 +197,6 @@ const translations = {
     'total': 'کل',
     'checkout': 'چیک آؤٹ',
     'cart': 'ٹوکری',
-    'level': 'سطح',
-    'item_added': 'شامل کر دیا گیا!',
     
     // Navigation sections
     'islamic_life': 'اسلامی زندگی',
@@ -286,23 +227,6 @@ const translations = {
     'my_jannah': 'میری جنت',
     'membership_tiers': 'رکنیت کے درجے',
     'gift_cards': 'تحفہ کارڈز',
-    'long_term_fundraisers': 'طویل مدتی فنڈ ریزنگ',
-    
-    // Homepage content
-    'tagline': 'آج فرق کریں',
-    'why_choose_platform': 'عطیہ اچھا لگتا ہے کیوں چنیں؟',
-    'platform_description': 'ہمارا پلیٹ فارم عطیہ کرنے کے روحانی اجر کو دلچسپ خصوصیات کے ساتھ جوڑتا ہے جو خیرات کو معنی خیز اور مفید بناتا ہے',
-    'gamified_giving': 'گیمیفائیڈ عطیہ',
-    'gamified_giving_desc': 'پوائنٹس، بیجز کمائیں اور اپنی کمیونٹی کے ساتھ مقابلہ کریں جبکہ نیکی کریں!',
-    'league_tables': 'لیگ ٹیبلز',
-    'league_tables_desc': 'دیکھیں کہ آپ کا شہر، مسجد اور کمیونٹی عطیات میں کیسے رینک کرتے ہیں!',
-    'live_impact': 'لائیو اثرات',
-    'live_impact_desc': 'حقیقی وقت میں اپنے عطیات کا حقیقی فرق دیکھیں!',
-    'community_impact': 'کمیونٹی کا اثر',
-    'active_donors': 'فعال عطیہ کنندگان',
-    'raised_today': 'آج اکٹھا کیا گیا',
-    'cities_competing': 'مقابلہ کرنے والے شہر',
-    'satisfaction_rate': 'اطمینان کی شرح',
     
     // Messages
     'sign_in_to_participate': 'حصہ لینے کے لیے سائن ان کریں',
@@ -315,7 +239,7 @@ const translations = {
   },
   tr: {
     // Common
-    'home': 'Bağış İyi Hissettirir',
+    'home': 'Ana Sayfa',
     'donate': 'Bağış Yap',
     'community': 'Topluluk',
     'profile': 'Profil',
@@ -327,8 +251,6 @@ const translations = {
     'total': 'Toplam',
     'checkout': 'Ödeme',
     'cart': 'Sepet',
-    'level': 'Seviye',
-    'item_added': 'Eklendi!',
     
     // Navigation sections
     'islamic_life': 'İslami Yaşam',
@@ -359,23 +281,6 @@ const translations = {
     'my_jannah': 'Cennetim',
     'membership_tiers': 'Üyelik Seviyeleri',
     'gift_cards': 'Hediye Kartları',
-    'long_term_fundraisers': 'Uzun Vadeli Bağış Toplama',
-    
-    // Homepage content
-    'tagline': 'Bugün bir fark yaratın',
-    'why_choose_platform': 'Neden Bağış İyi Hissettirir\'i Seçmelisiniz?',
-    'platform_description': 'Platformumuz, vermenin manevi ödülünü hayır işlerini anlamlı ve ödüllendirici kılan ilgi çekici özelliklerle birleştirir',
-    'gamified_giving': 'Oyunlaştırılmış Bağış',
-    'gamified_giving_desc': 'İyilik yaparken puan kazanın, rozet toplayın ve topluluğunuzla yarışın!',
-    'league_tables': 'Lig Tabloları',
-    'league_tables_desc': 'Şehriniz, caminiz ve topluluğunuzun bağışta nasıl sıralandığını görün!',
-    'live_impact': 'Canlı Etki',
-    'live_impact_desc': 'Bağışlarınızın gerçek zamanlı olarak gerçek bir fark yarattığını izleyin!',
-    'community_impact': 'Topluluk Etkisi',
-    'active_donors': 'Aktif Bağışçılar',
-    'raised_today': 'Bugün Toplanan',
-    'cities_competing': 'Yarışan Şehirler',
-    'satisfaction_rate': 'Memnuniyet Oranı',
     
     // Messages
     'sign_in_to_participate': 'Katılmak için Giriş Yapın',

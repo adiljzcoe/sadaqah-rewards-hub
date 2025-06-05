@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -17,11 +18,8 @@ import BusinessAdvert from '@/components/BusinessAdvert';
 import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
-import { useTranslation } from '@/contexts/TranslationContext';
 
 const Index = () => {
-  const { t } = useTranslation();
-
   // Mock data for campaigns
   const campaigns = [
     {
@@ -169,12 +167,12 @@ const Index = () => {
 
       {/* Campaigns Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
-        <CampaignsCarousel campaigns={campaigns} title={t('active_campaigns')} />
+        <CampaignsCarousel campaigns={campaigns} title="Active Campaigns" />
       </section>
 
       {/* Fundraisers Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
-        <FundraisersCarousel fundraisers={fundraisers} title={t('long_term_fundraisers')} />
+        <FundraisersCarousel fundraisers={fundraisers} title="Long-term Fundraisers" />
       </section>
 
       {/* Charity Partners Section */}
@@ -188,10 +186,11 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 max-w-full overflow-x-hidden">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
-            {t('why_choose_platform')}
+            Why Choose Donate Feels Great?
           </h3>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            {t('platform_description')}
+            Our platform combines the spiritual reward of giving with engaging features that make charity 
+            <span className="vibrant-text-emerald font-semibold"> meaningful and rewarding</span>
           </p>
         </div>
         
@@ -200,46 +199,46 @@ const Index = () => {
             <div className="vibrant-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
               🎯
             </div>
-            <h4 className="font-semibold text-xl mb-4 text-gray-900">{t('gamified_giving')}</h4>
-            <p className="text-gray-600">{t('gamified_giving_desc')}</p>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">Gamified Giving</h4>
+            <p className="text-gray-600">Earn points, badges, and compete with your community while doing good!</p>
           </div>
           
           <div className="text-center p-8 professional-card rounded-xl hover-lift">
             <div className="accent-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
               🏆
             </div>
-            <h4 className="font-semibold text-xl mb-4 text-gray-900">{t('league_tables')}</h4>
-            <p className="text-gray-600">{t('league_tables_desc')}</p>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">League Tables</h4>
+            <p className="text-gray-600">See how your city, mosque, and community rank in giving!</p>
           </div>
           
           <div className="text-center p-8 professional-card rounded-xl hover-lift">
             <div className="purple-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
               📺
             </div>
-            <h4 className="font-semibold text-xl mb-4 text-gray-900">{t('live_impact')}</h4>
-            <p className="text-gray-600">{t('live_impact_desc')}</p>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">Live Impact</h4>
+            <p className="text-gray-600">Watch your donations make a real difference in real-time!</p>
           </div>
         </div>
 
         {/* Stats section */}
         <div className="mt-16 vibrant-gradient rounded-xl p-8 text-center shadow-xl">
-          <h4 className="text-2xl font-bold text-white mb-6">{t('community_impact')}</h4>
+          <h4 className="text-2xl font-bold text-white mb-6">Community Impact</h4>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">1,247</div>
-              <div className="text-white/90 font-medium">{t('active_donors')}</div>
+              <div className="text-white/90 font-medium">Active Donors</div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">£50K</div>
-              <div className="text-white/90 font-medium">{t('raised_today')}</div>
+              <div className="text-white/90 font-medium">Raised Today</div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">28</div>
-              <div className="text-white/90 font-medium">{t('cities_competing')}</div>
+              <div className="text-white/90 font-medium">Cities Competing</div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">95%</div>
-              <div className="text-white/90 font-medium">{t('satisfaction_rate')}</div>
+              <div className="text-white/90 font-medium">Satisfaction Rate</div>
             </div>
           </div>
         </div>
