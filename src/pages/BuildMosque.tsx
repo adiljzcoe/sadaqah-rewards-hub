@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
+import BlockTypesLegend from '@/components/BlockTypesLegend';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -46,7 +47,7 @@ const BuildMosque = () => {
   const [userPurchases, setUserPurchases] = useState<string[]>([]);
   const [showPurchaseAnimation, setShowPurchaseAnimation] = useState(false);
 
-  // Generate blocks for each project with the new pricing system
+  // Generate blocks for each project with limited quantities for premium blocks
   const generateBlocks = (projectId: number, totalCost: number): MosqueBlock[] => {
     const categories: MosqueBlock['category'][] = ['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'];
     
@@ -72,10 +73,27 @@ const BuildMosque = () => {
     // Base Jannah points calculation (extra rewards for mosque building)
     const baseJannahPoints = 50; // Base points per block
 
+    // Limited quantities for premium blocks
+    const categoryLimits = {
+      foundation: 0, // unlimited
+      walls: 0,      // unlimited  
+      roof: 0,       // unlimited
+      interior: 0,   // unlimited
+      minaret: 4,    // only 4 minaret blocks per mosque
+      dome: 1        // only 1 dome block per mosque
+    };
+
     categories.forEach((category, categoryIndex) => {
-      const categoryBlockCount = categoryIndex === categories.length - 1 
-        ? totalBlocks - (blocksPerCategory * (categories.length - 1))
-        : blocksPerCategory;
+      let categoryBlockCount;
+      
+      // Apply limits for premium categories
+      if (categoryLimits[category] > 0) {
+        categoryBlockCount = categoryLimits[category];
+      } else {
+        categoryBlockCount = categoryIndex === categories.length - 1 
+          ? totalBlocks - (blocksPerCategory * (categories.length - 1)) - 5 // Reserve 5 blocks for premium categories
+          : blocksPerCategory;
+      }
 
       for (let i = 0; i < categoryBlockCount; i++) {
         const blockId = `${projectId}-${category}-block-${i + 1}`;
@@ -270,6 +288,9 @@ const BuildMosque = () => {
             </div>
           </div>
         </div>
+
+        {/* Block Types Legend */}
+        <BlockTypesLegend />
 
         {/* Impact Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
