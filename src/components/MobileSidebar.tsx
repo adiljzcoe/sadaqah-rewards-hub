@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -212,18 +213,20 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
-          <Menu className="h-6 w-6" />
+        <div className="relative">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
+            <Menu className="h-6 w-6" />
+          </Button>
           {totalItems > 0 && (
-            <div className="absolute -top-1 -right-1">
-              <div className="relative bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-yellow-300/50 shadow-lg font-bold min-w-[20px]">
+            <div className="absolute -top-2 -right-2 z-50">
+              <div className="relative bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center border-2 border-yellow-300/50 shadow-lg font-bold min-w-[24px]">
                 {/* Golden shine effect moving across */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 w-1/3 animate-[goldShine_3s_ease-in-out_infinite] rounded-full"></div>
                 <span className="relative z-10 drop-shadow-sm text-[10px]">{totalItems}</span>
               </div>
             </div>
           )}
-        </Button>
+        </div>
       </SheetTrigger>
       <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
         
