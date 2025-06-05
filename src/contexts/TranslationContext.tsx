@@ -22,28 +22,40 @@ export const useTranslation = () => {
 
 const translations = {
   en: {
-    // Common
-    'home': 'Home',
-    'donate': 'Donate',
-    'community': 'Community',
-    'profile': 'Profile',
-    'settings': 'Settings',
-    'logout': 'Logout',
-    'login': 'Login',
-    'language': 'Language',
-    'amount': 'Amount',
-    'total': 'Total',
-    'checkout': 'Checkout',
-    'cart': 'Cart',
+    // Header
+    'membership': 'Membership',
+    'sadaqah_coins': 'Sadaqah Coins',
+    'my_jannah': 'My Jannah',
+    'leaderboards': 'Leaderboards',
+    'upgrade_to_premium': 'Upgrade to Premium',
+    'sign_in_to_participate': 'Sign In to Participate',
+    'become_member': 'Become a Member',
     
-    // Navigation sections
+    // Home page
+    'why_choose_donate': 'Why Choose Donate Feels Great?',
+    'platform_description': 'Our platform combines the spiritual reward of giving with engaging features that make charity meaningful and rewarding',
+    'gamified_giving': 'Gamified Giving',
+    'gamified_description': 'Earn points, badges, and compete with your community while doing good!',
+    'league_tables': 'League Tables',
+    'league_description': 'See how your city, mosque, and community rank in giving!',
+    'live_impact': 'Live Impact',
+    'live_impact_description': 'Watch your donations make a real difference in real-time!',
+    'community_impact': 'Community Impact',
+    'active_donors': 'Active Donors',
+    'raised_today': 'Raised Today',
+    'cities_competing': 'Cities Competing',
+    'satisfaction_rate': 'Satisfaction Rate',
+    
+    // Live TV
+    'live_islamic_content': 'Live Islamic Content',
+    'continuous_islamic_content': 'Continuous Islamic content with automatic Athan interruptions',
+    
+    // Navigation
+    'home': 'Home',
     'islamic_life': 'Islamic Life',
     'tools': 'Tools',
     'rewards': 'Rewards',
-    'developer': 'Developer',
-    'user_login': 'User Login',
-    
-    // Pages
+    'community': 'Community',
     'islamic_calendar': 'Islamic Calendar',
     'ramadan_calendar': 'Ramadan Calendar',
     'adhan_community': 'Adhan Community',
@@ -60,44 +72,53 @@ const translations = {
     'qurbani': 'Qurbani',
     'masjid_community': 'Masjid Community',
     'my_ummah': 'My Ummah',
-    'leaderboards': 'Leaderboards',
-    'sadaqah_coins': 'Sadaqah Coins',
-    'my_jannah': 'My Jannah',
     'membership_tiers': 'Membership Tiers',
     'gift_cards': 'Gift Cards',
     
-    // Messages
-    'sign_in_to_participate': 'Sign In to Participate',
-    'upgrade_to_premium': 'Upgrade to Premium',
-    'become_member': 'Become a Member',
-    'test_user_login': 'Test User Login',
-    'test_admin_login': 'Test Admin Login',
-    'real_login': 'Real Login',
+    // Common
+    'language': 'Language',
+    'donate': 'Donate',
+    'profile': 'Profile',
+    'settings': 'Settings',
+    'logout': 'Logout',
+    'login': 'Login',
     'sign_out': 'Sign Out'
   },
   ar: {
-    // Common
-    'home': 'الرئيسية',
-    'donate': 'تبرع',
-    'community': 'المجتمع',
-    'profile': 'الملف الشخصي',
-    'settings': 'الإعدادات',
-    'logout': 'تسجيل الخروج',
-    'login': 'تسجيل الدخول',
-    'language': 'اللغة',
-    'amount': 'المبلغ',
-    'total': 'المجموع',
-    'checkout': 'الدفع',
-    'cart': 'السلة',
+    // Header
+    'membership': 'العضوية',
+    'sadaqah_coins': 'عملات الصدقة',
+    'my_jannah': 'جنتي',
+    'leaderboards': 'لوحات المتصدرين',
+    'upgrade_to_premium': 'ترقية إلى بريميوم',
+    'sign_in_to_participate': 'سجل دخولك للمشاركة',
+    'become_member': 'كن عضواً',
     
-    // Navigation sections
+    // Home page
+    'why_choose_donate': 'لماذا تختار التبرع يشعر بالسعادة؟',
+    'platform_description': 'تجمع منصتنا بين الثواب الروحي للعطاء والميزات الجذابة التي تجعل العمل الخيري ذا معنى ومجزٍ',
+    'gamified_giving': 'العطاء التلعيبي',
+    'gamified_description': 'اكسب النقاط والشارات وتنافس مع مجتمعك أثناء فعل الخير!',
+    'league_tables': 'جداول الدوري',
+    'league_description': 'شاهد كيف تصنف مدينتك ومسجدك ومجتمعك في العطاء!',
+    'live_impact': 'التأثير المباشر',
+    'live_impact_description': 'شاهد تبرعاتك تحدث فرقاً حقيقياً في الوقت الفعلي!',
+    'community_impact': 'تأثير المجتمع',
+    'active_donors': 'المتبرعون النشطون',
+    'raised_today': 'تم جمعه اليوم',
+    'cities_competing': 'المدن المتنافسة',
+    'satisfaction_rate': 'معدل الرضا',
+    
+    // Live TV
+    'live_islamic_content': 'محتوى إسلامي مباشر',
+    'continuous_islamic_content': 'محتوى إسلامي مستمر مع انقطاعات تلقائية للأذان',
+    
+    // Navigation
+    'home': 'الرئيسية',
     'islamic_life': 'الحياة الإسلامية',
     'tools': 'الأدوات',
     'rewards': 'المكافآت',
-    'developer': 'المطور',
-    'user_login': 'تسجيل دخول المستخدم',
-    
-    // Pages
+    'community': 'المجتمع',
     'islamic_calendar': 'التقويم الإسلامي',
     'ramadan_calendar': 'تقويم رمضان',
     'adhan_community': 'مجتمع الأذان',
@@ -114,44 +135,53 @@ const translations = {
     'qurbani': 'القرباني',
     'masjid_community': 'مجتمع المسجد',
     'my_ummah': 'أمتي',
-    'leaderboards': 'لوحات المتصدرين',
-    'sadaqah_coins': 'عملات الصدقة',
-    'my_jannah': 'جنتي',
     'membership_tiers': 'مستويات العضوية',
     'gift_cards': 'بطاقات الهدايا',
     
-    // Messages
-    'sign_in_to_participate': 'سجل دخولك للمشاركة',
-    'upgrade_to_premium': 'ترقية إلى بريميوم',
-    'become_member': 'كن عضواً',
-    'test_user_login': 'تسجيل دخول مستخدم تجريبي',
-    'test_admin_login': 'تسجيل دخول مدير تجريبي',
-    'real_login': 'تسجيل دخول حقيقي',
+    // Common
+    'language': 'اللغة',
+    'donate': 'تبرع',
+    'profile': 'الملف الشخصي',
+    'settings': 'الإعدادات',
+    'logout': 'تسجيل الخروج',
+    'login': 'تسجيل الدخول',
     'sign_out': 'تسجيل الخروج'
   },
   fr: {
-    // Common
-    'home': 'Accueil',
-    'donate': 'Faire un don',
-    'community': 'Communauté',
-    'profile': 'Profil',
-    'settings': 'Paramètres',
-    'logout': 'Déconnexion',
-    'login': 'Connexion',
-    'language': 'Langue',
-    'amount': 'Montant',
-    'total': 'Total',
-    'checkout': 'Commande',
-    'cart': 'Panier',
+    // Header
+    'membership': 'Adhésion',
+    'sadaqah_coins': 'Pièces Sadaqah',
+    'my_jannah': 'Mon Jannah',
+    'leaderboards': 'Classements',
+    'upgrade_to_premium': 'Passer à Premium',
+    'sign_in_to_participate': 'Connectez-vous pour participer',
+    'become_member': 'Devenir Membre',
     
-    // Navigation sections
+    // Home page
+    'why_choose_donate': 'Pourquoi choisir Donner fait du bien ?',
+    'platform_description': 'Notre plateforme combine la récompense spirituelle du don avec des fonctionnalités engageantes qui rendent la charité significative et gratifiante',
+    'gamified_giving': 'Don Gamifié',
+    'gamified_description': 'Gagnez des points, des badges et rivalisez avec votre communauté tout en faisant le bien !',
+    'league_tables': 'Tableaux de Classement',
+    'league_description': 'Voyez comment votre ville, votre mosquée et votre communauté se classent dans les dons !',
+    'live_impact': 'Impact en Direct',
+    'live_impact_description': 'Regardez vos dons faire une vraie différence en temps réel !',
+    'community_impact': 'Impact Communautaire',
+    'active_donors': 'Donateurs Actifs',
+    'raised_today': 'Collecté Aujourd\'hui',
+    'cities_competing': 'Villes en Compétition',
+    'satisfaction_rate': 'Taux de Satisfaction',
+    
+    // Live TV
+    'live_islamic_content': 'Contenu Islamique en Direct',
+    'continuous_islamic_content': 'Contenu islamique continu avec interruptions automatiques d\'Adhan',
+    
+    // Navigation
+    'home': 'Accueil',
     'islamic_life': 'Vie Islamique',
     'tools': 'Outils',
     'rewards': 'Récompenses',
-    'developer': 'Développeur',
-    'user_login': 'Connexion Utilisateur',
-    
-    // Pages
+    'community': 'Communauté',
     'islamic_calendar': 'Calendrier Islamique',
     'ramadan_calendar': 'Calendrier du Ramadan',
     'adhan_community': 'Communauté Adhan',
@@ -168,44 +198,53 @@ const translations = {
     'qurbani': 'Qurbani',
     'masjid_community': 'Communauté de la Mosquée',
     'my_ummah': 'Ma Oummah',
-    'leaderboards': 'Classements',
-    'sadaqah_coins': 'Pièces Sadaqah',
-    'my_jannah': 'Mon Jannah',
     'membership_tiers': 'Niveaux d\'Adhésion',
     'gift_cards': 'Cartes Cadeaux',
     
-    // Messages
-    'sign_in_to_participate': 'Connectez-vous pour participer',
-    'upgrade_to_premium': 'Passer à Premium',
-    'become_member': 'Devenir Membre',
-    'test_user_login': 'Connexion Utilisateur Test',
-    'test_admin_login': 'Connexion Admin Test',
-    'real_login': 'Vraie Connexion',
+    // Common
+    'language': 'Langue',
+    'donate': 'Faire un don',
+    'profile': 'Profil',
+    'settings': 'Paramètres',
+    'logout': 'Déconnexion',
+    'login': 'Connexion',
     'sign_out': 'Déconnexion'
   },
   ur: {
-    // Common
-    'home': 'گھر',
-    'donate': 'عطیہ',
-    'community': 'کمیونٹی',
-    'profile': 'پروفائل',
-    'settings': 'سیٹنگز',
-    'logout': 'لاگ آؤٹ',
-    'login': 'لاگ ان',
-    'language': 'زبان',
-    'amount': 'رقم',
-    'total': 'کل',
-    'checkout': 'چیک آؤٹ',
-    'cart': 'ٹوکری',
+    // Header
+    'membership': 'رکنیت',
+    'sadaqah_coins': 'صدقہ کوائنز',
+    'my_jannah': 'میری جنت',
+    'leaderboards': 'لیڈر بورڈز',
+    'upgrade_to_premium': 'پریمیم میں اپگریڈ کریں',
+    'sign_in_to_participate': 'حصہ لینے کے لیے سائن ان کریں',
+    'become_member': 'ممبر بنیں',
     
-    // Navigation sections
+    // Home page
+    'why_choose_donate': 'ڈونیٹ فیلز گریٹ کیوں منتخب کریں؟',
+    'platform_description': 'ہمارا پلیٹ فارم دینے کے روحانی اجر کو دلچسپ خصوصیات کے ساتھ ملاتا ہے جو خیرات کو بامعنی اور فائدہ مند بناتا ہے',
+    'gamified_giving': 'گیمیفائیڈ گیونگ',
+    'gamified_description': 'نیکی کرتے وقت پوائنٹس، بیجز کمائیں اور اپنی کمیونٹی کے ساتھ مقابلہ کریں!',
+    'league_tables': 'لیگ ٹیبلز',
+    'league_description': 'دیکھیں کہ آپ کا شہر، مسجد، اور کمیونٹی دینے میں کیسے درجہ بندی کرتے ہیں!',
+    'live_impact': 'لائیو امپیکٹ',
+    'live_impact_description': 'اپنے عطیات کو حقیقی وقت میں حقیقی فرق کرتے دیکھیں!',
+    'community_impact': 'کمیونٹی امپیکٹ',
+    'active_donors': 'فعال ڈونرز',
+    'raised_today': 'آج اکٹھا کیا گیا',
+    'cities_competing': 'مقابلہ کرنے والے شہر',
+    'satisfaction_rate': 'اطمینان کی شرح',
+    
+    // Live TV
+    'live_islamic_content': 'لائیو اسلامی مواد',
+    'continuous_islamic_content': 'خودکار اذان کی مداخلت کے ساتھ مسلسل اسلامی مواد',
+    
+    // Navigation
+    'home': 'گھر',
     'islamic_life': 'اسلامی زندگی',
     'tools': 'اوزار',
     'rewards': 'انعامات',
-    'developer': 'ڈیولپر',
-    'user_login': 'صارف لاگ ان',
-    
-    // Pages
+    'community': 'کمیونٹی',
     'islamic_calendar': 'اسلامی کیلنڈر',
     'ramadan_calendar': 'رمضان کیلنڈر',
     'adhan_community': 'اذان کمیونٹی',
@@ -222,44 +261,53 @@ const translations = {
     'qurbani': 'قربانی',
     'masjid_community': 'مسجد کمیونٹی',
     'my_ummah': 'میری امت',
-    'leaderboards': 'لیڈر بورڈز',
-    'sadaqah_coins': 'صدقہ کوائنز',
-    'my_jannah': 'میری جنت',
     'membership_tiers': 'رکنیت کے درجے',
     'gift_cards': 'تحفہ کارڈز',
     
-    // Messages
-    'sign_in_to_participate': 'حصہ لینے کے لیے سائن ان کریں',
-    'upgrade_to_premium': 'پریمیم میں اپگریڈ کریں',
-    'become_member': 'ممبر بنیں',
-    'test_user_login': 'ٹیسٹ یوزر لاگ ان',
-    'test_admin_login': 'ٹیسٹ ایڈمن لاگ ان',
-    'real_login': 'حقیقی لاگ ان',
+    // Common
+    'language': 'زبان',
+    'donate': 'عطیہ',
+    'profile': 'پروفائل',
+    'settings': 'سیٹنگز',
+    'logout': 'لاگ آؤٹ',
+    'login': 'لاگ ان',
     'sign_out': 'سائن آؤٹ'
   },
   tr: {
-    // Common
-    'home': 'Ana Sayfa',
-    'donate': 'Bağış Yap',
-    'community': 'Topluluk',
-    'profile': 'Profil',
-    'settings': 'Ayarlar',
-    'logout': 'Çıkış Yap',
-    'login': 'Giriş Yap',
-    'language': 'Dil',
-    'amount': 'Miktar',
-    'total': 'Toplam',
-    'checkout': 'Ödeme',
-    'cart': 'Sepet',
+    // Header
+    'membership': 'Üyelik',
+    'sadaqah_coins': 'Sadaka Coinleri',
+    'my_jannah': 'Cennetim',
+    'leaderboards': 'Lider Tabloları',
+    'upgrade_to_premium': 'Premium\'a Yükseltin',
+    'sign_in_to_participate': 'Katılmak için Giriş Yapın',
+    'become_member': 'Üye Ol',
     
-    // Navigation sections
+    // Home page
+    'why_choose_donate': 'Neden Bağış Yapmak Harika Hissettiriyor?',
+    'platform_description': 'Platformumuz vermenin manevi ödülünü, hayırseverliği anlamlı ve ödüllendirici kılan ilgi çekici özelliklerle birleştirir',
+    'gamified_giving': 'Oyunlaştırılmış Bağış',
+    'gamified_description': 'İyilik yaparken puan, rozet kazanın ve topluluğunuzla yarışın!',
+    'league_tables': 'Lig Tabloları',
+    'league_description': 'Şehriniz, caminiz ve topluluğunuzun bağışta nasıl sıralandığını görün!',
+    'live_impact': 'Canlı Etki',
+    'live_impact_description': 'Bağışlarınızın gerçek zamanlı olarak gerçek bir fark yarattığını izleyin!',
+    'community_impact': 'Topluluk Etkisi',
+    'active_donors': 'Aktif Bağışçılar',
+    'raised_today': 'Bugün Toplanan',
+    'cities_competing': 'Yarışan Şehirler',
+    'satisfaction_rate': 'Memnuniyet Oranı',
+    
+    // Live TV
+    'live_islamic_content': 'Canlı İslami İçerik',
+    'continuous_islamic_content': 'Otomatik Ezan kesintileri ile sürekli İslami içerik',
+    
+    // Navigation
+    'home': 'Ana Sayfa',
     'islamic_life': 'İslami Yaşam',
     'tools': 'Araçlar',
     'rewards': 'Ödüller',
-    'developer': 'Geliştirici',
-    'user_login': 'Kullanıcı Girişi',
-    
-    // Pages
+    'community': 'Topluluk',
     'islamic_calendar': 'İslami Takvim',
     'ramadan_calendar': 'Ramazan Takvimi',
     'adhan_community': 'Ezan Topluluğu',
@@ -276,19 +324,16 @@ const translations = {
     'qurbani': 'Kurban',
     'masjid_community': 'Cami Topluluğu',
     'my_ummah': 'Ümmetim',
-    'leaderboards': 'Lider Tabloları',
-    'sadaqah_coins': 'Sadaka Coinleri',
-    'my_jannah': 'Cennetim',
     'membership_tiers': 'Üyelik Seviyeleri',
     'gift_cards': 'Hediye Kartları',
     
-    // Messages
-    'sign_in_to_participate': 'Katılmak için Giriş Yapın',
-    'upgrade_to_premium': 'Premium\'a Yükseltin',
-    'become_member': 'Üye Ol',
-    'test_user_login': 'Test Kullanıcı Girişi',
-    'test_admin_login': 'Test Admin Girişi',
-    'real_login': 'Gerçek Giriş',
+    // Common
+    'language': 'Dil',
+    'donate': 'Bağış Yap',
+    'profile': 'Profil',
+    'settings': 'Ayarlar',
+    'logout': 'Çıkış Yap',
+    'login': 'Giriş Yap',
     'sign_out': 'Çıkış Yap'
   }
 };

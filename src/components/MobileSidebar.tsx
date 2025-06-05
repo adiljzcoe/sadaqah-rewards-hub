@@ -1,551 +1,220 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown, Settings, Code, UserCog, LogIn, LogOut, Globe } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+  Calendar, Users, Mic, Tv, Heart, Clock, BookOpen, Calculator, MessageSquare,
+  Target, Building, Droplets, Baby, Users2, Trophy, Coins, Crown, Gift,
+  Home, Star, Settings, LogOut, User, X
+} from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useCart } from '@/hooks/useCart';
 import { useTranslation } from '@/contexts/TranslationContext';
-import { ShoppingCart } from 'lucide-react';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface MobileSidebarProps {
-  userLevel: number;
-  currentPoints: number;
-  nextLevelPoints: number;
-  isMember: boolean;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: MobileSidebarProps) => {
-  const [open, setOpen] = useState(false);
-  const [islamicOpen, setIslamicOpen] = useState(false);
-  const [toolsOpen, setToolsOpen] = useState(false);
-  const [donateOpen, setDonateOpen] = useState(false);
-  const [communityOpen, setCommunityOpen] = useState(false);
-  const [rewardsOpen, setRewardsOpen] = useState(false);
-  const [developerOpen, setDeveloperOpen] = useState(false);
-  const [userLoginOpen, setUserLoginOpen] = useState(false);
-  const [cartAnimating, setCartAnimating] = useState(false);
-  const [prevTotalItems, setPrevTotalItems] = useState(0);
-
-  const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
-  const { totalItems, totalAmount } = useCart();
+const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, onClose }) => {
+  const { user, signOut } = useAuth();
   const { t } = useTranslation();
-  const progress = (currentPoints / nextLevelPoints) * 100;
 
-  // Watch for cart changes and trigger animation
-  useEffect(() => {
-    if (totalItems > prevTotalItems) {
-      setCartAnimating(true);
-      setTimeout(() => setCartAnimating(false), 1000);
+  const handleSignOut = async () => {
+    await signOut();
+    onClose();
+  };
+
+  const menuSections = [
+    {
+      title: t('islamic_life'),
+      items: [
+        { icon: Calendar, label: t('islamic_calendar'), href: '/islamic-calendar' },
+        { icon: Calendar, label: t('ramadan_calendar'), href: '/ramadan-calendar' },
+        { icon: Mic, label: t('adhan_community'), href: '/adhan-community' },
+        { icon: Tv, label: t('live_tv'), href: '/live-tv' },
+        { icon: Heart, label: t('dhikr_community'), href: '/dhikr-community' },
+      ]
+    },
+    {
+      title: t('tools'),
+      items: [
+        { icon: Clock, label: t('prayer_times'), href: '/namaz-times' },
+        { icon: BookOpen, label: t('quran_reader'), href: '/quran-reader' },
+        { icon: Calculator, label: t('zakat_calculator'), href: '/zakat-calculator' },
+        { icon: MessageSquare, label: t('dua_wall'), href: '/dua-wall' },
+      ]
+    },
+    {
+      title: t('donate'),
+      items: [
+        { icon: Target, label: t('active_campaigns'), href: '/campaigns' },
+        { icon: Building, label: t('build_mosque'), href: '/build-mosque' },
+        { icon: Droplets, label: t('water_wells'), href: '/water-wells' },
+        { icon: Baby, label: t('orphanages'), href: '/orphanages' },
+        { icon: Users2, label: t('qurbani'), href: '/qurbani' },
+      ]
+    },
+    {
+      title: t('community'),
+      items: [
+        { icon: Building, label: t('masjid_community'), href: '/masjid-community' },
+        { icon: Users, label: t('my_ummah'), href: '/my-ummah' },
+        { icon: Trophy, label: t('leaderboards'), href: '/leaderboards' },
+      ]
+    },
+    {
+      title: t('rewards'),
+      items: [
+        { icon: Coins, label: t('sadaqah_coins'), href: '/sadaqah-coins' },
+        { icon: Star, label: t('my_jannah'), href: '/my-jannah' },
+        { icon: Crown, label: t('membership_tiers'), href: '/membership' },
+        { icon: Gift, label: t('gift_cards'), href: '/gift-cards' },
+      ]
     }
-    setPrevTotalItems(totalItems);
-  }, [totalItems, prevTotalItems]);
-
-  const handleLinkClick = () => {
-    setOpen(false);
-  };
-
-  // Function to close all other sections when one is opened
-  const handleSectionToggle = (section: string) => {
-    const closers = {
-      islamic: () => {
-        setToolsOpen(false);
-        setDonateOpen(false);
-        setCommunityOpen(false);
-        setRewardsOpen(false);
-        setDeveloperOpen(false);
-        setUserLoginOpen(false);
-      },
-      tools: () => {
-        setIslamicOpen(false);
-        setDonateOpen(false);
-        setCommunityOpen(false);
-        setRewardsOpen(false);
-        setDeveloperOpen(false);
-        setUserLoginOpen(false);
-      },
-      donate: () => {
-        setIslamicOpen(false);
-        setToolsOpen(false);
-        setCommunityOpen(false);
-        setRewardsOpen(false);
-        setDeveloperOpen(false);
-        setUserLoginOpen(false);
-      },
-      community: () => {
-        setIslamicOpen(false);
-        setToolsOpen(false);
-        setDonateOpen(false);
-        setRewardsOpen(false);
-        setDeveloperOpen(false);
-        setUserLoginOpen(false);
-      },
-      rewards: () => {
-        setIslamicOpen(false);
-        setToolsOpen(false);
-        setDonateOpen(false);
-        setCommunityOpen(false);
-        setDeveloperOpen(false);
-        setUserLoginOpen(false);
-      },
-      developer: () => {
-        setIslamicOpen(false);
-        setToolsOpen(false);
-        setDonateOpen(false);
-        setCommunityOpen(false);
-        setRewardsOpen(false);
-        setUserLoginOpen(false);
-      },
-      userLogin: () => {
-        setIslamicOpen(false);
-        setToolsOpen(false);
-        setDonateOpen(false);
-        setCommunityOpen(false);
-        setRewardsOpen(false);
-        setDeveloperOpen(false);
-      }
-    };
-
-    if (closers[section as keyof typeof closers]) {
-      closers[section as keyof typeof closers]();
-    }
-  };
-
-  const handleFakeLogin = (type: 'admin' | 'user') => {
-    if (type === 'admin') {
-      fakeAdminLogin();
-    } else {
-      fakeUserLogin();
-    }
-    setOpen(false);
-  };
-
-  const handleSignOut = () => {
-    signOut();
-    setOpen(false);
-  };
-
-  const islamicPages = [
-    { name: t('islamic_calendar'), path: "/islamic-calendar", icon: Calendar, description: "Sacred days & celebrations", gradient: "from-emerald-600 to-green-600" },
-    { name: t('ramadan_calendar'), path: "/ramadan-calendar", icon: Moon, description: "Track your Ramadan journey", gradient: "from-purple-600 to-indigo-600" },
-    { name: t('adhan_community'), path: "/adhan-community", icon: Mic, description: "Share beautiful Adhan recordings", gradient: "from-blue-600 to-cyan-600" },
-    { name: t('live_tv'), path: "/live-tv", icon: Tv, description: "Islamic channels & content", gradient: "from-red-600 to-pink-600" },
-    { name: t('dhikr_community'), path: "/dhikr-community", icon: Sparkles, description: "Spiritual remembrance together", gradient: "from-purple-600 to-pink-600" },
   ];
-
-  const toolsPages = [
-    { name: t('prayer_times'), path: "/namaz-times", icon: Clock, description: "Accurate prayer times worldwide", gradient: "from-indigo-600 to-blue-600" },
-    { name: t('quran_reader'), path: "/quran-reader", icon: BookOpen, description: "Read & track progress", gradient: "from-emerald-600 to-green-600" },
-    { name: t('zakat_calculator'), path: "/zakat-calculator", icon: Coins, description: "Calculate your Zakat", gradient: "from-yellow-600 to-orange-600" },
-    { name: t('dua_wall'), path: "/dua-wall", icon: Heart, description: "Share & support prayers", gradient: "from-pink-600 to-rose-600" },
-  ];
-
-  const donatePages = [
-    { name: t('active_campaigns'), path: "/campaigns", icon: Heart, description: "Support urgent causes worldwide", gradient: "from-emerald-600 to-green-600" },
-    { name: t('build_mosque'), path: "/build-mosque", icon: Building, description: "Fund mosque construction", gradient: "from-blue-600 to-indigo-600" },
-    { name: t('water_wells'), path: "/water-wells", icon: "💧", description: "Provide clean water access", gradient: "from-cyan-600 to-blue-600" },
-    { name: t('orphanages'), path: "/orphanages", icon: "👶", description: "Support orphan care & education", gradient: "from-pink-600 to-rose-600" },
-    { name: t('qurbani'), path: "/qurbani", icon: "🐄", description: "Sacrifice & share blessings", gradient: "from-orange-600 to-red-600" },
-  ];
-
-  const communityPages = [
-    { name: t('masjid_community'), path: "/masjid-community", icon: Building, description: "Represent your local mosque", gradient: "from-indigo-600 to-purple-600" },
-    { name: t('my_ummah'), path: "/my-ummah", icon: Users, description: "Global Muslim community", gradient: "from-emerald-600 to-green-600" },
-    { name: t('leaderboards'), path: "/leaderboards", icon: Trophy, description: "Top donors & recognition", gradient: "from-amber-600 to-yellow-600" },
-  ];
-
-  const rewardsPages = [
-    { name: t('sadaqah_coins'), path: "/sadaqah-coins", icon: Coins, description: "Purchase coins & unlock rewards", gradient: "from-yellow-600 to-amber-600" },
-    { name: t('my_jannah'), path: "/my-jannah", icon: Building, description: "Build your paradise", gradient: "from-emerald-600 to-green-600" },
-    { name: t('membership_tiers'), path: "/membership", icon: Shield, description: "Upgrade for multiplied points", gradient: "from-purple-600 to-indigo-600" },
-    { name: t('gift_cards'), path: "/gift-cards", icon: Gift, description: "Give the gift of giving", gradient: "from-pink-600 to-rose-600" },
-  ];
-
-  const developerPages = [
-    { name: "Admin Dashboard", path: "/admin-dashboard", icon: UserCog, description: "Admin control panel", gradient: "from-red-600 to-orange-600" },
-    { name: "Profile Settings", path: "/profile", icon: User, description: "User profile management", gradient: "from-blue-600 to-indigo-600" },
-    { name: "Auth Page", path: "/auth", icon: Shield, description: "Login & registration", gradient: "from-purple-600 to-pink-600" },
-    { name: "Checkout", path: "/checkout", icon: "💳", description: "Payment processing", gradient: "from-green-600 to-emerald-600" },
-    { name: "Why Donate", path: "/why-donate", icon: Heart, description: "About donation benefits", gradient: "from-rose-600 to-pink-600" },
-    { name: "Live Feed", path: "/live-feed", icon: Tv, description: "Activity feed page", gradient: "from-cyan-600 to-blue-600" },
-    { name: "Fundraising", path: "/fundraising", icon: Trophy, description: "Create fundraisers", gradient: "from-amber-600 to-yellow-600" },
-    { name: "Charity Partners", path: "/charity-partners", icon: Building, description: "Partner organizations", gradient: "from-indigo-600 to-purple-600" },
-    { name: "Duas Library", path: "/duas-library", icon: BookOpen, description: "Collection of duas", gradient: "from-emerald-600 to-green-600" },
-    { name: "Business Profile", path: "/business-profile", icon: Building, description: "Business dashboard", gradient: "from-orange-600 to-red-600" },
-    { name: "Charity Profile", path: "/charity-profile", icon: Heart, description: "Charity organization page", gradient: "from-pink-600 to-rose-600" },
-  ];
-
-  const renderPageItem = (page: any) => {
-    const IconComponent = typeof page.icon === 'string' ? null : page.icon;
-    
-    return (
-      <Link
-        key={page.path}
-        to={page.path}
-        onClick={handleLinkClick}
-        className={`flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r ${page.gradient} hover:shadow-xl`}
-      >
-        {IconComponent ? (
-          <IconComponent className="h-5 w-5 mr-3" />
-        ) : (
-          <span className="text-lg mr-3">{page.icon}</span>
-        )}
-        <div className="flex-1">
-          <div className="font-semibold text-white">{page.name}</div>
-          <p className="text-xs text-white/80 leading-tight">{page.description}</p>
-        </div>
-      </Link>
-    );
-  };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <div className="relative">
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
-            <Menu className="h-6 w-6" />
-          </Button>
-          {totalItems > 0 && (
-            <div className="absolute -top-2 -right-2 z-50">
-              <div className="relative bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center border-2 border-yellow-300/50 shadow-lg font-bold min-w-[24px]">
-                {/* Golden shine effect moving across */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 w-1/3 animate-[goldShine_3s_ease-in-out_infinite] rounded-full"></div>
-                <span className="relative z-10 drop-shadow-sm text-[10px]">{totalItems}</span>
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent side="left" className="w-80 p-0">
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <SheetHeader className="p-6 border-b">
+            <div className="flex items-center justify-between">
+              <SheetTitle className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                YourJannah
+              </SheetTitle>
+              <Button variant="ghost" size="sm" onClick={onClose}>
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+          </SheetHeader>
+
+          {/* User Profile */}
+          {user && (
+            <div className="p-4 border-b">
+              <div className="flex items-center space-x-3 mb-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user.user_metadata?.avatar_url} />
+                  <AvatarFallback>
+                    {user.user_metadata?.full_name?.charAt(0) || user.email?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">
+                    {user.user_metadata?.full_name || 'User'}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                </div>
+              </div>
+              
+              {/* User Stats */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="bg-emerald-50 p-2 rounded text-center">
+                  <Coins className="h-4 w-4 mx-auto mb-1 text-emerald-600" />
+                  <div className="font-semibold">2,450</div>
+                  <div className="text-emerald-600">{t('sadaqah_coins')}</div>
+                </div>
+                <div className="bg-purple-50 p-2 rounded text-center">
+                  <Trophy className="h-4 w-4 mx-auto mb-1 text-purple-600" />
+                  <div className="font-semibold">#47</div>
+                  <div className="text-purple-600">Rank</div>
+                </div>
               </div>
             </div>
           )}
-        </div>
-      </SheetTrigger>
-      <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-        
-        <div className="flex flex-col h-full">
-          {/* Enhanced Golden User Plaque */}
-          <div className="p-4">
-            <div className="text-center">
-              {/* Golden Plaque Container */}
-              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-3xl px-4 py-3 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto max-w-[240px]">
-                {/* Inner glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-3xl"></div>
-                
-                {/* Top highlight */}
-                <div className="absolute top-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
-                
-                {/* Glossy animation effect that moves across */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-3xl"></div>
-                
-                <div className="relative">
-                  {/* Avatar Section */}
-                  <div className="relative inline-block mb-3">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-4 ring-white/20">
-                      <span className="text-xl">🛡️</span>
-                    </div>
-                    {isMember && (
-                      <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
-                        <Crown className="h-3 w-3 mr-1" />
-                        VIP
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  {/* User Info */}
-                  <div className="text-center">
-                    <h3 className="font-bold text-lg text-yellow-50 drop-shadow-md mb-1">
-                      Ahmad M.
-                    </h3>
-                    <span className="text-sm text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
-                  </div>
-                  
-                  {/* Level and Progress */}
-                  <div className="mt-3 space-y-2">
-                    <div className="flex items-center justify-center space-x-2">
-                      <span className="text-sm font-bold text-yellow-50 drop-shadow-md">Level {userLevel}</span>
-                      <div className="flex-1 max-w-20">
-                        <Progress value={progress} className="h-2" />
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center space-x-1">
-                      <Star className="h-4 w-4 text-yellow-100 drop-shadow-md" />
-                      <span className="text-sm font-bold text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} points</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Bottom highlight */}
-                <div className="absolute bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Checkout Section with Animation */}
-          <div className="px-4 pb-4">
-            <Link 
-              to="/checkout" 
-              onClick={handleLinkClick}
-              className={`flex items-center justify-between p-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border backdrop-blur-sm overflow-hidden relative ${
-                cartAnimating 
-                  ? 'bg-gradient-to-r from-green-500 via-emerald-600 to-green-500 border-green-400/50 animate-pulse' 
-                  : 'bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 border-pink-400/30'
-              }`}
-            >
-              {/* Glossy effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
-              
-              <div className="relative flex items-center">
-                <div className={`rounded-lg p-2 mr-3 backdrop-blur-sm transition-all duration-300 ${
-                  cartAnimating ? 'bg-white/30 scale-110' : 'bg-white/20'
-                }`}>
-                  <ShoppingCart className={`h-5 w-5 drop-shadow-md transition-all duration-300 ${
-                    cartAnimating ? 'animate-bounce' : ''
-                  }`} />
-                </div>
-                <div>
-                  <span className="drop-shadow-md">
-                    {cartAnimating ? 'Added to Cart!' : t('checkout')}
-                  </span>
-                  <div className="text-xs text-white/80 drop-shadow-sm">
-                    {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Cart is empty'}
-                  </div>
-                </div>
-              </div>
-              <div className={`relative rounded-xl px-3 py-2 shadow-lg border transition-all duration-300 ${
-                cartAnimating 
-                  ? 'bg-gradient-to-r from-yellow-300 to-orange-400 border-yellow-200/60 scale-110' 
-                  : 'bg-gradient-to-r from-yellow-400 to-orange-500 border-yellow-300/50'
-              }`}>
-                <span className="text-sm font-bold text-white drop-shadow-md">
-                  £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
-                </span>
-              </div>
-            </Link>
-          </div>
 
           {/* Language Switcher */}
-          <div className="px-4 pb-4">
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-              <div className="flex items-center">
-                <Globe className="h-5 w-5 mr-3" />
-                <span className="font-semibold">{t('language')}</span>
-              </div>
+          <div className="p-4 border-b">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">{t('language')}</span>
               <LanguageSwitcher />
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            
-            {/* Home */}
-            <Link 
-              to="/" 
-              onClick={handleLinkClick}
-              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              <span className="text-lg mr-3">🏠</span>
-              {t('home')}
-            </Link>
+          {/* Navigation */}
+          <div className="flex-1 overflow-y-auto">
+            <nav className="p-4 space-y-6">
+              {/* Home */}
+              <div>
+                <Link 
+                  to="/" 
+                  onClick={onClose}
+                  className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <Home className="h-5 w-5 text-gray-600" />
+                  <span className="font-medium">{t('home')}</span>
+                </Link>
+              </div>
 
-            {/* User Login Section */}
-            <Collapsible open={userLoginOpen} onOpenChange={(isOpen) => {
-              setUserLoginOpen(isOpen);
-              if (isOpen) handleSectionToggle('userLogin');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <User className="h-5 w-5 mr-3" />
-                  <span>{t('user_login')}</span>
+              {/* Menu Sections */}
+              {menuSections.map((section) => (
+                <div key={section.title}>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                    {section.title}
+                  </h3>
+                  <div className="space-y-1">
+                    {section.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={onClose}
+                        className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                      >
+                        <item.icon className="h-5 w-5 text-gray-600" />
+                        <span className="text-sm">{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-                {userLoginOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {user ? (
-                  <button
-                    onClick={handleSignOut}
-                    className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-red-600 to-rose-600 hover:shadow-xl w-full"
-                  >
-                    <LogOut className="h-5 w-5 mr-3" />
-                    <div className="flex-1 text-left">
-                      <div className="font-semibold text-white">{t('sign_out')}</div>
-                      <p className="text-xs text-white/80 leading-tight">Log out current user</p>
-                    </div>
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleFakeLogin('user')}
-                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-xl w-full"
-                    >
-                      <User className="h-5 w-5 mr-3" />
-                      <div className="flex-1 text-left">
-                        <div className="font-semibold text-white">{t('test_user_login')}</div>
-                        <p className="text-xs text-white/80 leading-tight">Login as a test user</p>
-                      </div>
-                    </button>
-                    <button
-                      onClick={() => handleFakeLogin('admin')}
-                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-orange-600 to-red-600 hover:shadow-xl w-full"
-                    >
-                      <Shield className="h-5 w-5 mr-3" />
-                      <div className="flex-1 text-left">
-                        <div className="font-semibold text-white">{t('test_admin_login')}</div>
-                        <p className="text-xs text-white/80 leading-tight">Login as a test admin</p>
-                      </div>
-                    </button>
-                    <Link
-                      to="/auth"
-                      onClick={handleLinkClick}
-                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl"
-                    >
-                      <LogIn className="h-5 w-5 mr-3" />
-                      <div className="flex-1">
-                        <div className="font-semibold text-white">{t('real_login')}</div>
-                        <p className="text-xs text-white/80 leading-tight">Go to authentication page</p>
-                      </div>
-                    </Link>
-                  </>
-                )}
-              </CollapsibleContent>
-            </Collapsible>
+              ))}
+            </nav>
+          </div>
 
-            {/* Islamic Life Section */}
-            <Collapsible open={islamicOpen} onOpenChange={(isOpen) => {
-              setIslamicOpen(isOpen);
-              if (isOpen) handleSectionToggle('islamic');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">🕌</span>
-                  <span>{t('islamic_life')}</span>
-                </div>
-                {islamicOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {islamicPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Tools Section */}
-            <Collapsible open={toolsOpen} onOpenChange={(isOpen) => {
-              setToolsOpen(isOpen);
-              if (isOpen) handleSectionToggle('tools');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">🛠️</span>
-                  <span>{t('tools')}</span>
-                </div>
-                {toolsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {toolsPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Donate Section */}
-            <Collapsible open={donateOpen} onOpenChange={(isOpen) => {
-              setDonateOpen(isOpen);
-              if (isOpen) handleSectionToggle('donate');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">💝</span>
-                  <span>{t('donate')}</span>
-                </div>
-                {donateOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {donatePages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Community Section */}
-            <Collapsible open={communityOpen} onOpenChange={(isOpen) => {
-              setCommunityOpen(isOpen);
-              if (isOpen) handleSectionToggle('community');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">👥</span>
-                  <span>{t('community')}</span>
-                </div>
-                {communityOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {communityPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Rewards Section */}
-            <Collapsible open={rewardsOpen} onOpenChange={(isOpen) => {
-              setRewardsOpen(isOpen);
-              if (isOpen) handleSectionToggle('rewards');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">🏆</span>
-                  <span>{t('rewards')}</span>
-                </div>
-                {rewardsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {rewardsPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Developer Section */}
-            <Collapsible open={developerOpen} onOpenChange={(isOpen) => {
-              setDeveloperOpen(isOpen);
-              if (isOpen) handleSectionToggle('developer');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <Code className="h-5 w-5 mr-3" />
-                  <span>{t('developer')}</span>
-                </div>
-                {developerOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {developerPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
-
-            {/* Become a Member - only show if not a member */}
-            {!isMember && (
-              <Link 
-                to="/membership" 
-                onClick={handleLinkClick}
-                className="flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-yellow-300/60 ring-2 ring-amber-400/30"
-              >
-                <Shield className="h-6 w-6 mr-3" />
-                <span>{t('become_member')}</span>
-              </Link>
+          {/* Footer */}
+          <div className="p-4 border-t mt-auto">
+            {user ? (
+              <div className="space-y-2">
+                <Link
+                  to="/profile"
+                  onClick={onClose}
+                  className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <User className="h-5 w-5 text-gray-600" />
+                  <span className="text-sm">{t('profile')}</span>
+                </Link>
+                <Link
+                  to="/profile"
+                  onClick={onClose}
+                  className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <Settings className="h-5 w-5 text-gray-600" />
+                  <span className="text-sm">{t('settings')}</span>
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-left"
+                >
+                  <LogOut className="h-5 w-5 text-gray-600" />
+                  <span className="text-sm">{t('sign_out')}</span>
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Button asChild variant="outline" className="w-full" onClick={onClose}>
+                  <Link to="/auth">{t('login')}</Link>
+                </Button>
+                <Button asChild className="w-full bg-gradient-to-r from-emerald-500 to-blue-500" onClick={onClose}>
+                  <Link to="/auth">{t('become_member')}</Link>
+                </Button>
+              </div>
             )}
           </div>
         </div>
-        
-        {/* Add the shine animation keyframes */}
-        <style>{`
-          @keyframes shine {
-            0% { transform: translateX(-100%) skewX(-12deg); }
-            100% { transform: translateX(400%) skewX(-12deg); }
-          }
-          @keyframes goldShine {
-            0% { transform: translateX(-100%) skewX(-12deg); }
-            100% { transform: translateX(300%) skewX(-12deg); }
-          }
-        `}</style>
       </SheetContent>
     </Sheet>
   );
