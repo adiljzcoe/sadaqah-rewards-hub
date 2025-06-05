@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Book, Star, Trophy, List, Globe } from 'lucide-react';
+import Header from '@/components/Header';
 import { useAuth } from '@/hooks/useAuth';
 import SurahList from '@/components/quran/SurahList';
 import SurahReader from '@/components/quran/SurahReader';
@@ -16,6 +17,7 @@ const QuranReader = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-green-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 text-center">

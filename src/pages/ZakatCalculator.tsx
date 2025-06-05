@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Calculator, History, MessageCircle, TrendingUp, Coins, Building, Users } from 'lucide-react';
+import Header from '@/components/Header';
 import ZakatCalculationForm from '@/components/zakat/ZakatCalculationForm';
 import ZakatHistory from '@/components/zakat/ZakatHistory';
 import ZakatDistribution from '@/components/zakat/ZakatDistribution';
@@ -26,6 +27,7 @@ const ZakatCalculator = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50/30 to-emerald-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
