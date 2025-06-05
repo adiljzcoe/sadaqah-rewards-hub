@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, ExternalLink, BarChart3, Settings, TrendingUp, DollarSign } from 'lucide-react';
+import { Plus, ExternalLink, BarChart3, Settings, TrendingUp, DollarSign, Globe } from 'lucide-react';
 import { useCharityPartners } from '@/hooks/useCharityPartners';
 
 const CharityPartnerManagement = () => {
@@ -16,7 +16,7 @@ const CharityPartnerManagement = () => {
   const { data: partners, isLoading } = useCharityPartnersList();
   const [selectedPartner, setSelectedPartner] = useState<string | null>(null);
 
-  const CreateCampaignDialog = ({ partnerId }: { partnerId: string }) => {
+  const CreateCampaignDialog = ({ partnerId, charitySlug }: { partnerId: string; charitySlug: string }) => {
     const [campaignData, setCampaignData] = useState({
       campaign_name: '',
       platform: 'facebook',
@@ -26,7 +26,7 @@ const CharityPartnerManagement = () => {
         utm_source: 'facebook',
         utm_medium: 'cpc',
         utm_campaign: '',
-        utm_charity: ''
+        utm_charity: charitySlug
       }
     });
 
@@ -39,6 +39,8 @@ const CharityPartnerManagement = () => {
       });
     };
 
+    const subdomainUrl = `https://${charitySlug}.yourjannah.com`;
+
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -49,9 +51,14 @@ const CharityPartnerManagement = () => {
         </DialogTrigger>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Create Ad Campaign</DialogTitle>
+            <DialogTitle>Create Subdomain Campaign</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <Label className="text-sm font-medium text-blue-800">Campaign Subdomain</Label>
+              <code className="block text-blue-600 text-sm mt-1">{subdomainUrl}</code>
+            </div>
+            
             <div>
               <Label>Campaign Name</Label>
               <Input
@@ -93,7 +100,7 @@ const CharityPartnerManagement = () => {
               />
             </div>
             <Button onClick={handleSubmit} className="w-full">
-              Create Campaign
+              Create Subdomain Campaign
             </Button>
           </div>
         </DialogContent>
@@ -108,7 +115,7 @@ const CharityPartnerManagement = () => {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Charity Partner Management</h2>
+        <h2 className="text-2xl font-bold">Charity Partner Subdomain Management</h2>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
           Add New Partner
@@ -118,6 +125,7 @@ const CharityPartnerManagement = () => {
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="subdomains">Subdomains</TabsTrigger>
           <TabsTrigger value="campaigns">Ad Campaigns</TabsTrigger>
           <TabsTrigger value="revenue">Revenue Tracking</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -129,10 +137,10 @@ const CharityPartnerManagement = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Active Partners</p>
+                  <p className="text-sm text-gray-600">Active Subdomains</p>
                   <p className="text-2xl font-bold">{partners?.length || 0}</p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-green-600" />
+                <Globe className="h-8 w-8 text-blue-600" />
               </div>
             </Card>
 
@@ -142,7 +150,7 @@ const CharityPartnerManagement = () => {
                   <p className="text-sm text-gray-600">Total Ad Spend</p>
                   <p className="text-2xl font-bold">£24,500</p>
                 </div>
-                <BarChart3 className="h-8 w-8 text-blue-600" />
+                <BarChart3 className="h-8 w-8 text-green-600" />
               </div>
             </Card>
 
@@ -160,12 +168,12 @@ const CharityPartnerManagement = () => {
           {/* Partners Table */}
           <Card>
             <div className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Partner Overview</h3>
+              <h3 className="text-lg font-semibold mb-4">Partner Subdomains</h3>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Charity</TableHead>
-                    <TableHead>Partner Slug</TableHead>
+                    <TableHead>Subdomain</TableHead>
                     <TableHead>Commission Rate</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Actions</TableHead>
@@ -187,9 +195,12 @@ const CharityPartnerManagement = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <code className="bg-gray-100 px-2 py-1 rounded text-sm">
-                          /charity/{partner.partner_slug}
-                        </code>
+                        <div className="space-y-1">
+                          <code className="bg-blue-50 text-blue-600 px-2 py-1 rounded text-sm block">
+                            {partner.partner_slug}.yourjannah.com
+                          </code>
+                          <div className="text-xs text-gray-500">SSL Enabled • CDN Active</div>
+                        </div>
                       </TableCell>
                       <TableCell>{(partner.commission_rate * 100).toFixed(1)}%</TableCell>
                       <TableCell>
@@ -201,9 +212,9 @@ const CharityPartnerManagement = () => {
                         <div className="flex items-center gap-2">
                           <Button size="sm" variant="outline">
                             <ExternalLink className="h-4 w-4 mr-1" />
-                            View Page
+                            Visit Subdomain
                           </Button>
-                          <CreateCampaignDialog partnerId={partner.id} />
+                          <CreateCampaignDialog partnerId={partner.id} charitySlug={partner.partner_slug} />
                         </div>
                       </TableCell>
                     </TableRow>
@@ -214,14 +225,27 @@ const CharityPartnerManagement = () => {
           </Card>
         </TabsContent>
 
+        <TabsContent value="subdomains">
+          <Card>
+            <div className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Subdomain Management</h3>
+              <div className="text-center py-8 text-gray-500">
+                <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>Subdomain configuration and DNS management</p>
+                <p className="text-sm">Manage SSL certificates, custom domains, and subdomain redirects</p>
+              </div>
+            </div>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="campaigns">
           <Card>
             <div className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Active Ad Campaigns</h3>
+              <h3 className="text-lg font-semibold mb-4">Subdomain Campaign Management</h3>
               <div className="text-center py-8 text-gray-500">
                 <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>Campaign management interface would go here</p>
-                <p className="text-sm">Track campaign performance, adjust budgets, pause/resume campaigns</p>
+                <p>Campaign management interface for subdomain-based campaigns</p>
+                <p className="text-sm">Track performance, adjust budgets, monitor subdomain traffic</p>
               </div>
             </div>
           </Card>
@@ -230,11 +254,11 @@ const CharityPartnerManagement = () => {
         <TabsContent value="revenue">
           <Card>
             <div className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Revenue Attribution</h3>
+              <h3 className="text-lg font-semibold mb-4">Subdomain Revenue Attribution</h3>
               <div className="text-center py-8 text-gray-500">
                 <DollarSign className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>Revenue tracking and attribution analytics</p>
-                <p className="text-sm">See which campaigns generate the most revenue for each partner</p>
+                <p>Revenue tracking and attribution analytics per subdomain</p>
+                <p className="text-sm">See which subdomains generate the most revenue and conversions</p>
               </div>
             </div>
           </Card>
@@ -243,11 +267,11 @@ const CharityPartnerManagement = () => {
         <TabsContent value="analytics">
           <Card>
             <div className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Attribution Analytics</h3>
+              <h3 className="text-lg font-semibold mb-4">Subdomain Analytics</h3>
               <div className="text-center py-8 text-gray-500">
                 <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>Detailed UTM tracking and conversion analytics</p>
-                <p className="text-sm">Cross-device attribution, conversion funnels, and ROI analysis</p>
+                <p>Detailed subdomain traffic and conversion analytics</p>
+                <p className="text-sm">Cross-device attribution, conversion funnels, and ROI analysis per subdomain</p>
               </div>
             </div>
           </Card>

@@ -30,7 +30,12 @@ const CharityPartnerProgram = () => {
     {
       icon: Upload,
       title: "Easy Campaign Setup",
-      description: "Upload your media, set campaign names, and we'll create custom UTM tracking links for your charity"
+      description: "Upload your media, set campaign names, and we'll create your custom subdomain with UTM tracking"
+    },
+    {
+      icon: Globe,
+      title: "Your Own Subdomain",
+      description: "Get your dedicated subdomain (e.g., islamicrelief.yourjannah.com) with full branding control"
     },
     {
       icon: Target,
@@ -51,16 +56,12 @@ const CharityPartnerProgram = () => {
       icon: Bell,
       title: "Push Notification Features",
       description: "Your campaigns get highlighted in our push notifications and landing page promotions"
-    },
-    {
-      icon: Shield,
-      title: "No Hidden Fees",
-      description: "We don't charge for running your ads - you provide the budget and we maximize your reach"
     }
   ];
 
   const features = [
-    "Custom UTM tracking links for each campaign",
+    "Custom subdomain with your charity branding",
+    "UTM tracking links for each campaign",
     "Multi-platform ad management (Facebook, Instagram, Google, TikTok)",
     "Real-time performance analytics and reporting",
     "Dedicated email campaign sections",
@@ -73,30 +74,36 @@ const CharityPartnerProgram = () => {
   const howItWorks = [
     {
       step: 1,
+      title: "Get Your Subdomain",
+      description: "Receive your custom subdomain (e.g., yourcharity.yourjannah.com) for branded campaigns",
+      icon: Globe
+    },
+    {
+      step: 2,
       title: "Upload Funds & Media",
       description: "Provide your advertising budget and upload your campaign creative assets",
       icon: Upload
     },
     {
-      step: 2,
+      step: 3,
       title: "Set Campaign Details",
       description: "Create campaign names and messaging through our marketing dashboard",
       icon: Settings
     },
     {
-      step: 3,
+      step: 4,
       title: "Get UTM Links",
-      description: "Receive custom tracking links for your charity to monitor all campaign activity",
+      description: "Receive custom tracking links pointing to your subdomain for monitoring all campaign activity",
       icon: Link
     },
     {
-      step: 4,
+      step: 5,
       title: "We Run Your Ads",
       description: "Our team manages your campaigns across all platforms using your provided budget",
       icon: Target
     },
     {
-      step: 5,
+      step: 6,
       title: "Track Performance",
       description: "Monitor donations, clicks, and conversions through your dedicated analytics dashboard",
       icon: BarChart3
@@ -106,17 +113,17 @@ const CharityPartnerProgram = () => {
   const testimonials = [
     {
       charity: "Islamic Relief",
-      quote: "Having Your Jannah manage our ad campaigns has freed up our team to focus on our mission. The UTM tracking is fantastic.",
+      quote: "Having our own subdomain islamicrelief.yourjannah.com has boosted our brand recognition. The UTM tracking is fantastic.",
       impact: "40% more efficient"
     },
     {
       charity: "Human Appeal",
-      quote: "The email integration feature alone has doubled our reach. Plus we get detailed analytics on everything.",
+      quote: "Our subdomain humanappeal.yourjannah.com gets featured in emails and push notifications. Perfect brand visibility.",
       impact: "200% reach increase"
     },
     {
       charity: "Penny Appeal",
-      quote: "No hidden fees and professional ad management - exactly what we needed to scale our digital presence.",
+      quote: "No hidden fees and professional ad management with our own branded subdomain - exactly what we needed.",
       impact: "3x campaign ROI"
     }
   ];
@@ -133,22 +140,33 @@ const CharityPartnerProgram = () => {
           </Badge>
           
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Let Us Run Your <span className="text-blue-600">Digital Campaigns</span>
+            Get Your Own <span className="text-blue-600">Branded Subdomain</span>
           </h1>
           
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Focus on your mission while we handle your digital advertising. You provide the budget and creative assets, 
-            we manage professional campaigns across all major platforms with full transparency and tracking.
+            we manage professional campaigns on your custom subdomain with full transparency and tracking.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-4">
-              Start Your Campaign
+              Get Your Subdomain
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-              View Sample Dashboard
+              View Demo Subdomain
             </Button>
+          </div>
+          
+          {/* Example Subdomains */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 max-w-2xl mx-auto mb-12">
+            <h3 className="text-lg font-semibold mb-4">Example Partner Subdomains</h3>
+            <div className="grid md:grid-cols-2 gap-3 text-sm">
+              <code className="bg-blue-50 text-blue-700 px-3 py-2 rounded">islamicrelief.yourjannah.com</code>
+              <code className="bg-green-50 text-green-700 px-3 py-2 rounded">humanappeal.yourjannah.com</code>
+              <code className="bg-purple-50 text-purple-700 px-3 py-2 rounded">pennyappeal.yourjannah.com</code>
+              <code className="bg-orange-50 text-orange-700 px-3 py-2 rounded">muslimaid.yourjannah.com</code>
+            </div>
           </div>
           
           {/* Stats */}
@@ -177,7 +195,7 @@ const CharityPartnerProgram = () => {
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Why Choose Our Campaign Management?
+            Why Choose Our Subdomain Campaign Management?
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -202,10 +220,10 @@ const CharityPartnerProgram = () => {
       <section className="py-16 px-4 bg-gray-50">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            How It Works
+            How Your Subdomain Campaign Works
           </h2>
           
-          <div className="grid md:grid-cols-5 gap-6">
+          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
             {howItWorks.map((step, index) => (
               <div key={index} className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
@@ -220,47 +238,47 @@ const CharityPartnerProgram = () => {
         </div>
       </section>
 
-      {/* Campaign Integration Features */}
+      {/* Subdomain Features */}
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Integrated Marketing Ecosystem
+                Your Brand, Your Subdomain
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Your campaigns don't just run in isolation. Get featured across our entire 
-                marketing ecosystem to maximize your reach and impact.
+                Each charity partner gets their own dedicated subdomain for maximum brand visibility 
+                and professional appearance across all marketing channels.
               </p>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Mail className="h-5 w-5 text-blue-600" />
+                    <Globe className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Email Campaign Integration</h3>
-                    <p className="text-gray-600">Get your own dedicated section in our email campaigns sent to thousands of engaged donors.</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">Custom Subdomain Setup</h3>
+                    <p className="text-gray-600">Your charity gets its own subdomain like yourcharity.yourjannah.com for all campaigns.</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Bell className="h-5 w-5 text-green-600" />
+                    <Mail className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Push Notification Features</h3>
-                    <p className="text-gray-600">Your campaigns get prominently featured in our push notifications and landing page promotions.</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">Email Campaign Integration</h3>
+                    <p className="text-gray-600">Your subdomain gets featured in our email campaigns sent to thousands of engaged donors.</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Monitor className="h-5 w-5 text-purple-600" />
+                    <Bell className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Marketing Dashboard</h3>
-                    <p className="text-gray-600">Write and manage your campaign messages through our comprehensive marketing dashboard.</p>
+                    <h3 className="font-semibold text-gray-900 mb-1">Push Notification Features</h3>
+                    <p className="text-gray-600">Your subdomain campaigns get prominently featured in our push notifications.</p>
                   </div>
                 </div>
               </div>
@@ -268,18 +286,21 @@ const CharityPartnerProgram = () => {
             
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl">
               <div className="text-center">
-                <Camera className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+                <Globe className="h-16 w-16 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Complete Creative Control
+                  Professional Brand Presence
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Upload your own creative assets, set your messaging, and maintain full control 
-                  over your brand presentation while we handle the technical execution.
+                  Your subdomain provides a professional, branded experience for donors while 
+                  maintaining full tracking and analytics capabilities.
                 </p>
+                <div className="bg-white p-4 rounded-lg mb-4">
+                  <code className="text-lg font-mono text-blue-600">yourcharity.yourjannah.com</code>
+                </div>
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div className="bg-white p-3 rounded-lg">
                     <div className="text-lg font-bold text-blue-600">100%</div>
-                    <div className="text-xs text-gray-600">Creative Control</div>
+                    <div className="text-xs text-gray-600">Brand Control</div>
                   </div>
                   <div className="bg-white p-3 rounded-lg">
                     <div className="text-lg font-bold text-green-600">24/7</div>
@@ -319,11 +340,11 @@ const CharityPartnerProgram = () => {
               </h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span>Campaign Management</span>
+                  <span>Subdomain Setup & Management</span>
                   <span className="font-semibold text-green-600">FREE</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span>Platform Access</span>
+                  <span>Campaign Management</span>
                   <span className="font-semibold text-green-600">FREE</span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -375,16 +396,16 @@ const CharityPartnerProgram = () => {
         <div className="container mx-auto text-center">
           <Heart className="h-16 w-16 mx-auto mb-6 opacity-90" />
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Scale Your Digital Impact?
+            Ready to Get Your Own Subdomain?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Join leading charities who trust us to manage their digital campaigns. 
+            Join leading charities who trust us to manage their digital campaigns on their own branded subdomains. 
             Zero management fees, maximum transparency, professional results.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4">
-              Get Started Today
+              Claim Your Subdomain
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4">
@@ -393,7 +414,7 @@ const CharityPartnerProgram = () => {
           </div>
           
           <p className="text-sm opacity-75 mt-6">
-            No setup fees • No management fees • Full campaign transparency
+            No setup fees • No management fees • Full campaign transparency • Your own subdomain
           </p>
         </div>
       </section>

@@ -16,15 +16,16 @@ export interface AttributionData {
   landingPage: string;
   timestamp: string;
   deviceFingerprint: any;
+  subdomain?: string;
 }
 
-// Generate charity partner URL with UTM parameters
-export const generateCharityPartnerURL = (
-  baseUrl: string,
+// Generate charity partner subdomain URL with UTM parameters
+export const generateCharityPartnerSubdomainURL = (
   charitySlug: string,
-  utmParams: UTMParameters
+  utmParams: UTMParameters,
+  path: string = '/'
 ): string => {
-  const url = new URL(`${baseUrl}/charity/${charitySlug}`);
+  const url = new URL(`https://${charitySlug}.yourjannah.com${path}`);
   
   Object.entries(utmParams).forEach(([key, value]) => {
     if (value) {
@@ -35,12 +36,19 @@ export const generateCharityPartnerURL = (
   return url.toString();
 };
 
-// Extract charity attribution from URL or stored data
+// Extract charity attribution from subdomain or URL parameters
 export const getCharityAttribution = (
   searchParams: URLSearchParams,
+  currentDomain: string,
   storedAttribution?: AttributionData
 ): string | null => {
-  // First check URL parameters
+  // First check if we're on a charity subdomain
+  if (currentDomain.includes('.yourjannah.com') && !currentDomain.startsWith('www.')) {
+    const charitySlug = currentDomain.split('.')[0];
+    return charitySlug;
+  }
+  
+  // Then check URL parameters
   const utmCharity = searchParams.get('utm_charity');
   if (utmCharity) return utmCharity;
   
@@ -73,12 +81,13 @@ export const createCharityCampaignUTM = (
   };
 };
 
-// Revenue attribution logic
+// Revenue attribution logic for subdomain-based tracking
 export const calculateRevenueAttribution = (
   donationAmount: number,
   isCharityAttributed: boolean,
   isFundraisingDonation: boolean,
-  charityCommissionRate: number = 0.05
+  charityCommissionRate: number = 0.05,
+  isSubdomainDonation: boolean = false
 ) => {
   if (isFundraisingDonation) {
     // Fundraising donations: 100% to platform, 0% to charity partner
@@ -89,8 +98,8 @@ export const calculateRevenueAttribution = (
     };
   }
   
-  if (isCharityAttributed) {
-    // Charity attributed donation: charity gets most, platform gets commission
+  if (isCharityAttributed || isSubdomainDonation) {
+    // Charity attributed donation (via subdomain or UTM): charity gets most, platform gets commission
     const platformFee = donationAmount * charityCommissionRate;
     return {
       platformRevenue: platformFee,
@@ -107,11 +116,11 @@ export const calculateRevenueAttribution = (
   };
 };
 
-// Generate campaign URLs for different platforms
-export const generateCampaignURLs = (
-  baseUrl: string,
+// Generate campaign URLs for different platforms with subdomain support
+export const generateSubdomainCampaignURLs = (
   charitySlug: string,
-  campaignName: string
+  campaignName: string,
+  landingPath: string = '/'
 ) => {
   const campaigns = {
     facebook: createCharityCampaignUTM(charitySlug, campaignName, 'facebook'),
@@ -122,7 +131,23 @@ export const generateCampaignURLs = (
   };
   
   return Object.entries(campaigns).reduce((urls, [platform, utm]) => {
-    urls[platform] = generateCharityPartnerURL(baseUrl, charitySlug, utm);
+    urls[platform] = generateCharityPartnerSubdomainURL(charitySlug, utm, landingPath);
     return urls;
   }, {} as Record<string, string>);
+};
+
+// Check if current domain is a charity subdomain
+export const isCharitySubdomain = (domain: string): boolean => {
+  return domain.includes('.yourjannah.com') && 
+         !domain.startsWith('www.') && 
+         !domain.startsWith('app.') &&
+         !domain.startsWith('admin.');
+};
+
+// Extract charity slug from subdomain
+export const getCharitySlugFromSubdomain = (domain: string): string | null => {
+  if (isCharitySubdomain(domain)) {
+    return domain.split('.')[0];
+  }
+  return null;
 };
