@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown, Settings, Code, UserCog, LogIn, LogOut } from 'lucide-react';
+import { Star, User, Menu, X, ChevronDown, ChevronRight, Building, Heart, Users, Gift, Trophy, BookOpen, Coins, Shield, Calendar, Mic, Tv, Clock, Moon, Sparkles, Crown, Settings, Code, UserCog, LogIn, LogOut, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -19,7 +19,9 @@ import {
 } from "@/components/ui/collapsible";
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
+import { useTranslation } from '@/contexts/TranslationContext';
 import { ShoppingCart } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 interface MobileSidebarProps {
   userLevel: number;
@@ -42,6 +44,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
 
   const { user, fakeAdminLogin, fakeUserLogin, signOut } = useAuth();
   const { totalItems, totalAmount } = useCart();
+  const { t } = useTranslation();
   const progress = (currentPoints / nextLevelPoints) * 100;
 
   // Watch for cart changes and trigger animation
@@ -138,39 +141,39 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   };
 
   const islamicPages = [
-    { name: "Islamic Calendar", path: "/islamic-calendar", icon: Calendar, description: "Sacred days & celebrations", gradient: "from-emerald-600 to-green-600" },
-    { name: "Ramadan Calendar", path: "/ramadan-calendar", icon: Moon, description: "Track your Ramadan journey", gradient: "from-purple-600 to-indigo-600" },
-    { name: "Adhan Community", path: "/adhan-community", icon: Mic, description: "Share beautiful Adhan recordings", gradient: "from-blue-600 to-cyan-600" },
-    { name: "Live TV", path: "/live-tv", icon: Tv, description: "Islamic channels & content", gradient: "from-red-600 to-pink-600" },
-    { name: "Dhikr Community", path: "/dhikr-community", icon: Sparkles, description: "Spiritual remembrance together", gradient: "from-purple-600 to-pink-600" },
+    { name: t('islamic_calendar'), path: "/islamic-calendar", icon: Calendar, description: "Sacred days & celebrations", gradient: "from-emerald-600 to-green-600" },
+    { name: t('ramadan_calendar'), path: "/ramadan-calendar", icon: Moon, description: "Track your Ramadan journey", gradient: "from-purple-600 to-indigo-600" },
+    { name: t('adhan_community'), path: "/adhan-community", icon: Mic, description: "Share beautiful Adhan recordings", gradient: "from-blue-600 to-cyan-600" },
+    { name: t('live_tv'), path: "/live-tv", icon: Tv, description: "Islamic channels & content", gradient: "from-red-600 to-pink-600" },
+    { name: t('dhikr_community'), path: "/dhikr-community", icon: Sparkles, description: "Spiritual remembrance together", gradient: "from-purple-600 to-pink-600" },
   ];
 
   const toolsPages = [
-    { name: "Prayer Times", path: "/namaz-times", icon: Clock, description: "Accurate prayer times worldwide", gradient: "from-indigo-600 to-blue-600" },
-    { name: "Quran Reader", path: "/quran-reader", icon: BookOpen, description: "Read & track progress", gradient: "from-emerald-600 to-green-600" },
-    { name: "Zakat Calculator", path: "/zakat-calculator", icon: Coins, description: "Calculate your Zakat", gradient: "from-yellow-600 to-orange-600" },
-    { name: "Dua Wall", path: "/dua-wall", icon: Heart, description: "Share & support prayers", gradient: "from-pink-600 to-rose-600" },
+    { name: t('prayer_times'), path: "/namaz-times", icon: Clock, description: "Accurate prayer times worldwide", gradient: "from-indigo-600 to-blue-600" },
+    { name: t('quran_reader'), path: "/quran-reader", icon: BookOpen, description: "Read & track progress", gradient: "from-emerald-600 to-green-600" },
+    { name: t('zakat_calculator'), path: "/zakat-calculator", icon: Coins, description: "Calculate your Zakat", gradient: "from-yellow-600 to-orange-600" },
+    { name: t('dua_wall'), path: "/dua-wall", icon: Heart, description: "Share & support prayers", gradient: "from-pink-600 to-rose-600" },
   ];
 
   const donatePages = [
-    { name: "Active Campaigns", path: "/campaigns", icon: Heart, description: "Support urgent causes worldwide", gradient: "from-emerald-600 to-green-600" },
-    { name: "Build a Mosque", path: "/build-mosque", icon: Building, description: "Fund mosque construction", gradient: "from-blue-600 to-indigo-600" },
-    { name: "Water Wells", path: "/water-wells", icon: "💧", description: "Provide clean water access", gradient: "from-cyan-600 to-blue-600" },
-    { name: "Orphanages", path: "/orphanages", icon: "👶", description: "Support orphan care & education", gradient: "from-pink-600 to-rose-600" },
-    { name: "Qurbani", path: "/qurbani", icon: "🐄", description: "Sacrifice & share blessings", gradient: "from-orange-600 to-red-600" },
+    { name: t('active_campaigns'), path: "/campaigns", icon: Heart, description: "Support urgent causes worldwide", gradient: "from-emerald-600 to-green-600" },
+    { name: t('build_mosque'), path: "/build-mosque", icon: Building, description: "Fund mosque construction", gradient: "from-blue-600 to-indigo-600" },
+    { name: t('water_wells'), path: "/water-wells", icon: "💧", description: "Provide clean water access", gradient: "from-cyan-600 to-blue-600" },
+    { name: t('orphanages'), path: "/orphanages", icon: "👶", description: "Support orphan care & education", gradient: "from-pink-600 to-rose-600" },
+    { name: t('qurbani'), path: "/qurbani", icon: "🐄", description: "Sacrifice & share blessings", gradient: "from-orange-600 to-red-600" },
   ];
 
   const communityPages = [
-    { name: "Masjid Community", path: "/masjid-community", icon: Building, description: "Represent your local mosque", gradient: "from-indigo-600 to-purple-600" },
-    { name: "My Ummah", path: "/my-ummah", icon: Users, description: "Global Muslim community", gradient: "from-emerald-600 to-green-600" },
-    { name: "Leaderboards", path: "/leaderboards", icon: Trophy, description: "Top donors & recognition", gradient: "from-amber-600 to-yellow-600" },
+    { name: t('masjid_community'), path: "/masjid-community", icon: Building, description: "Represent your local mosque", gradient: "from-indigo-600 to-purple-600" },
+    { name: t('my_ummah'), path: "/my-ummah", icon: Users, description: "Global Muslim community", gradient: "from-emerald-600 to-green-600" },
+    { name: t('leaderboards'), path: "/leaderboards", icon: Trophy, description: "Top donors & recognition", gradient: "from-amber-600 to-yellow-600" },
   ];
 
   const rewardsPages = [
-    { name: "Sadaqah Coins", path: "/sadaqah-coins", icon: Coins, description: "Purchase coins & unlock rewards", gradient: "from-yellow-600 to-amber-600" },
-    { name: "My Jannah", path: "/my-jannah", icon: Building, description: "Build your paradise", gradient: "from-emerald-600 to-green-600" },
-    { name: "Membership Tiers", path: "/membership", icon: Shield, description: "Upgrade for multiplied points", gradient: "from-purple-600 to-indigo-600" },
-    { name: "Gift Cards", path: "/gift-cards", icon: Gift, description: "Give the gift of giving", gradient: "from-pink-600 to-rose-600" },
+    { name: t('sadaqah_coins'), path: "/sadaqah-coins", icon: Coins, description: "Purchase coins & unlock rewards", gradient: "from-yellow-600 to-amber-600" },
+    { name: t('my_jannah'), path: "/my-jannah", icon: Building, description: "Build your paradise", gradient: "from-emerald-600 to-green-600" },
+    { name: t('membership_tiers'), path: "/membership", icon: Shield, description: "Upgrade for multiplied points", gradient: "from-purple-600 to-indigo-600" },
+    { name: t('gift_cards'), path: "/gift-cards", icon: Gift, description: "Give the gift of giving", gradient: "from-pink-600 to-rose-600" },
   ];
 
   const developerPages = [
@@ -312,7 +315,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                 </div>
                 <div>
                   <span className="drop-shadow-md">
-                    {cartAnimating ? 'Added to Cart!' : 'Checkout'}
+                    {cartAnimating ? 'Added to Cart!' : t('checkout')}
                   </span>
                   <div className="text-xs text-white/80 drop-shadow-sm">
                     {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Cart is empty'}
@@ -331,6 +334,17 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </Link>
           </div>
 
+          {/* Language Switcher */}
+          <div className="px-4 pb-4">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+              <div className="flex items-center">
+                <Globe className="h-5 w-5 mr-3" />
+                <span className="font-semibold">{t('language')}</span>
+              </div>
+              <LanguageSwitcher />
+            </div>
+          </div>
+
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             
             {/* Home */}
@@ -340,7 +354,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
               <span className="text-lg mr-3">🏠</span>
-              Home
+              {t('home')}
             </Link>
 
             {/* User Login Section */}
@@ -351,7 +365,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <User className="h-5 w-5 mr-3" />
-                  <span>User Login</span>
+                  <span>{t('user_login')}</span>
                 </div>
                 {userLoginOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -363,7 +377,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                   >
                     <LogOut className="h-5 w-5 mr-3" />
                     <div className="flex-1 text-left">
-                      <div className="font-semibold text-white">Sign Out</div>
+                      <div className="font-semibold text-white">{t('sign_out')}</div>
                       <p className="text-xs text-white/80 leading-tight">Log out current user</p>
                     </div>
                   </button>
@@ -375,7 +389,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                     >
                       <User className="h-5 w-5 mr-3" />
                       <div className="flex-1 text-left">
-                        <div className="font-semibold text-white">Test User Login</div>
+                        <div className="font-semibold text-white">{t('test_user_login')}</div>
                         <p className="text-xs text-white/80 leading-tight">Login as a test user</p>
                       </div>
                     </button>
@@ -385,7 +399,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                     >
                       <Shield className="h-5 w-5 mr-3" />
                       <div className="flex-1 text-left">
-                        <div className="font-semibold text-white">Test Admin Login</div>
+                        <div className="font-semibold text-white">{t('test_admin_login')}</div>
                         <p className="text-xs text-white/80 leading-tight">Login as a test admin</p>
                       </div>
                     </button>
@@ -396,7 +410,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                     >
                       <LogIn className="h-5 w-5 mr-3" />
                       <div className="flex-1">
-                        <div className="font-semibold text-white">Real Login</div>
+                        <div className="font-semibold text-white">{t('real_login')}</div>
                         <p className="text-xs text-white/80 leading-tight">Go to authentication page</p>
                       </div>
                     </Link>
@@ -413,7 +427,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">🕌</span>
-                  <span>Islamic Life</span>
+                  <span>{t('islamic_life')}</span>
                 </div>
                 {islamicOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -430,7 +444,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">🛠️</span>
-                  <span>Tools</span>
+                  <span>{t('tools')}</span>
                 </div>
                 {toolsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -447,7 +461,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">💝</span>
-                  <span>Donate</span>
+                  <span>{t('donate')}</span>
                 </div>
                 {donateOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -464,7 +478,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">👥</span>
-                  <span>Community</span>
+                  <span>{t('community')}</span>
                 </div>
                 {communityOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -481,7 +495,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <span className="text-lg mr-3">🏆</span>
-                  <span>Rewards</span>
+                  <span>{t('rewards')}</span>
                 </div>
                 {rewardsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -498,7 +512,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105">
                 <div className="flex items-center">
                   <Code className="h-5 w-5 mr-3" />
-                  <span>Developer</span>
+                  <span>{t('developer')}</span>
                 </div>
                 {developerOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
               </CollapsibleTrigger>
@@ -515,7 +529,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
                 className="flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-yellow-300/60 ring-2 ring-amber-400/30"
               >
                 <Shield className="h-6 w-6 mr-3" />
-                <span>Become a Member</span>
+                <span>{t('become_member')}</span>
               </Link>
             )}
           </div>
