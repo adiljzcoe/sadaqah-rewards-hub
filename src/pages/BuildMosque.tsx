@@ -8,11 +8,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
-interface MosqueSpace {
+interface MosqueBlock {
   id: string;
   name: string;
   description: string;
-  price: number;
+  pricePerBlock: number;
+  bricksPerBlock: number;
   isPurchased: boolean;
   purchasedBy?: string;
   purchaseDate?: string;
@@ -25,16 +26,18 @@ interface MosqueProject {
   name: string;
   location: string;
   description: string;
-  totalSpaces: number;
-  purchasedSpaces: number;
+  totalBlocks: number;
+  purchasedBlocks: number;
   totalCost: number;
   raisedAmount: number;
   capacity: number;
   features: string[];
   urgency: string;
   image: string;
-  spaces: MosqueSpace[];
-  costPerSpace: number;
+  blocks: MosqueBlock[];
+  baseBlockPrice: number;
+  totalBricks: number;
+  costPerBrick: number;
 }
 
 const BuildMosque = () => {
@@ -43,41 +46,49 @@ const BuildMosque = () => {
   const [userPurchases, setUserPurchases] = useState<string[]>([]);
   const [showPurchaseAnimation, setShowPurchaseAnimation] = useState(false);
 
-  // Generate spaces for each project with calculated pricing
-  const generateSpaces = (projectId: number, totalSpaces: number, costPerSpace: number): MosqueSpace[] => {
-    const categories: MosqueSpace['category'][] = ['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'];
-    const spacesPerCategory = Math.floor(totalSpaces / categories.length);
-    const spaces: MosqueSpace[] = [];
+  // Generate blocks for each project with the new pricing system
+  const generateBlocks = (projectId: number, totalCost: number): MosqueBlock[] => {
+    const categories: MosqueBlock['category'][] = ['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'];
+    
+    // Base pricing calculation: £1 per brick, 50 bricks per block = £50 base price
+    const costPerBrick = 1; // £1 per brick
+    const bricksPerBlock = 50;
+    const baseBlockPrice = 50; // £50 target price
+    const totalBlocks = Math.floor(totalCost / baseBlockPrice);
+    const blocksPerCategory = Math.floor(totalBlocks / categories.length);
+    
+    const blocks: MosqueBlock[] = [];
 
-    // Base Jannah points for mosque building (extra rewards)
-    const baseJannahPoints = Math.floor(costPerSpace / 10); // 10p = 1 Jannah point, but mosques get bonus
+    // Category-specific pricing multipliers and Jannah point bonuses
+    const categoryMultipliers = {
+      foundation: { price: 0.8, jannahBonus: 1.5 }, // £40 per block
+      walls: { price: 1.0, jannahBonus: 1.2 },      // £50 per block (target)
+      roof: { price: 1.2, jannahBonus: 1.3 },       // £60 per block
+      interior: { price: 0.9, jannahBonus: 1.1 },   // £45 per block
+      minaret: { price: 1.5, jannahBonus: 2.0 },    // £75 per block
+      dome: { price: 1.8, jannahBonus: 2.5 }        // £90 per block
+    };
+
+    // Base Jannah points calculation (extra rewards for mosque building)
+    const baseJannahPoints = 50; // Base points per block
 
     categories.forEach((category, categoryIndex) => {
-      const categorySpaceCount = categoryIndex === categories.length - 1 
-        ? totalSpaces - (spacesPerCategory * (categories.length - 1))
-        : spacesPerCategory;
+      const categoryBlockCount = categoryIndex === categories.length - 1 
+        ? totalBlocks - (blocksPerCategory * (categories.length - 1))
+        : blocksPerCategory;
 
-      // Category-specific pricing multipliers and Jannah point bonuses
-      const categoryMultipliers = {
-        foundation: { price: 0.8, jannahBonus: 1.5 }, // Foundation is cheaper but high reward
-        walls: { price: 1.0, jannahBonus: 1.2 },
-        roof: { price: 1.2, jannahBonus: 1.3 },
-        interior: { price: 0.9, jannahBonus: 1.1 },
-        minaret: { price: 1.5, jannahBonus: 2.0 }, // Minaret is premium with highest reward
-        dome: { price: 1.8, jannahBonus: 2.5 } // Dome is most expensive with highest reward
-      };
-
-      for (let i = 0; i < categorySpaceCount; i++) {
-        const spaceId = `${projectId}-${category}-${i + 1}`;
+      for (let i = 0; i < categoryBlockCount; i++) {
+        const blockId = `${projectId}-${category}-block-${i + 1}`;
         const multiplier = categoryMultipliers[category];
-        const spacePrice = Math.round(costPerSpace * multiplier.price);
+        const blockPrice = Math.round(baseBlockPrice * multiplier.price);
         const jannahPoints = Math.round(baseJannahPoints * multiplier.jannahBonus * 1.5); // 1.5x mosque bonus
 
-        spaces.push({
-          id: spaceId,
+        blocks.push({
+          id: blockId,
           name: `${category.charAt(0).toUpperCase() + category.slice(1)} Block ${i + 1}`,
-          description: `Help build the ${category} section of this blessed mosque`,
-          price: spacePrice,
+          description: `50 bricks for the ${category} section (£${blockPrice} = ${bricksPerBlock} bricks at £${costPerBrick} each)`,
+          pricePerBlock: blockPrice,
+          bricksPerBlock: bricksPerBlock,
           isPurchased: Math.random() > 0.7, // 30% already purchased
           category,
           purchasedBy: Math.random() > 0.5 ? 'Anonymous Donor' : 'Verified Donor',
@@ -87,7 +98,7 @@ const BuildMosque = () => {
       }
     });
 
-    return spaces;
+    return blocks;
   };
 
   const [mosqueProjects, setMosqueProjects] = useState<MosqueProject[]>([
@@ -96,69 +107,81 @@ const BuildMosque = () => {
       name: "Central Community Mosque",
       location: "Birmingham, UK",
       description: "A modern mosque serving 2,000+ families with community center, school, and sports facilities.",
-      totalSpaces: 500,
-      purchasedSpaces: 287,
+      totalBlocks: 0,
+      purchasedBlocks: 0,
       totalCost: 500000,
-      raisedAmount: 287500,
+      raisedAmount: 0,
       capacity: 2000,
       features: ["Prayer Hall", "Community Center", "Islamic School", "Sports Complex", "Car Park"],
       urgency: "high",
       image: "/placeholder.svg",
-      spaces: [],
-      costPerSpace: 0
+      blocks: [],
+      baseBlockPrice: 50,
+      totalBricks: 0,
+      costPerBrick: 1
     },
     {
       id: 2,
       name: "Riverside Family Mosque",
       location: "Manchester, UK", 
       description: "Family-focused mosque with dedicated women's section, children's area, and elderly care facilities.",
-      totalSpaces: 300,
-      purchasedSpaces: 195,
-      totalCost: 300000,
-      raisedAmount: 195000,
+      totalBlocks: 0,
+      purchasedBlocks: 0,
+      totalCost: 1500000,
+      raisedAmount: 0,
       capacity: 1200,
       features: ["Family Prayer Areas", "Women's Section", "Children's Area", "Elderly Care", "Library"],
       urgency: "medium",
       image: "/placeholder.svg",
-      spaces: [],
-      costPerSpace: 0
+      blocks: [],
+      baseBlockPrice: 50,
+      totalBricks: 0,
+      costPerBrick: 1
     }
   ]);
 
-  // Initialize spaces for projects with calculated pricing
+  // Initialize blocks for projects with new pricing system
   useEffect(() => {
     setMosqueProjects(prev => prev.map(project => {
-      const costPerSpace = Math.round(project.totalCost / project.totalSpaces);
+      const blocks = generateBlocks(project.id, project.totalCost);
+      const totalBlocks = blocks.length;
+      const totalBricks = totalBlocks * 50; // 50 bricks per block
+      const purchasedBlocks = blocks.filter(b => b.isPurchased).length;
+      const raisedAmount = blocks.filter(b => b.isPurchased).reduce((sum, b) => sum + b.pricePerBlock, 0);
+      
       return {
         ...project,
-        costPerSpace,
-        spaces: generateSpaces(project.id, project.totalSpaces, costPerSpace)
+        blocks,
+        totalBlocks,
+        totalBricks,
+        purchasedBlocks,
+        raisedAmount
       };
     }));
   }, []);
 
-  const handleSpacePurchase = (projectId: number, spaceId: string) => {
+  const handleBlockPurchase = (projectId: number, blockId: string) => {
     setMosqueProjects(prev => prev.map(project => {
       if (project.id === projectId) {
-        const updatedSpaces = project.spaces.map(space => 
-          space.id === spaceId 
-            ? { ...space, isPurchased: true, purchasedBy: user?.email || 'You', purchaseDate: 'Just now' }
-            : space
+        const updatedBlocks = project.blocks.map(block => 
+          block.id === blockId 
+            ? { ...block, isPurchased: true, purchasedBy: user?.email || 'You', purchaseDate: 'Just now' }
+            : block
         );
-        const newPurchasedCount = updatedSpaces.filter(s => s.isPurchased).length;
-        const newRaisedAmount = updatedSpaces.filter(s => s.isPurchased).reduce((sum, s) => sum + s.price, 0);
+        const newPurchasedCount = updatedBlocks.filter(b => b.isPurchased).length;
+        const newRaisedAmount = updatedBlocks.filter(b => b.isPurchased).reduce((sum, b) => sum + b.pricePerBlock, 0);
         
         return {
           ...project,
-          spaces: updatedSpaces,
-          purchasedSpaces: newPurchasedCount,
+          blocks: updatedBlocks,
+          purchasedBlocks: newPurchasedCount,
           raisedAmount: newRaisedAmount
         };
       }
       return project;
     }));
 
-    setUserPurchases(prev => [...prev, spaceId]);
+    setUserPurchases(prev => [...prev, blockId]);
     setShowPurchaseAnimation(true);
     setTimeout(() => setShowPurchaseAnimation(false), 3000);
   };
@@ -172,7 +195,7 @@ const BuildMosque = () => {
     }
   };
 
-  const getCategoryColor = (category: MosqueSpace['category']) => {
+  const getCategoryColor = (category: MosqueBlock['category']) => {
     const colors = {
       foundation: 'bg-stone-500',
       walls: 'bg-amber-500', 
@@ -184,7 +207,7 @@ const BuildMosque = () => {
     return colors[category];
   };
 
-  const getCategoryIcon = (category: MosqueSpace['category']) => {
+  const getCategoryIcon = (category: MosqueBlock['category']) => {
     switch (category) {
       case 'foundation': return '🏗️';
       case 'walls': return '🧱';
@@ -207,7 +230,7 @@ const BuildMosque = () => {
             <div className="text-center">
               <div className="text-4xl mb-2">🕌✨</div>
               <div className="text-2xl font-bold mb-2">Barakallahu Feek!</div>
-              <div className="text-lg">Your space has been secured!</div>
+              <div className="text-lg">Your block has been secured!</div>
               <div className="text-sm opacity-90 mt-2">May Allah reward you abundantly</div>
               <div className="text-sm opacity-90 mt-1">Extra Jannah points for mosque building!</div>
             </div>
@@ -223,27 +246,27 @@ const BuildMosque = () => {
               <Building className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-              Build a Mosque - Space by Space
+              Build a Mosque - Block by Block
             </h1>
           </div>
           
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
-            Join thousands of believers in building beautiful mosques. Purchase individual spaces and watch as the community 
-            collectively funds entire mosque projects, brick by brick. <span className="font-semibold text-emerald-600">Extra Jannah points for mosque building!</span>
+            Join thousands of believers in building beautiful mosques. Purchase individual blocks (50 bricks each) and watch as the community 
+            collectively funds entire mosque projects, brick by brick. <span className="font-semibold text-emerald-600">Each block = 50 bricks at £1 per brick. Extra Jannah points for mosque building!</span>
           </p>
           
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
               <Building className="h-4 w-4 text-emerald-500" />
-              <span className="text-sm font-medium">Calculated Pricing</span>
+              <span className="text-sm font-medium">Block-Based Pricing</span>
             </div>
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
               <Users className="h-4 w-4 text-blue-500" />
-              <span className="text-sm font-medium">Collective Funding</span>
+              <span className="text-sm font-medium">£1 per Brick</span>
             </div>
             <div className="flex items-center gap-2 bg-emerald-100 backdrop-blur-sm px-4 py-2 rounded-full border border-emerald-200">
               <Star className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm font-medium text-emerald-700">Bonus Jannah Points</span>
+              <span className="text-sm font-medium text-emerald-700">1.5x Bonus Jannah Points</span>
             </div>
           </div>
         </div>
@@ -268,7 +291,7 @@ const BuildMosque = () => {
             <CardContent className="p-6 text-center">
               <Coins className="h-8 w-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">47K</div>
-              <div className="text-sm opacity-90">Spaces Purchased</div>
+              <div className="text-sm opacity-90">Blocks Purchased</div>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-white">
@@ -301,12 +324,12 @@ const BuildMosque = () => {
                   </div>
                   <div className="absolute top-4 right-4">
                     <Badge className="bg-white/90 text-gray-800">
-                      {project.purchasedSpaces}/{project.totalSpaces} Spaces
+                      {project.purchasedBlocks}/{project.totalBlocks} Blocks
                     </Badge>
                   </div>
                   <div className="absolute bottom-4 left-4">
                     <Badge className="bg-emerald-500/90 text-white">
-                      £{project.costPerSpace} per space
+                      £{project.baseBlockPrice} per block (50 bricks)
                     </Badge>
                   </div>
                 </div>
@@ -331,23 +354,23 @@ const BuildMosque = () => {
 
                   {/* Cost Breakdown */}
                   <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-                    <h4 className="font-semibold mb-2 text-emerald-800">Project Cost Breakdown:</h4>
+                    <h4 className="font-semibold mb-2 text-emerald-800">Project Breakdown:</h4>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <span className="text-gray-600">Total Cost:</span>
                         <span className="font-bold ml-2">£{project.totalCost.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-gray-600">Cost per Space:</span>
-                        <span className="font-bold ml-2 text-emerald-600">£{project.costPerSpace}</span>
+                        <span className="text-gray-600">Total Blocks:</span>
+                        <span className="font-bold ml-2">{project.totalBlocks.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-gray-600">Total Spaces:</span>
-                        <span className="font-bold ml-2">{project.totalSpaces}</span>
+                        <span className="text-gray-600">Total Bricks:</span>
+                        <span className="font-bold ml-2">{project.totalBricks.toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-gray-600">Bonus Jannah Points:</span>
-                        <span className="font-bold ml-2 text-purple-600">1.5x Multiplier</span>
+                        <span className="text-gray-600">Cost per Brick:</span>
+                        <span className="font-bold ml-2 text-emerald-600">£{project.costPerBrick}</span>
                       </div>
                     </div>
                   </div>
@@ -367,18 +390,18 @@ const BuildMosque = () => {
                   {/* Progress */}
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Spaces Progress</span>
+                      <span className="text-sm text-gray-600">Block Progress</span>
                       <span className="text-sm font-semibold">
-                        {project.purchasedSpaces} of {project.totalSpaces} spaces purchased
+                        {project.purchasedBlocks} of {project.totalBlocks} blocks purchased
                       </span>
                     </div>
                     <Progress 
-                      value={(project.purchasedSpaces / project.totalSpaces) * 100} 
+                      value={(project.purchasedBlocks / project.totalBlocks) * 100} 
                       className="h-3"
                     />
                     <div className="flex justify-between text-sm text-gray-600">
                       <span>£{project.raisedAmount.toLocaleString()} raised</span>
-                      <span>{((project.purchasedSpaces / project.totalSpaces) * 100).toFixed(1)}% complete</span>
+                      <span>{((project.purchasedBlocks / project.totalBlocks) * 100).toFixed(1)}% complete</span>
                     </div>
                   </div>
 
@@ -391,14 +414,14 @@ const BuildMosque = () => {
                           onClick={() => setSelectedProject(project)}
                         >
                           <Building className="h-4 w-4 mr-2" />
-                          Buy Spaces
+                          Buy Blocks
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                         <DialogHeader>
                           <DialogTitle className="flex items-center gap-2">
                             <Building className="h-5 w-5" />
-                            {project.name} - Available Spaces (£{project.costPerSpace} each)
+                            {project.name} - Available Blocks (50 bricks each)
                           </DialogTitle>
                         </DialogHeader>
                         
@@ -408,16 +431,16 @@ const BuildMosque = () => {
                             <div className="bg-gradient-to-r from-emerald-50 to-blue-50 p-6 rounded-lg">
                               <div className="grid md:grid-cols-4 gap-4 text-center">
                                 <div>
-                                  <div className="text-2xl font-bold text-emerald-600">{selectedProject.purchasedSpaces}</div>
-                                  <div className="text-sm text-gray-600">Spaces Purchased</div>
+                                  <div className="text-2xl font-bold text-emerald-600">{selectedProject.purchasedBlocks}</div>
+                                  <div className="text-sm text-gray-600">Blocks Purchased</div>
                                 </div>
                                 <div>
-                                  <div className="text-2xl font-bold text-blue-600">{selectedProject.totalSpaces - selectedProject.purchasedSpaces}</div>
-                                  <div className="text-sm text-gray-600">Spaces Remaining</div>
+                                  <div className="text-2xl font-bold text-blue-600">{selectedProject.totalBlocks - selectedProject.purchasedBlocks}</div>
+                                  <div className="text-sm text-gray-600">Blocks Remaining</div>
                                 </div>
                                 <div>
-                                  <div className="text-2xl font-bold text-purple-600">£{selectedProject.costPerSpace}</div>
-                                  <div className="text-sm text-gray-600">Per Space (Calculated)</div>
+                                  <div className="text-2xl font-bold text-purple-600">£{selectedProject.costPerBrick}</div>
+                                  <div className="text-sm text-gray-600">Per Brick</div>
                                 </div>
                                 <div>
                                   <div className="text-2xl font-bold text-orange-600">1.5x</div>
@@ -426,49 +449,50 @@ const BuildMosque = () => {
                               </div>
                             </div>
 
-                            {/* Spaces Grid by Category */}
+                            {/* Blocks Grid by Category */}
                             {['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'].map(category => {
-                              const categorySpaces = selectedProject.spaces.filter(s => s.category === category);
-                              if (categorySpaces.length === 0) return null;
+                              const categoryBlocks = selectedProject.blocks.filter(b => b.category === category);
+                              if (categoryBlocks.length === 0) return null;
 
                               return (
                                 <div key={category} className="space-y-4">
                                   <h4 className="text-lg font-bold flex items-center gap-2">
-                                    <span className="text-2xl">{getCategoryIcon(category as MosqueSpace['category'])}</span>
-                                    {category.charAt(0).toUpperCase() + category.slice(1)} Spaces
-                                    <Badge className={`${getCategoryColor(category as MosqueSpace['category'])} text-white`}>
-                                      {categorySpaces.filter(s => !s.isPurchased).length} available
+                                    <span className="text-2xl">{getCategoryIcon(category as MosqueBlock['category'])}</span>
+                                    {category.charAt(0).toUpperCase() + category.slice(1)} Blocks
+                                    <Badge className={`${getCategoryColor(category as MosqueBlock['category'])} text-white`}>
+                                      {categoryBlocks.filter(b => !b.isPurchased).length} available
                                     </Badge>
                                   </h4>
                                   
                                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                                    {categorySpaces.map((space) => (
+                                    {categoryBlocks.map((block) => (
                                       <Card 
-                                        key={space.id} 
+                                        key={block.id} 
                                         className={`cursor-pointer transition-all duration-300 ${
-                                          space.isPurchased 
+                                          block.isPurchased 
                                             ? 'bg-gray-100 border-gray-300' 
-                                            : userPurchases.includes(space.id)
+                                            : userPurchases.includes(block.id)
                                             ? 'bg-gradient-to-br from-green-100 to-emerald-100 border-green-300 shadow-lg'
                                             : 'hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-emerald-300'
                                         }`}
-                                        onClick={() => !space.isPurchased && handleSpacePurchase(project.id, space.id)}
+                                        onClick={() => !block.isPurchased && handleBlockPurchase(project.id, block.id)}
                                       >
                                         <CardContent className="p-4 text-center">
-                                          <div className={`w-8 h-8 mx-auto mb-2 rounded-full ${getCategoryColor(space.category)} flex items-center justify-center text-white text-xs font-bold`}>
-                                            {space.id.split('-').pop()}
+                                          <div className={`w-8 h-8 mx-auto mb-2 rounded-full ${getCategoryColor(block.category)} flex items-center justify-center text-white text-xs font-bold`}>
+                                            {block.id.split('-').pop()}
                                           </div>
-                                          <div className="text-xs font-medium mb-1">{space.name}</div>
-                                          <div className="text-lg font-bold text-emerald-600">£{space.price}</div>
+                                          <div className="text-xs font-medium mb-1">{block.name}</div>
+                                          <div className="text-lg font-bold text-emerald-600">£{block.pricePerBlock}</div>
+                                          <div className="text-xs text-gray-500">{block.bricksPerBlock} bricks</div>
                                           <div className="text-xs text-purple-600 font-medium">
-                                            +{space.jannahPointsReward} Jannah pts
+                                            +{block.jannahPointsReward} Jannah pts
                                           </div>
-                                          {space.isPurchased ? (
+                                          {block.isPurchased ? (
                                             <div className="text-xs text-gray-500 mt-1">
                                               <div>✓ Purchased</div>
-                                              <div>{space.purchaseDate}</div>
+                                              <div>{block.purchaseDate}</div>
                                             </div>
-                                          ) : userPurchases.includes(space.id) ? (
+                                          ) : userPurchases.includes(block.id) ? (
                                             <div className="text-xs text-green-600 mt-1 font-medium">
                                               ✓ Just Purchased!
                                             </div>
