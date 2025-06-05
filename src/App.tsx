@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -93,13 +94,13 @@ function App() {
                     <Route path="/water-wells" element={<WaterWells />} />
                     <Route path="/orphanages" element={<Orphanages />} />
                     <Route path="/qurbani" element={<Qurbani />} />
-                    <Route path="*" element={<NotFound />} />
                     
-                    {/* Add charity partner route */}
+                    {/* Charity partner routes */}
                     <Route path="/charity/:slug" element={<CharityPartnerPage />} />
-                    
-                    {/* Add charity subdomain page route */}
                     <Route path="/subdomain/:slug" element={<CharitySubdomainPage />} />
+                    
+                    {/* Catch-all route - must be last */}
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>
                 <Footer />
