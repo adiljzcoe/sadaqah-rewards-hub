@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -40,14 +41,92 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
+    const [ripples, setRipples] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+    // Combine refs
+    React.useImperativeHandle(ref, () => buttonRef.current!);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      console.log('Central Button: Click detected!');
+      
+      if (buttonRef.current) {
+        // Get button position and click position
+        const rect = buttonRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        console.log('Central Button: Creating ripple at', { x, y });
+
+        // Create ripple effect
+        const rippleId = Date.now();
+        setRipples(prev => {
+          const newRipples = [...prev, { id: rippleId, x, y }];
+          console.log('Central Button: Updated ripples:', newRipples);
+          return newRipples;
+        });
+
+        // Remove ripple after animation
+        setTimeout(() => {
+          console.log('Central Button: Removing ripple', rippleId);
+          setRipples(prev => prev.filter(ripple => ripple.id !== rippleId));
+        }, 1000);
+      }
+
+      // Call the original onClick if provided
+      if (onClick) {
+        console.log('Central Button: Calling original onClick');
+        onClick(e);
+      }
+    };
+
     const Comp = asChild ? Slot : "button"
     return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <>
+        {/* Ripple effect styles */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @keyframes centralRipple {
+              0% {
+                transform: scale(0);
+                opacity: 1;
+              }
+              100% {
+                transform: scale(4);
+                opacity: 0;
+              }
+            }
+            .central-ripple {
+              animation: centralRipple 1s linear;
+            }
+          `
+        }} />
+        
+        <Comp
+          ref={buttonRef}
+          className={cn(buttonVariants({ variant, size, className }), "relative overflow-hidden")}
+          onClick={handleClick}
+          {...props}
+        >
+          {/* Ripple effects */}
+          {ripples.map((ripple) => (
+            <span
+              key={ripple.id}
+              className="absolute pointer-events-none rounded-full bg-white/40 central-ripple"
+              style={{
+                left: ripple.x - 10,
+                top: ripple.y - 10,
+                width: 20,
+                height: 20,
+                transformOrigin: 'center',
+              }}
+            />
+          ))}
+          
+          {props.children}
+        </Comp>
+      </>
     )
   }
 )
