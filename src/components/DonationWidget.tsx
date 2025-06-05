@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -279,7 +280,7 @@ const DonationWidget = ({
             </Label>
           </div>
 
-          {/* Membership Upsell */}
+          {/* Membership Upsell - simplified without multiplier text */}
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-semibold text-purple-800">Multiply Your Impact</h4>
@@ -297,16 +298,16 @@ const DonationWidget = ({
             {showMembership ? (
               <div className="space-y-3">
                 <p className="text-sm text-purple-700">
-                  Join our membership to earn 1000 sadaqah coins per £1 spent, plus multiplied rewards on all donations.
+                  Join our membership to earn sadaqah coins and enhanced rewards on all donations.
                 </p>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="bg-white p-2 rounded border">
                     <div className="font-medium text-purple-800">VIP - £9.99</div>
-                    <div className="text-purple-600">2x rewards + 9,990 coins</div>
+                    <div className="text-purple-600">Enhanced rewards + 9,990 coins</div>
                   </div>
                   <div className="bg-white p-2 rounded border">
                     <div className="font-medium text-purple-800">Elite - £19.99</div>
-                    <div className="text-purple-600">3x rewards + 19,990 coins</div>
+                    <div className="text-purple-600">Premium rewards + 19,990 coins</div>
                   </div>
                 </div>
                 <Button 
@@ -321,7 +322,7 @@ const DonationWidget = ({
               </div>
             ) : (
               <p className="text-sm text-purple-700">
-                Get 1000 sadaqah coins per £1 with membership + multiplied rewards
+                Get sadaqah coins and enhanced rewards with membership
               </p>
             )}
           </div>
