@@ -70,7 +70,7 @@ const CharityManagementArea = () => {
                 </div>
                 <TrendingUp className="h-8 w-8 text-purple-600" />
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* Recent Activity */}
