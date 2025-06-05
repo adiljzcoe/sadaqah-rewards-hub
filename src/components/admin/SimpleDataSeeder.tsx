@@ -86,14 +86,14 @@ const SimpleDataSeeder = () => {
 
       console.log('✅ Charities created successfully:', createdCharities?.length);
 
-      // Step 3: Create sample donations
+      // Step 3: Create sample donations with proper typing
       if (createdCharities && createdCharities.length > 0) {
         const donations = [
           {
             user_id: userId,
             charity_id: createdCharities[0].id,
             amount: 50,
-            status: 'completed',
+            status: 'completed' as const,
             jannah_points_earned: 500,
             sadaqah_coins_earned: 250,
             message: 'May Allah accept this donation',
@@ -103,7 +103,7 @@ const SimpleDataSeeder = () => {
             user_id: userId,
             charity_id: createdCharities[1].id,
             amount: 25,
-            status: 'completed',
+            status: 'completed' as const,
             jannah_points_earned: 250,
             sadaqah_coins_earned: 125,
             anonymous: true
