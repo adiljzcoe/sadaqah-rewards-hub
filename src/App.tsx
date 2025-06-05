@@ -40,6 +40,7 @@ import Qurbani from '@/pages/Qurbani';
 import NotFound from '@/pages/NotFound';
 import CharityPartnerPage from '@/pages/CharityPartnerPage';
 import CharityPartnerProgram from '@/pages/CharityPartnerProgram';
+import CharitySubdomainPage from '@/pages/CharitySubdomainPage';
 
 function App() {
   const queryClient = new QueryClient({
@@ -96,6 +97,9 @@ function App() {
                     
                     {/* Add charity partner route */}
                     <Route path="/charity/:slug" element={<CharityPartnerPage />} />
+                    
+                    {/* Add charity subdomain page route */}
+                    <Route path="/subdomain/:slug" element={<CharitySubdomainPage />} />
                   </Routes>
                 </div>
                 <Footer />
