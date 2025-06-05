@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap } from 'lucide-react';
+import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 interface MosqueBlock {
@@ -40,11 +40,22 @@ interface MosqueProject {
   costPerBrick: number;
 }
 
+interface SelectedBlockType {
+  category: MosqueBlock['category'];
+  price: number;
+  jannahPoints: number;
+  badge: string;
+  emoji: string;
+  limited: boolean;
+  limitText?: string;
+}
+
 const BuildMosque = () => {
   const { user } = useAuth();
   const [selectedProject, setSelectedProject] = useState<MosqueProject | null>(null);
   const [userPurchases, setUserPurchases] = useState<string[]>([]);
   const [showPurchaseAnimation, setShowPurchaseAnimation] = useState(false);
+  const [selectedBlockTypes, setSelectedBlockTypes] = useState<{[projectId: number]: SelectedBlockType | null}>({});
 
   // Generate blocks for each project with limited quantities for premium blocks
   const generateBlocks = (projectId: number, totalCost: number): MosqueBlock[] => {
@@ -238,7 +249,7 @@ const BuildMosque = () => {
 
   const getBlockTypeInfo = () => [
     {
-      category: 'Foundation',
+      category: 'foundation' as const,
       icon: '🏗️',
       price: 40,
       multiplier: '0.8x',
@@ -249,7 +260,7 @@ const BuildMosque = () => {
       limited: false
     },
     {
-      category: 'Walls', 
+      category: 'walls' as const,
       icon: '🧱',
       price: 50,
       multiplier: '1.0x',
@@ -260,8 +271,8 @@ const BuildMosque = () => {
       limited: false
     },
     {
-      category: 'Roof',
-      icon: '🏠', 
+      category: 'roof' as const,
+      icon: '🏠',
       price: 60,
       multiplier: '1.2x',
       jannahBonus: '98 pts',
@@ -271,7 +282,7 @@ const BuildMosque = () => {
       limited: false
     },
     {
-      category: 'Interior',
+      category: 'interior' as const,
       icon: '🏛️',
       price: 45,
       multiplier: '0.9x', 
@@ -282,7 +293,7 @@ const BuildMosque = () => {
       limited: false
     },
     {
-      category: 'Minaret',
+      category: 'minaret' as const,
       icon: '🗼',
       price: 75,
       multiplier: '1.5x',
@@ -294,7 +305,7 @@ const BuildMosque = () => {
       limitText: 'Only 4 per mosque'
     },
     {
-      category: 'Dome',
+      category: 'dome' as const,
       icon: '🕌',
       price: 90,
       multiplier: '1.8x', 
@@ -306,6 +317,38 @@ const BuildMosque = () => {
       limitText: 'Only 1 per mosque'
     }
   ];
+
+  const handleBlockTypeSelect = (projectId: number, blockType: any) => {
+    setSelectedBlockTypes(prev => ({
+      ...prev,
+      [projectId]: {
+        category: blockType.category,
+        price: blockType.price,
+        jannahPoints: parseInt(blockType.jannahBonus),
+        badge: blockType.badge,
+        emoji: blockType.icon,
+        limited: blockType.limited,
+        limitText: blockType.limitText
+      }
+    }));
+  };
+
+  const handlePurchaseSelectedBlock = (projectId: number) => {
+    const selectedType = selectedBlockTypes[projectId];
+    if (!selectedType) return;
+
+    // Find an available block of the selected type
+    const project = mosqueProjects.find(p => p.id === projectId);
+    if (!project) return;
+
+    const availableBlock = project.blocks.find(
+      block => block.category === selectedType.category && !block.isPurchased
+    );
+
+    if (availableBlock) {
+      handleBlockPurchase(projectId, availableBlock.id);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
@@ -395,273 +438,306 @@ const BuildMosque = () => {
         <div className="space-y-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center">Active Mosque Projects</h2>
           
-          {mosqueProjects.map((project) => (
-            <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-all duration-300">
-              <div className="grid lg:grid-cols-2 gap-0">
-                {/* Image Section */}
-                <div className="relative">
-                  <img 
-                    src={project.image} 
-                    alt={project.name}
-                    className="w-full h-64 lg:h-full object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className={`${getUrgencyColor(project.urgency)} border`}>
-                      {project.urgency.toUpperCase()} PRIORITY
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-white/90 text-gray-800">
-                      {project.purchasedBlocks}/{project.totalBlocks} Blocks
-                    </Badge>
-                  </div>
-                  <div className="absolute bottom-4 left-4">
-                    <Badge className="bg-emerald-500/90 text-white">
-                      £{project.baseBlockPrice} per block (50 bricks)
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Content Section */}
-                <div className="p-8">
-                  {/* Header and Description */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{project.name}</h3>
-                      <div className="flex items-center gap-2 text-gray-600 mb-4">
-                        <MapPin className="h-4 w-4" />
-                        <span>{project.location}</span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-gray-500">Capacity</div>
-                      <div className="text-lg font-bold">{project.capacity.toLocaleString()}</div>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-700 mb-6">{project.description}</p>
-
-                  {/* Block Types for this Project */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-blue-500" />
-                      Available Block Types & Rewards:
-                    </h4>
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-                      {getBlockTypeInfo().map((blockType) => (
-                        <div
-                          key={blockType.category}
-                          className={`p-3 rounded-lg border ${
-                            blockType.limited 
-                              ? 'border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50' 
-                              : 'border-gray-200 bg-gray-50'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center gap-1">
-                              <span className="text-lg">{blockType.icon}</span>
-                              <span className="text-xs font-bold">{blockType.category}</span>
-                            </div>
-                            <Badge className="text-xs px-1 py-0 bg-emerald-500 text-white">
-                              £{blockType.price}
-                            </Badge>
-                          </div>
-                          
-                          {blockType.limited && (
-                            <div className="text-xs text-purple-600 font-bold mb-1">
-                              {blockType.limitText}
-                            </div>
-                          )}
-                          
-                          <div className="text-xs text-gray-600 mb-1">
-                            {blockType.description}
-                          </div>
-                          
-                          <div className="flex items-center justify-between text-xs">
-                            <span className="text-emerald-600 font-bold">
-                              +{blockType.jannahBonus}
-                            </span>
-                            <span className="text-blue-600">
-                              {blockType.multiplier}
-                            </span>
-                          </div>
-                          
-                          <div className="text-xs text-purple-600 font-medium mt-1">
-                            {blockType.badge}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Cost Breakdown */}
-                  <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-                    <h4 className="font-semibold mb-2 text-emerald-800">Project Breakdown:</h4>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-600">Total Cost:</span>
-                        <span className="font-bold ml-2">£{project.totalCost.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Total Blocks:</span>
-                        <span className="font-bold ml-2">{project.totalBlocks.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Total Bricks:</span>
-                        <span className="font-bold ml-2">{project.totalBricks.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Cost per Brick:</span>
-                        <span className="font-bold ml-2 text-emerald-600">£{project.costPerBrick}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Features */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold mb-3">Project Features:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.features.map((feature, index) => (
-                        <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Progress */}
-                  <div className="space-y-3 mb-6">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Block Progress</span>
-                      <span className="text-sm font-semibold">
-                        {project.purchasedBlocks} of {project.totalBlocks} blocks purchased
-                      </span>
-                    </div>
-                    <Progress 
-                      value={(project.purchasedBlocks / project.totalBlocks) * 100} 
-                      className="h-3"
+          {mosqueProjects.map((project) => {
+            const selectedType = selectedBlockTypes[project.id];
+            return (
+              <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-all duration-300">
+                <div className="grid lg:grid-cols-2 gap-0">
+                  {/* Image Section */}
+                  <div className="relative">
+                    <img 
+                      src={project.image} 
+                      alt={project.name}
+                      className="w-full h-64 lg:h-full object-cover"
                     />
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>£{project.raisedAmount.toLocaleString()} raised</span>
-                      <span>{((project.purchasedBlocks / project.totalBlocks) * 100).toFixed(1)}% complete</span>
+                    <div className="absolute top-4 left-4">
+                      <Badge className={`${getUrgencyColor(project.urgency)} border`}>
+                        {project.urgency.toUpperCase()} PRIORITY
+                      </Badge>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-white/90 text-gray-800">
+                        {project.purchasedBlocks}/{project.totalBlocks} Blocks
+                      </Badge>
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <Badge className="bg-emerald-500/90 text-white">
+                        £{project.baseBlockPrice} per block (50 bricks)
+                      </Badge>
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex gap-3">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white"
-                          onClick={() => setSelectedProject(project)}
-                        >
-                          <Building className="h-4 w-4 mr-2" />
-                          Buy Blocks
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                        <DialogHeader>
-                          <DialogTitle className="flex items-center gap-2">
-                            <Building className="h-5 w-5" />
-                            {project.name} - Available Blocks (50 bricks each)
-                          </DialogTitle>
-                        </DialogHeader>
-                        
-                        {selectedProject && (
-                          <div className="space-y-6">
-                            {/* Project Overview */}
-                            <div className="bg-gradient-to-r from-emerald-50 to-blue-50 p-6 rounded-lg">
-                              <div className="grid md:grid-cols-4 gap-4 text-center">
-                                <div>
-                                  <div className="text-2xl font-bold text-emerald-600">{selectedProject.purchasedBlocks}</div>
-                                  <div className="text-sm text-gray-600">Blocks Purchased</div>
+                  {/* Content Section */}
+                  <div className="p-8">
+                    {/* Header and Description */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{project.name}</h3>
+                        <div className="flex items-center gap-2 text-gray-600 mb-4">
+                          <MapPin className="h-4 w-4" />
+                          <span>{project.location}</span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm text-gray-500">Capacity</div>
+                        <div className="text-lg font-bold">{project.capacity.toLocaleString()}</div>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-700 mb-6">{project.description}</p>
+
+                    {/* Block Types Selection */}
+                    <div className="mb-6">
+                      <h4 className="font-semibold mb-3 flex items-center gap-2">
+                        <Zap className="h-4 w-4 text-blue-500" />
+                        Choose Your Block Type:
+                      </h4>
+                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                        {getBlockTypeInfo().map((blockType) => {
+                          const isSelected = selectedType?.category === blockType.category;
+                          const availableCount = project.blocks.filter(
+                            b => b.category === blockType.category && !b.isPurchased
+                          ).length;
+                          
+                          return (
+                            <div
+                              key={blockType.category}
+                              onClick={() => availableCount > 0 && handleBlockTypeSelect(project.id, blockType)}
+                              className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                isSelected 
+                                  ? 'border-emerald-500 bg-emerald-50 shadow-md scale-105' 
+                                  : availableCount > 0
+                                  ? 'border-gray-200 bg-gray-50 hover:border-emerald-300 hover:bg-emerald-25'
+                                  : 'border-gray-100 bg-gray-100 opacity-50 cursor-not-allowed'
+                              } ${
+                                blockType.limited 
+                                  ? 'bg-gradient-to-br from-purple-50 to-pink-50' 
+                                  : ''
+                              }`}
+                            >
+                              <div className="flex items-center justify-between mb-1">
+                                <div className="flex items-center gap-1">
+                                  <span className="text-lg">{blockType.icon}</span>
+                                  <span className="text-xs font-bold">{blockType.category}</span>
+                                  {isSelected && <CheckCircle className="h-3 w-3 text-emerald-500" />}
                                 </div>
-                                <div>
-                                  <div className="text-2xl font-bold text-blue-600">{selectedProject.totalBlocks - selectedProject.purchasedBlocks}</div>
-                                  <div className="text-sm text-gray-600">Blocks Remaining</div>
+                                <Badge className="text-xs px-1 py-0 bg-emerald-500 text-white">
+                                  £{blockType.price}
+                                </Badge>
+                              </div>
+                              
+                              {blockType.limited && (
+                                <div className="text-xs text-purple-600 font-bold mb-1">
+                                  {blockType.limitText}
                                 </div>
-                                <div>
-                                  <div className="text-2xl font-bold text-purple-600">£{selectedProject.costPerBrick}</div>
-                                  <div className="text-sm text-gray-600">Per Brick</div>
-                                </div>
-                                <div>
-                                  <div className="text-2xl font-bold text-orange-600">1.5x</div>
-                                  <div className="text-sm text-gray-600">Jannah Points Bonus</div>
-                                </div>
+                              )}
+                              
+                              <div className="text-xs text-gray-600 mb-1">
+                                {availableCount} available
+                              </div>
+                              
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-emerald-600 font-bold">
+                                  +{blockType.jannahBonus}
+                                </span>
+                                <span className="text-blue-600">
+                                  {blockType.multiplier}
+                                </span>
+                              </div>
+                              
+                              <div className="text-xs text-purple-600 font-medium mt-1">
+                                {blockType.badge}
                               </div>
                             </div>
+                          );
+                        })}
+                      </div>
+                    </div>
 
-                            {/* Blocks Grid by Category */}
-                            {['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'].map(category => {
-                              const categoryBlocks = selectedProject.blocks.filter(b => b.category === category);
-                              if (categoryBlocks.length === 0) return null;
+                    {/* Cost Breakdown */}
+                    <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                      <h4 className="font-semibold mb-2 text-emerald-800">Project Breakdown:</h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-600">Total Cost:</span>
+                          <span className="font-bold ml-2">£{project.totalCost.toLocaleString()}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Total Blocks:</span>
+                          <span className="font-bold ml-2">{project.totalBlocks.toLocaleString()}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Total Bricks:</span>
+                          <span className="font-bold ml-2">{project.totalBricks.toLocaleString()}</span>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Cost per Brick:</span>
+                          <span className="font-bold ml-2 text-emerald-600">£{project.costPerBrick}</span>
+                        </div>
+                      </div>
+                    </div>
 
-                              return (
-                                <div key={category} className="space-y-4">
-                                  <h4 className="text-lg font-bold flex items-center gap-2">
-                                    <span className="text-2xl">{getCategoryIcon(category as MosqueBlock['category'])}</span>
-                                    {category.charAt(0).toUpperCase() + category.slice(1)} Blocks
-                                    <Badge className={`${getCategoryColor(category as MosqueBlock['category'])} text-white`}>
-                                      {categoryBlocks.filter(b => !b.isPurchased).length} available
-                                    </Badge>
-                                  </h4>
-                                  
-                                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                                    {categoryBlocks.map((block) => (
-                                      <Card 
-                                        key={block.id} 
-                                        className={`cursor-pointer transition-all duration-300 ${
-                                          block.isPurchased 
-                                            ? 'bg-gray-100 border-gray-300' 
-                                            : userPurchases.includes(block.id)
-                                            ? 'bg-gradient-to-br from-green-100 to-emerald-100 border-green-300 shadow-lg'
-                                            : 'hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-emerald-300'
-                                        }`}
-                                        onClick={() => !block.isPurchased && handleBlockPurchase(project.id, block.id)}
-                                      >
-                                        <CardContent className="p-4 text-center">
-                                          <div className={`w-8 h-8 mx-auto mb-2 rounded-full ${getCategoryColor(block.category)} flex items-center justify-center text-white text-xs font-bold`}>
-                                            {block.id.split('-').pop()}
-                                          </div>
-                                          <div className="text-xs font-medium mb-1">{block.name}</div>
-                                          <div className="text-lg font-bold text-emerald-600">£{block.pricePerBlock}</div>
-                                          <div className="text-xs text-gray-500">{block.bricksPerBlock} bricks</div>
-                                          <div className="text-xs text-purple-600 font-medium">
-                                            +{block.jannahPointsReward} Jannah pts
-                                          </div>
-                                          {block.isPurchased ? (
-                                            <div className="text-xs text-gray-500 mt-1">
-                                              <div>✓ Purchased</div>
-                                              <div>{block.purchaseDate}</div>
-                                            </div>
-                                          ) : userPurchases.includes(block.id) ? (
-                                            <div className="text-xs text-green-600 mt-1 font-medium">
-                                              ✓ Just Purchased!
-                                            </div>
-                                          ) : (
-                                            <div className="text-xs text-blue-600 mt-1">
-                                              Click to Purchase
-                                            </div>
-                                          )}
-                                        </CardContent>
-                                      </Card>
-                                    ))}
+                    {/* Features */}
+                    <div className="mb-6">
+                      <h4 className="font-semibold mb-3">Project Features:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {project.features.map((feature, index) => (
+                          <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                            {feature}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Progress */}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600">Block Progress</span>
+                        <span className="text-sm font-semibold">
+                          {project.purchasedBlocks} of {project.totalBlocks} blocks purchased
+                        </span>
+                      </div>
+                      <Progress 
+                        value={(project.purchasedBlocks / project.totalBlocks) * 100} 
+                        className="h-3"
+                      />
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>£{project.raisedAmount.toLocaleString()} raised</span>
+                        <span>{((project.purchasedBlocks / project.totalBlocks) * 100).toFixed(1)}% complete</span>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
+                      {selectedType ? (
+                        <Button 
+                          className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white"
+                          onClick={() => handlePurchaseSelectedBlock(project.id)}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{selectedType.emoji}</span>
+                            <div className="text-left">
+                              <div className="text-sm">Buy {selectedType.category} Block</div>
+                              <div className="text-xs opacity-90">£{selectedType.price} • +{selectedType.jannahPoints} pts</div>
+                            </div>
+                          </div>
+                        </Button>
+                      ) : (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white"
+                              onClick={() => setSelectedProject(project)}
+                            >
+                              <Building className="h-4 w-4 mr-2" />
+                              Browse All Blocks
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle className="flex items-center gap-2">
+                                <Building className="h-5 w-5" />
+                                {project.name} - Available Blocks (50 bricks each)
+                              </DialogTitle>
+                            </DialogHeader>
+                            
+                            {selectedProject && (
+                              <div className="space-y-6">
+                                {/* Project Overview */}
+                                <div className="bg-gradient-to-r from-emerald-50 to-blue-50 p-6 rounded-lg">
+                                  <div className="grid md:grid-cols-4 gap-4 text-center">
+                                    <div>
+                                      <div className="text-2xl font-bold text-emerald-600">{selectedProject.purchasedBlocks}</div>
+                                      <div className="text-sm text-gray-600">Blocks Purchased</div>
+                                    </div>
+                                    <div>
+                                      <div className="text-2xl font-bold text-blue-600">{selectedProject.totalBlocks - selectedProject.purchasedBlocks}</div>
+                                      <div className="text-sm text-gray-600">Blocks Remaining</div>
+                                    </div>
+                                    <div>
+                                      <div className="text-2xl font-bold text-purple-600">£{selectedProject.costPerBrick}</div>
+                                      <div className="text-sm text-gray-600">Per Brick</div>
+                                    </div>
+                                    <div>
+                                      <div className="text-2xl font-bold text-orange-600">1.5x</div>
+                                      <div className="text-sm text-gray-600">Jannah Points Bonus</div>
+                                    </div>
                                   </div>
                                 </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
-                    <Button variant="outline" className="px-6">
-                      Learn More
-                    </Button>
+
+                                {/* Blocks Grid by Category */}
+                                {['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'].map(category => {
+                                  const categoryBlocks = selectedProject.blocks.filter(b => b.category === category);
+                                  if (categoryBlocks.length === 0) return null;
+
+                                  return (
+                                    <div key={category} className="space-y-4">
+                                      <h4 className="text-lg font-bold flex items-center gap-2">
+                                        <span className="text-2xl">{getCategoryIcon(category as MosqueBlock['category'])}</span>
+                                        {category.charAt(0).toUpperCase() + category.slice(1)} Blocks
+                                        <Badge className={`${getCategoryColor(category as MosqueBlock['category'])} text-white`}>
+                                          {categoryBlocks.filter(b => !b.isPurchased).length} available
+                                        </Badge>
+                                      </h4>
+                                      
+                                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                                        {categoryBlocks.map((block) => (
+                                          <Card 
+                                            key={block.id} 
+                                            className={`cursor-pointer transition-all duration-300 ${
+                                              block.isPurchased 
+                                                ? 'bg-gray-100 border-gray-300' 
+                                                : userPurchases.includes(block.id)
+                                                ? 'bg-gradient-to-br from-green-100 to-emerald-100 border-green-300 shadow-lg'
+                                                : 'hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-emerald-300'
+                                            }`}
+                                            onClick={() => !block.isPurchased && handleBlockPurchase(project.id, block.id)}
+                                          >
+                                            <CardContent className="p-4 text-center">
+                                              <div className={`w-8 h-8 mx-auto mb-2 rounded-full ${getCategoryColor(block.category)} flex items-center justify-center text-white text-xs font-bold`}>
+                                                {block.id.split('-').pop()}
+                                              </div>
+                                              <div className="text-xs font-medium mb-1">{block.name}</div>
+                                              <div className="text-lg font-bold text-emerald-600">£{block.pricePerBlock}</div>
+                                              <div className="text-xs text-gray-500">{block.bricksPerBlock} bricks</div>
+                                              <div className="text-xs text-purple-600 font-medium">
+                                                +{block.jannahPointsReward} Jannah pts
+                                              </div>
+                                              {block.isPurchased ? (
+                                                <div className="text-xs text-gray-500 mt-1">
+                                                  <div>✓ Purchased</div>
+                                                  <div>{block.purchaseDate}</div>
+                                                </div>
+                                              ) : userPurchases.includes(block.id) ? (
+                                                <div className="text-xs text-green-600 mt-1 font-medium">
+                                                  ✓ Just Purchased!
+                                                </div>
+                                              ) : (
+                                                <div className="text-xs text-blue-600 mt-1">
+                                                  Click to Purchase
+                                                </div>
+                                              )}
+                                            </CardContent>
+                                          </Card>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </DialogContent>
+                        </Dialog>
+                      )}
+                      <Button variant="outline" className="px-6">
+                        Learn More
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
 
         {/* Testimonial */}
