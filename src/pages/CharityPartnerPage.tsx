@@ -26,6 +26,12 @@ const CharityPartnerPage = () => {
     }
   }, [charityPartner, trackPageView]);
 
+  const handleDonate = (productId: string, amount?: number) => {
+    // Handle donation - could redirect to checkout or open donation widget
+    console.log('Donate clicked:', { productId, amount });
+    // You could implement donation logic here
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
@@ -147,6 +153,7 @@ const CharityPartnerPage = () => {
               <CharityProductCard 
                 key={product.id} 
                 product={product}
+                onDonate={handleDonate}
               />
             ))}
           </div>
