@@ -43,7 +43,7 @@ interface MosqueProject {
 interface SelectedBlockType {
   category: MosqueBlock['category'];
   price: number;
-  jannah: number;
+  jannahPoints: number;
   badge: string;
   emoji: string;
   limited: boolean;
@@ -324,7 +324,7 @@ const BuildMosque = () => {
       [projectId]: {
         category: blockType.category,
         price: blockType.price,
-        jannah: parseInt(blockType.jannahBonus),
+        jannahPoints: parseInt(blockType.jannahBonus),
         badge: blockType.badge,
         emoji: blockType.icon,
         limited: blockType.limited,
@@ -585,13 +585,13 @@ const BuildMosque = () => {
                       </div>
                     </div>
 
-                    {/* Block Types Selection */}
+                    {/* Compact Block Types Selection */}
                     <div className="mb-6">
-                      <h4 className="font-semibold mb-3 flex items-center gap-2">
+                      <h4 className="font-semibold mb-2 flex items-center gap-2">
                         <Zap className="h-4 w-4 text-blue-500" />
                         Choose Your Block Type:
                       </h4>
-                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                      <div className="grid grid-cols-3 lg:grid-cols-6 gap-1">
                         {getBlockTypeInfo().map((blockType) => {
                           const isSelected = selectedType?.category === blockType.category;
                           const availableCount = project.blocks.filter(
@@ -602,11 +602,11 @@ const BuildMosque = () => {
                             <div
                               key={blockType.category}
                               onClick={() => availableCount > 0 && handleBlockTypeSelect(project.id, blockType)}
-                              className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                              className={`p-2 rounded-lg border cursor-pointer transition-all text-center ${
                                 isSelected 
-                                  ? 'border-emerald-500 bg-emerald-50 shadow-md scale-105' 
+                                  ? 'border-emerald-500 bg-emerald-50 shadow-md' 
                                   : availableCount > 0
-                                  ? 'border-gray-200 bg-gray-50 hover:border-emerald-300 hover:bg-emerald-25'
+                                  ? 'border-gray-200 bg-gray-50 hover:border-emerald-300'
                                   : 'border-gray-100 bg-gray-100 opacity-50 cursor-not-allowed'
                               } ${
                                 blockType.limited 
@@ -614,39 +614,20 @@ const BuildMosque = () => {
                                   : ''
                               }`}
                             >
-                              <div className="flex items-center justify-between mb-1">
-                                <div className="flex items-center gap-1">
-                                  <span className="text-lg">{blockType.icon}</span>
-                                  <span className="text-xs font-bold">{blockType.category}</span>
-                                  {isSelected && <CheckCircle className="h-3 w-3 text-emerald-500" />}
-                                </div>
-                                <Badge className="text-xs px-1 py-0 bg-emerald-500 text-white">
-                                  £{blockType.price}
-                                </Badge>
+                              <div className="text-lg mb-1">{blockType.icon}</div>
+                              <div className="text-xs font-bold mb-1">£{blockType.price}</div>
+                              <div className="text-xs text-emerald-600 font-bold mb-1">
+                                +{blockType.jannahBonus}
                               </div>
-                              
+                              <div className="text-xs text-gray-500">
+                                {availableCount} left
+                              </div>
                               {blockType.limited && (
-                                <div className="text-xs text-purple-600 font-bold mb-1">
-                                  {blockType.limitText}
+                                <div className="text-xs text-purple-600 font-bold">
+                                  LIMITED
                                 </div>
                               )}
-                              
-                              <div className="text-xs text-gray-600 mb-1">
-                                {availableCount} available
-                              </div>
-                              
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="text-emerald-600 font-bold">
-                                  +{blockType.jannahBonus}
-                                </span>
-                                <span className="text-blue-600">
-                                  {blockType.multiplier}
-                                </span>
-                              </div>
-                              
-                              <div className="text-xs text-purple-600 font-medium mt-1">
-                                {blockType.badge}
-                              </div>
+                              {isSelected && <CheckCircle className="h-3 w-3 text-emerald-500 mx-auto mt-1" />}
                             </div>
                           );
                         })}
