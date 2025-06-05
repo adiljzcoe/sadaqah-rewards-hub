@@ -4,17 +4,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { MessageCircle, Loader2 } from 'lucide-react';
 
 const DuaDataSeeder = () => {
   const { toast } = useToast();
+  const { fakeAdminLogin } = useAuth();
   const [isSeeding, setIsSeeding] = useState(false);
 
   const sampleDuas = [
     {
       title: "Du'a for the Ummah",
       description: "A prayer for unity and peace among all Muslims worldwide",
-      audio_url: "https://example.com/audio1.mp3", // Placeholder URL
+      audio_url: "https://example.com/audio1.mp3",
       audio_duration: 45,
       is_anonymous: false,
       ameen_count: 127
@@ -22,7 +24,7 @@ const DuaDataSeeder = () => {
     {
       title: "Prayer for Palestine",
       description: "Seeking Allah's protection and justice for our brothers and sisters",
-      audio_url: "https://example.com/audio2.mp3", // Placeholder URL
+      audio_url: "https://example.com/audio2.mp3",
       audio_duration: 38,
       is_anonymous: true,
       ameen_count: 89
@@ -30,7 +32,7 @@ const DuaDataSeeder = () => {
     {
       title: "Du'a for Guidance",
       description: "Asking Allah to guide us on the straight path",
-      audio_url: "https://example.com/audio3.mp3", // Placeholder URL
+      audio_url: "https://example.com/audio3.mp3",
       audio_duration: 52,
       is_anonymous: false,
       ameen_count: 234
@@ -38,7 +40,7 @@ const DuaDataSeeder = () => {
     {
       title: "Protection from Harm",
       description: "Seeking Allah's protection from all forms of evil",
-      audio_url: "https://example.com/audio4.mp3", // Placeholder URL
+      audio_url: "https://example.com/audio4.mp3",
       audio_duration: 41,
       is_anonymous: true,
       ameen_count: 156
@@ -46,7 +48,7 @@ const DuaDataSeeder = () => {
     {
       title: "Du'a for Forgiveness",
       description: "Asking Allah for His mercy and forgiveness",
-      audio_url: "https://example.com/audio5.mp3", // Placeholder URL
+      audio_url: "https://example.com/audio5.mp3",
       audio_duration: 33,
       is_anonymous: false,
       ameen_count: 178
@@ -59,13 +61,17 @@ const DuaDataSeeder = () => {
     try {
       console.log('🤲 Creating sample du\'as...');
       
-      // Use a system user ID for the sample du'as
+      // Ensure we have a fake session for testing
+      fakeAdminLogin();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Use the fake admin user ID for the sample du'as
       const systemUserId = '00000000-0000-0000-0000-000000000001';
       
       const duasToInsert = sampleDuas.map(dua => ({
         ...dua,
         user_id: systemUserId,
-        created_at: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString() // Random time in last 7 days
+        created_at: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
       }));
 
       const { data: createdDuas, error: duaError } = await supabase
@@ -80,13 +86,13 @@ const DuaDataSeeder = () => {
 
       console.log('✅ Du\'as created successfully:', createdDuas?.length);
 
-      // Create some sample ameen records to make it more realistic
+      // Create some sample ameen records
       if (createdDuas && createdDuas.length > 0) {
         const ameenRecords = [];
         
         createdDuas.forEach(dua => {
-          // Add random ameen counts
-          for (let i = 0; i < Math.min(dua.ameen_count, 50); i++) {
+          // Add random ameen counts (but limit to avoid too many records)
+          for (let i = 0; i < Math.min(dua.ameen_count, 20); i++) {
             ameenRecords.push({
               dua_id: dua.id,
               user_id: systemUserId,
@@ -131,6 +137,10 @@ const DuaDataSeeder = () => {
     
     try {
       console.log('🧹 Clearing sample du\'as...');
+      
+      // Ensure fake admin session
+      fakeAdminLogin();
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Clear ameen records first
       const { error: ameenError } = await supabase

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -81,10 +82,6 @@ const DataSeeder = () => {
     try {
       console.log('🔄 Attempting to insert charities...');
       
-      // Test auth session first
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      console.log('🔐 Current session:', session ? 'Active' : 'None', sessionError);
-      
       const { data: insertedCharities, error } = await supabase
         .from('charities')
         .insert(charities)
@@ -92,17 +89,10 @@ const DataSeeder = () => {
 
       if (error) {
         console.error('❌ Insert failed:', error);
-        console.error('❌ Error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
         throw error;
       }
 
       console.log('✅ Charities seeded successfully:', insertedCharities?.length);
-      console.log('📊 Inserted charity IDs:', insertedCharities?.map(c => c.id));
       return insertedCharities || [];
 
     } catch (error) {
@@ -116,7 +106,7 @@ const DataSeeder = () => {
     
     const charityPartners = [
       {
-        charity_id: charities[0].id, // Islamic Relief
+        charity_id: charities[0].id,
         partner_slug: 'islamicrelief',
         commission_rate: 0.05,
         is_active: true,
@@ -124,7 +114,7 @@ const DataSeeder = () => {
         ad_spend_budget: 5000
       },
       {
-        charity_id: charities[1].id, // Water Wells
+        charity_id: charities[1].id,
         partner_slug: 'waterwells',
         commission_rate: 0.05,
         is_active: true,
@@ -132,7 +122,7 @@ const DataSeeder = () => {
         ad_spend_budget: 3000
       },
       {
-        charity_id: charities[2].id, // Hope Orphanage
+        charity_id: charities[2].id,
         partner_slug: 'hopeorphanage',
         commission_rate: 0.05,
         is_active: true,
@@ -142,17 +132,12 @@ const DataSeeder = () => {
     ];
 
     try {
-      console.log('🔄 Inserting charity partners...');
       const { data, error } = await supabase
         .from('charity_partners')
         .insert(charityPartners)
         .select();
 
-      if (error) {
-        console.error('❌ Error seeding charity partners:', error);
-        throw error;
-      }
-
+      if (error) throw error;
       console.log('✅ Charity partners seeded:', data?.length);
       return data;
     } catch (error) {
@@ -163,7 +148,6 @@ const DataSeeder = () => {
 
   const seedCharityAllocations = async (charities: any[]) => {
     console.log('🌱 Seeding charity allocations...');
-    console.log('🎯 Creating allocations for', charities.length, 'charities');
     
     const allocations = charities.map(charity => ({
       charity_id: charity.id,
@@ -175,68 +159,16 @@ const DataSeeder = () => {
     }));
 
     try {
-      console.log('🔄 Inserting charity allocations...');
       const { data, error } = await supabase
         .from('charity_allocations')
         .insert(allocations)
         .select();
 
-      if (error) {
-        console.error('❌ Error seeding allocations:', error);
-        throw error;
-      }
-
+      if (error) throw error;
       console.log('✅ Charity allocations seeded:', data?.length);
       return data;
     } catch (error) {
       console.error('❌ Failed to seed allocations:', error);
-      throw error;
-    }
-  };
-
-  const seedDonations = async (charities: any[]) => {
-    console.log('🌱 Seeding donations...');
-    
-    const userId = user?.id || 'fake-admin-id';
-    console.log('👤 Using user ID for donations:', userId);
-    
-    const donations = [];
-    
-    for (let i = 0; i < 15; i++) {
-      const charity = charities[i % charities.length];
-      const amount = Math.floor(Math.random() * 50000) + 10000;
-      
-      donations.push({
-        user_id: userId,
-        charity_id: charity.id,
-        amount: amount,
-        status: 'completed',
-        disbursement_status: 'pending',
-        disbursed_amount: 0,
-        anonymous: Math.random() > 0.7,
-        jannah_points_earned: Math.floor(amount / 100) * 10,
-        sadaqah_coins_earned: Math.floor(amount / 100) * 5,
-        message: i % 3 === 0 ? 'May Allah accept this donation' : null,
-        created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
-      });
-    }
-
-    try {
-      console.log('🔄 Inserting donations...');
-      const { data, error } = await supabase
-        .from('donations')
-        .insert(donations)
-        .select();
-
-      if (error) {
-        console.error('❌ Error seeding donations:', error);
-        throw error;
-      }
-
-      console.log('✅ Donations seeded successfully:', data?.length);
-      return data;
-    } catch (error) {
-      console.error('❌ Failed to seed donations:', error);
       throw error;
     }
   };
@@ -246,15 +178,12 @@ const DataSeeder = () => {
     try {
       console.log('🚀 Starting data seeding process...');
       
-      // Use fake admin login
+      // Use fake admin login for testing
       console.log('🔐 Setting up fake admin authentication...');
       fakeAdminLogin();
       
-      // Wait for auth state to update
-      console.log('⏳ Waiting for auth state to update...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('👤 Auth state after fake login:', { user });
+      // Wait for state to update
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
         title: "Starting Data Seeding",
@@ -269,11 +198,10 @@ const DataSeeder = () => {
       
       await seedCharityPartners(charities);
       await seedCharityAllocations(charities);
-      const donations = await seedDonations(charities);
 
       toast({
         title: "Data Seeding Complete! 🎉",
-        description: `Created ${charities.length} charities with subdomains and ${donations?.length || 0} donations.`,
+        description: `Created ${charities.length} charities with subdomains. Ready for testing!`,
       });
 
       console.log('✅ Subdomain examples created:');
@@ -298,12 +226,11 @@ const DataSeeder = () => {
     try {
       console.log('🧹 Clearing test data...');
       
+      // Ensure fake admin session
       fakeAdminLogin();
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      console.log('🗑️ Clearing donations...');
-      await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      
+      // Clear data in correct order due to foreign key constraints
       console.log('🗑️ Clearing charity partners...');
       await supabase.from('charity_partners').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
@@ -355,11 +282,11 @@ const DataSeeder = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Heart className="h-3 w-3" />
-                3 charity partners with subdomain slugs (islamicrelief, waterwells, hopeorphanage)
+                3 charity partners with subdomain slugs
               </li>
               <li className="flex items-center gap-2">
                 <Database className="h-3 w-3" />
-                15 completed donations and charity allocation records
+                Charity allocation records for automated distribution
               </li>
             </ul>
           </div>

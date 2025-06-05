@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -53,42 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [toast]);
 
-  // Fake admin login using actual Supabase signIn with a test account
-  const fakeAdminLogin = async () => {
-    try {
-      // Try to sign in with test credentials, if it fails, we'll create a fake session
-      const { data, error } = await supabase.auth.signInAnonymously();
-      
-      if (error) {
-        console.error('Anonymous sign in failed:', error);
-        // Fallback to fake session
-        createFakeSession('admin');
-      } else {
-        console.log('Anonymous sign in successful:', data.user?.id);
-      }
-    } catch (error) {
-      console.error('Sign in error:', error);
-      createFakeSession('admin');
-    }
-  };
-
-  // Fake user login using actual Supabase signIn
-  const fakeUserLogin = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInAnonymously();
-      
-      if (error) {
-        console.error('Anonymous sign in failed:', error);
-        createFakeSession('user');
-      } else {
-        console.log('Anonymous sign in successful:', data.user?.id);
-      }
-    } catch (error) {
-      console.error('Sign in error:', error);
-      createFakeSession('user');
-    }
-  };
-
+  // Create a fake session for development/testing
   const createFakeSession = (type: 'admin' | 'user') => {
     const fakeUser = {
       id: type === 'admin' ? '00000000-0000-0000-0000-000000000001' : '00000000-0000-0000-0000-000000000002',
@@ -97,12 +63,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       app_metadata: {},
       aud: 'authenticated',
       created_at: new Date().toISOString(),
+      phone: '',
+      phone_confirmed_at: null,
+      email_confirmed_at: new Date().toISOString(),
+      confirmed_at: new Date().toISOString(),
+      last_sign_in_at: new Date().toISOString(),
+      role: 'authenticated',
+      updated_at: new Date().toISOString(),
     } as User;
 
     const fakeSession = {
       access_token: type === 'admin' ? 'fake-admin-token' : 'fake-user-token',
       refresh_token: type === 'admin' ? 'fake-admin-refresh' : 'fake-user-refresh',
       expires_in: 3600,
+      expires_at: Math.floor(Date.now() / 1000) + 3600,
       token_type: 'bearer',
       user: fakeUser,
     } as Session;
@@ -111,9 +85,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(fakeSession);
     
     toast({
-      title: `Fake ${type.charAt(0).toUpperCase() + type.slice(1)} Login`,
-      description: `You are now logged in as a test ${type}.`,
+      title: `Fake ${type.charAt(0).toUpperCase() + type.slice(1)} Session Created`,
+      description: `You are now using a fake ${type} session for testing.`,
     });
+  };
+
+  // Fake admin login - creates a fake session without Supabase auth
+  const fakeAdminLogin = () => {
+    console.log('🔐 Creating fake admin session...');
+    createFakeSession('admin');
+  };
+
+  // Fake user login - creates a fake session without Supabase auth
+  const fakeUserLogin = () => {
+    console.log('🔐 Creating fake user session...');
+    createFakeSession('user');
   };
 
   const signUp = async (email: string, password: string, fullName?: string) => {
@@ -172,6 +158,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         variant: "destructive",
       });
     } else {
+      // Clear fake session data if present
+      setUser(null);
+      setSession(null);
       toast({
         title: "Signed out",
         description: "You have been successfully signed out.",
