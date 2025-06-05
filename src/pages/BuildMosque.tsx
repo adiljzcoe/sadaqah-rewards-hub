@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap, CheckCircle, TrendingUp, Flame } from 'lucide-react';
+import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap, CheckCircle, TrendingUp, Flame, Plus, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 interface MosqueBlock {
@@ -43,7 +43,7 @@ interface MosqueProject {
 interface SelectedBlockType {
   category: MosqueBlock['category'];
   price: number;
-  jannahPoints: number;
+  jannah: number;
   badge: string;
   emoji: string;
   limited: boolean;
@@ -268,6 +268,114 @@ const BuildMosque = () => {
     setTimeout(() => setShowPurchaseAnimation(false), 3000);
   };
 
+  const handlePurchaseAllRemaining = (projectId: number) => {
+    const project = mosqueProjects.find(p => p.id === projectId);
+    if (!project) return;
+
+    const remainingBlocks = project.blocks.filter(block => !block.isPurchased);
+    const totalCost = remainingBlocks.reduce((sum, block) => sum + block.pricePerBlock, 0);
+
+    if (remainingBlocks.length === 0) {
+      alert('All blocks have already been purchased!');
+      return;
+    }
+
+    const confirmPurchase = confirm(
+      `Purchase all ${remainingBlocks.length} remaining blocks for £${totalCost.toLocaleString()}?\n\nThis will complete the entire mosque project!`
+    );
+
+    if (confirmPurchase) {
+      setMosqueProjects(prev => prev.map(p => {
+        if (p.id === projectId) {
+          const updatedBlocks = p.blocks.map(block => 
+            !block.isPurchased 
+              ? { ...block, isPurchased: true, purchasedBy: user?.email || 'You', purchaseDate: 'Just now' }
+              : block
+          );
+          
+          return {
+            ...p,
+            blocks: updatedBlocks,
+            purchasedBlocks: updatedBlocks.length,
+            raisedAmount: p.totalCost
+          };
+        }
+        return p;
+      }));
+
+      // Add all remaining blocks to user purchases
+      const remainingBlockIds = remainingBlocks.map(block => block.id);
+      setUserPurchases(prev => [...prev, ...remainingBlockIds]);
+      
+      setShowPurchaseAnimation(true);
+      setTimeout(() => setShowPurchaseAnimation(false), 3000);
+    }
+  };
+
+  const handleFundNewMosque = (mosqueType: 'community' | 'family' | 'village') => {
+    const mosqueTemplates = {
+      community: { cost: 250000, capacity: 1500, location: 'UK Community' },
+      family: { cost: 150000, capacity: 800, location: 'UK Family Center' },
+      village: { cost: 15000, capacity: 300, location: 'Global Village' }
+    };
+
+    const template = mosqueTemplates[mosqueType];
+    const confirmFunding = confirm(
+      `Fund a complete ${mosqueType} mosque for £${template.cost.toLocaleString()}?\n\nCapacity: ${template.capacity} people\nLocation: ${template.location}\n\nThis will create a new mosque project that others can contribute to.`
+    );
+
+    if (confirmFunding) {
+      const newMosqueId = mosqueProjects.length + 1;
+      const newMosque: MosqueProject = {
+        id: newMosqueId,
+        name: `New ${mosqueType.charAt(0).toUpperCase() + mosqueType.slice(1)} Mosque`,
+        location: template.location,
+        description: `A beautiful ${mosqueType} mosque funded by ${user?.email || 'a generous donor'}. Community members can now purchase individual blocks to participate in this blessed project.`,
+        totalBlocks: 0,
+        purchasedBlocks: 0,
+        totalCost: template.cost,
+        raisedAmount: template.cost, // Fully funded
+        capacity: template.capacity,
+        features: mosqueType === 'community' 
+          ? ["Prayer Hall", "Community Center", "School", "Sports Complex", "Car Park"]
+          : mosqueType === 'family'
+          ? ["Prayer Hall", "Family Areas", "Children's Space", "Library", "Garden"]
+          : ["Prayer Hall", "Ablution Area", "Community Space", "Water Well"],
+        urgency: "high",
+        image: "/placeholder.svg",
+        blocks: [],
+        baseBlockPrice: 50,
+        totalBricks: 0,
+        costPerBrick: 1
+      };
+
+      // Generate blocks for the new mosque
+      const blocks = generateBlocks(newMosqueId, template.cost);
+      const totalBlocks = blocks.length;
+      const totalBricks = totalBlocks * 50;
+
+      // Mark all blocks as purchased by the funder
+      const purchasedBlocks = blocks.map(block => ({
+        ...block,
+        isPurchased: true,
+        purchasedBy: user?.email || 'Generous Donor',
+        purchaseDate: 'Just now'
+      }));
+
+      const completedMosque = {
+        ...newMosque,
+        blocks: purchasedBlocks,
+        totalBlocks,
+        totalBricks,
+        purchasedBlocks: totalBlocks
+      };
+
+      setMosqueProjects(prev => [completedMosque, ...prev]);
+      setShowPurchaseAnimation(true);
+      setTimeout(() => setShowPurchaseAnimation(false), 3000);
+    }
+  };
+
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case 'urgent': return 'bg-red-200 text-red-900 border-red-300';
@@ -445,7 +553,7 @@ const BuildMosque = () => {
             <div className="text-center">
               <div className="text-4xl mb-2">🕌✨</div>
               <div className="text-2xl font-bold mb-2">Barakallahu Feek!</div>
-              <div className="text-lg">Your block has been secured!</div>
+              <div className="text-lg">Your contribution has been secured!</div>
               <div className="text-sm opacity-90 mt-2">May Allah reward you abundantly</div>
               <div className="text-sm opacity-90 mt-1">Extra Jannah points for mosque building!</div>
             </div>
@@ -519,6 +627,98 @@ const BuildMosque = () => {
           </Card>
         </div>
 
+        {/* Build New Mosque Section */}
+        <div className="mb-12">
+          <Card className="overflow-hidden bg-gradient-to-r from-purple-50 via-blue-50 to-emerald-50 border-2 border-emerald-200">
+            <CardHeader className="text-center">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="bg-gradient-to-r from-purple-500 to-emerald-500 p-3 rounded-full">
+                  <Plus className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-2xl bg-gradient-to-r from-purple-600 to-emerald-600 bg-clip-text text-transparent">
+                  Fund a Complete New Mosque
+                </CardTitle>
+              </div>
+              <p className="text-gray-700">
+                Be the primary founder of a new mosque project. Your funding will create a new mosque that the entire community can then contribute to block by block.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* Community Mosque */}
+                <Card className="border-2 border-blue-200 hover:border-blue-400 transition-all cursor-pointer group">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-4xl mb-3">🏛️</div>
+                    <h3 className="text-xl font-bold mb-2">Community Mosque</h3>
+                    <div className="text-3xl font-bold text-blue-600 mb-2">£250,000</div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      Capacity: 1,500 people<br/>
+                      Location: UK Community<br/>
+                      Full facilities included
+                    </div>
+                    <Button 
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                      onClick={() => handleFundNewMosque('community')}
+                    >
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      Fund Complete Mosque
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Family Mosque */}
+                <Card className="border-2 border-emerald-200 hover:border-emerald-400 transition-all cursor-pointer group">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-4xl mb-3">👨‍👩‍👧‍👦</div>
+                    <h3 className="text-xl font-bold mb-2">Family Mosque</h3>
+                    <div className="text-3xl font-bold text-emerald-600 mb-2">£150,000</div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      Capacity: 800 people<br/>
+                      Location: UK Family Center<br/>
+                      Family-focused design
+                    </div>
+                    <Button 
+                      className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600"
+                      onClick={() => handleFundNewMosque('family')}
+                    >
+                      <Heart className="h-4 w-4 mr-2" />
+                      Fund Complete Mosque
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Village Mosque */}
+                <Card className="border-2 border-orange-200 hover:border-orange-400 transition-all cursor-pointer group">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-4xl mb-3">🌍</div>
+                    <h3 className="text-xl font-bold mb-2">Village Mosque</h3>
+                    <div className="text-3xl font-bold text-orange-600 mb-2">£15,000</div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      Capacity: 300 people<br/>
+                      Location: Global Village<br/>
+                      Essential facilities
+                    </div>
+                    <Button 
+                      className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                      onClick={() => handleFundNewMosque('village')}
+                    >
+                      <Target className="h-4 w-4 mr-2" />
+                      Fund Complete Mosque
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-600">
+                  <Crown className="h-4 w-4 inline mr-1 text-yellow-500" />
+                  Mosque founders receive special recognition and 10x Jannah points bonus
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Active Projects */}
         <div className="space-y-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center">Active Mosque Projects Worldwide</h2>
@@ -529,6 +729,9 @@ const BuildMosque = () => {
             const motivationalMsg = getMotivationalMessage(progressPercentage);
             const milestone = getProjectMilestone(progressPercentage);
             const remainingBlocks = getRemainingBlocks(project);
+            const remainingCost = project.blocks
+              .filter(block => !block.isPurchased)
+              .reduce((sum, block) => sum + block.pricePerBlock, 0);
             
             return (
               <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-all duration-300">
@@ -640,6 +843,36 @@ const BuildMosque = () => {
                         </span>
                       </div>
                     </div>
+
+                    {/* Purchase All Remaining Section */}
+                    {remainingBlocks > 0 && (
+                      <div className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-bold text-yellow-800 flex items-center gap-2">
+                              <Trophy className="h-4 w-4" />
+                              Complete This Mosque
+                            </h4>
+                            <p className="text-sm text-yellow-700">
+                              Purchase all {remainingBlocks} remaining blocks
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-bold text-yellow-800">
+                              £{remainingCost.toLocaleString()}
+                            </div>
+                            <Button
+                              size="sm"
+                              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+                              onClick={() => handlePurchaseAllRemaining(project.id)}
+                            >
+                              <Crown className="h-3 w-3 mr-1" />
+                              Buy All Remaining
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Compact Block Types Selection */}
                     <div className="mb-6">
