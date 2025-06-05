@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
+import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -86,6 +88,7 @@ const MyUmmah = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50/30 to-purple-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
