@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,9 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Heart, CreditCard, Gift, Users, Check } from 'lucide-react';
+import { Heart, Gift, Users } from 'lucide-react';
 import TrustSystemBadge from './TrustSystemBadge';
 import HeartDonationEffect from './HeartDonationEffect';
+import AnimatedDonateButton from './AnimatedDonateButton';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { useCart } from '@/hooks/useCart';
@@ -342,37 +342,15 @@ const DonationWidget = ({
             </div>
           </div>
 
-          {/* Submit Button - FIXED: Removed form wrapper and conflicting handlers */}
-          <Button 
-            type="button"
-            className={`w-full transition-all duration-300 relative ${
-              justAdded 
-                ? 'bg-green-600 hover:bg-green-700 scale-105' 
-                : isAdding 
-                  ? 'bg-blue-500 hover:bg-blue-600' 
-                  : ''
-            }`}
-            size="lg"
-            disabled={isAdding}
+          {/* Animated Submit Button */}
+          <AnimatedDonateButton
+            amount={getDisplayAmount()}
+            currency={currencySymbol}
+            isAdding={isAdding}
+            justAdded={justAdded}
             onClick={handleDonateClick}
-          >
-            {isAdding ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Adding to Cart...
-              </>
-            ) : justAdded ? (
-              <>
-                <Check className="h-4 w-4 mr-2 animate-bounce" />
-                Added to Cart!
-              </>
-            ) : (
-              <>
-                <CreditCard className="h-4 w-4 mr-2" />
-                Donate {currencySymbol}{getDisplayAmount()}
-              </>
-            )}
-          </Button>
+            disabled={isAdding}
+          />
 
           <div className="text-center">
             <Button 
