@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap, CheckCircle } from 'lucide-react';
+import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap, CheckCircle, TrendingUp, Flame } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 interface MosqueBlock {
@@ -43,7 +43,7 @@ interface MosqueProject {
 interface SelectedBlockType {
   category: MosqueBlock['category'];
   price: number;
-  jannahPoints: number;
+  jannah: number;
   badge: string;
   emoji: string;
   limited: boolean;
@@ -324,7 +324,7 @@ const BuildMosque = () => {
       [projectId]: {
         category: blockType.category,
         price: blockType.price,
-        jannahPoints: parseInt(blockType.jannahBonus),
+        jannah: parseInt(blockType.jannahBonus),
         badge: blockType.badge,
         emoji: blockType.icon,
         limited: blockType.limited,
@@ -348,6 +348,35 @@ const BuildMosque = () => {
     if (availableBlock) {
       handleBlockPurchase(projectId, availableBlock.id);
     }
+  };
+
+  const getMotivationalMessage = (percentage: number) => {
+    if (percentage >= 95) return { text: "🔥 Almost complete! One final push!", color: "text-red-600", bg: "bg-red-50" };
+    if (percentage >= 85) return { text: "🚀 We're in the final stretch!", color: "text-orange-600", bg: "bg-orange-50" };
+    if (percentage >= 70) return { text: "💪 Great momentum! Keep it going!", color: "text-yellow-600", bg: "bg-yellow-50" };
+    if (percentage >= 50) return { text: "⭐ Halfway there! Amazing progress!", color: "text-blue-600", bg: "bg-blue-50" };
+    if (percentage >= 25) return { text: "🌟 Building momentum! Keep going!", color: "text-emerald-600", bg: "bg-emerald-50" };
+    return { text: "🏗️ Every block matters! Start building!", color: "text-purple-600", bg: "bg-purple-50" };
+  };
+
+  const getProgressBarColor = (percentage: number) => {
+    if (percentage >= 85) return "bg-gradient-to-r from-red-500 to-orange-500";
+    if (percentage >= 70) return "bg-gradient-to-r from-orange-500 to-yellow-500";
+    if (percentage >= 50) return "bg-gradient-to-r from-yellow-500 to-emerald-500";
+    if (percentage >= 25) return "bg-gradient-to-r from-emerald-500 to-blue-500";
+    return "bg-gradient-to-r from-blue-500 to-purple-500";
+  };
+
+  const getRemainingBlocks = (project: MosqueProject) => {
+    return project.totalBlocks - project.purchasedBlocks;
+  };
+
+  const getProjectMilestone = (percentage: number) => {
+    if (percentage >= 100) return { icon: "🕌", text: "COMPLETED!", badge: "🎉 Complete" };
+    if (percentage >= 75) return { icon: "🔥", text: "FINAL PHASE", badge: "🔥 Final Push" };
+    if (percentage >= 50) return { icon: "⚡", text: "GAINING SPEED", badge: "⚡ Accelerating" };
+    if (percentage >= 25) return { icon: "🌟", text: "BUILDING MOMENTUM", badge: "🌟 Growing" };
+    return { icon: "🚀", text: "JUST STARTED", badge: "🚀 Beginning" };
   };
 
   return (
@@ -440,6 +469,11 @@ const BuildMosque = () => {
           
           {mosqueProjects.map((project) => {
             const selectedType = selectedBlockTypes[project.id];
+            const progressPercentage = (project.purchasedBlocks / project.totalBlocks) * 100;
+            const motivationalMsg = getMotivationalMessage(progressPercentage);
+            const milestone = getProjectMilestone(progressPercentage);
+            const remainingBlocks = getRemainingBlocks(project);
+            
             return (
               <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-all duration-300">
                 <div className="grid lg:grid-cols-2 gap-0">
@@ -465,6 +499,12 @@ const BuildMosque = () => {
                         £{project.baseBlockPrice} per block (50 bricks)
                       </Badge>
                     </div>
+                    {/* Milestone Badge */}
+                    <div className="absolute bottom-4 right-4">
+                      <Badge className={`${motivationalMsg.bg} ${motivationalMsg.color} border-2 animate-pulse`}>
+                        {milestone.badge}
+                      </Badge>
+                    </div>
                   </div>
 
                   {/* Content Section */}
@@ -485,6 +525,65 @@ const BuildMosque = () => {
                     </div>
 
                     <p className="text-gray-700 mb-6">{project.description}</p>
+
+                    {/* Motivational Message */}
+                    <div className={`mb-6 p-4 rounded-lg border-2 ${motivationalMsg.bg} border-current`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{milestone.icon}</span>
+                          <div>
+                            <div className={`font-bold ${motivationalMsg.color}`}>
+                              {motivationalMsg.text}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              {remainingBlocks > 0 ? `Only ${remainingBlocks} blocks remaining!` : 'Project Complete! 🎉'}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className={`text-lg font-bold ${motivationalMsg.color}`}>
+                            {progressPercentage.toFixed(1)}%
+                          </div>
+                          <div className="text-xs text-gray-500">Complete</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Progress Section */}
+                    <div className="space-y-4 mb-6">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600 flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4" />
+                          Building Progress
+                        </span>
+                        <span className="text-sm font-semibold">
+                          {project.purchasedBlocks} of {project.totalBlocks} blocks purchased
+                        </span>
+                      </div>
+                      
+                      {/* Custom Progress Bar */}
+                      <div className="relative">
+                        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                          <div 
+                            className={`h-full ${getProgressBarColor(progressPercentage)} transition-all duration-1000 ease-out relative`}
+                            style={{ width: `${progressPercentage}%` }}
+                          >
+                            <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                          </div>
+                        </div>
+                        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-700">
+                          {progressPercentage >= 20 && `${progressPercentage.toFixed(1)}%`}
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>£{project.raisedAmount.toLocaleString()} raised</span>
+                        <span className="flex items-center gap-1">
+                          <Flame className="h-3 w-3 text-red-500" />
+                          {remainingBlocks} blocks left
+                        </span>
+                      </div>
+                    </div>
 
                     {/* Block Types Selection */}
                     <div className="mb-6">
@@ -589,29 +688,11 @@ const BuildMosque = () => {
                       </div>
                     </div>
 
-                    {/* Progress */}
-                    <div className="space-y-3 mb-6">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Block Progress</span>
-                        <span className="text-sm font-semibold">
-                          {project.purchasedBlocks} of {project.totalBlocks} blocks purchased
-                        </span>
-                      </div>
-                      <Progress 
-                        value={(project.purchasedBlocks / project.totalBlocks) * 100} 
-                        className="h-3"
-                      />
-                      <div className="flex justify-between text-sm text-gray-600">
-                        <span>£{project.raisedAmount.toLocaleString()} raised</span>
-                        <span>{((project.purchasedBlocks / project.totalBlocks) * 100).toFixed(1)}% complete</span>
-                      </div>
-                    </div>
-
                     {/* Action Buttons */}
                     <div className="flex gap-3">
                       {selectedType ? (
                         <Button 
-                          className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white"
+                          className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white animate-pulse"
                           onClick={() => handlePurchaseSelectedBlock(project.id)}
                         >
                           <div className="flex items-center gap-2">
