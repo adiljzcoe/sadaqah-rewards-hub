@@ -1,42 +1,149 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Building, MapPin, Users, Calendar, Heart, Star, Trophy, Target, Coins, Crown, Zap } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+
+interface MosqueSpace {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  isPurchased: boolean;
+  purchasedBy?: string;
+  purchaseDate?: string;
+  category: 'foundation' | 'walls' | 'roof' | 'interior' | 'minaret' | 'dome';
+}
+
+interface MosqueProject {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  totalSpaces: number;
+  purchasedSpaces: number;
+  totalCost: number;
+  raisedAmount: number;
+  capacity: number;
+  features: string[];
+  urgency: string;
+  image: string;
+  spaces: MosqueSpace[];
+}
 
 const BuildMosque = () => {
-  const mosqueProjects = [
+  const { user } = useAuth();
+  const [selectedProject, setSelectedProject] = useState<MosqueProject | null>(null);
+  const [userPurchases, setUserPurchases] = useState<string[]>([]);
+  const [showPurchaseAnimation, setShowPurchaseAnimation] = useState(false);
+
+  // Generate spaces for each project
+  const generateSpaces = (projectId: number, totalSpaces: number): MosqueSpace[] => {
+    const categories: MosqueSpace['category'][] = ['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'];
+    const spacesPerCategory = Math.floor(totalSpaces / categories.length);
+    const spaces: MosqueSpace[] = [];
+
+    categories.forEach((category, categoryIndex) => {
+      const categorySpaceCount = categoryIndex === categories.length - 1 
+        ? totalSpaces - (spacesPerCategory * (categories.length - 1))
+        : spacesPerCategory;
+
+      for (let i = 0; i < categorySpaceCount; i++) {
+        const spaceId = `${projectId}-${category}-${i + 1}`;
+        const basePrice = category === 'foundation' ? 50 : 
+                         category === 'walls' ? 75 :
+                         category === 'roof' ? 100 :
+                         category === 'interior' ? 60 :
+                         category === 'minaret' ? 150 :
+                         200; // dome
+
+        spaces.push({
+          id: spaceId,
+          name: `${category.charAt(0).toUpperCase() + category.slice(1)} Block ${i + 1}`,
+          description: `Help build the ${category} section of this blessed mosque`,
+          price: basePrice + Math.floor(Math.random() * 50),
+          isPurchased: Math.random() > 0.7, // 30% already purchased
+          category,
+          purchasedBy: Math.random() > 0.5 ? 'Anonymous Donor' : 'Verified Donor',
+          purchaseDate: Math.random() > 0.5 ? '2 days ago' : '1 week ago'
+        });
+      }
+    });
+
+    return spaces;
+  };
+
+  const [mosqueProjects, setMosqueProjects] = useState<MosqueProject[]>([
     {
       id: 1,
       name: "Central Community Mosque",
       location: "Birmingham, UK",
       description: "A modern mosque serving 2,000+ families with community center, school, and sports facilities.",
-      targetAmount: 500000,
+      totalSpaces: 500,
+      purchasedSpaces: 287,
+      totalCost: 500000,
       raisedAmount: 287500,
-      donorsCount: 1250,
-      daysLeft: 45,
       capacity: 2000,
       features: ["Prayer Hall", "Community Center", "Islamic School", "Sports Complex", "Car Park"],
       urgency: "high",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      spaces: []
     },
     {
       id: 2,
       name: "Riverside Family Mosque",
-      location: "Manchester, UK",
+      location: "Manchester, UK", 
       description: "Family-focused mosque with dedicated women's section, children's area, and elderly care facilities.",
-      targetAmount: 300000,
+      totalSpaces: 300,
+      purchasedSpaces: 195,
+      totalCost: 300000,
       raisedAmount: 195000,
-      donorsCount: 890,
-      daysLeft: 60,
       capacity: 1200,
       features: ["Family Prayer Areas", "Women's Section", "Children's Area", "Elderly Care", "Library"],
       urgency: "medium",
-      image: "/placeholder.svg"
+      image: "/placeholder.svg",
+      spaces: []
     }
-  ];
+  ]);
+
+  // Initialize spaces for projects
+  useEffect(() => {
+    setMosqueProjects(prev => prev.map(project => ({
+      ...project,
+      spaces: generateSpaces(project.id, project.totalSpaces)
+    })));
+  }, []);
+
+  const handleSpacePurchase = (projectId: number, spaceId: string) => {
+    setMosqueProjects(prev => prev.map(project => {
+      if (project.id === projectId) {
+        const updatedSpaces = project.spaces.map(space => 
+          space.id === spaceId 
+            ? { ...space, isPurchased: true, purchasedBy: user?.email || 'You', purchaseDate: 'Just now' }
+            : space
+        );
+        const newPurchasedCount = updatedSpaces.filter(s => s.isPurchased).length;
+        const newRaisedAmount = updatedSpaces.filter(s => s.isPurchased).reduce((sum, s) => sum + s.price, 0);
+        
+        return {
+          ...project,
+          spaces: updatedSpaces,
+          purchasedSpaces: newPurchasedCount,
+          raisedAmount: newRaisedAmount
+        };
+      }
+      return project;
+    }));
+
+    setUserPurchases(prev => [...prev, spaceId]);
+    setShowPurchaseAnimation(true);
+    setTimeout(() => setShowPurchaseAnimation(false), 3000);
+  };
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
@@ -47,9 +154,48 @@ const BuildMosque = () => {
     }
   };
 
+  const getCategoryColor = (category: MosqueSpace['category']) => {
+    const colors = {
+      foundation: 'bg-stone-500',
+      walls: 'bg-amber-500', 
+      roof: 'bg-slate-500',
+      interior: 'bg-emerald-500',
+      minaret: 'bg-blue-500',
+      dome: 'bg-purple-500'
+    };
+    return colors[category];
+  };
+
+  const getCategoryIcon = (category: MosqueSpace['category']) => {
+    switch (category) {
+      case 'foundation': return '🏗️';
+      case 'walls': return '🧱';
+      case 'roof': return '🏠';
+      case 'interior': return '🏛️';
+      case 'minaret': return '🗼';
+      case 'dome': return '🕌';
+      default: return '🏗️';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <Header />
+
+      {/* Purchase Success Animation */}
+      {showPurchaseAnimation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white p-8 rounded-3xl shadow-2xl animate-bounce border-4 border-white/50 backdrop-blur-sm">
+            <div className="text-center">
+              <div className="text-4xl mb-2">🕌✨</div>
+              <div className="text-2xl font-bold mb-2">Barakallahu Feek!</div>
+              <div className="text-lg">Your space has been secured!</div>
+              <div className="text-sm opacity-90 mt-2">May Allah reward you abundantly</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -58,27 +204,27 @@ const BuildMosque = () => {
               <Building className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-              Build a Mosque
+              Build a Mosque - Space by Space
             </h1>
           </div>
           
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
-            Support the construction of beautiful mosques that will serve communities for generations. 
-            Every donation helps create a sacred space for worship, community gathering, and spiritual growth.
+            Join thousands of believers in building beautiful mosques. Purchase individual spaces and watch as the community 
+            collectively funds entire mosque projects, brick by brick.
           </p>
           
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
               <Building className="h-4 w-4 text-emerald-500" />
-              <span className="text-sm font-medium">Sacred Spaces</span>
+              <span className="text-sm font-medium">Individual Spaces</span>
             </div>
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
               <Users className="h-4 w-4 text-blue-500" />
-              <span className="text-sm font-medium">Community Centers</span>
+              <span className="text-sm font-medium">Collective Funding</span>
             </div>
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
               <Heart className="h-4 w-4 text-pink-500" />
-              <span className="text-sm font-medium">Lasting Legacy</span>
+              <span className="text-sm font-medium">Ongoing Rewards</span>
             </div>
           </div>
         </div>
@@ -89,7 +235,7 @@ const BuildMosque = () => {
             <CardContent className="p-6 text-center">
               <Building className="h-8 w-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">12</div>
-              <div className="text-sm opacity-90">Mosques Built</div>
+              <div className="text-sm opacity-90">Mosques Completed</div>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
@@ -101,16 +247,16 @@ const BuildMosque = () => {
           </Card>
           <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <CardContent className="p-6 text-center">
-              <Heart className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">£2.3M</div>
-              <div className="text-sm opacity-90">Total Raised</div>
+              <Coins className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-2xl font-bold">47K</div>
+              <div className="text-sm opacity-90">Spaces Purchased</div>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-white">
             <CardContent className="p-6 text-center">
               <Star className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">4.8</div>
-              <div className="text-sm opacity-90">Average Rating</div>
+              <div className="text-2xl font-bold">£2.3M</div>
+              <div className="text-sm opacity-90">Total Raised</div>
             </CardContent>
           </Card>
         </div>
@@ -132,6 +278,11 @@ const BuildMosque = () => {
                   <div className="absolute top-4 left-4">
                     <Badge className={`${getUrgencyColor(project.urgency)} border`}>
                       {project.urgency.toUpperCase()} PRIORITY
+                    </Badge>
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-white/90 text-gray-800">
+                      {project.purchasedSpaces}/{project.totalSpaces} Spaces
                     </Badge>
                   </div>
                 </div>
@@ -169,33 +320,120 @@ const BuildMosque = () => {
                   {/* Progress */}
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Progress</span>
+                      <span className="text-sm text-gray-600">Spaces Progress</span>
                       <span className="text-sm font-semibold">
-                        £{project.raisedAmount.toLocaleString()} of £{project.targetAmount.toLocaleString()}
+                        {project.purchasedSpaces} of {project.totalSpaces} spaces purchased
                       </span>
                     </div>
                     <Progress 
-                      value={(project.raisedAmount / project.targetAmount) * 100} 
+                      value={(project.purchasedSpaces / project.totalSpaces) * 100} 
                       className="h-3"
                     />
                     <div className="flex justify-between text-sm text-gray-600">
-                      <span className="flex items-center gap-1">
-                        <Users className="h-3 w-3" />
-                        {project.donorsCount.toLocaleString()} donors
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {project.daysLeft} days left
-                      </span>
+                      <span>£{project.raisedAmount.toLocaleString()} raised</span>
+                      <span>{((project.purchasedSpaces / project.totalSpaces) * 100).toFixed(1)}% complete</span>
                     </div>
                   </div>
 
                   {/* Action Buttons */}
                   <div className="flex gap-3">
-                    <Button className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white">
-                      <Heart className="h-4 w-4 mr-2" />
-                      Donate Now
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white"
+                          onClick={() => setSelectedProject(project)}
+                        >
+                          <Building className="h-4 w-4 mr-2" />
+                          Buy Spaces
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle className="flex items-center gap-2">
+                            <Building className="h-5 w-5" />
+                            {project.name} - Available Spaces
+                          </DialogTitle>
+                        </DialogHeader>
+                        
+                        {selectedProject && (
+                          <div className="space-y-6">
+                            {/* Project Overview */}
+                            <div className="bg-gradient-to-r from-emerald-50 to-blue-50 p-6 rounded-lg">
+                              <div className="grid md:grid-cols-3 gap-4 text-center">
+                                <div>
+                                  <div className="text-2xl font-bold text-emerald-600">{selectedProject.purchasedSpaces}</div>
+                                  <div className="text-sm text-gray-600">Spaces Purchased</div>
+                                </div>
+                                <div>
+                                  <div className="text-2xl font-bold text-blue-600">{selectedProject.totalSpaces - selectedProject.purchasedSpaces}</div>
+                                  <div className="text-sm text-gray-600">Spaces Remaining</div>
+                                </div>
+                                <div>
+                                  <div className="text-2xl font-bold text-purple-600">£{Math.floor(selectedProject.raisedAmount / selectedProject.purchasedSpaces)}</div>
+                                  <div className="text-sm text-gray-600">Average per Space</div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Spaces Grid by Category */}
+                            {['foundation', 'walls', 'roof', 'interior', 'minaret', 'dome'].map(category => {
+                              const categorySpaces = selectedProject.spaces.filter(s => s.category === category);
+                              if (categorySpaces.length === 0) return null;
+
+                              return (
+                                <div key={category} className="space-y-4">
+                                  <h4 className="text-lg font-bold flex items-center gap-2">
+                                    <span className="text-2xl">{getCategoryIcon(category as MosqueSpace['category'])}</span>
+                                    {category.charAt(0).toUpperCase() + category.slice(1)} Spaces
+                                    <Badge className={`${getCategoryColor(category as MosqueSpace['category'])} text-white`}>
+                                      {categorySpaces.filter(s => !s.isPurchased).length} available
+                                    </Badge>
+                                  </h4>
+                                  
+                                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                                    {categorySpaces.map((space) => (
+                                      <Card 
+                                        key={space.id} 
+                                        className={`cursor-pointer transition-all duration-300 ${
+                                          space.isPurchased 
+                                            ? 'bg-gray-100 border-gray-300' 
+                                            : userPurchases.includes(space.id)
+                                            ? 'bg-gradient-to-br from-green-100 to-emerald-100 border-green-300 shadow-lg'
+                                            : 'hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-emerald-300'
+                                        }`}
+                                        onClick={() => !space.isPurchased && handleSpacePurchase(project.id, space.id)}
+                                      >
+                                        <CardContent className="p-4 text-center">
+                                          <div className={`w-8 h-8 mx-auto mb-2 rounded-full ${getCategoryColor(space.category)} flex items-center justify-center text-white text-xs font-bold`}>
+                                            {space.id.split('-').pop()}
+                                          </div>
+                                          <div className="text-xs font-medium mb-1">{space.name}</div>
+                                          <div className="text-lg font-bold text-emerald-600">£{space.price}</div>
+                                          {space.isPurchased ? (
+                                            <div className="text-xs text-gray-500 mt-1">
+                                              <div>✓ Purchased</div>
+                                              <div>{space.purchaseDate}</div>
+                                            </div>
+                                          ) : userPurchases.includes(space.id) ? (
+                                            <div className="text-xs text-green-600 mt-1 font-medium">
+                                              ✓ Just Purchased!
+                                            </div>
+                                          ) : (
+                                            <div className="text-xs text-blue-600 mt-1">
+                                              Click to Purchase
+                                            </div>
+                                          )}
+                                        </CardContent>
+                                      </Card>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </DialogContent>
+                    </Dialog>
                     <Button variant="outline" className="px-6">
                       Learn More
                     </Button>
