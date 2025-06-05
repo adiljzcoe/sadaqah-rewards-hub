@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from './useAuth';
 
 interface UTMParams {
   utm_source?: string;
@@ -8,6 +10,7 @@ interface UTMParams {
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
+  utm_charity?: string;
 }
 
 interface TrackingData extends UTMParams {
@@ -20,6 +23,7 @@ interface TrackingData extends UTMParams {
 
 export const useUTMTracking = () => {
   const location = useLocation();
+  const { user } = useAuth();
   const [utmParams, setUtmParams] = useState<UTMParams>({});
   const [sessionId] = useState(() => 
     localStorage.getItem('tracking_session_id') || 
@@ -35,8 +39,8 @@ export const useUTMTracking = () => {
     const urlParams = new URLSearchParams(location.search);
     const currentUtmParams: UTMParams = {};
 
-    // Extract UTM parameters
-    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(param => {
+    // Extract UTM parameters including utm_charity
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_charity'].forEach(param => {
       const value = urlParams.get(param);
       if (value) {
         currentUtmParams[param as keyof UTMParams] = value;
@@ -49,6 +53,9 @@ export const useUTMTracking = () => {
       const updatedParams = { ...existingParams, ...currentUtmParams };
       localStorage.setItem('utm_params', JSON.stringify(updatedParams));
       setUtmParams(updatedParams);
+
+      // Store in Supabase for enhanced tracking
+      storeUTMInDatabase(currentUtmParams);
     } else {
       // Load existing UTM params if no new ones
       const storedParams = JSON.parse(localStorage.getItem('utm_params') || '{}');
@@ -64,6 +71,33 @@ export const useUTMTracking = () => {
 
   }, [location]);
 
+  const storeUTMInDatabase = async (utmData: UTMParams) => {
+    try {
+      const trackingData = {
+        session_id: sessionId,
+        user_id: user?.id || null,
+        ...utmData,
+        referrer: document.referrer || '',
+        landing_page: location.pathname + location.search,
+        device_fingerprint: {
+          userAgent: navigator.userAgent,
+          screenResolution: `${screen.width}x${screen.height}`,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          language: navigator.language,
+        },
+      };
+
+      await supabase.from('utm_tracking').upsert(trackingData, {
+        onConflict: 'session_id',
+        ignoreDuplicates: false
+      });
+
+      console.log('UTM data stored in database:', trackingData);
+    } catch (error) {
+      console.error('Error storing UTM data in database:', error);
+    }
+  };
+
   const trackEvent = async (eventType: string, additionalData: any = {}) => {
     const trackingData: TrackingData = {
       ...utmParams,
@@ -71,6 +105,7 @@ export const useUTMTracking = () => {
       timestamp: new Date().toISOString(),
       sessionId,
       pageUrl: location.pathname + location.search,
+      userId: user?.id,
       ...additionalData
     };
 
@@ -107,6 +142,7 @@ export const useUTMTracking = () => {
       amount: donationData.amount,
       charity_id: donationData.charity_id,
       campaign_id: donationData.campaign_id,
+      attributed_charity: utmParams.utm_charity,
       conversion: true
     });
   };
@@ -122,7 +158,9 @@ export const useUTMTracking = () => {
     return {
       utmParams,
       sessionId,
-      referrer: document.referrer
+      referrer: document.referrer,
+      isCharityAttributed: !!utmParams.utm_charity,
+      attributedCharity: utmParams.utm_charity,
     };
   };
 
@@ -139,6 +177,8 @@ export const useUTMTracking = () => {
     trackDonation,
     trackClick,
     getAttributionData,
-    clearUTMData
+    clearUTMData,
+    isCharityAttributed: !!utmParams.utm_charity,
+    attributedCharity: utmParams.utm_charity,
   };
 };

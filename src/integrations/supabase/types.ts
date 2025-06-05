@@ -324,6 +324,62 @@ export type Database = {
           },
         ]
       }
+      charity_ad_campaigns: {
+        Row: {
+          budget_allocated: number
+          budget_spent: number | null
+          campaign_name: string
+          charity_partner_id: string
+          created_at: string | null
+          end_date: string | null
+          id: string
+          platform: string
+          start_date: string | null
+          status: string | null
+          target_audience: Json | null
+          updated_at: string | null
+          utm_parameters: Json | null
+        }
+        Insert: {
+          budget_allocated: number
+          budget_spent?: number | null
+          campaign_name: string
+          charity_partner_id: string
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          platform: string
+          start_date?: string | null
+          status?: string | null
+          target_audience?: Json | null
+          updated_at?: string | null
+          utm_parameters?: Json | null
+        }
+        Update: {
+          budget_allocated?: number
+          budget_spent?: number | null
+          campaign_name?: string
+          charity_partner_id?: string
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          platform?: string
+          start_date?: string | null
+          status?: string | null
+          target_audience?: Json | null
+          updated_at?: string | null
+          utm_parameters?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_ad_campaigns_charity_partner_id_fkey"
+            columns: ["charity_partner_id"]
+            isOneToOne: false
+            referencedRelation: "charity_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       charity_allocations: {
         Row: {
           activity_weight: number | null
@@ -437,6 +493,50 @@ export type Database = {
           },
         ]
       }
+      charity_partners: {
+        Row: {
+          ad_spend_budget: number | null
+          charity_id: string
+          commission_rate: number | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          monthly_spend_limit: number | null
+          partner_slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          ad_spend_budget?: number | null
+          charity_id: string
+          commission_rate?: number | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          monthly_spend_limit?: number | null
+          partner_slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          ad_spend_budget?: number | null
+          charity_id?: string
+          commission_rate?: number | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          monthly_spend_limit?: number | null
+          partner_slug?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_partners_charity_id_fkey"
+            columns: ["charity_id"]
+            isOneToOne: false
+            referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       charity_products: {
         Row: {
           beneficiaries_count: number | null
@@ -519,6 +619,64 @@ export type Database = {
             columns: ["charity_id"]
             isOneToOne: false
             referencedRelation: "charities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      charity_revenue_tracking: {
+        Row: {
+          attribution_method: string
+          charity_partner_id: string
+          donation_id: string
+          gross_amount: number
+          id: string
+          net_amount: number
+          platform_fee: number
+          processed_at: string | null
+          utm_tracking_id: string | null
+        }
+        Insert: {
+          attribution_method: string
+          charity_partner_id: string
+          donation_id: string
+          gross_amount: number
+          id?: string
+          net_amount: number
+          platform_fee: number
+          processed_at?: string | null
+          utm_tracking_id?: string | null
+        }
+        Update: {
+          attribution_method?: string
+          charity_partner_id?: string
+          donation_id?: string
+          gross_amount?: number
+          id?: string
+          net_amount?: number
+          platform_fee?: number
+          processed_at?: string | null
+          utm_tracking_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "charity_revenue_tracking_charity_partner_id_fkey"
+            columns: ["charity_partner_id"]
+            isOneToOne: false
+            referencedRelation: "charity_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "charity_revenue_tracking_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: false
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "charity_revenue_tracking_utm_tracking_id_fkey"
+            columns: ["utm_tracking_id"]
+            isOneToOne: false
+            referencedRelation: "utm_tracking"
             referencedColumns: ["id"]
           },
         ]
@@ -904,6 +1062,8 @@ export type Database = {
         Row: {
           amount: number
           anonymous: boolean | null
+          attributed_to_charity_partner: string | null
+          attribution_source: string | null
           campaign_id: string | null
           charity_id: string | null
           created_at: string | null
@@ -917,10 +1077,13 @@ export type Database = {
           status: Database["public"]["Enums"]["donation_status"] | null
           updated_at: string | null
           user_id: string | null
+          utm_tracking_id: string | null
         }
         Insert: {
           amount: number
           anonymous?: boolean | null
+          attributed_to_charity_partner?: string | null
+          attribution_source?: string | null
           campaign_id?: string | null
           charity_id?: string | null
           created_at?: string | null
@@ -934,10 +1097,13 @@ export type Database = {
           status?: Database["public"]["Enums"]["donation_status"] | null
           updated_at?: string | null
           user_id?: string | null
+          utm_tracking_id?: string | null
         }
         Update: {
           amount?: number
           anonymous?: boolean | null
+          attributed_to_charity_partner?: string | null
+          attribution_source?: string | null
           campaign_id?: string | null
           charity_id?: string | null
           created_at?: string | null
@@ -951,8 +1117,16 @@ export type Database = {
           status?: Database["public"]["Enums"]["donation_status"] | null
           updated_at?: string | null
           user_id?: string | null
+          utm_tracking_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "donations_attributed_to_charity_partner_fkey"
+            columns: ["attributed_to_charity_partner"]
+            isOneToOne: false
+            referencedRelation: "charity_partners"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "donations_campaign_id_fkey"
             columns: ["campaign_id"]
@@ -972,6 +1146,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "donations_utm_tracking_id_fkey"
+            columns: ["utm_tracking_id"]
+            isOneToOne: false
+            referencedRelation: "utm_tracking"
             referencedColumns: ["id"]
           },
         ]
@@ -2867,6 +3048,60 @@ export type Database = {
           },
         ]
       }
+      utm_tracking: {
+        Row: {
+          created_at: string | null
+          device_fingerprint: Json | null
+          first_touch_timestamp: string | null
+          id: string
+          landing_page: string | null
+          last_touch_timestamp: string | null
+          referrer: string | null
+          session_id: string
+          user_id: string | null
+          utm_campaign: string | null
+          utm_charity: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          device_fingerprint?: Json | null
+          first_touch_timestamp?: string | null
+          id?: string
+          landing_page?: string | null
+          last_touch_timestamp?: string | null
+          referrer?: string | null
+          session_id: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_charity?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          device_fingerprint?: Json | null
+          first_touch_timestamp?: string | null
+          id?: string
+          landing_page?: string | null
+          last_touch_timestamp?: string | null
+          referrer?: string | null
+          session_id?: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_charity?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
       verse_likes: {
         Row: {
           created_at: string
@@ -2928,6 +3163,14 @@ export type Database = {
       get_user_role: {
         Args: { user_uuid?: string }
         Returns: Database["public"]["Enums"]["user_role"]
+      }
+      process_donation_attribution: {
+        Args: {
+          p_donation_id: string
+          p_user_id?: string
+          p_session_id?: string
+        }
+        Returns: undefined
       }
     }
     Enums: {
