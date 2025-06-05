@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -32,6 +31,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import GoldCoin3D from './GoldCoin3D';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 interface FeedActivity {
   id: string;
@@ -51,6 +51,7 @@ interface FeedActivity {
 }
 
 const UnifiedLiveFeed = () => {
+  const { t } = useTranslation();
   const [activities, setActivities] = useState<FeedActivity[]>([]);
   const [activeTab, setActiveTab] = useState<'all' | 'donations' | 'jannah' | 'achievements' | 'charity' | 'community' | 'honoring'>('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,8 +87,8 @@ const UnifiedLiveFeed = () => {
       id: `honoring-${Date.now()}-${Math.random()}`,
       type: 'honoring' as const,
       user: randomUser,
-      action: 'honored',
-      details: `"${randomMessage}" - donated £${randomAmount} to charity`,
+      action: t('honored'),
+      details: `"${randomMessage}" - ${t('donated')} £${randomAmount} to charity`,
       amount: randomAmount,
       currency: '£',
       timestamp: new Date(),
@@ -105,7 +106,7 @@ const UnifiedLiveFeed = () => {
         id: '1',
         type: 'donation',
         user: 'Ahmad M.',
-        action: 'donated',
+        action: t('donated'),
         details: 'Emergency Relief for Gaza',
         amount: 50,
         currency: '£',
@@ -175,7 +176,7 @@ const UnifiedLiveFeed = () => {
         id: '7',
         type: 'donation',
         user: 'Anonymous',
-        action: 'donated',
+        action: t('donated'),
         details: 'Orphan Sponsorship Program',
         amount: 100,
         currency: '£',
@@ -211,15 +212,15 @@ const UnifiedLiveFeed = () => {
     }, 12000); // Every 12 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [t]);
 
   const formatTimeAgo = (timestamp: Date) => {
     const seconds = Math.floor((Date.now() - timestamp.getTime()) / 1000);
-    if (seconds < 60) return `${seconds}s ago`;
+    if (seconds < 60) return `${seconds}s ${t('ago')}`;
     const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
+    if (minutes < 60) return `${minutes}m ${t('ago')}`;
     const hours = Math.floor(minutes / 60);
-    return `${hours}h ago`;
+    return `${hours}h ${t('ago')}`;
   };
 
   const getFilteredActivities = () => {
@@ -307,13 +308,13 @@ const UnifiedLiveFeed = () => {
               <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse border-2 border-white"></div>
             </div>
             <div>
-              <h3 className="text-xl font-bold">Live Impact Feed</h3>
-              <p className="text-white/90 text-sm font-medium">Real-time activity across the platform</p>
+              <h3 className="text-xl font-bold">{t('live_impact_feed')}</h3>
+              <p className="text-white/90 text-sm font-medium">{t('real_time_activity')}</p>
             </div>
           </div>
           <Badge className="bg-white/20 backdrop-blur-sm text-white font-bold px-4 py-2 border border-white/30 shadow-lg">
             <Users className="h-4 w-4 mr-2" />
-            Live Now
+            {t('live_now')}
           </Badge>
         </div>
       </div>
@@ -324,31 +325,31 @@ const UnifiedLiveFeed = () => {
           <TabsList className="grid w-full grid-cols-7 bg-white/80 backdrop-blur-sm">
             <TabsTrigger value="all" className="text-xs">
               <Activity className="h-3 w-3 mr-1" />
-              All
+              {t('all')}
             </TabsTrigger>
             <TabsTrigger value="donations" className="text-xs">
               <Heart className="h-3 w-3 mr-1" />
-              Donations
+              {t('donations')}
             </TabsTrigger>
             <TabsTrigger value="honoring" className="text-xs">
               <Heart className="h-3 w-3 mr-1" />
-              Honoring
+              {t('honoring')}
             </TabsTrigger>
             <TabsTrigger value="jannah" className="text-xs">
               <Star className="h-3 w-3 mr-1" />
-              Jannah
+              {t('jannah')}
             </TabsTrigger>
             <TabsTrigger value="achievements" className="text-xs">
               <Trophy className="h-3 w-3 mr-1" />
-              Awards
+              {t('awards')}
             </TabsTrigger>
             <TabsTrigger value="charity" className="text-xs">
               <Camera className="h-3 w-3 mr-1" />
-              Updates
+              {t('updates')}
             </TabsTrigger>
             <TabsTrigger value="community" className="text-xs">
               <MessageSquare className="h-3 w-3 mr-1" />
-              Messages
+              {t('messages')}
             </TabsTrigger>
           </TabsList>
         </div>

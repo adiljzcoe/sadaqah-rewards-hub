@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import LiveVideo from '@/components/LiveVideo';
@@ -109,12 +108,6 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
       <Header />
       <StickyDonationWidget />
-      
-      {/* Language Debug Info - will be visible when language changes */}
-      <div className="bg-blue-100 p-4 m-4 rounded-lg border">
-        <p className="text-sm">Current Language: <strong>{language}</strong></p>
-        <p className="text-sm">Translation Test: <strong>{t('why_choose_title')}</strong></p>
-      </div>
       
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">

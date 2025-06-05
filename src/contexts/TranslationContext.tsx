@@ -82,6 +82,24 @@ const translations = {
     'active_campaigns': 'Active Campaigns',
     'long_term_fundraisers': 'Long-term Fundraisers',
     
+    // Live Feed translations
+    'live_impact_feed': 'Live Impact Feed',
+    'real_time_activity': 'Real-time activity across the platform',
+    'live_now': 'Live Now',
+    'all': 'All',
+    'donations': 'Donations',
+    'honoring': 'Honoring',
+    'jannah': 'Jannah',
+    'awards': 'Awards',
+    'updates': 'Updates',
+    'messages': 'Messages',
+    'donated': 'donated',
+    'honored': 'honored',
+    'ago': 'ago',
+    'just_now': 'Just now',
+    'verified': 'Verified',
+    'live': 'Live',
+    
     // Live TV page
     'live_islamic_content': 'Live Islamic Content',
     'continuous_islamic_content': 'Continuous Islamic content with automatic Athan interruptions',
@@ -155,6 +173,24 @@ const translations = {
     'satisfaction_rate': 'معدل الرضا',
     'active_campaigns': 'الحملات النشطة',
     'long_term_fundraisers': 'جمعيات التبرع طويلة المدى',
+    
+    // Live Feed translations
+    'live_impact_feed': 'تدفق التأثير المباشر',
+    'real_time_activity': 'النشاط في الوقت الفعلي عبر المنصة',
+    'live_now': 'مباشر الآن',
+    'all': 'الكل',
+    'donations': 'التبرعات',
+    'honoring': 'التكريم',
+    'jannah': 'الجنة',
+    'awards': 'الجوائز',
+    'updates': 'التحديثات',
+    'messages': 'الرسائل',
+    'donated': 'تبرع',
+    'honored': 'كرم',
+    'ago': 'منذ',
+    'just_now': 'الآن',
+    'verified': 'موثق',
+    'live': 'مباشر',
     
     // Live TV page
     'live_islamic_content': 'المحتوى الإسلامي المباشر',
@@ -230,6 +266,24 @@ const translations = {
     'active_campaigns': 'Campagnes Actives',
     'long_term_fundraisers': 'Collectes de Fonds à Long Terme',
     
+    // Live Feed translations
+    'live_impact_feed': 'Flux d\'Impact en Direct',
+    'real_time_activity': 'Activité en temps réel sur la plateforme',
+    'live_now': 'En Direct',
+    'all': 'Tout',
+    'donations': 'Dons',
+    'honoring': 'Honorer',
+    'jannah': 'Jannah',
+    'awards': 'Récompenses',
+    'updates': 'Mises à jour',
+    'messages': 'Messages',
+    'donated': 'a donné',
+    'honored': 'a honoré',
+    'ago': 'il y a',
+    'just_now': 'À l\'instant',
+    'verified': 'Vérifié',
+    'live': 'En direct',
+    
     // Live TV page
     'live_islamic_content': 'Contenu Islamique en Direct',
     'continuous_islamic_content': 'Contenu islamique continu avec interruptions automatiques d\'Adhan',
@@ -304,6 +358,24 @@ const translations = {
     'active_campaigns': 'فعال مہمات',
     'long_term_fundraisers': 'طویل مدتی فنڈ ریزر',
     
+    // Live Feed translations
+    'live_impact_feed': 'لائیو اثرات فیڈ',
+    'real_time_activity': 'پلیٹ فارم پر حقیقی وقت کی سرگرمی',
+    'live_now': 'ابھی لائیو',
+    'all': 'تمام',
+    'donations': 'عطیات',
+    'honoring': 'اعزاز',
+    'jannah': 'جنت',
+    'awards': 'ایوارڈز',
+    'updates': 'اپ ڈیٹس',
+    'messages': 'پیغامات',
+    'donated': 'عطیہ کیا',
+    'honored': 'اعزاز دیا',
+    'ago': 'پہلے',
+    'just_now': 'ابھی',
+    'verified': 'تصدیق شدہ',
+    'live': 'لائیو',
+    
     // Live TV page
     'live_islamic_content': 'لائیو اسلامی مواد',
     'continuous_islamic_content': 'خودکار اذان مداخلت کے ساتھ مسلسل اسلامی مواد',
@@ -377,6 +449,24 @@ const translations = {
     'satisfaction_rate': 'Memnuniyet Oranı',
     'active_campaigns': 'Aktif Kampanyalar',
     'long_term_fundraisers': 'Uzun Vadeli Bağış Kampanyaları',
+    
+    // Live Feed translations
+    'live_impact_feed': 'Canlı Etki Akışı',
+    'real_time_activity': 'Platform genelinde gerçek zamanlı aktivite',
+    'live_now': 'Şimdi Canlı',
+    'all': 'Tümü',
+    'donations': 'Bağışlar',
+    'honoring': 'Onurlandırma',
+    'jannah': 'Cennet',
+    'awards': 'Ödüller',
+    'updates': 'Güncellemeler',
+    'messages': 'Mesajlar',
+    'donated': 'bağışladı',
+    'honored': 'onurlandırdı',
+    'ago': 'önce',
+    'just_now': 'Şimdi',
+    'verified': 'Doğrulanmış',
+    'live': 'Canlı',
     
     // Live TV page
     'live_islamic_content': 'Canlı İslami İçerik',
