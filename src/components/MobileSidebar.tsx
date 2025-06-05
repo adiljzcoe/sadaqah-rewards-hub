@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -215,11 +216,13 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
           <Menu className="h-6 w-6" />
           {totalItems > 0 && (
-            <Badge className={`absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center border border-pink-300/50 transition-all duration-300 ${
-              cartAnimating ? 'animate-pulse scale-125 bg-gradient-to-r from-green-400 to-emerald-500' : 'animate-pulse'
-            }`}>
-              {totalItems}
-            </Badge>
+            <div className="absolute -top-1 -right-1 rounded-full overflow-hidden">
+              <div className="relative bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-yellow-300/50 shadow-lg font-bold">
+                {/* Golden shine effect moving across */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 w-1/3 animate-[goldShine_3s_ease-in-out_infinite] rounded-full"></div>
+                <span className="relative z-10 drop-shadow-sm">{totalItems}</span>
+              </div>
+            </div>
           )}
         </Button>
       </SheetTrigger>
@@ -521,6 +524,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
           @keyframes shine {
             0% { transform: translateX(-100%) skewX(-12deg); }
             100% { transform: translateX(400%) skewX(-12deg); }
+          }
+          @keyframes goldShine {
+            0% { transform: translateX(-100%) skewX(-12deg); }
+            100% { transform: translateX(300%) skewX(-12deg); }
           }
         `}</style>
       </SheetContent>
