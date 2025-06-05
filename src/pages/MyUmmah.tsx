@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -89,7 +88,7 @@ const MyUmmah = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50/30 to-purple-50/20">
       <Header />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
@@ -190,148 +189,161 @@ const MyUmmah = () => {
           </CardContent>
         </Card>
 
-        {/* Main Tabs - Updated check-ins tab */}
-        <Tabs defaultValue="pulse" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
-            <TabsTrigger value="pulse" className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              Live Pulse
-            </TabsTrigger>
-            <TabsTrigger value="global" className="flex items-center gap-2">
-              <Map className="h-4 w-4" />
-              Global Map
-            </TabsTrigger>
-            <TabsTrigger value="community" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Prayer Groups
-            </TabsTrigger>
-            <TabsTrigger value="checkins" className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              Check-ins
-            </TabsTrigger>
-            <TabsTrigger value="duas" className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
-              Du'as
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="pulse" className="space-y-6">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900">Feel the Pulse of the Ummah</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Experience the spiritual energy flowing through our global community in real-time. 
-                See what fellow Muslims are doing right now and join the collective worship.
-              </p>
+        {/* Main Tabs - Fixed container and responsive tabs */}
+        <div className="w-full overflow-hidden">
+          <Tabs defaultValue="pulse" className="space-y-6">
+            <div className="w-full overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-5 max-w-4xl mx-auto min-w-fit">
+                <TabsTrigger value="pulse" className="flex items-center gap-2 px-3 py-2">
+                  <Activity className="h-4 w-4" />
+                  <span className="hidden sm:inline">Live Pulse</span>
+                  <span className="sm:hidden">Pulse</span>
+                </TabsTrigger>
+                <TabsTrigger value="global" className="flex items-center gap-2 px-3 py-2">
+                  <Map className="h-4 w-4" />
+                  <span className="hidden sm:inline">Global Map</span>
+                  <span className="sm:hidden">Map</span>
+                </TabsTrigger>
+                <TabsTrigger value="community" className="flex items-center gap-2 px-3 py-2">
+                  <Users className="h-4 w-4" />
+                  <span className="hidden sm:inline">Prayer Groups</span>
+                  <span className="sm:hidden">Groups</span>
+                </TabsTrigger>
+                <TabsTrigger value="checkins" className="flex items-center gap-2 px-3 py-2">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="hidden sm:inline">Check-ins</span>
+                  <span className="sm:hidden">Check</span>
+                </TabsTrigger>
+                <TabsTrigger value="duas" className="flex items-center gap-2 px-3 py-2">
+                  <MessageCircle className="h-4 w-4" />
+                  <span className="hidden sm:inline">Du'as</span>
+                  <span className="sm:hidden">Du'a</span>
+                </TabsTrigger>
+              </TabsList>
             </div>
-            
-            {/* Additional pulse-related content can go here */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-gradient-to-br from-green-50 to-emerald-50">
-                <CardContent className="p-6 text-center">
-                  <Heart className="h-12 w-12 text-green-600 mx-auto mb-4" fill="currentColor" />
-                  <h3 className="font-bold text-lg mb-2">Join the Energy</h3>
-                  <p className="text-gray-600 mb-4">
-                    Add your spiritual activities to the global pulse and feel connected with Muslims worldwide.
-                  </p>
-                  <Button className="bg-green-600 hover:bg-green-700">
-                    Start Worship
-                  </Button>
-                </CardContent>
-              </Card>
 
-              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50">
-                <CardContent className="p-6 text-center">
-                  <Activity className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                  <h3 className="font-bold text-lg mb-2">Live Updates</h3>
-                  <p className="text-gray-600 mb-4">
-                    Watch as the spiritual energy of our Ummah flows and grows throughout the day.
-                  </p>
-                  <Button variant="outline" className="border-blue-200 text-blue-600 hover:bg-blue-50">
-                    Watch Live
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="global" className="space-y-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* World Map Section */}
-              <div className="lg:col-span-2">
-                <WorldAdhanMap />
+            <TabsContent value="pulse" className="space-y-6">
+              <div className="text-center space-y-4">
+                <h2 className="text-3xl font-bold text-gray-900">Feel the Pulse of the Ummah</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Experience the spiritual energy flowing through our global community in real-time. 
+                  See what fellow Muslims are doing right now and join the collective worship.
+                </p>
               </div>
-
-              {/* Local Mosques */}
-              <div className="lg:col-span-1">
-                <Card className="mb-6">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MapPin className="h-5 w-5 text-blue-600" />
-                      Local Connection
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
+              
+              {/* Additional pulse-related content can go here */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-50">
+                  <CardContent className="p-6 text-center">
+                    <Heart className="h-12 w-12 text-green-600 mx-auto mb-4" fill="currentColor" />
+                    <h3 className="font-bold text-lg mb-2">Join the Energy</h3>
                     <p className="text-gray-600 mb-4">
-                      While you watch prayers across the globe, don't forget your local mosque community.
+                      Add your spiritual activities to the global pulse and feel connected with Muslims worldwide.
                     </p>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                        <Users className="h-5 w-5 text-blue-600" />
-                        <div>
-                          <div className="font-medium">Find Your Mosque</div>
-                          <div className="text-sm text-gray-600">Connect with local community</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                        <Clock className="h-5 w-5 text-green-600" />
-                        <div>
-                          <div className="font-medium">Local Prayer Times</div>
-                          <div className="text-sm text-gray-600">Never miss a prayer</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                        <Heart className="h-5 w-5 text-purple-600" />
-                        <div>
-                          <div className="font-medium">Community Events</div>
-                          <div className="text-sm text-gray-600">Join local gatherings</div>
-                        </div>
-                      </div>
-                    </div>
+                    <Button className="bg-green-600 hover:bg-green-700">
+                      Start Worship
+                    </Button>
                   </CardContent>
                 </Card>
 
-                {userLocation && <MosqueList userLocation={userLocation} />}
+                <Card className="bg-gradient-to-br from-blue-50 to-indigo-50">
+                  <CardContent className="p-6 text-center">
+                    <Activity className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                    <h3 className="font-bold text-lg mb-2">Live Updates</h3>
+                    <p className="text-gray-600 mb-4">
+                      Watch as the spiritual energy of our Ummah flows and grows throughout the day.
+                    </p>
+                    <Button variant="outline" className="border-blue-200 text-blue-600 hover:bg-blue-50">
+                      Watch Live
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="community">
-            <CommunityPrayerTab currentPrayer={currentPrayer} />
-          </TabsContent>
+            <TabsContent value="global" className="space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* World Map Section */}
+                <div className="lg:col-span-2 min-h-0">
+                  <WorldAdhanMap />
+                </div>
 
-          <TabsContent value="checkins" className="space-y-6">
-            <div className="text-center space-y-4">
-              <h2 className="text-3xl font-bold text-gray-900">Islamic Check-ins & Good Deeds</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Check in to Islamic locations or log good deeds with GPS to earn Jannah points and help us understand where our community is most active.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-6">
-                <GoodDeedLogger />
-                <CheckInLocations userLocation={userLocation} />
+                {/* Local Mosques */}
+                <div className="lg:col-span-1 min-h-0">
+                  <Card className="mb-6">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <MapPin className="h-5 w-5 text-blue-600" />
+                        Local Connection
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 mb-4">
+                        While you watch prayers across the globe, don't forget your local mosque community.
+                      </p>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                          <Users className="h-5 w-5 text-blue-600" />
+                          <div>
+                            <div className="font-medium">Find Your Mosque</div>
+                            <div className="text-sm text-gray-600">Connect with local community</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                          <Clock className="h-5 w-5 text-green-600" />
+                          <div>
+                            <div className="font-medium">Local Prayer Times</div>
+                            <div className="text-sm text-gray-600">Never miss a prayer</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                          <Heart className="h-5 w-5 text-purple-600" />
+                          <div>
+                            <div className="font-medium">Community Events</div>
+                            <div className="text-sm text-gray-600">Join local gatherings</div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {userLocation && (
+                    <div className="overflow-hidden">
+                      <MosqueList userLocation={userLocation} />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="lg:col-span-1">
-                <RecentCheckIns />
-              </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="duas">
-            <DuaFeed />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="community" className="min-h-0 overflow-hidden">
+              <CommunityPrayerTab currentPrayer={currentPrayer} />
+            </TabsContent>
+
+            <TabsContent value="checkins" className="space-y-6 min-h-0 overflow-hidden">
+              <div className="text-center space-y-4">
+                <h2 className="text-3xl font-bold text-gray-900">Islamic Check-ins & Good Deeds</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Check in to Islamic locations or log good deeds with GPS to earn Jannah points and help us understand where our community is most active.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-0">
+                <div className="lg:col-span-2 space-y-6 min-h-0 overflow-hidden">
+                  <GoodDeedLogger />
+                  <CheckInLocations userLocation={userLocation} />
+                </div>
+                <div className="lg:col-span-1 min-h-0 overflow-hidden">
+                  <RecentCheckIns />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="duas" className="min-h-0 overflow-hidden">
+              <DuaFeed />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );
