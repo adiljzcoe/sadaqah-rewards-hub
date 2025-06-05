@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Bell, User, Menu } from 'lucide-react';
@@ -21,11 +22,8 @@ import {
 } from "@/components/ui/sheet"
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
-import LanguageSwitcher from './LanguageSwitcher';
-import { useTranslation } from '@/contexts/TranslationContext';
 
 const Header = () => {
-  const { translate } = useTranslation();
   const { user, signOut } = useAuth();
   const { items } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -54,8 +52,6 @@ const Header = () => {
 
           {/* Right side actions */}
           <div className="flex items-center space-x-4">
-            <LanguageSwitcher />
-            
             <Link to="/cart" className="relative hover:text-blue-600">
               <ShoppingCart className="h-5 w-5" />
               {items.length > 0 && (
