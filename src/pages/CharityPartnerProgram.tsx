@@ -14,70 +14,110 @@ import {
   Heart,
   ArrowRight,
   CheckCircle,
-  DollarSign
+  Upload,
+  Monitor,
+  Mail,
+  Bell,
+  Link,
+  Camera,
+  DollarSign,
+  Settings
 } from 'lucide-react';
 import Header from '@/components/Header';
 
 const CharityPartnerProgram = () => {
   const benefits = [
     {
-      icon: TrendingUp,
-      title: "Amplify Your Reach",
-      description: "Access our engaged Muslim community of 50,000+ active donors through targeted advertising campaigns"
+      icon: Upload,
+      title: "Easy Campaign Setup",
+      description: "Upload your media, set campaign names, and we'll create custom UTM tracking links for your charity"
     },
     {
       icon: Target,
-      title: "Precision Targeting",
-      description: "Reach donors who care about your cause with advanced UTM tracking and demographic targeting"
+      title: "Professional Ad Management",
+      description: "We run your ads across Facebook, Instagram, Google, and TikTok using your provided funds and creative assets"
     },
     {
-      icon: BarChart3,
-      title: "Real-Time Analytics",
-      description: "Track campaign performance, conversion rates, and ROI with comprehensive dashboard analytics"
+      icon: Monitor,
+      title: "Real-Time Campaign Tracking",
+      description: "Monitor your campaign performance through UTM tracking and detailed analytics dashboards"
     },
     {
-      icon: DollarSign,
-      title: "Revenue Sharing",
-      description: "Earn competitive commission rates on all donations generated through your partnership"
+      icon: Mail,
+      title: "Email Campaign Integration",
+      description: "Get your own dedicated section in our email campaigns to reach our engaged subscriber base"
+    },
+    {
+      icon: Bell,
+      title: "Push Notification Features",
+      description: "Your campaigns get highlighted in our push notifications and landing page promotions"
     },
     {
       icon: Shield,
-      title: "Verified Trust",
-      description: "Join our verified charity network and display trust badges that increase donor confidence"
-    },
-    {
-      icon: Zap,
-      title: "Instant Setup",
-      description: "Get your custom charity landing page live within 24 hours with professional campaign management"
+      title: "No Hidden Fees",
+      description: "We don't charge for running your ads - you provide the budget and we maximize your reach"
     }
   ];
 
   const features = [
-    "Custom branded landing pages",
-    "Multi-platform advertising (Facebook, Instagram, Google, TikTok)",
-    "Advanced UTM tracking and attribution",
-    "Real-time donation tracking",
-    "Mobile-optimized donation experience",
-    "24/7 campaign monitoring",
-    "Detailed performance reports",
-    "Commission-based revenue model"
+    "Custom UTM tracking links for each campaign",
+    "Multi-platform ad management (Facebook, Instagram, Google, TikTok)",
+    "Real-time performance analytics and reporting",
+    "Dedicated email campaign sections",
+    "Push notification campaign features",
+    "Media upload and campaign management system",
+    "Budget tracking and spend monitoring",
+    "Marketing dashboard for campaign messaging"
+  ];
+
+  const howItWorks = [
+    {
+      step: 1,
+      title: "Upload Funds & Media",
+      description: "Provide your advertising budget and upload your campaign creative assets",
+      icon: Upload
+    },
+    {
+      step: 2,
+      title: "Set Campaign Details",
+      description: "Create campaign names and messaging through our marketing dashboard",
+      icon: Settings
+    },
+    {
+      step: 3,
+      title: "Get UTM Links",
+      description: "Receive custom tracking links for your charity to monitor all campaign activity",
+      icon: Link
+    },
+    {
+      step: 4,
+      title: "We Run Your Ads",
+      description: "Our team manages your campaigns across all platforms using your provided budget",
+      icon: Target
+    },
+    {
+      step: 5,
+      title: "Track Performance",
+      description: "Monitor donations, clicks, and conversions through your dedicated analytics dashboard",
+      icon: BarChart3
+    }
   ];
 
   const testimonials = [
     {
       charity: "Islamic Relief",
-      quote: "Our partnership doubled our online donations within the first month. The targeting is incredibly precise.",
-      impact: "120% increase in donations"
+      quote: "Having Your Jannah manage our ad campaigns has freed up our team to focus on our mission. The UTM tracking is fantastic.",
+      impact: "40% more efficient"
     },
     {
       charity: "Human Appeal",
-      quote: "The analytics dashboard gives us insights we never had before. We can optimize campaigns in real-time.",
-      impact: "85% better ROI"
+      quote: "The email integration feature alone has doubled our reach. Plus we get detailed analytics on everything.",
+      impact: "200% reach increase"
     },
     {
       charity: "Penny Appeal",
-      quote: "The verification system has significantly increased donor trust. More people complete their donations now.",
-      impact: "95% completion rate"
+      quote: "No hidden fees and professional ad management - exactly what we needed to scale our digital presence.",
+      impact: "3x campaign ROI"
     }
   ];
 
@@ -93,41 +133,41 @@ const CharityPartnerProgram = () => {
           </Badge>
           
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Amplify Your <span className="text-blue-600">Charity's Impact</span>
+            Let Us Run Your <span className="text-blue-600">Digital Campaigns</span>
           </h1>
           
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Join our exclusive charity partner program and reach thousands of engaged Muslim donors 
-            through targeted advertising campaigns with full attribution tracking.
+            Focus on your mission while we handle your digital advertising. You provide the budget and creative assets, 
+            we manage professional campaigns across all major platforms with full transparency and tracking.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-4">
-              Apply to Join Program
+              Start Your Campaign
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-              Watch Demo Video
+              View Sample Dashboard
             </Button>
           </div>
           
           {/* Stats */}
           <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">50K+</div>
-              <div className="text-gray-600">Active Donors</div>
+              <div className="text-3xl font-bold text-blue-600">£500K+</div>
+              <div className="text-gray-600">Ad Spend Managed</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">£2.5M+</div>
-              <div className="text-gray-600">Raised Monthly</div>
+              <div className="text-3xl font-bold text-green-600">50K+</div>
+              <div className="text-gray-600">Engaged Audience</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">95%</div>
-              <div className="text-gray-600">Completion Rate</div>
+              <div className="text-3xl font-bold text-purple-600">98%</div>
+              <div className="text-gray-600">Campaign Uptime</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600">24/7</div>
-              <div className="text-gray-600">Campaign Support</div>
+              <div className="text-3xl font-bold text-orange-600">0%</div>
+              <div className="text-gray-600">Management Fees</div>
             </div>
           </div>
         </div>
@@ -137,7 +177,7 @@ const CharityPartnerProgram = () => {
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Why Partner With Us?
+            Why Choose Our Campaign Management?
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -165,47 +205,103 @@ const CharityPartnerProgram = () => {
             How It Works
           </h2>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                1
+          <div className="grid md:grid-cols-5 gap-6">
+            {howItWorks.map((step, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
+                  <step.icon className="h-8 w-8" />
+                </div>
+                <div className="text-sm font-bold text-blue-600 mb-2">STEP {step.step}</div>
+                <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
+                <p className="text-gray-600 text-sm">{step.description}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Apply & Get Verified</h3>
-              <p className="text-gray-600">Submit your charity details and get verified within 24 hours</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                2
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Launch Campaigns</h3>
-              <p className="text-gray-600">We create and manage targeted ad campaigns across multiple platforms</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                3
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Track & Earn</h3>
-              <p className="text-gray-600">Monitor performance and earn commissions on every donation</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Features List */}
+      {/* Campaign Integration Features */}
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Everything You Need to Succeed
+                Integrated Marketing Ecosystem
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Our comprehensive platform provides all the tools and support you need 
-                to maximize your charity's online fundraising potential.
+                Your campaigns don't just run in isolation. Get featured across our entire 
+                marketing ecosystem to maximize your reach and impact.
               </p>
               
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Mail className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Email Campaign Integration</h3>
+                    <p className="text-gray-600">Get your own dedicated section in our email campaigns sent to thousands of engaged donors.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Bell className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Push Notification Features</h3>
+                    <p className="text-gray-600">Your campaigns get prominently featured in our push notifications and landing page promotions.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Monitor className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">Marketing Dashboard</h3>
+                    <p className="text-gray-600">Write and manage your campaign messages through our comprehensive marketing dashboard.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl">
+              <div className="text-center">
+                <Camera className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Complete Creative Control
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Upload your own creative assets, set your messaging, and maintain full control 
+                  over your brand presentation while we handle the technical execution.
+                </p>
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-lg font-bold text-blue-600">100%</div>
+                    <div className="text-xs text-gray-600">Creative Control</div>
+                  </div>
+                  <div className="bg-white p-3 rounded-lg">
+                    <div className="text-lg font-bold text-green-600">24/7</div>
+                    <div className="text-xs text-gray-600">Campaign Monitoring</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Features */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+            Everything You Need, Nothing You Don't
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-xl font-semibold mb-4">Platform Features</h3>
               <div className="grid grid-cols-1 gap-3">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
@@ -216,25 +312,32 @@ const CharityPartnerProgram = () => {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl">
-              <div className="text-center">
-                <Globe className="h-16 w-16 text-blue-600 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Global Reach, Local Impact
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Connect with Muslim donors worldwide while maintaining the personal 
-                  touch that makes your charity special.
-                </p>
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-blue-600">28</div>
-                    <div className="text-sm text-gray-600">Countries</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-green-600">15</div>
-                    <div className="text-sm text-gray-600">Languages</div>
-                  </div>
+            <div className="bg-white p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <DollarSign className="h-5 w-5 text-green-600" />
+                Transparent Pricing
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span>Campaign Management</span>
+                  <span className="font-semibold text-green-600">FREE</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Platform Access</span>
+                  <span className="font-semibold text-green-600">FREE</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>UTM Tracking & Analytics</span>
+                  <span className="font-semibold text-green-600">FREE</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Email/Push Integration</span>
+                  <span className="font-semibold text-green-600">FREE</span>
+                </div>
+                <hr className="my-3" />
+                <div className="flex justify-between items-center font-semibold">
+                  <span>You Pay</span>
+                  <span className="text-blue-600">Only Your Ad Spend</span>
                 </div>
               </div>
             </div>
@@ -243,10 +346,10 @@ const CharityPartnerProgram = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Success Stories
+            What Our Partners Say
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -272,25 +375,25 @@ const CharityPartnerProgram = () => {
         <div className="container mx-auto text-center">
           <Heart className="h-16 w-16 mx-auto mb-6 opacity-90" />
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Transform Your Fundraising?
+            Ready to Scale Your Digital Impact?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Join leading charities who have already increased their donations by an average of 120% 
-            through our partner program.
+            Join leading charities who trust us to manage their digital campaigns. 
+            Zero management fees, maximum transparency, professional results.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-4">
-              Start Your Application
+              Get Started Today
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4">
-              Schedule a Demo
+              Book a Demo Call
             </Button>
           </div>
           
           <p className="text-sm opacity-75 mt-6">
-            No setup fees • Commission-based model • 24/7 support included
+            No setup fees • No management fees • Full campaign transparency
           </p>
         </div>
       </section>
