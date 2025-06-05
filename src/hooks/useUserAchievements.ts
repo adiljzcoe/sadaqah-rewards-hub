@@ -44,8 +44,8 @@ export const useUserAchievements = () => {
       
       if (error) throw error;
       
-      // Map the data to match our interface
-      return data.map(item => ({
+      // Map the data to match our interface, handling the points_awarded field
+      return (data as any[]).map(item => ({
         id: item.id,
         achievement_id: item.achievement_id,
         earned_at: item.earned_at,
@@ -89,11 +89,12 @@ export const useUserAchievements = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['user-achievements', user?.id] });
+      const pointsAwarded = data.points_awarded || data.achievements?.points_reward || 0;
       toast({
         title: "Achievement Unlocked! 🏆",
-        description: `You earned "${data.achievements.name}" for ${data.points_awarded || data.achievements.points_reward} points!`,
+        description: `You earned "${data.achievements.name}" for ${pointsAwarded} points!`,
       });
     },
   });
