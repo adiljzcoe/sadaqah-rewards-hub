@@ -38,10 +38,11 @@ const AdminDashboardContent = () => {
             <p className="text-gray-400 mt-2">Manage your platform with comprehensive administrative tools</p>
           </div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
               <TabsTrigger value="financial">Financial</TabsTrigger>
+              <TabsTrigger value="charity-partners">Partners</TabsTrigger>
               <TabsTrigger value="data">Data</TabsTrigger>
               <TabsTrigger value="security">Security</TabsTrigger>
               <TabsTrigger value="marketing">Marketing</TabsTrigger>

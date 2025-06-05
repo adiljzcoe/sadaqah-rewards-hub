@@ -39,6 +39,7 @@ import Orphanages from '@/pages/Orphanages';
 import Qurbani from '@/pages/Qurbani';
 import NotFound from '@/pages/NotFound';
 import CharityPartnerPage from '@/pages/CharityPartnerPage';
+import CharityPartnerProgram from '@/pages/CharityPartnerProgram';
 
 function App() {
   const queryClient = new QueryClient({
@@ -67,6 +68,7 @@ function App() {
                   <Route path="/live-feed" element={<LiveFeed />} />
                   <Route path="/fundraising" element={<Fundraising />} />
                   <Route path="/charity-partners" element={<CharityPartnersPublic />} />
+                  <Route path="/charity-partner-program" element={<CharityPartnerProgram />} />
                   <Route path="/duas-library" element={<DuasLibrary />} />
                   <Route path="/business-profile" element={<BusinessProfile />} />
                   <Route path="/charity-profile" element={<CharityProfile />} />
