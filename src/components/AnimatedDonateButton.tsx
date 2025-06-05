@@ -26,29 +26,42 @@ const AnimatedDonateButton: React.FC<AnimatedDonateButtonProps> = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!buttonRef.current || disabled) return;
+    console.log('AnimatedDonateButton: Click detected!', { disabled });
+    
+    if (!buttonRef.current || disabled) {
+      console.log('AnimatedDonateButton: Click blocked - button ref or disabled');
+      return;
+    }
 
     // Get button position and click position
     const rect = buttonRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
+    console.log('AnimatedDonateButton: Creating ripple at', { x, y });
+
     // Create ripple effect
     const rippleId = Date.now();
-    setRipples(prev => [...prev, { id: rippleId, x, y }]);
+    setRipples(prev => {
+      const newRipples = [...prev, { id: rippleId, x, y }];
+      console.log('AnimatedDonateButton: Updated ripples:', newRipples);
+      return newRipples;
+    });
 
     // Remove ripple after animation
     setTimeout(() => {
+      console.log('AnimatedDonateButton: Removing ripple', rippleId);
       setRipples(prev => prev.filter(ripple => ripple.id !== rippleId));
     }, 1000);
 
     // Call the original onClick
+    console.log('AnimatedDonateButton: Calling original onClick');
     onClick();
   };
 
   return (
     <>
-      {/* Add CSS animation styles to the document head */}
+      {/* Enhanced CSS animation styles */}
       <style dangerouslySetInnerHTML={{
         __html: `
           @keyframes floatUpHeart {
@@ -68,6 +81,20 @@ const AnimatedDonateButton: React.FC<AnimatedDonateButtonProps> = ({
           .float-up-heart {
             animation: floatUpHeart 2s ease-out forwards;
           }
+          
+          @keyframes rippleEffect {
+            0% {
+              transform: scale(0);
+              opacity: 1;
+            }
+            100% {
+              transform: scale(4);
+              opacity: 0;
+            }
+          }
+          .ripple-animation {
+            animation: rippleEffect 1s linear;
+          }
         `
       }} />
       
@@ -85,18 +112,17 @@ const AnimatedDonateButton: React.FC<AnimatedDonateButtonProps> = ({
         disabled={disabled}
         onClick={handleClick}
       >
-        {/* Ripple effects */}
+        {/* Enhanced Ripple effects */}
         {ripples.map((ripple) => (
           <span
             key={ripple.id}
-            className="absolute animate-ping rounded-full bg-white/30"
+            className="absolute pointer-events-none rounded-full bg-white/40 ripple-animation"
             style={{
               left: ripple.x - 10,
               top: ripple.y - 10,
               width: 20,
               height: 20,
-              animationDuration: '1s',
-              animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+              transformOrigin: 'center',
             }}
           />
         ))}
@@ -107,11 +133,11 @@ const AnimatedDonateButton: React.FC<AnimatedDonateButtonProps> = ({
             key={`heart-${ripple.id}`}
             className="absolute pointer-events-none float-up-heart"
             style={{
-              left: ripple.x,
-              top: ripple.y,
+              left: ripple.x - 8,
+              top: ripple.y - 8,
             }}
           >
-            <Heart className="h-4 w-4 text-white/80 fill-white/80" />
+            <Heart className="h-4 w-4 text-pink-300 fill-pink-300" />
           </div>
         ))}
 
