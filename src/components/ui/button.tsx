@@ -1,7 +1,9 @@
 
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { Heart } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -43,6 +45,7 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
     const [ripples, setRipples] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
+    const [hearts, setHearts] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
     const buttonRef = React.useRef<HTMLButtonElement>(null);
 
     // Combine refs
@@ -57,7 +60,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        console.log('Central Button: Creating ripple at', { x, y });
+        console.log('Central Button: Creating ripple and heart at', { x, y });
 
         // Create ripple effect
         const rippleId = Date.now();
@@ -67,11 +70,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           return newRipples;
         });
 
+        // Create heart effect
+        const heartId = Date.now() + 1;
+        setHearts(prev => {
+          const newHearts = [...prev, { id: heartId, x, y }];
+          console.log('Central Button: Updated hearts:', newHearts);
+          return newHearts;
+        });
+
         // Remove ripple after animation
         setTimeout(() => {
           console.log('Central Button: Removing ripple', rippleId);
           setRipples(prev => prev.filter(ripple => ripple.id !== rippleId));
         }, 1000);
+
+        // Remove heart after animation
+        setTimeout(() => {
+          console.log('Central Button: Removing heart', heartId);
+          setHearts(prev => prev.filter(heart => heart.id !== heartId));
+        }, 3000);
       }
 
       // Call the original onClick if provided
@@ -84,7 +101,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     return (
       <>
-        {/* Ripple effect styles */}
+        {/* Enhanced CSS animation styles */}
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes centralRipple {
@@ -99,6 +116,24 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             }
             .central-ripple {
               animation: centralRipple 1s linear;
+            }
+            
+            @keyframes floatUpHeart {
+              0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+              }
+              50% {
+                opacity: 1;
+                transform: translateY(-30px) scale(1.2) rotate(180deg);
+              }
+              100% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.8) rotate(360deg);
+              }
+            }
+            .float-up-heart {
+              animation: floatUpHeart 3s ease-out forwards;
             }
           `
         }} />
@@ -124,6 +159,26 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             />
           ))}
           
+          {/* Floating hearts with amount */}
+          {hearts.map((heart) => (
+            <div
+              key={heart.id}
+              className="absolute pointer-events-none float-up-heart"
+              style={{
+                left: heart.x - 20,
+                top: heart.y - 20,
+                zIndex: 1000,
+              }}
+            >
+              <div className="flex flex-col items-center">
+                <Heart className="h-6 w-6 text-pink-500 fill-pink-500 mb-1" />
+                <div className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-lg border border-pink-200">
+                  <span className="text-xs font-bold text-emerald-600">+£1</span>
+                </div>
+              </div>
+            </div>
+          ))}
+          
           {props.children}
         </Comp>
       </>
@@ -133,3 +188,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
+
