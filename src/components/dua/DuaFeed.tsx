@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,8 +8,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import DuaCard from './DuaCard';
 import DuaRecorder from './DuaRecorder';
-import TranslatedDuaCard from './TranslatedDuaCard';
-import { useTranslation } from '@/contexts/TranslationContext';
 
 interface Dua {
   id: string;
@@ -29,7 +28,6 @@ interface Dua {
 const DuaFeed: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { translate } = useTranslation();
   const [duas, setDuas] = useState<Dua[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
@@ -224,7 +222,7 @@ const DuaFeed: React.FC = () => {
         <div className="flex items-center gap-2">
           <MessageCircle className="h-6 w-6 text-green-600" />
           <h2 className="text-2xl font-bold text-gray-900">
-            {translate('community_prayers', 'Community Du\'as')}
+            Community Du'as
           </h2>
         </div>
         <Button
@@ -257,13 +255,9 @@ const DuaFeed: React.FC = () => {
       ) : (
         <div className="grid gap-6">
           {duas.map((dua) => (
-            <TranslatedDuaCard
+            <DuaCard
               key={dua.id}
-              dua={{
-                ...dua,
-                original_language: 'en', // This would come from the database
-                country_flag: '🇺🇸', // This would come from user's profile
-              }}
+              dua={dua}
               onAmeenUpdate={handleAmeenUpdate}
             />
           ))}

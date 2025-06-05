@@ -42,7 +42,6 @@ import NotFound from '@/pages/NotFound';
 import CharityPartnerPage from '@/pages/CharityPartnerPage';
 import CharityPartnerProgram from '@/pages/CharityPartnerProgram';
 import CharitySubdomainPage from '@/pages/CharitySubdomainPage';
-import { TranslationProvider } from '@/contexts/TranslationContext';
 
 function App() {
   const queryClient = new QueryClient({
@@ -55,12 +54,13 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CurrencyProvider>
-        <TranslationProvider>
-          <AuthProvider>
-            <CartProvider>
-              <div className="min-h-screen bg-background">
-                <Router>
+      <AuthProvider>
+        <CurrencyProvider>
+          <CartProvider>
+            <Toaster />
+            <Router>
+              <div className="min-h-screen bg-background flex flex-col">
+                <div className="flex-1">
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/auth" element={<Auth />} />
@@ -102,13 +102,13 @@ function App() {
                     {/* Catch-all route - must be last */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                  <Toaster />
-                </Router>
+                </div>
+                <Footer />
               </div>
-            </CartProvider>
-          </AuthProvider>
-        </TranslationProvider>
-      </CurrencyProvider>
+            </Router>
+          </CartProvider>
+        </CurrencyProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
