@@ -18,6 +18,21 @@ const DataSeeder = () => {
     
     const charities = [
       {
+        name: 'Islamic Relief Worldwide',
+        description: 'Providing humanitarian aid and emergency relief across the globe',
+        category: 'emergency',
+        country: 'Global',
+        verified: true,
+        trust_rating: 9.5,
+        activity_score: 95,
+        total_raised: 450000,
+        website_url: 'https://islamic-relief.org',
+        logo_url: 'https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&h=400&fit=crop&crop=center',
+        last_activity_date: new Date().toISOString(),
+        total_posts: 25,
+        verified_posts: 23
+      },
+      {
         name: 'Water Wells Foundation',
         description: 'Providing clean water access in rural communities',
         category: 'water',
@@ -27,6 +42,7 @@ const DataSeeder = () => {
         activity_score: 85,
         total_raised: 150000,
         website_url: 'https://waterwells.org',
+        logo_url: 'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?w=400&h=400&fit=crop&crop=center',
         last_activity_date: new Date().toISOString(),
         total_posts: 12,
         verified_posts: 10
@@ -41,23 +57,10 @@ const DataSeeder = () => {
         activity_score: 92,
         total_raised: 220000,
         website_url: 'https://hopeorphanage.org',
+        logo_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=center',
         last_activity_date: new Date().toISOString(),
         total_posts: 18,
         verified_posts: 15
-      },
-      {
-        name: 'Emergency Relief International',
-        description: 'Rapid response humanitarian aid',
-        category: 'emergency',
-        country: 'Global',
-        verified: true,
-        trust_rating: 7.8,
-        activity_score: 78,
-        total_raised: 180000,
-        website_url: 'https://emergencyrelief.org',
-        last_activity_date: new Date().toISOString(),
-        total_posts: 8,
-        verified_posts: 6
       },
       {
         name: 'Education for All',
@@ -69,6 +72,7 @@ const DataSeeder = () => {
         activity_score: 89,
         total_raised: 195000,
         website_url: 'https://educationforall.org',
+        logo_url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=400&fit=crop&crop=center',
         last_activity_date: new Date().toISOString(),
         total_posts: 14,
         verified_posts: 12
@@ -104,6 +108,74 @@ const DataSeeder = () => {
 
     } catch (error) {
       console.error('❌ Failed to seed charities:', error);
+      throw error;
+    }
+  };
+
+  const seedCharityPartners = async (charities: any[]) => {
+    console.log('🌱 Seeding charity partners with subdomains...');
+    
+    const charityPartners = [
+      {
+        charity_id: charities[0].id, // Islamic Relief
+        partner_slug: 'islamicrelief',
+        commission_rate: 0.05,
+        is_active: true,
+        partnership_type: 'premium',
+        monthly_fee: 199.99,
+        features_enabled: {
+          customBranding: true,
+          advancedAnalytics: true,
+          emailMarketing: true,
+          prioritySupport: true
+        }
+      },
+      {
+        charity_id: charities[1].id, // Water Wells
+        partner_slug: 'waterwells',
+        commission_rate: 0.05,
+        is_active: true,
+        partnership_type: 'standard',
+        monthly_fee: 99.99,
+        features_enabled: {
+          customBranding: true,
+          advancedAnalytics: false,
+          emailMarketing: true,
+          prioritySupport: false
+        }
+      },
+      {
+        charity_id: charities[2].id, // Hope Orphanage
+        partner_slug: 'hopeorphanage',
+        commission_rate: 0.05,
+        is_active: true,
+        partnership_type: 'standard',
+        monthly_fee: 99.99,
+        features_enabled: {
+          customBranding: true,
+          advancedAnalytics: false,
+          emailMarketing: true,
+          prioritySupport: false
+        }
+      }
+    ];
+
+    try {
+      console.log('🔄 Inserting charity partners...');
+      const { data, error } = await supabase
+        .from('charity_partners')
+        .insert(charityPartners)
+        .select();
+
+      if (error) {
+        console.error('❌ Error seeding charity partners:', error);
+        throw error;
+      }
+
+      console.log('✅ Charity partners seeded:', data?.length);
+      return data;
+    } catch (error) {
+      console.error('❌ Failed to seed charity partners:', error);
       throw error;
     }
   };
@@ -214,13 +286,19 @@ const DataSeeder = () => {
         throw new Error('No charities were created');
       }
       
+      await seedCharityPartners(charities);
       await seedCharityAllocations(charities);
       const donations = await seedDonations(charities);
 
       toast({
         title: "Data Seeding Complete! 🎉",
-        description: `Created ${charities.length} charities and ${donations?.length || 0} donations.`,
+        description: `Created ${charities.length} charities with subdomains and ${donations?.length || 0} donations.`,
       });
+
+      console.log('✅ Subdomain examples created:');
+      console.log('🌐 islamicrelief.yourjannah.com - /subdomain/islamicrelief');
+      console.log('🌐 waterwells.yourjannah.com - /subdomain/waterwells');
+      console.log('🌐 hopeorphanage.yourjannah.com - /subdomain/hopeorphanage');
 
     } catch (error: any) {
       console.error('❌ Error during seeding:', error);
@@ -244,6 +322,9 @@ const DataSeeder = () => {
       
       console.log('🗑️ Clearing donations...');
       await supabase.from('donations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      
+      console.log('🗑️ Clearing charity partners...');
+      await supabase.from('charity_partners').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
       console.log('🗑️ Clearing charity allocations...');
       await supabase.from('charity_allocations').delete().neq('id', '00000000-0000-0000-0000-000000000000');
@@ -276,7 +357,7 @@ const DataSeeder = () => {
           Test Data Management
         </CardTitle>
         <CardDescription>
-          Seed the database with test data to try the disbursement system.
+          Seed the database with test data including charity subdomains to try the system.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -293,11 +374,11 @@ const DataSeeder = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Heart className="h-3 w-3" />
-                15 completed donations (£100-£500 each, pending disbursement)
+                3 charity partners with subdomain slugs (islamicrelief, waterwells, hopeorphanage)
               </li>
               <li className="flex items-center gap-2">
                 <Database className="h-3 w-3" />
-                Charity allocation records for weighted distribution
+                15 completed donations and charity allocation records
               </li>
             </ul>
           </div>
@@ -334,7 +415,7 @@ const DataSeeder = () => {
 
         <div className="mt-4 p-3 bg-green-50 rounded-lg">
           <p className="text-sm text-green-700">
-            ✅ RLS policies have been updated. Data seeding should now work properly.
+            ✅ After seeding, test subdomains at: /subdomain/islamicrelief, /subdomain/waterwells, /subdomain/hopeorphanage
           </p>
         </div>
       </CardContent>
