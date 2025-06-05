@@ -212,10 +212,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative overflow-visible">
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
           <Menu className="h-6 w-6" />
           {totalItems > 0 && (
-            <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
+            <div className="absolute -top-1 -right-1">
               <div className="relative bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-yellow-300/50 shadow-lg font-bold min-w-[20px]">
                 {/* Golden shine effect moving across */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 w-1/3 animate-[goldShine_3s_ease-in-out_infinite] rounded-full"></div>
