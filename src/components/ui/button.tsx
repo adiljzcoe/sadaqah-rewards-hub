@@ -40,12 +40,14 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  donationAmount?: string
+  currency?: string
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, donationAmount, currency = "£", ...props }, ref) => {
     const [ripples, setRipples] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
-    const [hearts, setHearts] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
+    const [hearts, setHearts] = React.useState<Array<{ id: number; x: number; y: number; delay: number }>>([]);
     const buttonRef = React.useRef<HTMLButtonElement>(null);
 
     // Combine refs
@@ -60,7 +62,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        console.log('Central Button: Creating ripple and heart at', { x, y });
+        console.log('Central Button: Creating ripple and hearts at', { x, y });
 
         // Create ripple effect
         const rippleId = Date.now();
@@ -70,12 +72,27 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           return newRipples;
         });
 
-        // Create heart effect
-        const heartId = Date.now() + 1;
+        // Create multiple heart effects (3-5 hearts)
+        const heartCount = Math.floor(Math.random() * 3) + 3; // 3-5 hearts
+        const newHearts = [];
+        
+        for (let i = 0; i < heartCount; i++) {
+          const heartId = Date.now() + i;
+          const offsetX = (Math.random() - 0.5) * 40; // Random spread
+          const delay = i * 200; // Stagger the hearts
+          
+          newHearts.push({
+            id: heartId,
+            x: x + offsetX,
+            y: y,
+            delay
+          });
+        }
+
         setHearts(prev => {
-          const newHearts = [...prev, { id: heartId, x, y }];
-          console.log('Central Button: Updated hearts:', newHearts);
-          return newHearts;
+          const updatedHearts = [...prev, ...newHearts];
+          console.log('Central Button: Updated hearts:', updatedHearts);
+          return updatedHearts;
         });
 
         // Remove ripple after animation
@@ -84,11 +101,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           setRipples(prev => prev.filter(ripple => ripple.id !== rippleId));
         }, 1000);
 
-        // Remove heart after animation
+        // Remove hearts after animation
         setTimeout(() => {
-          console.log('Central Button: Removing heart', heartId);
-          setHearts(prev => prev.filter(heart => heart.id !== heartId));
-        }, 3000);
+          console.log('Central Button: Removing hearts');
+          setHearts(prev => prev.filter(heart => !newHearts.some(newHeart => newHeart.id === heart.id)));
+        }, 4000);
       }
 
       // Call the original onClick if provided
@@ -118,22 +135,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               animation: centralRipple 1s linear;
             }
             
-            @keyframes floatUpHeart {
+            @keyframes floatUpHeartBalloon {
               0% {
                 opacity: 1;
-                transform: translateY(0) scale(1) rotate(0deg);
+                transform: translateY(0) scale(0.8) rotate(0deg);
               }
-              50% {
+              20% {
                 opacity: 1;
-                transform: translateY(-30px) scale(1.2) rotate(180deg);
+                transform: translateY(-20px) scale(1) rotate(45deg);
+              }
+              40% {
+                opacity: 1;
+                transform: translateY(-50px) scale(1.1) rotate(90deg);
+              }
+              60% {
+                opacity: 0.9;
+                transform: translateY(-80px) scale(1) rotate(135deg);
+              }
+              80% {
+                opacity: 0.6;
+                transform: translateY(-120px) scale(0.9) rotate(180deg);
               }
               100% {
                 opacity: 0;
-                transform: translateY(-60px) scale(0.8) rotate(360deg);
+                transform: translateY(-160px) scale(0.7) rotate(225deg);
               }
             }
-            .float-up-heart {
-              animation: floatUpHeart 3s ease-out forwards;
+            .float-up-heart-balloon {
+              animation: floatUpHeartBalloon 3s ease-out forwards;
             }
           `
         }} />
@@ -159,28 +188,31 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             />
           ))}
           
-          {/* Floating hearts with amount */}
-          {hearts.map((heart) => (
-            <div
-              key={heart.id}
-              className="absolute pointer-events-none float-up-heart"
-              style={{
-                left: heart.x - 20,
-                top: heart.y - 20,
-                zIndex: 1000,
-              }}
-            >
-              <div className="flex flex-col items-center">
-                <Heart className="h-6 w-6 text-pink-500 fill-pink-500 mb-1" />
-                <div className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full shadow-lg border border-pink-200">
-                  <span className="text-xs font-bold text-emerald-600">+£1</span>
-                </div>
-              </div>
-            </div>
-          ))}
-          
           {props.children}
         </Comp>
+        
+        {/* Floating hearts with amount - positioned outside button */}
+        {hearts.map((heart) => (
+          <div
+            key={heart.id}
+            className="fixed pointer-events-none float-up-heart-balloon"
+            style={{
+              left: buttonRef.current ? buttonRef.current.getBoundingClientRect().left + heart.x - 25 : 0,
+              top: buttonRef.current ? buttonRef.current.getBoundingClientRect().top + heart.y - 25 : 0,
+              zIndex: 9999,
+              animationDelay: `${heart.delay}ms`,
+            }}
+          >
+            <div className="flex flex-col items-center">
+              <Heart className="h-6 w-6 text-pink-500 fill-pink-500 mb-1 drop-shadow-lg" />
+              <div className="bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-xl border-2 border-pink-300">
+                <span className="text-sm font-bold text-emerald-600">
+                  +{currency}{donationAmount || '25'}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
       </>
     )
   }
