@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Header from '@/components/Header';
-import LiveStreams from '@/components/livestream/LiveStreams';
+import YouTubeScheduler from '@/components/livestream/YouTubeScheduler';
 import { Toaster } from '@/components/ui/toaster';
 
 const LiveTV = () => {
@@ -9,7 +9,13 @@ const LiveTV = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-green-50/30">
       <Header />
       <div className="container mx-auto px-4 py-8">
-        <LiveStreams />
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Live Islamic Content</h1>
+          <p className="text-gray-600">
+            Continuous Islamic content with automatic Athan interruptions
+          </p>
+        </div>
+        <YouTubeScheduler />
       </div>
       <Toaster />
     </div>

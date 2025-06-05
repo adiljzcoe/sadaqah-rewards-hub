@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube } from 'lucide-react';
 import DashboardCharts from './DashboardCharts';
 import AdvancedUserManagement from './AdvancedUserManagement';
 import FinancialManagement from './FinancialManagement';
@@ -25,9 +24,139 @@ import GiftCardManagement from './GiftCardManagement';
 import AffiliateSystem from './AffiliateSystem';
 import DisbursementManagement from './DisbursementManagement';
 import CharityPartnerManagement from './CharityPartnerManagement';
+import YouTubeChannelManager from './YouTubeChannelManager';
 
 const AdminDashboardContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'overview':
+        return (
+          <>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">2,847</div>
+                  <p className="text-xs text-muted-foreground">+12% from last month</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Donations</CardTitle>
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">£247,891</div>
+                  <p className="text-xs text-muted-foreground">+18% from last month</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">156</div>
+                  <p className="text-xs text-muted-foreground">+5% from last month</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Platform Health</CardTitle>
+                  <Activity className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">98.9%</div>
+                  <p className="text-xs text-muted-foreground">Uptime this month</p>
+                </CardContent>
+              </Card>
+            </div>
+            <DashboardCharts />
+          </>
+        );
+      case 'charity-partners':
+        return <CharityPartnerManagement />;
+      case 'users':
+        return <AdvancedUserManagement />;
+      case 'financial':
+        return (
+          <>
+            <div className="grid gap-6 md:grid-cols-2">
+              <FinancialManagement />
+              <DisbursementManagement />
+            </div>
+            <CharityVerification />
+          </>
+        );
+      case 'data':
+        return (
+          <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <SimpleDataSeeder />
+              <DuaDataSeeder />
+              <DuasLibrarySeeder />
+            </div>
+            <DataSeeder />
+          </>
+        );
+      case 'security':
+        return <ComplianceAndSecurity />;
+      case 'marketing':
+        return (
+          <>
+            <div className="grid gap-6">
+              <div className="grid gap-6 md:grid-cols-3">
+                <PushNotifications />
+                <SMSNotifications />
+                <EmailMarketing />
+              </div>
+              <MarketingCampaigns />
+              <UTMAnalytics />
+              <GrowthOpportunities />
+            </div>
+          </>
+        );
+      case 'products':
+        return (
+          <>
+            <div className="grid gap-6 md:grid-cols-2">
+              <ProductManagement />
+              <GiftCardManagement />
+            </div>
+            <AffiliateSystem />
+          </>
+        );
+      case 'monitoring':
+        return (
+          <div className="grid gap-6 md:grid-cols-2">
+            <ScalabilityMonitoring />
+            <RealTimeMonitoring />
+          </div>
+        );
+      case 'youtube':
+        return <YouTubeChannelManager />;
+      default:
+        return null;
+    }
+  };
+
+  const navigationItems = [
+    { id: 'overview', label: 'Overview', icon: Users },
+    { id: 'users', label: 'Users', icon: Users },
+    { id: 'financial', label: 'Financial', icon: DollarSign },
+    { id: 'charity-partners', label: 'Partners', icon: Settings },
+    { id: 'data', label: 'Data', icon: Database },
+    { id: 'security', label: 'Security', icon: Shield },
+    { id: 'marketing', label: 'Marketing', icon: Bell },
+    { id: 'products', label: 'Products', icon: Database },
+    { id: 'monitoring', label: 'Monitoring', icon: Activity },
+    { id: 'youtube', label: 'YouTube Scheduler', icon: Youtube },
+  ];
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -39,15 +168,11 @@ const AdminDashboardContent = () => {
           </div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="users">Users</TabsTrigger>
-              <TabsTrigger value="financial">Financial</TabsTrigger>
-              <TabsTrigger value="charity-partners">Partners</TabsTrigger>
-              <TabsTrigger value="data">Data</TabsTrigger>
-              <TabsTrigger value="security">Security</TabsTrigger>
-              <TabsTrigger value="marketing">Marketing</TabsTrigger>
-              <TabsTrigger value="products">Products</TabsTrigger>
-              <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
+              {navigationItems.map((item) => (
+                <TabsTrigger key={item.id} value={item.id}>
+                  {item.label}
+                </TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
         </div>
@@ -55,112 +180,7 @@ const AdminDashboardContent = () => {
 
       <main className="flex-1 overflow-y-auto">
         <div className="p-6">
-          {activeTab === 'overview' && (
-            <>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">2,847</div>
-                    <p className="text-xs text-muted-foreground">+12% from last month</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Donations</CardTitle>
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">£247,891</div>
-                    <p className="text-xs text-muted-foreground">+18% from last month</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
-                    <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">156</div>
-                    <p className="text-xs text-muted-foreground">+5% from last month</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Platform Health</CardTitle>
-                    <Activity className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">98.9%</div>
-                    <p className="text-xs text-muted-foreground">Uptime this month</p>
-                  </CardContent>
-                </Card>
-              </div>
-              <DashboardCharts />
-            </>
-          )}
-          
-          {activeTab === 'charity-partners' && <CharityPartnerManagement />}
-          
-          {activeTab === 'users' && <AdvancedUserManagement />}
-          
-          {activeTab === 'financial' && (
-            <>
-              <div className="grid gap-6 md:grid-cols-2">
-                <FinancialManagement />
-                <DisbursementManagement />
-              </div>
-              <CharityVerification />
-            </>
-          )}
-          
-          {activeTab === 'data' && (
-            <>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <SimpleDataSeeder />
-                <DuaDataSeeder />
-                <DuasLibrarySeeder />
-              </div>
-              <DataSeeder />
-            </>
-          )}
-          
-          {activeTab === 'security' && <ComplianceAndSecurity />}
-          
-          {activeTab === 'marketing' && (
-            <>
-              <div className="grid gap-6">
-                <div className="grid gap-6 md:grid-cols-3">
-                  <PushNotifications />
-                  <SMSNotifications />
-                  <EmailMarketing />
-                </div>
-                <MarketingCampaigns />
-                <UTMAnalytics />
-                <GrowthOpportunities />
-              </div>
-            </>
-          )}
-          
-          {activeTab === 'products' && (
-            <>
-              <div className="grid gap-6 md:grid-cols-2">
-                <ProductManagement />
-                <GiftCardManagement />
-              </div>
-              <AffiliateSystem />
-            </>
-          )}
-          
-          {activeTab === 'monitoring' && (
-            <div className="grid gap-6 md:grid-cols-2">
-              <ScalabilityMonitoring />
-              <RealTimeMonitoring />
-            </div>
-          )}
+          {renderTabContent()}
         </div>
       </main>
     </div>
