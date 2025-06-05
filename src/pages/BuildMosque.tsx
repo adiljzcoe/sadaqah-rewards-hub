@@ -165,6 +165,60 @@ const BuildMosque = () => {
       baseBlockPrice: 50,
       totalBricks: 0,
       costPerBrick: 1
+    },
+    {
+      id: 3,
+      name: "Village Community Mosque",
+      location: "Kano, Nigeria",
+      description: "Small community mosque serving rural village with basic prayer facilities and Quran school.",
+      totalBlocks: 0,
+      purchasedBlocks: 0,
+      totalCost: 10000,
+      raisedAmount: 0,
+      capacity: 300,
+      features: ["Prayer Hall", "Ablution Area", "Quran School", "Community Space"],
+      urgency: "high",
+      image: "/placeholder.svg",
+      blocks: [],
+      baseBlockPrice: 50,
+      totalBricks: 0,
+      costPerBrick: 1
+    },
+    {
+      id: 4,
+      name: "Rural Mosque & School",
+      location: "Kilifi, Kenya",
+      description: "Combined mosque and Islamic school serving coastal community with limited infrastructure.",
+      totalBlocks: 0,
+      purchasedBlocks: 0,
+      totalCost: 8500,
+      raisedAmount: 0,
+      capacity: 200,
+      features: ["Prayer Hall", "School Rooms", "Teacher Housing", "Water Well"],
+      urgency: "urgent",
+      image: "/placeholder.svg",
+      blocks: [],
+      baseBlockPrice: 50,
+      totalBricks: 0,
+      costPerBrick: 1
+    },
+    {
+      id: 5,
+      name: "Sahel Community Center",
+      location: "Gao, Mali",
+      description: "Multi-purpose Islamic center providing prayer space, education, and community services in remote area.",
+      totalBlocks: 0,
+      purchasedBlocks: 0,
+      totalCost: 12000,
+      raisedAmount: 0,
+      capacity: 400,
+      features: ["Prayer Hall", "Community Kitchen", "Vocational Training", "Health Clinic"],
+      urgency: "high",
+      image: "/placeholder.svg",
+      blocks: [],
+      baseBlockPrice: 50,
+      totalBricks: 0,
+      costPerBrick: 1
     }
   ]);
 
@@ -216,6 +270,7 @@ const BuildMosque = () => {
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
+      case 'urgent': return 'bg-red-200 text-red-900 border-red-300';
       case 'high': return 'bg-red-100 text-red-800 border-red-200';
       case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'low': return 'bg-green-100 text-green-800 border-green-200';
@@ -411,8 +466,9 @@ const BuildMosque = () => {
           </div>
           
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
-            Join thousands of believers in building beautiful mosques. Purchase individual blocks (50 bricks each) and watch as the community 
-            collectively funds entire mosque projects, brick by brick. <span className="font-semibold text-emerald-600">Each block = 50 bricks at £1 per brick. Extra Jannah points for mosque building!</span>
+            Join thousands of believers in building beautiful mosques worldwide. From UK community centers to African village mosques - 
+            purchase individual blocks (50 bricks each) and watch as the community collectively funds entire mosque projects, brick by brick. 
+            <span className="font-semibold text-emerald-600">Each block = 50 bricks at £1 per brick. Extra Jannah points for mosque building!</span>
           </p>
           
           <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -436,28 +492,28 @@ const BuildMosque = () => {
           <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
             <CardContent className="p-6 text-center">
               <Building className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">12</div>
+              <div className="text-2xl font-bold">17</div>
               <div className="text-sm opacity-90">Mosques Completed</div>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
             <CardContent className="p-6 text-center">
               <Users className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">25K+</div>
+              <div className="text-2xl font-bold">32K+</div>
               <div className="text-sm opacity-90">People Served</div>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <CardContent className="p-6 text-center">
               <Coins className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">47K</div>
+              <div className="text-2xl font-bold">52K</div>
               <div className="text-sm opacity-90">Blocks Purchased</div>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-white">
             <CardContent className="p-6 text-center">
               <Star className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">£2.3M</div>
+              <div className="text-2xl font-bold">£2.5M</div>
               <div className="text-sm opacity-90">Total Raised</div>
             </CardContent>
           </Card>
@@ -465,7 +521,7 @@ const BuildMosque = () => {
 
         {/* Active Projects */}
         <div className="space-y-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center">Active Mosque Projects</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center">Active Mosque Projects Worldwide</h2>
           
           {mosqueProjects.map((project) => {
             const selectedType = selectedBlockTypes[project.id];
