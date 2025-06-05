@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Trophy, Users, MapPin, Crown, Star, TrendingUp, Calendar } from 'lucide-react';
+import Header from '@/components/Header';
 
 const Leaderboards = () => {
   const [timeFrame, setTimeFrame] = useState('weekly');
@@ -56,6 +57,7 @@ const Leaderboards = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">

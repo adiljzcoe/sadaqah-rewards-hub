@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Coins, ShoppingBag, Gift, Star, Crown, Zap, Heart, Trophy, Target } from 'lucide-react';
 import GoldCoin3D from '@/components/GoldCoin3D';
+import Header from '@/components/Header';
 
 const SadaqahCoins = () => {
   const [userCoins, setUserCoins] = useState(142);
@@ -78,6 +79,7 @@ const SadaqahCoins = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-yellow-50/30 to-orange-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone,
 import GoldCoin3D from '@/components/GoldCoin3D';
 import ProjectContributions from '@/components/ProjectContributions';
 import CommunicationPreferences from '@/components/CommunicationPreferences';
+import Header from '@/components/Header';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -48,6 +50,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Profile Header */}
         <Card className="p-8 mb-8 hover-lift">
