@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import CoinAnimation from '@/components/CoinAnimation';
+import Header from '@/components/Header';
 
 interface Dua {
   id: string;
@@ -216,6 +217,7 @@ const DuaWall = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50/30 to-purple-50/20 relative">
+      <Header />
       {/* Coin Animation */}
       <CoinAnimation 
         trigger={showCoinAnimation} 

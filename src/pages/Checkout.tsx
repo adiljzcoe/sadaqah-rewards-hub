@@ -13,6 +13,9 @@ import FloatingCheckoutWidget from '@/components/FloatingCheckoutWidget';
 import { Heart, Plus, Minus, X, Crown, Zap, Star, Gift, TrendingUp, Users, Shield, CreditCard, Mail, Phone, User, AlertTriangle, Target, Check, Lock, Info, LogIn } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useLocation, useToast } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import Header from '@/components/Header';
 
 const membershipTiers = [
   { 
@@ -389,7 +392,8 @@ const Checkout = () => {
   const totalImpactValue = mainDonation + (fundraisingAmount * 7) + (selectedTier ? selectedTier.price : 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+      <Header />
       <div className="container mx-auto px-4 py-8 max-w-4xl pb-32">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
