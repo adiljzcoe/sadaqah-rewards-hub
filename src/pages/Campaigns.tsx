@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { Card } from '@/components/ui/card';
@@ -24,8 +25,7 @@ const Campaigns = () => {
       donors: 234,
       daysLeft: 12,
       image: "/placeholder.svg",
-      featured: true,
-      multiplier: "2x Points"
+      featured: true
     },
     {
       id: 2,
@@ -38,8 +38,7 @@ const Campaigns = () => {
       donors: 156,
       daysLeft: 25,
       image: "/placeholder.svg",
-      featured: false,
-      multiplier: null
+      featured: false
     },
     {
       id: 3,
@@ -52,8 +51,7 @@ const Campaigns = () => {
       donors: 89,
       daysLeft: 45,
       image: "/placeholder.svg",
-      featured: true,
-      multiplier: "3x Points"
+      featured: true
     },
     {
       id: 4,
@@ -66,8 +64,7 @@ const Campaigns = () => {
       donors: 278,
       daysLeft: 8,
       image: "/placeholder.svg",
-      featured: false,
-      multiplier: null
+      featured: false
     }
   ];
 
@@ -133,11 +130,6 @@ const Campaigns = () => {
                     <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                       Featured
                     </Badge>
-                    {campaigns[0].multiplier && (
-                      <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
-                        {campaigns[0].multiplier}
-                      </Badge>
-                    )}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{campaigns[0].title}</h3>
                   <p className="text-gray-700 mb-4">{campaigns[0].description}</p>
@@ -173,11 +165,6 @@ const Campaigns = () => {
                 <img src={campaign.image} alt={campaign.title} className="w-full h-48 object-cover" />
                 <div className="absolute top-4 left-4 flex gap-2">
                   <Badge className="bg-white/90 text-gray-800">{campaign.category}</Badge>
-                  {campaign.multiplier && (
-                    <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
-                      {campaign.multiplier}
-                    </Badge>
-                  )}
                 </div>
               </div>
               
