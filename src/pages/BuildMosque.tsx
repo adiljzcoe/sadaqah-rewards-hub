@@ -43,7 +43,7 @@ interface MosqueProject {
 interface SelectedBlockType {
   category: MosqueBlock['category'];
   price: number;
-  jannah: number;
+  jannahPoints: number;
   badge: string;
   emoji: string;
   limited: boolean;
