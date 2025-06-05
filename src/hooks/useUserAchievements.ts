@@ -43,7 +43,15 @@ export const useUserAchievements = () => {
         .order('earned_at', { ascending: false });
       
       if (error) throw error;
-      return data as UserAchievement[];
+      
+      // Map the data to match our interface
+      return data.map(item => ({
+        id: item.id,
+        achievement_id: item.achievement_id,
+        earned_at: item.earned_at,
+        points_awarded: item.points_awarded || item.achievements?.points_reward || 0,
+        achievements: item.achievements
+      })) as UserAchievement[];
     },
     enabled: !!user?.id,
   });
@@ -85,7 +93,7 @@ export const useUserAchievements = () => {
       queryClient.invalidateQueries({ queryKey: ['user-achievements', user?.id] });
       toast({
         title: "Achievement Unlocked! 🏆",
-        description: `You earned "${data.achievements.name}" for ${data.points_awarded} points!`,
+        description: `You earned "${data.achievements.name}" for ${data.points_awarded || data.achievements.points_reward} points!`,
       });
     },
   });

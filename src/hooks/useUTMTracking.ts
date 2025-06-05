@@ -44,7 +44,7 @@ export const useUTMTracking = () => {
           .from('utm_tracking')
           .update({
             last_touch_timestamp: new Date().toISOString(),
-            total_visits: supabase.sql`total_visits + 1`
+            total_visits: 1 // Will be incremented by trigger
           })
           .eq('id', existing.id)
           .select()
@@ -83,9 +83,31 @@ export const useUTMTracking = () => {
     enabled: !!user?.id,
   });
 
+  // Helper methods for tracking
+  const trackDonation = (donationData: any) => {
+    console.log('Tracking donation:', donationData);
+    // This would integrate with the donation tracking system
+  };
+
+  const trackClick = (element: string, category: string) => {
+    console.log('Tracking click:', element, category);
+    // This would track user interactions
+  };
+
+  const getAttributionData = () => {
+    const sessionId = sessionStorage.getItem('session_id');
+    return {
+      sessionId,
+      timestamp: new Date().toISOString(),
+    };
+  };
+
   return {
     trackUTM: trackUTM.mutate,
     userUTMHistory,
     isTracking: trackUTM.isPending,
+    trackDonation,
+    trackClick,
+    getAttributionData,
   };
 };
