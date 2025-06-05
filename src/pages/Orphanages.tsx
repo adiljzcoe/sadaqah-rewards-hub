@@ -1,5 +1,5 @@
-
 import React from 'react';
+import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,14 +29,14 @@ const Orphanages = () => {
       location: "Aleppo, Syria",
       description: "Comprehensive care for refugee orphans including education, healthcare, and vocational training programs.",
       targetAmount: 85000,
-      raisedAmount: 52750,
-      donorsCount: 923,
-      daysLeft: 35,
-      childrenServed: 95,
+      raisedAmount: 56000,
+      donorsCount: 987,
+      daysLeft: 30,
+      childrenServed: 120,
       monthlySupport: 650,
       urgency: "high",
       image: "/placeholder.svg",
-      needs: ["Educational Materials", "Healthcare", "Clothing", "Nutrition", "Skills Training"]
+      needs: ["Education", "Healthcare", "Vocational Training", "Food Security", "Safe Housing"]
     }
   ];
 
@@ -50,36 +50,37 @@ const Orphanages = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-pink-50/30 to-purple-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-pink-50/30 to-orange-50/20">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="bg-gradient-to-r from-pink-500 to-purple-500 p-3 rounded-full">
+            <div className="bg-gradient-to-r from-pink-500 to-orange-500 p-3 rounded-full">
               <Baby className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent">
               Support Orphanages
             </h1>
           </div>
           
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-6">
-            Provide love, care, and hope to orphaned children around the world. Your support helps create safe homes 
-            where children can grow, learn, and build bright futures despite their difficult circumstances.
+            Provide hope, care, and a brighter future for orphaned children around the world. 
+            Your support helps give them the love, education, and opportunities they deserve.
           </p>
           
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Baby className="h-4 w-4 text-pink-500" />
-              <span className="text-sm font-medium">Child Care</span>
+              <Home className="h-4 w-4 text-pink-500" />
+              <span className="text-sm font-medium">Safe Shelter</span>
             </div>
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
               <BookOpen className="h-4 w-4 text-blue-500" />
               <span className="text-sm font-medium">Education</span>
             </div>
             <div className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Home className="h-4 w-4 text-emerald-500" />
-              <span className="text-sm font-medium">Safe Homes</span>
+              <Heart className="h-4 w-4 text-red-500" />
+              <span className="text-sm font-medium">Love & Care</span>
             </div>
           </div>
         </div>
@@ -93,25 +94,25 @@ const Orphanages = () => {
               <div className="text-sm opacity-90">Children Supported</div>
             </CardContent>
           </Card>
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+          <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
             <CardContent className="p-6 text-center">
               <Home className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">34</div>
+              <div className="text-2xl font-bold">47</div>
               <div className="text-sm opacity-90">Orphanages</div>
             </CardContent>
           </Card>
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
             <CardContent className="p-6 text-center">
               <BookOpen className="h-8 w-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">89%</div>
-              <div className="text-sm opacity-90">In Education</div>
+              <div className="text-sm opacity-90">Attending School</div>
             </CardContent>
           </Card>
-          <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
+          <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
             <CardContent className="p-6 text-center">
               <Heart className="h-8 w-8 mx-auto mb-2" />
-              <div className="text-2xl font-bold">£890K</div>
-              <div className="text-sm opacity-90">Total Raised</div>
+              <div className="text-2xl font-bold">£3.2M</div>
+              <div className="text-sm opacity-90">Total Support</div>
             </CardContent>
           </Card>
         </div>
@@ -160,22 +161,22 @@ const Orphanages = () => {
                     <h4 className="font-semibold mb-3">Current Needs:</h4>
                     <div className="flex flex-wrap gap-2">
                       {project.needs.map((need, index) => (
-                        <Badge key={index} variant="outline" className="bg-pink-50 text-pink-700 border-pink-200">
+                        <Badge key={index} variant="outline" className="text-xs">
                           {need}
                         </Badge>
                       ))}
                     </div>
                   </div>
 
-                  {/* Support Details */}
+                  {/* Project Details */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="bg-purple-50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-purple-600">£{project.monthlySupport}</div>
-                      <div className="text-sm text-purple-800">Monthly Support</div>
-                    </div>
                     <div className="bg-pink-50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-pink-600">£{Math.round(project.monthlySupport / project.childrenServed)}</div>
-                      <div className="text-sm text-pink-800">Per Child/Month</div>
+                      <div className="text-2xl font-bold text-pink-600">{project.childrenServed}</div>
+                      <div className="text-sm text-pink-800">Children</div>
+                    </div>
+                    <div className="bg-blue-50 p-4 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-blue-600">£{project.monthlySupport}</div>
+                      <div className="text-sm text-blue-800">Monthly Support</div>
                     </div>
                   </div>
 
@@ -205,12 +206,12 @@ const Orphanages = () => {
 
                   {/* Action Buttons */}
                   <div className="flex gap-3">
-                    <Button className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">
+                    <Button className="flex-1 bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 text-white">
                       <Heart className="h-4 w-4 mr-2" />
-                      Donate Now
+                      Support Now
                     </Button>
                     <Button variant="outline" className="px-6">
-                      Sponsor a Child
+                      Learn More
                     </Button>
                   </div>
                 </div>
@@ -219,15 +220,15 @@ const Orphanages = () => {
           ))}
         </div>
 
-        {/* Hadith Quote */}
+        {/* Impact Quote */}
         <div className="mt-16 text-center">
-          <div className="bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-2xl p-8 text-white relative overflow-hidden">
+          <div className="bg-gradient-to-r from-pink-600 via-orange-600 to-purple-600 rounded-2xl p-8 text-white relative overflow-hidden">
             <div className="absolute inset-0 bg-black/10"></div>
             <div className="relative z-10">
               <h3 className="text-2xl font-bold mb-4">
-                "I and the one who sponsors an orphan will be in Paradise like these two fingers."
+                "Whoever cares for an orphan and I will be together in Paradise like this."
               </h3>
-              <p className="text-lg opacity-90">- Prophet Muhammad (ﷺ) - Sahih Bukhari</p>
+              <p className="text-lg opacity-90">- Prophet Muhammad (ﷺ)</p>
             </div>
           </div>
         </div>
