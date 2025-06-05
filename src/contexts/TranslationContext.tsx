@@ -405,10 +405,13 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
     localStorage.setItem('preferred-language', language);
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
+    console.log(`Language changed to: ${language}, RTL: ${isRTL}`);
   }, [language, isRTL]);
 
   const t = (key: string): string => {
-    return translations[language]?.[key] || translations.en[key] || key;
+    const translation = translations[language]?.[key] || translations.en[key] || key;
+    console.log(`Translation for '${key}' in '${language}': ${translation}`);
+    return translation;
   };
 
   return (
