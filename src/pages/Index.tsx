@@ -21,7 +21,10 @@ import MasjidLeaderboard from '@/components/MasjidLeaderboard';
 import { useTranslation } from '@/contexts/TranslationContext';
 
 const Index = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+
+  console.log('Index page rendered with language:', language);
+  console.log('Translation test for "why_choose_title":', t('why_choose_title'));
 
   // Mock data for campaigns
   const campaigns = [
@@ -107,6 +110,12 @@ const Index = () => {
       <Header />
       <StickyDonationWidget />
       
+      {/* Language Debug Info - will be visible when language changes */}
+      <div className="bg-blue-100 p-4 m-4 rounded-lg border">
+        <p className="text-sm">Current Language: <strong>{language}</strong></p>
+        <p className="text-sm">Translation Test: <strong>{t('why_choose_title')}</strong></p>
+      </div>
+      
       {/* Main Content - Video Section */}
       <section className="w-full max-w-full overflow-x-hidden">
         <div className="grid lg:grid-cols-3 gap-0 max-w-full overflow-x-hidden">
@@ -185,7 +194,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section - Updated to use translations */}
       <section className="container mx-auto px-4 py-16 max-w-full overflow-x-hidden">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
@@ -222,7 +231,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Stats section */}
+        {/* Stats section - Updated to use translations */}
         <div className="mt-16 vibrant-gradient rounded-xl p-8 text-center shadow-xl">
           <h4 className="text-2xl font-bold text-white mb-6">{t('community_impact')}</h4>
           <div className="grid md:grid-cols-4 gap-6">
