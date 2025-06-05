@@ -266,7 +266,7 @@ const BuildMosque = () => {
           <h2 className="text-3xl font-bold text-gray-900 text-center">Active Mosque Projects</h2>
           
           {mosqueProjects.map((project) => (
-            <Card key={project.id} className="overflow-hidden hover-lift">
+            <Card key={project.id} className="overflow-hidden hover:shadow-xl transition-all duration-300">
               <div className="grid lg:grid-cols-2 gap-0">
                 {/* Image Section */}
                 <div className="relative">
