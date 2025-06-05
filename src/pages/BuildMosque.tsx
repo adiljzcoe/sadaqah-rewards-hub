@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
-import BlockTypesLegend from '@/components/BlockTypesLegend';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -237,6 +236,77 @@ const BuildMosque = () => {
     }
   };
 
+  const getBlockTypeInfo = () => [
+    {
+      category: 'Foundation',
+      icon: '🏗️',
+      price: 40,
+      multiplier: '0.8x',
+      jannahBonus: '75 pts',
+      description: 'Essential base blocks',
+      badge: '🏗️ Foundation Builder',
+      color: 'bg-stone-500',
+      limited: false
+    },
+    {
+      category: 'Walls', 
+      icon: '🧱',
+      price: 50,
+      multiplier: '1.0x',
+      jannahBonus: '90 pts',
+      description: 'Standard building blocks',
+      badge: '⭐ Wall Builder',
+      color: 'bg-amber-500',
+      limited: false
+    },
+    {
+      category: 'Roof',
+      icon: '🏠', 
+      price: 60,
+      multiplier: '1.2x',
+      jannahBonus: '98 pts',
+      description: 'Premium coverage blocks',
+      badge: '🏠 Roof Completer',
+      color: 'bg-slate-500',
+      limited: false
+    },
+    {
+      category: 'Interior',
+      icon: '🏛️',
+      price: 45,
+      multiplier: '0.9x', 
+      jannahBonus: '83 pts',
+      description: 'Sacred space blocks',
+      badge: '🏛️ Interior Designer',
+      color: 'bg-emerald-500',
+      limited: false
+    },
+    {
+      category: 'Minaret',
+      icon: '🗼',
+      price: 75,
+      multiplier: '1.5x',
+      jannahBonus: '150 pts',
+      description: 'LIMITED: Symbolic minaret (4 max)',
+      badge: '👑 Minaret Sponsor',
+      color: 'bg-blue-500',
+      limited: true,
+      limitText: 'Only 4 per mosque'
+    },
+    {
+      category: 'Dome',
+      icon: '🕌',
+      price: 90,
+      multiplier: '1.8x', 
+      jannahBonus: '188 pts',
+      description: 'ULTRA RARE: Symbolic dome (1 max)',
+      badge: '👑 Dome Patron',
+      color: 'bg-purple-500',
+      limited: true,
+      limitText: 'Only 1 per mosque'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <Header />
@@ -288,9 +358,6 @@ const BuildMosque = () => {
             </div>
           </div>
         </div>
-
-        {/* Block Types Legend */}
-        <BlockTypesLegend />
 
         {/* Impact Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
@@ -357,6 +424,7 @@ const BuildMosque = () => {
 
                 {/* Content Section */}
                 <div className="p-8">
+                  {/* Header and Description */}
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">{project.name}</h3>
@@ -372,6 +440,59 @@ const BuildMosque = () => {
                   </div>
 
                   <p className="text-gray-700 mb-6">{project.description}</p>
+
+                  {/* Block Types for this Project */}
+                  <div className="mb-6">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-blue-500" />
+                      Available Block Types & Rewards:
+                    </h4>
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                      {getBlockTypeInfo().map((blockType) => (
+                        <div
+                          key={blockType.category}
+                          className={`p-3 rounded-lg border ${
+                            blockType.limited 
+                              ? 'border-purple-300 bg-gradient-to-br from-purple-50 to-pink-50' 
+                              : 'border-gray-200 bg-gray-50'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-1">
+                              <span className="text-lg">{blockType.icon}</span>
+                              <span className="text-xs font-bold">{blockType.category}</span>
+                            </div>
+                            <Badge className="text-xs px-1 py-0 bg-emerald-500 text-white">
+                              £{blockType.price}
+                            </Badge>
+                          </div>
+                          
+                          {blockType.limited && (
+                            <div className="text-xs text-purple-600 font-bold mb-1">
+                              {blockType.limitText}
+                            </div>
+                          )}
+                          
+                          <div className="text-xs text-gray-600 mb-1">
+                            {blockType.description}
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-emerald-600 font-bold">
+                              +{blockType.jannahBonus}
+                            </span>
+                            <span className="text-blue-600">
+                              {blockType.multiplier}
+                            </span>
+                          </div>
+                          
+                          <div className="text-xs text-purple-600 font-medium mt-1">
+                            {blockType.badge}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
                   {/* Cost Breakdown */}
                   <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
