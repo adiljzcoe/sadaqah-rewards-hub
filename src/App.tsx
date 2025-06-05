@@ -1,41 +1,42 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/hooks/useAuth';
-import { CurrencyProvider } from '@/hooks/useCurrency';
+import { CurrencyProvider } from '@/contexts/CurrencyContext';
 import { Toaster } from '@/components/ui/toaster';
-import Home from '@/pages/Home';
-import AuthPage from '@/pages/AuthPage';
-import ProfilePage from '@/pages/ProfilePage';
+import Index from '@/pages/Index';
+import Auth from '@/pages/Auth';
+import Profile from '@/pages/Profile';
 import AdminDashboard from '@/pages/AdminDashboard';
-import CheckoutPage from '@/pages/CheckoutPage';
-import WhyDonatePage from '@/pages/WhyDonatePage';
-import LiveFeedPage from '@/pages/LiveFeedPage';
-import FundraisingPage from '@/pages/FundraisingPage';
-import CharityPartnersPage from '@/pages/CharityPartnersPage';
-import DuasLibraryPage from '@/pages/DuasLibraryPage';
-import BusinessProfilePage from '@/pages/BusinessProfilePage';
-import CharityProfilePage from '@/pages/CharityProfilePage';
-import MembershipPage from '@/pages/MembershipPage';
-import SadaqahCoinsPage from '@/pages/SadaqahCoinsPage';
-import MasjidCommunityPage from '@/pages/MasjidCommunityPage';
-import MyUmmahPage from '@/pages/MyUmmahPage';
-import LeaderboardsPage from '@/pages/LeaderboardsPage';
-import IslamicCalendarPage from '@/pages/IslamicCalendarPage';
-import RamadanCalendarPage from '@/pages/RamadanCalendarPage';
-import AdhanCommunityPage from '@/pages/AdhanCommunityPage';
-import LiveTVPage from '@/pages/LiveTVPage';
-import DhikrCommunityPage from '@/pages/DhikrCommunityPage';
-import PrayerTimesPage from '@/pages/PrayerTimesPage';
-import QuranReaderPage from '@/pages/QuranReaderPage';
-import ZakatCalculatorPage from '@/pages/ZakatCalculatorPage';
-import DuaWallPage from '@/pages/DuaWallPage';
-import CampaignsPage from '@/pages/CampaignsPage';
-import BuildMosquePage from '@/pages/BuildMosquePage';
-import WaterWellsPage from '@/pages/WaterWellsPage';
-import OrphanagesPage from '@/pages/OrphanagesPage';
-import QurbaniPage from '@/pages/QurbaniPage';
-import NotFoundPage from '@/pages/NotFoundPage';
+import Checkout from '@/pages/Checkout';
+import WhyDonate from '@/pages/WhyDonate';
+import LiveFeed from '@/pages/LiveFeed';
+import Fundraising from '@/pages/Fundraising';
+import CharityPartnersPublic from '@/pages/CharityPartnersPublic';
+import DuasLibrary from '@/pages/DuasLibrary';
+import BusinessProfile from '@/pages/BusinessProfile';
+import CharityProfile from '@/pages/CharityProfile';
+import Membership from '@/pages/Membership';
+import SadaqahCoins from '@/pages/SadaqahCoins';
+import MasjidCommunity from '@/pages/MasjidCommunity';
+import MyUmmah from '@/pages/MyUmmah';
+import Leaderboards from '@/pages/Leaderboards';
+import IslamicCalendar from '@/pages/IslamicCalendar';
+import RamadanCalendar from '@/pages/RamadanCalendar';
+import AdhanCommunity from '@/pages/AdhanCommunity';
+import LiveTV from '@/pages/LiveTV';
+import DhikrCommunity from '@/pages/DhikrCommunity';
+import NamazTimes from '@/pages/NamazTimes';
+import QuranReader from '@/pages/QuranReader';
+import ZakatCalculator from '@/pages/ZakatCalculator';
+import DuaWall from '@/pages/DuaWall';
+import Campaigns from '@/pages/Campaigns';
+import BuildMosque from '@/pages/BuildMosque';
+import WaterWells from '@/pages/WaterWells';
+import Orphanages from '@/pages/Orphanages';
+import Qurbani from '@/pages/Qurbani';
+import NotFound from '@/pages/NotFound';
 import CharityPartnerPage from '@/pages/CharityPartnerPage';
 
 function App() {
@@ -55,38 +56,38 @@ function App() {
           <Router>
             <div className="min-h-screen bg-background">
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/why-donate" element={<WhyDonatePage />} />
-                <Route path="/live-feed" element={<LiveFeedPage />} />
-                <Route path="/fundraising" element={<FundraisingPage />} />
-                <Route path="/charity-partners" element={<CharityPartnersPage />} />
-                <Route path="/duas-library" element={<DuasLibraryPage />} />
-                <Route path="/business-profile" element={<BusinessProfilePage />} />
-                <Route path="/charity-profile" element={<CharityProfilePage />} />
-                <Route path="/membership" element={<MembershipPage />} />
-                <Route path="/sadaqah-coins" element={<SadaqahCoinsPage />} />
-                <Route path="/masjid-community" element={<MasjidCommunityPage />} />
-                <Route path="/my-ummah" element={<MyUmmahPage />} />
-                <Route path="/leaderboards" element={<LeaderboardsPage />} />
-                <Route path="/islamic-calendar" element={<IslamicCalendarPage />} />
-                <Route path="/ramadan-calendar" element={<RamadanCalendarPage />} />
-                <Route path="/adhan-community" element={<AdhanCommunityPage />} />
-                <Route path="/live-tv" element={<LiveTVPage />} />
-                <Route path="/dhikr-community" element={<DhikrCommunityPage />} />
-                <Route path="/namaz-times" element={<PrayerTimesPage />} />
-                <Route path="/quran-reader" element={<QuranReaderPage />} />
-                <Route path="/zakat-calculator" element={<ZakatCalculatorPage />} />
-                <Route path="/dua-wall" element={<DuaWallPage />} />
-                <Route path="/campaigns" element={<CampaignsPage />} />
-                <Route path="/build-mosque" element={<BuildMosquePage />} />
-                <Route path="/water-wells" element={<WaterWellsPage />} />
-                <Route path="/orphanages" element={<OrphanagesPage />} />
-                <Route path="/qurbani" element={<QurbaniPage />} />
-                <Route path="*" element={<NotFoundPage />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/why-donate" element={<WhyDonate />} />
+                <Route path="/live-feed" element={<LiveFeed />} />
+                <Route path="/fundraising" element={<Fundraising />} />
+                <Route path="/charity-partners" element={<CharityPartnersPublic />} />
+                <Route path="/duas-library" element={<DuasLibrary />} />
+                <Route path="/business-profile" element={<BusinessProfile />} />
+                <Route path="/charity-profile" element={<CharityProfile />} />
+                <Route path="/membership" element={<Membership />} />
+                <Route path="/sadaqah-coins" element={<SadaqahCoins />} />
+                <Route path="/masjid-community" element={<MasjidCommunity />} />
+                <Route path="/my-ummah" element={<MyUmmah />} />
+                <Route path="/leaderboards" element={<Leaderboards />} />
+                <Route path="/islamic-calendar" element={<IslamicCalendar />} />
+                <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
+                <Route path="/adhan-community" element={<AdhanCommunity />} />
+                <Route path="/live-tv" element={<LiveTV />} />
+                <Route path="/dhikr-community" element={<DhikrCommunity />} />
+                <Route path="/namaz-times" element={<NamazTimes />} />
+                <Route path="/quran-reader" element={<QuranReader />} />
+                <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+                <Route path="/dua-wall" element={<DuaWall />} />
+                <Route path="/campaigns" element={<Campaigns />} />
+                <Route path="/build-mosque" element={<BuildMosque />} />
+                <Route path="/water-wells" element={<WaterWells />} />
+                <Route path="/orphanages" element={<Orphanages />} />
+                <Route path="/qurbani" element={<Qurbani />} />
+                <Route path="*" element={<NotFound />} />
                 
                 {/* Add charity partner route */}
                 <Route path="/charity/:slug" element={<CharityPartnerPage />} />

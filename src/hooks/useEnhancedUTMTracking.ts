@@ -14,11 +14,7 @@ interface UTMParams {
 }
 
 interface DeviceFingerprint {
-  userAgent: string;
-  screenResolution: string;
-  timezone: string;
-  language: string;
-  platform: string;
+  [key: string]: string;
 }
 
 interface TrackingData extends UTMParams {
@@ -58,7 +54,7 @@ export const useEnhancedUTMTracking = () => {
       ...utmData,
       referrer: document.referrer || '',
       landing_page: location.pathname + location.search,
-      device_fingerprint: generateDeviceFingerprint(),
+      device_fingerprint: generateDeviceFingerprint() as any,
     };
 
     try {

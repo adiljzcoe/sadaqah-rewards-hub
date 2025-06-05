@@ -147,7 +147,6 @@ const CharityPartnerPage = () => {
               <CharityProductCard 
                 key={product.id} 
                 product={product}
-                charityName={charity.name}
               />
             ))}
           </div>
