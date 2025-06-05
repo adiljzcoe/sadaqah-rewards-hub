@@ -22,15 +22,6 @@ export const useTranslation = () => {
 
 const translations = {
   en: {
-    // Header
-    'membership': 'Membership',
-    'sadaqah_coins': 'Sadaqah Coins',
-    'my_jannah': 'My Jannah',
-    'leaderboards': 'Leaderboards',
-    'upgrade_to_premium': 'Upgrade to Premium',
-    'sign_in_to_participate': 'Sign In to Participate',
-    'become_member': 'Become a Member',
-    
     // Home page
     'why_choose_donate': 'Why Choose Donate Feels Great?',
     'platform_description': 'Our platform combines the spiritual reward of giving with engaging features that make charity meaningful and rewarding',
@@ -85,15 +76,6 @@ const translations = {
     'sign_out': 'Sign Out'
   },
   ar: {
-    // Header
-    'membership': 'العضوية',
-    'sadaqah_coins': 'عملات الصدقة',
-    'my_jannah': 'جنتي',
-    'leaderboards': 'لوحات المتصدرين',
-    'upgrade_to_premium': 'ترقية إلى بريميوم',
-    'sign_in_to_participate': 'سجل دخولك للمشاركة',
-    'become_member': 'كن عضواً',
-    
     // Home page
     'why_choose_donate': 'لماذا تختار التبرع يشعر بالسعادة؟',
     'platform_description': 'تجمع منصتنا بين الثواب الروحي للعطاء والميزات الجذابة التي تجعل العمل الخيري ذا معنى ومجزٍ',
@@ -148,15 +130,6 @@ const translations = {
     'sign_out': 'تسجيل الخروج'
   },
   fr: {
-    // Header
-    'membership': 'Adhésion',
-    'sadaqah_coins': 'Pièces Sadaqah',
-    'my_jannah': 'Mon Jannah',
-    'leaderboards': 'Classements',
-    'upgrade_to_premium': 'Passer à Premium',
-    'sign_in_to_participate': 'Connectez-vous pour participer',
-    'become_member': 'Devenir Membre',
-    
     // Home page
     'why_choose_donate': 'Pourquoi choisir Donner fait du bien ?',
     'platform_description': 'Notre plateforme combine la récompense spirituelle du don avec des fonctionnalités engageantes qui rendent la charité significative et gratifiante',
@@ -211,15 +184,6 @@ const translations = {
     'sign_out': 'Déconnexion'
   },
   ur: {
-    // Header
-    'membership': 'رکنیت',
-    'sadaqah_coins': 'صدقہ کوائنز',
-    'my_jannah': 'میری جنت',
-    'leaderboards': 'لیڈر بورڈز',
-    'upgrade_to_premium': 'پریمیم میں اپگریڈ کریں',
-    'sign_in_to_participate': 'حصہ لینے کے لیے سائن ان کریں',
-    'become_member': 'ممبر بنیں',
-    
     // Home page
     'why_choose_donate': 'ڈونیٹ فیلز گریٹ کیوں منتخب کریں؟',
     'platform_description': 'ہمارا پلیٹ فارم دینے کے روحانی اجر کو دلچسپ خصوصیات کے ساتھ ملاتا ہے جو خیرات کو بامعنی اور فائدہ مند بناتا ہے',
@@ -274,15 +238,6 @@ const translations = {
     'sign_out': 'سائن آؤٹ'
   },
   tr: {
-    // Header
-    'membership': 'Üyelik',
-    'sadaqah_coins': 'Sadaka Coinleri',
-    'my_jannah': 'Cennetim',
-    'leaderboards': 'Lider Tabloları',
-    'upgrade_to_premium': 'Premium\'a Yükseltin',
-    'sign_in_to_participate': 'Katılmak için Giriş Yapın',
-    'become_member': 'Üye Ol',
-    
     // Home page
     'why_choose_donate': 'Neden Bağış Yapmak Harika Hissettiriyor?',
     'platform_description': 'Platformumuz vermenin manevi ödülünü, hayırseverliği anlamlı ve ödüllendirici kılan ilgi çekici özelliklerle birleştirir',
