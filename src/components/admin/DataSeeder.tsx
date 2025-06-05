@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -121,42 +120,24 @@ const DataSeeder = () => {
         partner_slug: 'islamicrelief',
         commission_rate: 0.05,
         is_active: true,
-        partnership_type: 'premium',
-        monthly_fee: 199.99,
-        features_enabled: {
-          customBranding: true,
-          advancedAnalytics: true,
-          emailMarketing: true,
-          prioritySupport: true
-        }
+        monthly_spend_limit: 10000,
+        ad_spend_budget: 5000
       },
       {
         charity_id: charities[1].id, // Water Wells
         partner_slug: 'waterwells',
         commission_rate: 0.05,
         is_active: true,
-        partnership_type: 'standard',
-        monthly_fee: 99.99,
-        features_enabled: {
-          customBranding: true,
-          advancedAnalytics: false,
-          emailMarketing: true,
-          prioritySupport: false
-        }
+        monthly_spend_limit: 8000,
+        ad_spend_budget: 3000
       },
       {
         charity_id: charities[2].id, // Hope Orphanage
         partner_slug: 'hopeorphanage',
         commission_rate: 0.05,
         is_active: true,
-        partnership_type: 'standard',
-        monthly_fee: 99.99,
-        features_enabled: {
-          customBranding: true,
-          advancedAnalytics: false,
-          emailMarketing: true,
-          prioritySupport: false
-        }
+        monthly_spend_limit: 6000,
+        ad_spend_budget: 2000
       }
     ];
 
