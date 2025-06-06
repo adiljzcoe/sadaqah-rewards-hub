@@ -22,6 +22,7 @@ import DuasLibrary from "./pages/DuasLibrary";
 import LiveFeed from "./pages/LiveFeed";
 import RamadanCalendar from "./pages/RamadanCalendar";
 import IslamicCalendar from "./pages/IslamicCalendar";
+import IslamicHistory from "./pages/IslamicHistory";
 import SadaqahCoins from "./pages/SadaqahCoins";
 import WaterWells from "./pages/WaterWells";
 import Orphanages from "./pages/Orphanages";
@@ -81,6 +82,7 @@ function App() {
                 <Route path="/live-feed" element={<LiveFeed />} />
                 <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
                 <Route path="/islamic-calendar" element={<IslamicCalendar />} />
+                <Route path="/islamic-history" element={<IslamicHistory />} />
                 <Route path="/sadaqah-coins" element={<SadaqahCoins />} />
                 <Route path="/water-wells" element={<WaterWells />} />
                 <Route path="/orphanages" element={<Orphanages />} />
