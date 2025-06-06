@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -52,6 +51,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import MasjidManagement from "./pages/MasjidManagement";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import BusinessLeagues from "./pages/BusinessLeagues";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -110,6 +110,7 @@ function App() {
                 <Route path="/push-test" element={<PushNotificationTest />} />
                 <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/masjid-management" element={<ProtectedRoute><MasjidManagement /></ProtectedRoute>} />
+                <Route path="/business-leagues" element={<BusinessLeagues />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
