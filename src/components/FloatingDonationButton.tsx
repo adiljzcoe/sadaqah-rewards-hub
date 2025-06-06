@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, Pause, Play } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import PixarHeartMascot from './PixarHeartMascot';
 import CoinAnimation from './CoinAnimation';
@@ -18,7 +18,6 @@ const FloatingDonationButton = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   
   const dragStartRef = useRef({ x: 0, y: 0 });
   const dragCurrentRef = useRef({ x: 0, y: 0 });
@@ -45,16 +44,16 @@ const FloatingDonationButton = () => {
     'Be their guardian angel! 😇'
   ];
 
-  // Slower message rotation - every 4 seconds instead of 3, and only if not paused
+  // Slower message rotation - every 4 seconds instead of 3
   useEffect(() => {
-    if (showCallToAction && !isPaused) {
+    if (showCallToAction) {
       const interval = setInterval(() => {
         setMessageIndex((prevIndex) => (prevIndex + 1) % encouragingMessages.length);
       }, 4000); // Slower rotation
 
       return () => clearInterval(interval);
     }
-  }, [showCallToAction, isPaused, encouragingMessages.length]);
+  }, [showCallToAction, encouragingMessages.length]);
 
   // Update current message when index changes
   useEffect(() => {
@@ -62,16 +61,14 @@ const FloatingDonationButton = () => {
   }, [messageIndex, encouragingMessages]);
 
   useEffect(() => {
-    // Simulate a call to action after 3 seconds (faster to show 7x message), but only if not paused
+    // Simulate a call to action after 3 seconds (faster to show 7x message)
     const timer = setTimeout(() => {
-      if (!isPaused) {
-        setShowCallToAction(true);
-        setCurrentMessage(encouragingMessages[0]); // Start with first 7x message
-      }
+      setShowCallToAction(true);
+      setCurrentMessage(encouragingMessages[0]); // Start with first 7x message
     }, 3000); // Reduced from 5 seconds
 
     return () => clearTimeout(timer);
-  }, [encouragingMessages, isPaused]);
+  }, [encouragingMessages]);
 
   // Reset heart animation trigger
   useEffect(() => {
@@ -188,13 +185,6 @@ const FloatingDonationButton = () => {
     setIsStickyWidgetActive(!isStickyWidgetActive);
   };
 
-  const togglePause = () => {
-    setIsPaused(!isPaused);
-    if (isPaused) {
-      setShowCallToAction(true);
-    }
-  };
-
   if (!isVisible) return null;
 
   return (
@@ -295,27 +285,8 @@ const FloatingDonationButton = () => {
           />
         </div>
 
-        {/* Pause button - smaller on mobile */}
-        <div className="absolute -top-2 -right-2 z-30">
-          <Button
-            variant="outline"
-            size="icon"
-            className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/90 hover:bg-white border-2 border-gray-300 shadow-lg"
-            onClick={(e) => {
-              e.stopPropagation();
-              togglePause();
-            }}
-          >
-            {isPaused ? (
-              <Play className="h-2 w-2 md:h-3 md:w-3 text-green-600" />
-            ) : (
-              <Pause className="h-2 w-2 md:h-3 md:w-3 text-orange-600" />
-            )}
-          </Button>
-        </div>
-
         {/* Message positioned closer - smaller on mobile */}
-        {showCallToAction && !isPaused && (
+        {showCallToAction && (
           <div className={`absolute z-60 ${
             isStickyWidgetActive 
               ? 'top-12 -left-12 md:-top-8 md:-left-20' 
@@ -443,13 +414,10 @@ const FloatingDonationButton = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           className={`relative w-28 h-28 md:w-40 md:h-40 cursor-pointer transition-all duration-300 group touch-none ${
-            showCallToAction && !isDragging && !isPaused 
+            showCallToAction && !isDragging 
               ? 'mascot-mobile md:mascot-desktop' 
               : ''
           }`}
-          style={{
-            // Remove inline animation to use CSS classes instead
-          }}
         >
           {/* Heart Mascot - Base layer */}
           <div className="absolute inset-0 z-10">
