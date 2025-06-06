@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, BookOpen, Heart, Clock, Moon, Sparkles, Plus } from 'lucide-react';
+import { Star, BookOpen, Heart, Clock, Moon, Sparkles, Plus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -135,6 +136,14 @@ const SpiritualActivitiesMenu = () => {
             >
               <Moon className="h-5 w-5 mr-3" />
               <span className="text-sm">View My Jannah</span>
+            </Link>
+            <Link
+              to="/my-ummah"
+              onClick={handleLinkClick}
+              className="flex items-center p-3 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
+            >
+              <Users className="h-5 w-5 mr-3" />
+              <span className="text-sm">My Ummah</span>
             </Link>
             <Link
               to="/leaderboards"
