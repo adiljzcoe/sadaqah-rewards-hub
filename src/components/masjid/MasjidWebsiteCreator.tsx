@@ -11,6 +11,7 @@ import { useMasjidManagement } from '@/hooks/useMasjidManagement';
 
 const MasjidWebsiteCreator = () => {
   const { userMasjidRole, createMasjidWebsite } = useMasjidManagement();
+  const [selectedTheme, setSelectedTheme] = useState('traditional-green');
   const [formData, setFormData] = useState({
     subdomain_slug: '',
     custom_domain: '',
@@ -27,6 +28,87 @@ const MasjidWebsiteCreator = () => {
       font_family: 'Inter'
     }
   });
+
+  const classicThemes = [
+    {
+      id: 'traditional-green',
+      name: 'Traditional Green',
+      description: 'Classic Islamic green with gold accents',
+      primary_color: '#059669',
+      secondary_color: '#D97706',
+      accent_color: '#065F46',
+      text_color: '#1F2937',
+      background: 'linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%)',
+      preview: 'bg-gradient-to-br from-green-50 to-green-100'
+    },
+    {
+      id: 'elegant-blue',
+      name: 'Elegant Blue',
+      description: 'Deep blue inspired by Islamic art',
+      primary_color: '#1E40AF',
+      secondary_color: '#DC2626',
+      accent_color: '#1E3A8A',
+      text_color: '#1F2937',
+      background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+      preview: 'bg-gradient-to-br from-blue-50 to-blue-100'
+    },
+    {
+      id: 'madinah-cream',
+      name: 'Madinah Cream',
+      description: 'Warm cream and brown tones',
+      primary_color: '#92400E',
+      secondary_color: '#059669',
+      accent_color: '#78350F',
+      text_color: '#1C1917',
+      background: 'linear-gradient(135deg, #FEF7ED 0%, #FED7AA 100%)',
+      preview: 'bg-gradient-to-br from-orange-50 to-orange-100'
+    },
+    {
+      id: 'royal-purple',
+      name: 'Royal Purple',
+      description: 'Regal purple with golden highlights',
+      primary_color: '#7C3AED',
+      secondary_color: '#F59E0B',
+      accent_color: '#5B21B6',
+      text_color: '#1F2937',
+      background: 'linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%)',
+      preview: 'bg-gradient-to-br from-purple-50 to-purple-100'
+    },
+    {
+      id: 'desert-sand',
+      name: 'Desert Sand',
+      description: 'Warm sand colors with teal accents',
+      primary_color: '#D97706',
+      secondary_color: '#0D9488',
+      accent_color: '#92400E',
+      text_color: '#1C1917',
+      background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+      preview: 'bg-gradient-to-br from-yellow-50 to-yellow-100'
+    },
+    {
+      id: 'makkah-black',
+      name: 'Makkah Black',
+      description: 'Elegant black and gold combination',
+      primary_color: '#1F2937',
+      secondary_color: '#F59E0B',
+      accent_color: '#111827',
+      text_color: '#F9FAFB',
+      background: 'linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%)',
+      preview: 'bg-gradient-to-br from-gray-900 to-black'
+    }
+  ];
+
+  const handleThemeSelect = (theme: any) => {
+    setSelectedTheme(theme.id);
+    setFormData({
+      ...formData,
+      theme_settings: {
+        primary_color: theme.primary_color,
+        secondary_color: theme.secondary_color,
+        font_family: 'Inter'
+      }
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +150,7 @@ const MasjidWebsiteCreator = () => {
             </TabsTrigger>
             <TabsTrigger value="design" className="flex items-center gap-2">
               <Palette className="h-4 w-4" />
-              Design
+              Design & Themes
             </TabsTrigger>
             <TabsTrigger value="advanced" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -196,67 +278,106 @@ const MasjidWebsiteCreator = () => {
           <TabsContent value="design">
             <Card>
               <CardHeader>
-                <CardTitle>Website Design</CardTitle>
+                <CardTitle>Classic Islamic Themes</CardTitle>
+                <p className="text-sm text-gray-600">Choose from our collection of beautiful Arabic and Islamic-inspired designs</p>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="primary_color">Primary Color</Label>
-                    <div className="flex gap-2 mt-1">
-                      <Input
-                        id="primary_color"
-                        type="color"
-                        value={formData.theme_settings.primary_color}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          theme_settings: {
-                            ...formData.theme_settings,
-                            primary_color: e.target.value
-                          }
-                        })}
-                        className="w-16 h-10"
-                      />
-                      <Input
-                        value={formData.theme_settings.primary_color}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          theme_settings: {
-                            ...formData.theme_settings,
-                            primary_color: e.target.value
-                          }
-                        })}
-                        placeholder="#059669"
-                      />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {classicThemes.map((theme) => (
+                    <div
+                      key={theme.id}
+                      className={`relative cursor-pointer rounded-lg border-2 transition-all duration-200 ${
+                        selectedTheme === theme.id 
+                          ? 'border-blue-500 shadow-lg' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => handleThemeSelect(theme)}
+                    >
+                      <div className={`h-24 ${theme.preview} rounded-t-lg relative overflow-hidden`}>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+                        <div className="absolute top-2 left-2 w-3 h-3 rounded-full" style={{ backgroundColor: theme.primary_color }}></div>
+                        <div className="absolute top-2 right-2 w-3 h-3 rounded-full" style={{ backgroundColor: theme.secondary_color }}></div>
+                        <div className="absolute bottom-2 left-2 right-2 h-1 rounded-full bg-white/30"></div>
+                      </div>
+                      <div className="p-3">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className="font-semibold text-sm">{theme.name}</h4>
+                          {selectedTheme === theme.id && (
+                            <Check className="h-4 w-4 text-blue-500" />
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-600">{theme.description}</p>
+                        <div className="flex gap-1 mt-2">
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.primary_color }}></div>
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.secondary_color }}></div>
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.accent_color }}></div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
 
-                  <div>
-                    <Label htmlFor="secondary_color">Secondary Color</Label>
-                    <div className="flex gap-2 mt-1">
-                      <Input
-                        id="secondary_color"
-                        type="color"
-                        value={formData.theme_settings.secondary_color}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          theme_settings: {
-                            ...formData.theme_settings,
-                            secondary_color: e.target.value
-                          }
-                        })}
-                        className="w-16 h-10"
-                      />
-                      <Input
-                        value={formData.theme_settings.secondary_color}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          theme_settings: {
-                            ...formData.theme_settings,
-                            secondary_color: e.target.value
-                          }
-                        })}
-                        placeholder="#0891b2"
-                      />
+                <div className="border-t pt-6">
+                  <h4 className="font-semibold mb-4">Custom Colors</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <Label htmlFor="primary_color">Primary Color</Label>
+                      <div className="flex gap-2 mt-1">
+                        <Input
+                          id="primary_color"
+                          type="color"
+                          value={formData.theme_settings.primary_color}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            theme_settings: {
+                              ...formData.theme_settings,
+                              primary_color: e.target.value
+                            }
+                          })}
+                          className="w-16 h-10"
+                        />
+                        <Input
+                          value={formData.theme_settings.primary_color}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            theme_settings: {
+                              ...formData.theme_settings,
+                              primary_color: e.target.value
+                            }
+                          })}
+                          placeholder="#059669"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="secondary_color">Secondary Color</Label>
+                      <div className="flex gap-2 mt-1">
+                        <Input
+                          id="secondary_color"
+                          type="color"
+                          value={formData.theme_settings.secondary_color}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            theme_settings: {
+                              ...formData.theme_settings,
+                              secondary_color: e.target.value
+                            }
+                          })}
+                          className="w-16 h-10"
+                        />
+                        <Input
+                          value={formData.theme_settings.secondary_color}
+                          onChange={(e) => setFormData({
+                            ...formData,
+                            theme_settings: {
+                              ...formData.theme_settings,
+                              secondary_color: e.target.value
+                            }
+                          })}
+                          placeholder="#0891b2"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
