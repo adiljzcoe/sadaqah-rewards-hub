@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 import {
   Sheet,
   SheetContent,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
