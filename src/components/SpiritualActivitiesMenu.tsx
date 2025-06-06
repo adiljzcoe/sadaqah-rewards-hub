@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, BookOpen, Heart, Clock, Moon, Sparkles, X, Plus } from 'lucide-react';
+import { Star, BookOpen, Heart, Clock, Moon, Sparkles, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Sheet,
@@ -47,18 +47,6 @@ const SpiritualActivitiesMenu = () => {
         </div>
       </SheetTrigger>
       <SheetContent side="left" className="w-80 p-0 bg-gradient-to-br from-emerald-900 via-green-900 to-teal-900 flex flex-col h-full [&>button]:hidden">
-        
-        {/* Floating Close Button - Top Right */}
-        <div className="absolute top-2 right-2 z-50">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setOpen(false)}
-            className="w-8 h-8 rounded-full bg-black/20 hover:bg-black/30 backdrop-blur-sm border border-white/20 hover:border-white/40 transition-all duration-200 hover:scale-105 shadow-md"
-          >
-            <X className="h-4 w-4 text-white/90" />
-          </Button>
-        </div>
         
         {/* Scrollable Content Area */}
         <div className="overflow-y-auto p-4 space-y-4 h-full">
