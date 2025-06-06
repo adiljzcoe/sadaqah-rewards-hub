@@ -50,6 +50,7 @@ export interface MasjidEvent {
   is_recurring: boolean;
   recurrence_pattern?: string;
   is_published: boolean;
+  created_by?: string;
 }
 
 export const useMasjidManagement = () => {
