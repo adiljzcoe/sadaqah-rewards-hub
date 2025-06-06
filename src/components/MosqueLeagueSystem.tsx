@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +15,8 @@ import {
   ArrowDown,
   Heart,
   Medal,
-  Star
+  Star,
+  Fixture
 } from 'lucide-react';
 import { 
   getSportsStandingsBySport,
@@ -26,6 +26,7 @@ import {
   type MosqueCharityStanding,
   type MosqueTeam
 } from '@/utils/mosqueLeagues';
+import MosqueFixtureSystem from './MosqueFixtureSystem';
 
 const MosqueLeagueSystem = () => {
   const [activeTab, setActiveTab] = useState('football');
@@ -69,10 +70,10 @@ const MosqueLeagueSystem = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-orange-500" />
-          {sport === 'football' ? '⚽ Football' : '🏏 Cricket'} League Table
+          {sport === 'football' ? '⚽ Football' : '🏏 Cricket'} National League
         </CardTitle>
         <p className="text-sm text-gray-600">
-          Free entry • Community competition • Sports performance based
+          Free entry • Round-robin format • Every team plays every other team
         </p>
       </CardHeader>
       <CardContent>
@@ -216,7 +217,7 @@ const MosqueLeagueSystem = () => {
 
       {/* Main League Tables */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="football" className="flex items-center gap-2">
             ⚽ Football League
           </TabsTrigger>
@@ -225,6 +226,9 @@ const MosqueLeagueSystem = () => {
           </TabsTrigger>
           <TabsTrigger value="charity" className="flex items-center gap-2">
             💰 Charity League
+          </TabsTrigger>
+          <TabsTrigger value="fixtures" className="flex items-center gap-2">
+            📅 Fixtures
           </TabsTrigger>
         </TabsList>
 
@@ -238,6 +242,10 @@ const MosqueLeagueSystem = () => {
 
         <TabsContent value="charity" className="space-y-4">
           <CharityLeagueTable standings={charityStandings} />
+        </TabsContent>
+
+        <TabsContent value="fixtures" className="space-y-4">
+          <MosqueFixtureSystem />
         </TabsContent>
       </Tabs>
 
@@ -255,10 +263,10 @@ const MosqueLeagueSystem = () => {
               <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Trophy className="h-6 w-6 text-orange-500" />
               </div>
-              <h3 className="font-semibold mb-2">Free Sports Leagues</h3>
+              <h3 className="font-semibold mb-2">Free National Leagues</h3>
               <p className="text-sm text-gray-600">
                 Register your mosque/madrassah teams for football and cricket. 
-                Completely free entry with traditional league tables based on match results.
+                Completely free entry with round-robin format where every team plays every other team.
               </p>
             </div>
             
