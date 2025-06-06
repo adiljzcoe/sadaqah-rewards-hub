@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import MyJannah from "./pages/MyJannah";
 import MyUmmah from "./pages/MyUmmah";
+import MyMasjid from "./pages/MyMasjid";
 import Leaderboards from "./pages/Leaderboards";
 import QuranReader from "./pages/QuranReader";
 import NamazTimes from "./pages/NamazTimes";
@@ -69,6 +70,7 @@ function App() {
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/my-jannah" element={<ProtectedRoute><MyJannah /></ProtectedRoute>} />
                 <Route path="/my-ummah" element={<ProtectedRoute><MyUmmah /></ProtectedRoute>} />
+                <Route path="/my-masjid" element={<ProtectedRoute><MyMasjid /></ProtectedRoute>} />
                 <Route path="/leaderboards" element={<Leaderboards />} />
                 <Route path="/quran-reader" element={<QuranReader />} />
                 <Route path="/namaz-times" element={<NamazTimes />} />
