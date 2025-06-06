@@ -318,17 +318,17 @@ const FloatingDonationButton = () => {
             animation: 'shimmer 4s ease-in-out infinite'
           }}>
             
-            {/* Close button */}
+            {/* Close button - smaller size */}
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-1 right-1 z-20 w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 transition-all duration-200"
+              className="absolute top-1 right-1 z-20 w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 transition-all duration-200"
               onClick={(e) => {
                 e.stopPropagation();
                 setIsExpanded(false);
               }}
             >
-              <X className="h-3 w-3 text-white" />
+              <X className="h-2.5 w-2.5 text-white" />
             </Button>
             
             {/* Glassmorphism overlay */}
