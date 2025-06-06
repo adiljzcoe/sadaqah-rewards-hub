@@ -47,53 +47,61 @@ const CoinMesh = () => {
 
   return (
     <group>
-      {/* Main coin body - More golden */}
+      {/* Main coin body - Pure Gold */}
       <mesh ref={meshRef}>
         <cylinderGeometry args={[1, 1, 0.25, 64]} />
         <meshPhysicalMaterial
           color="#FFD700"
-          metalness={0.95}
-          roughness={0.05}
+          metalness={0.98}
+          roughness={0.02}
           clearcoat={1.0}
-          clearcoatRoughness={0.05}
+          clearcoatRoughness={0.01}
           reflectivity={1.0}
+          emissive="#FFD700"
+          emissiveIntensity={0.1}
         />
       </mesh>
 
-      {/* Coin edge with detailed ridging - More golden */}
+      {/* Coin edge with detailed ridging - Rich Gold */}
       <mesh ref={edgeRef}>
         <torusGeometry args={[1, 0.15, 16, 64]} />
         <meshPhysicalMaterial
-          color="#DAA520"
-          metalness={0.9}
-          roughness={0.1}
+          color="#B8860B"
+          metalness={0.95}
+          roughness={0.05}
           clearcoat={0.9}
+          emissive="#B8860B"
+          emissiveIntensity={0.05}
         />
       </mesh>
 
-      {/* Inner decorative ring - Enhanced gold */}
+      {/* Inner decorative ring - Bright Gold */}
       <mesh position={[0, 0.13, 0]}>
         <cylinderGeometry args={[0.8, 0.8, 0.02, 64]} />
         <meshPhysicalMaterial
-          color="#FFD700"
-          metalness={0.98}
-          roughness={0.02}
+          color="#FFDF00"
+          metalness={0.99}
+          roughness={0.01}
           clearcoat={1.0}
+          emissive="#FFDF00"
+          emissiveIntensity={0.08}
         />
       </mesh>
 
-      {/* Bottom inner ring - Enhanced gold */}
+      {/* Bottom inner ring - Bright Gold */}
       <mesh position={[0, -0.13, 0]}>
         <cylinderGeometry args={[0.8, 0.8, 0.02, 64]} />
         <meshPhysicalMaterial
-          color="#FFD700"
-          metalness={0.98}
-          roughness={0.02}
+          color="#FFDF00"
+          metalness={0.99}
+          roughness={0.01}
           clearcoat={1.0}
+          emissive="#FFDF00"
+          emissiveIntensity={0.08}
         />
       </mesh>
 
-      {/* Premium shine effect */}
+      {/* Premium shine effect - Golden glow */}
       <mesh ref={shineRef} position={[0, 0.14, 0]}>
         <cylinderGeometry args={[0.6, 0.6, 0.01, 32]} />
         <meshPhysicalMaterial
@@ -104,83 +112,111 @@ const CoinMesh = () => {
           opacity={0.8}
           clearcoat={1.0}
           emissive="#FFFACD"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.3}
         />
       </mesh>
 
-      {/* Cloud shape in center - Platinum shining */}
+      {/* Cloud shape in center - Main body (Platinum) */}
       <mesh ref={cloudRef} position={[0, 0.15, 0]}>
-        {/* Main cloud body */}
-        <sphereGeometry args={[0.15, 16, 16]} />
+        <sphereGeometry args={[0.18, 16, 16]} />
+        <meshPhysicalMaterial
+          color="#E5E4E2"
+          metalness={0.95}
+          roughness={0.05}
+          clearcoat={1.0}
+          emissive="#E5E4E2"
+          emissiveIntensity={0.4}
+          transparent
+          opacity={0.95}
+        />
+      </mesh>
+
+      {/* Cloud puffs - Left side */}
+      <mesh position={[-0.15, 0.15, 0]}>
+        <sphereGeometry args={[0.1, 12, 12]} />
         <meshPhysicalMaterial
           color="#E5E4E2"
           metalness={0.9}
           roughness={0.1}
-          clearcoat={1.0}
+          clearcoat={0.9}
           emissive="#E5E4E2"
-          emissiveIntensity={0.3}
+          emissiveIntensity={0.25}
           transparent
-          opacity={0.9}
+          opacity={0.85}
         />
       </mesh>
 
-      {/* Cloud puffs - Left */}
-      <mesh position={[-0.12, 0.15, 0]}>
-        <sphereGeometry args={[0.08, 12, 12]} />
+      {/* Cloud puffs - Right side */}
+      <mesh position={[0.15, 0.15, 0]}>
+        <sphereGeometry args={[0.1, 12, 12]} />
         <meshPhysicalMaterial
           color="#E5E4E2"
-          metalness={0.85}
-          roughness={0.15}
+          metalness={0.9}
+          roughness={0.1}
           clearcoat={0.9}
           emissive="#E5E4E2"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.25}
           transparent
-          opacity={0.8}
-        />
-      </mesh>
-
-      {/* Cloud puffs - Right */}
-      <mesh position={[0.12, 0.15, 0]}>
-        <sphereGeometry args={[0.08, 12, 12]} />
-        <meshPhysicalMaterial
-          color="#E5E4E2"
-          metalness={0.85}
-          roughness={0.15}
-          clearcoat={0.9}
-          emissive="#E5E4E2"
-          emissiveIntensity={0.2}
-          transparent
-          opacity={0.8}
+          opacity={0.85}
         />
       </mesh>
 
       {/* Cloud puffs - Top */}
-      <mesh position={[0, 0.22, 0]}>
-        <sphereGeometry args={[0.06, 10, 10]} />
+      <mesh position={[0, 0.25, 0]}>
+        <sphereGeometry args={[0.08, 10, 10]} />
         <meshPhysicalMaterial
           color="#E5E4E2"
-          metalness={0.8}
-          roughness={0.2}
+          metalness={0.85}
+          roughness={0.15}
           clearcoat={0.8}
           emissive="#E5E4E2"
-          emissiveIntensity={0.15}
+          emissiveIntensity={0.2}
           transparent
-          opacity={0.7}
+          opacity={0.75}
         />
       </mesh>
 
       {/* Cloud puffs - Bottom */}
-      <mesh position={[0, 0.08, 0]}>
-        <sphereGeometry args={[0.06, 10, 10]} />
+      <mesh position={[0, 0.05, 0]}>
+        <sphereGeometry args={[0.08, 10, 10]} />
+        <meshPhysicalMaterial
+          color="#E5E4E2"
+          metalness={0.85}
+          roughness={0.15}
+          clearcoat={0.8}
+          emissive="#E5E4E2"
+          emissiveIntensity={0.2}
+          transparent
+          opacity={0.75}
+        />
+      </mesh>
+
+      {/* Additional cloud wisps for more cloud-like appearance */}
+      <mesh position={[-0.08, 0.22, 0]}>
+        <sphereGeometry args={[0.05, 8, 8]} />
         <meshPhysicalMaterial
           color="#E5E4E2"
           metalness={0.8}
           roughness={0.2}
-          clearcoat={0.8}
+          clearcoat={0.7}
           emissive="#E5E4E2"
           emissiveIntensity={0.15}
           transparent
-          opacity={0.7}
+          opacity={0.6}
+        />
+      </mesh>
+
+      <mesh position={[0.08, 0.22, 0]}>
+        <sphereGeometry args={[0.05, 8, 8]} />
+        <meshPhysicalMaterial
+          color="#E5E4E2"
+          metalness={0.8}
+          roughness={0.2}
+          clearcoat={0.7}
+          emissive="#E5E4E2"
+          emissiveIntensity={0.15}
+          transparent
+          opacity={0.6}
         />
       </mesh>
     </group>
@@ -198,6 +234,7 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({
       style={{ width: size, height: size }}
     >
       <Canvas
+        key={Date.now()} // Force remount to ensure changes take effect
         camera={{ position: [0, 0, 4], fov: 45 }}
         style={{ width: '100%', height: '100%' }}
         gl={{ 
@@ -207,12 +244,12 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({
         }}
       >
         {/* Enhanced lighting setup for premium gold look */}
-        <ambientLight intensity={0.4} color="#FFF8DC" />
+        <ambientLight intensity={0.5} color="#FFF8DC" />
         
         {/* Key light - Warmer for gold */}
         <directionalLight 
           position={[5, 5, 5]} 
-          intensity={1.5} 
+          intensity={1.8} 
           color="#FFFACD"
           castShadow
         />
@@ -220,28 +257,28 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({
         {/* Fill light - Golden */}
         <directionalLight 
           position={[-3, -3, 3]} 
-          intensity={0.8} 
+          intensity={1.0} 
           color="#FFD700"
         />
         
         {/* Rim light for edge definition */}
         <pointLight 
           position={[0, 0, -5]} 
-          intensity={1.0} 
+          intensity={1.2} 
           color="#FFF8DC"
         />
         
-        {/* Warm accent light for platinum cloud */}
+        {/* Platinum accent light for cloud */}
         <pointLight 
           position={[3, -2, 2]} 
-          intensity={0.6} 
+          intensity={0.8} 
           color="#E5E4E2"
         />
 
         {/* Additional light for cloud shimmer */}
         <pointLight 
           position={[0, 3, 1]} 
-          intensity={0.4} 
+          intensity={0.6} 
           color="#FFFFFF"
         />
 
