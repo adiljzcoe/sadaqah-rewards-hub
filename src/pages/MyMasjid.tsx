@@ -1,10 +1,10 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Building, 
   Users, 
@@ -18,25 +18,93 @@ import {
   TrendingUp,
   Award,
   Target,
-  Share2
+  Share2,
+  Code
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import UserMasjidDashboard from '@/components/UserMasjidDashboard';
 
 const MyMasjid = () => {
-  // Mock data for demonstration
-  const userMasjid = {
-    id: '1',
-    name: 'Central London Mosque',
-    location: 'London, UK',
-    verified: true,
-    description: 'A vibrant community mosque serving the heart of London with daily prayers, educational programs, and community services.',
-    memberCount: 247,
-    weeklyEvents: 12,
-    monthlyKhutbahs: 4,
-    activeServices: 8
+  // Mock data for different masjids
+  const masjidExamples = {
+    'central-london': {
+      id: '1',
+      name: 'Central London Mosque',
+      location: 'London, UK',
+      verified: true,
+      description: 'A vibrant community mosque serving the heart of London with daily prayers, educational programs, and community services.',
+      memberCount: 247,
+      weeklyEvents: 12,
+      monthlyKhutbahs: 4,
+      activeServices: 8,
+      theme: 'traditional-green'
+    },
+    'al-noor-birmingham': {
+      id: '2',
+      name: 'Al-Noor Mosque Birmingham',
+      location: 'Birmingham, UK',
+      verified: true,
+      description: 'Established in 1985, Al-Noor serves the diverse Muslim community of Birmingham with comprehensive Islamic education and community outreach programs.',
+      memberCount: 342,
+      weeklyEvents: 18,
+      monthlyKhutbahs: 6,
+      activeServices: 12,
+      theme: 'elegant-blue'
+    },
+    'masjid-ibrahim': {
+      id: '3',
+      name: 'Masjid Ibrahim',
+      location: 'Manchester, UK',
+      verified: false,
+      description: 'A growing community mosque dedicated to serving families with children\'s programs, elderly care, and interfaith dialogue initiatives.',
+      memberCount: 156,
+      weeklyEvents: 8,
+      monthlyKhutbahs: 4,
+      activeServices: 6,
+      theme: 'madinah-cream'
+    },
+    'green-lane-masjid': {
+      id: '4',
+      name: 'Green Lane Masjid',
+      location: 'Leeds, UK',
+      verified: true,
+      description: 'Known for its beautiful Islamic architecture and strong focus on youth development, Quran memorization, and community welfare programs.',
+      memberCount: 428,
+      weeklyEvents: 22,
+      monthlyKhutbahs: 8,
+      activeServices: 15,
+      theme: 'royal-purple'
+    },
+    'baitul-futuh': {
+      id: '5',
+      name: 'Baitul Futuh Mosque',
+      location: 'Surrey, UK',
+      verified: true,
+      description: 'One of the largest mosques in Western Europe, offering extensive facilities for worship, education, sports, and community events.',
+      memberCount: 892,
+      weeklyEvents: 35,
+      monthlyKhutbahs: 12,
+      activeServices: 20,
+      theme: 'desert-sand'
+    },
+    'east-london-mosque': {
+      id: '6',
+      name: 'East London Mosque',
+      location: 'Tower Hamlets, London',
+      verified: true,
+      description: 'Historic mosque serving the East London community since 1910, providing traditional Islamic education alongside modern community services.',
+      memberCount: 567,
+      weeklyEvents: 28,
+      monthlyKhutbahs: 10,
+      activeServices: 18,
+      theme: 'makkah-black'
+    }
   };
 
+  const [selectedMasjid, setSelectedMasjid] = useState('central-london');
+  const userMasjid = masjidExamples[selectedMasjid];
+
+  // Mock data for demonstration
   const upcomingEvents = [
     {
       id: '1',
@@ -98,6 +166,29 @@ const MyMasjid = () => {
       <Header />
       
       <div className="container mx-auto px-4 py-8">
+        {/* Dev Selector */}
+        <div className="mb-6 p-4 bg-gray-900 rounded-lg">
+          <div className="flex items-center gap-3 mb-3">
+            <Code className="h-5 w-5 text-green-400" />
+            <h3 className="text-white font-semibold">Development Mode</h3>
+          </div>
+          <div className="flex items-center gap-4">
+            <label className="text-gray-300 text-sm">Select Masjid Example:</label>
+            <Select value={selectedMasjid} onValueChange={setSelectedMasjid}>
+              <SelectTrigger className="w-64 bg-gray-800 border-gray-700 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(masjidExamples).map(([key, masjid]) => (
+                  <SelectItem key={key} value={key}>
+                    {masjid.name} ({masjid.theme})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         {/* Hero Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
