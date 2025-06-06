@@ -1,11 +1,9 @@
-
 import React, { useState } from 'react';
 import { Heart, Users, Home, Droplets, GraduationCap, Cross, Filter, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 
 const palestineProducts = [
@@ -157,8 +155,6 @@ const DonateToPalestine = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50">
-      <Header />
-      
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 bg-gradient-to-r from-red-600 to-green-600 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>

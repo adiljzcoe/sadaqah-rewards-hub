@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/Header';
 import { Shield, TrendingUp, Heart, Users, Award, CheckCircle, Star, Globe } from 'lucide-react';
 
 const trustFactors = [
@@ -66,8 +64,6 @@ const distributionCriteria = [
 const WhyDonate = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-16">
