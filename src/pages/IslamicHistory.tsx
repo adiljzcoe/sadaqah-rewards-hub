@@ -12,7 +12,7 @@ import {
   Calendar, 
   Crown,
   Sword,
-  Mosque,
+  Building2,
   Scroll,
   Globe,
   Users,
@@ -75,7 +75,7 @@ const IslamicHistory = () => {
       description: "The first Muslim dynasty that spread Islam across three continents",
       keyEvents: [
         { year: "661 CE", event: "Muawiya establishes Umayyad rule", icon: <Crown className="h-4 w-4" /> },
-        { year: "691 CE", event: "Construction of Dome of the Rock", icon: <Mosque className="h-4 w-4" /> },
+        { year: "691 CE", event: "Construction of Dome of the Rock", icon: <Building2 className="h-4 w-4" /> },
         { year: "711 CE", event: "Muslim conquest of Iberia", icon: <Sword className="h-4 w-4" /> },
         { year: "732 CE", event: "Battle of Tours in France", icon: <MapPin className="h-4 w-4" /> }
       ],
@@ -92,7 +92,7 @@ const IslamicHistory = () => {
       description: "The intellectual and cultural zenith of Islamic civilization",
       keyEvents: [
         { year: "750 CE", event: "Abbasids overthrow Umayyads", icon: <Crown className="h-4 w-4" /> },
-        { year: "762 CE", event: "Foundation of Baghdad", icon: <Mosque className="h-4 w-4" /> },
+        { year: "762 CE", event: "Foundation of Baghdad", icon: <Building2 className="h-4 w-4" /> },
         { year: "830 CE", event: "House of Wisdom established", icon: <BookOpen className="h-4 w-4" /> },
         { year: "1258 CE", event: "Mongol invasion ends Abbasid rule", icon: <Sword className="h-4 w-4" /> }
       ],
@@ -104,12 +104,12 @@ const IslamicHistory = () => {
       id: 4,
       title: "Al-Andalus: Islamic Spain",
       period: "711 - 1492 CE",
-      icon: <Mosque className="h-6 w-6" />,
+      icon: <Building2 className="h-6 w-6" />,
       color: "from-red-400 to-orange-500",
       description: "The jewel of Islamic civilization in Europe",
       keyEvents: [
         { year: "711 CE", event: "Tariq ibn Ziyad crosses into Iberia", icon: <MapPin className="h-4 w-4" /> },
-        { year: "785 CE", event: "Construction of Córdoba Mosque begins", icon: <Mosque className="h-4 w-4" /> },
+        { year: "785 CE", event: "Construction of Córdoba Mosque begins", icon: <Building2 className="h-4 w-4" /> },
         { year: "1031 CE", event: "Fall of Córdoba Caliphate", icon: <Crown className="h-4 w-4" /> },
         { year: "1492 CE", event: "Fall of Granada, end of Muslim rule", icon: <Heart className="h-4 w-4" /> }
       ],
