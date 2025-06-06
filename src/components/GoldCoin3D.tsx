@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Mesh, MeshPhysicalMaterial } from 'three';
 
@@ -228,13 +228,53 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({
   className = "",
   children 
 }) => {
+  const [renderFallback, setRenderFallback] = useState(false);
+  const [canvasKey, setCanvasKey] = useState(0);
+
+  // Force re-render every few seconds to ensure updates are visible
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCanvasKey(prev => prev + 1);
+    }, 10000); // Re-render every 10 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Error boundary for 3D canvas
+  const handleCanvasError = () => {
+    console.log('3D Canvas error, rendering fallback');
+    setRenderFallback(true);
+  };
+
+  if (renderFallback) {
+    // Simple fallback coin
+    return (
+      <div 
+        className={`relative ${className}`}
+        style={{ width: size, height: size }}
+      >
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 shadow-lg flex items-center justify-center border-2 border-yellow-300">
+          <div className="w-3/4 h-3/4 rounded-full bg-gradient-to-br from-gray-300 via-gray-200 to-gray-100 flex items-center justify-center">
+            <div className="text-xs">☁</div>
+          </div>
+        </div>
+        {children && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-amber-900 font-bold drop-shadow-lg" 
+               style={{ fontSize: `${size * 0.25}px` }}>
+            {children}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div 
       className={`relative ${className}`}
       style={{ width: size, height: size }}
     >
       <Canvas
-        key={Date.now()} // Force remount to ensure changes take effect
+        key={`canvas-${canvasKey}-${Date.now()}`} // Force unique key for re-render
         camera={{ position: [0, 0, 4], fov: 45 }}
         style={{ width: '100%', height: '100%' }}
         gl={{ 
@@ -242,6 +282,7 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({
           alpha: true,
           powerPreference: "high-performance"
         }}
+        onError={handleCanvasError}
       >
         {/* Enhanced lighting setup for premium gold look */}
         <ambientLight intensity={0.5} color="#FFF8DC" />
