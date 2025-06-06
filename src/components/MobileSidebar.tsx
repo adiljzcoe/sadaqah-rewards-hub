@@ -236,7 +236,11 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
           
           {/* User Profile Section */}
           <div className="text-center">
-            <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-4 py-3 shadow-xl border border-yellow-300/50 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto">
+            <Link 
+              to="/profile" 
+              onClick={handleLinkClick}
+              className="block relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-4 py-3 shadow-xl border border-yellow-300/50 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto"
+            >
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl"></div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl"></div>
               
@@ -272,7 +276,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
               <div className="mt-3">
                 <Progress value={progress} className="h-2" />
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Checkout Section */}
