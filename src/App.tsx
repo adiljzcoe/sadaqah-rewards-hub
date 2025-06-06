@@ -6,7 +6,12 @@ import { CurrencyProvider } from '@/contexts/CurrencyContext';
 import { TranslationProvider } from '@/contexts/TranslationContext';
 import { CartProvider } from '@/hooks/useCart';
 import { Toaster } from '@/components/ui/toaster';
+import { Toaster as Sonner } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import FloatingDonationButton from '@/components/FloatingDonationButton';
+import SpiritualActivitiesMenu from '@/components/SpiritualActivitiesMenu';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
 import Profile from '@/pages/Profile';
@@ -59,54 +64,60 @@ function App() {
           <CurrencyProvider>
             <CartProvider>
               <Toaster />
-              <Router>
-                <div className="min-h-screen bg-background flex flex-col">
-                  <div className="flex-1">
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/auth" element={<Auth />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                      <Route path="/checkout" element={<Checkout />} />
-                      <Route path="/why-donate" element={<WhyDonate />} />
-                      <Route path="/live-feed" element={<LiveFeed />} />
-                      <Route path="/fundraising" element={<Fundraising />} />
-                      <Route path="/charity-partners" element={<CharityPartnersPublic />} />
-                      <Route path="/charity-partner-program" element={<CharityPartnerProgram />} />
-                      <Route path="/duas-library" element={<DuasLibrary />} />
-                      <Route path="/business-profile" element={<BusinessProfile />} />
-                      <Route path="/charity-profile" element={<CharityProfile />} />
-                      <Route path="/membership" element={<Membership />} />
-                      <Route path="/sadaqah-coins" element={<SadaqahCoins />} />
-                      <Route path="/masjid-community" element={<MasjidCommunity />} />
-                      <Route path="/my-ummah" element={<MyUmmah />} />
-                      <Route path="/leaderboards" element={<Leaderboards />} />
-                      <Route path="/islamic-calendar" element={<IslamicCalendar />} />
-                      <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
-                      <Route path="/adhan-community" element={<AdhanCommunity />} />
-                      <Route path="/live-tv" element={<LiveTV />} />
-                      <Route path="/dhikr-community" element={<DhikrCommunity />} />
-                      <Route path="/namaz-times" element={<NamazTimes />} />
-                      <Route path="/quran-reader" element={<QuranReader />} />
-                      <Route path="/zakat-calculator" element={<ZakatCalculator />} />
-                      <Route path="/dua-wall" element={<DuaWall />} />
-                      <Route path="/campaigns" element={<Campaigns />} />
-                      <Route path="/build-mosque" element={<BuildMosque />} />
-                      <Route path="/water-wells" element={<WaterWells />} />
-                      <Route path="/orphanages" element={<Orphanages />} />
-                      <Route path="/qurbani" element={<Qurbani />} />
-                      
-                      {/* Charity partner routes */}
-                      <Route path="/charity/:slug" element={<CharityPartnerPage />} />
-                      <Route path="/subdomain/:slug" element={<CharitySubdomainPage />} />
-                      
-                      {/* Catch-all route - must be last */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
+              <Sonner />
+              <TooltipProvider>
+                <Router>
+                  <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+                    <Header />
+                    <SpiritualActivitiesMenu />
+                    <main className="flex-1">
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/why-donate" element={<WhyDonate />} />
+                        <Route path="/live-feed" element={<LiveFeed />} />
+                        <Route path="/fundraising" element={<Fundraising />} />
+                        <Route path="/charity-partners" element={<CharityPartnersPublic />} />
+                        <Route path="/charity-partner-program" element={<CharityPartnerProgram />} />
+                        <Route path="/duas-library" element={<DuasLibrary />} />
+                        <Route path="/business-profile" element={<BusinessProfile />} />
+                        <Route path="/charity-profile" element={<CharityProfile />} />
+                        <Route path="/membership" element={<Membership />} />
+                        <Route path="/sadaqah-coins" element={<SadaqahCoins />} />
+                        <Route path="/masjid-community" element={<MasjidCommunity />} />
+                        <Route path="/my-ummah" element={<MyUmmah />} />
+                        <Route path="/leaderboards" element={<Leaderboards />} />
+                        <Route path="/islamic-calendar" element={<IslamicCalendar />} />
+                        <Route path="/ramadan-calendar" element={<RamadanCalendar />} />
+                        <Route path="/adhan-community" element={<AdhanCommunity />} />
+                        <Route path="/live-tv" element={<LiveTV />} />
+                        <Route path="/dhikr-community" element={<DhikrCommunity />} />
+                        <Route path="/namaz-times" element={<NamazTimes />} />
+                        <Route path="/quran-reader" element={<QuranReader />} />
+                        <Route path="/zakat-calculator" element={<ZakatCalculator />} />
+                        <Route path="/dua-wall" element={<DuaWall />} />
+                        <Route path="/campaigns" element={<Campaigns />} />
+                        <Route path="/build-mosque" element={<BuildMosque />} />
+                        <Route path="/water-wells" element={<WaterWells />} />
+                        <Route path="/orphanages" element={<Orphanages />} />
+                        <Route path="/qurbani" element={<Qurbani />} />
+                        
+                        {/* Charity partner routes */}
+                        <Route path="/charity/:slug" element={<CharityPartnerPage />} />
+                        <Route path="/subdomain/:slug" element={<CharitySubdomainPage />} />
+                        
+                        {/* Catch-all route - must be last */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </main>
+                    <Footer />
+                    <FloatingDonationButton />
                   </div>
-                  <Footer />
-                </div>
-              </Router>
+                </Router>
+              </TooltipProvider>
             </CartProvider>
           </CurrencyProvider>
         </TranslationProvider>
