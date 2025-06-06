@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift, Settings } from 'lucide-react';
+import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift, Settings, Sparkles, Moon, BookOpen, Users, Zap } from 'lucide-react';
 import GoldCoin3D from '@/components/GoldCoin3D';
 import ProjectContributions from '@/components/ProjectContributions';
 import CommunicationPreferences from '@/components/CommunicationPreferences';
@@ -31,6 +31,116 @@ const Profile = () => {
     rank: 15,
     city: "London",
     joinDate: "January 2024"
+  };
+
+  // Religious achievements and spiritual badges
+  const religiousAchievements = [
+    { 
+      id: 1,
+      name: "Salah Guardian", 
+      icon: "🕌", 
+      description: "Completed 5 daily prayers for 30 consecutive days",
+      earned: true,
+      earnedDate: "2024-01-15",
+      category: "Prayer",
+      rarity: "epic",
+      jannahPoints: 500,
+      gradient: "from-emerald-500 to-green-600"
+    },
+    { 
+      id: 2,
+      name: "Quran Companion", 
+      icon: "📖", 
+      description: "Read 10 pages of Quran daily for 7 days",
+      earned: true,
+      earnedDate: "2024-01-20",
+      category: "Quran",
+      rarity: "rare",
+      jannahPoints: 300,
+      gradient: "from-blue-500 to-indigo-600"
+    },
+    { 
+      id: 3,
+      name: "Dhikr Master", 
+      icon: "✨", 
+      description: "Completed 1000 Dhikr in community events",
+      earned: true,
+      earnedDate: "2024-01-25",
+      category: "Dhikr",
+      rarity: "legendary",
+      jannahPoints: 750,
+      gradient: "from-purple-500 to-pink-600"
+    },
+    { 
+      id: 4,
+      name: "Community Helper", 
+      icon: "🤝", 
+      description: "Checked in at 5 different mosques",
+      earned: true,
+      earnedDate: "2024-02-01",
+      category: "Community",
+      rarity: "rare",
+      jannahPoints: 400,
+      gradient: "from-orange-500 to-red-600"
+    },
+    { 
+      id: 5,
+      name: "Night Prayer Warrior", 
+      icon: "🌙", 
+      description: "Performed Tahajjud prayer for 7 consecutive nights",
+      earned: false,
+      category: "Prayer",
+      rarity: "legendary",
+      jannahPoints: 1000,
+      gradient: "from-indigo-500 to-purple-600"
+    },
+    { 
+      id: 6,
+      name: "Ramadan Champion", 
+      icon: "🌟", 
+      description: "Complete all Ramadan calendar activities",
+      earned: false,
+      category: "Seasonal",
+      rarity: "legendary",
+      jannahPoints: 2000,
+      gradient: "from-yellow-500 to-orange-600"
+    },
+    { 
+      id: 7,
+      name: "Dua Supporter", 
+      icon: "🤲", 
+      description: "Said Ameen to 100 community duas",
+      earned: true,
+      earnedDate: "2024-02-10",
+      category: "Community",
+      rarity: "common",
+      jannahPoints: 150,
+      gradient: "from-green-500 to-emerald-600"
+    },
+    { 
+      id: 8,
+      name: "Knowledge Seeker", 
+      icon: "🎓", 
+      description: "Explored 20 different duas in the library",
+      earned: false,
+      category: "Learning",
+      rarity: "rare",
+      jannahPoints: 350,
+      gradient: "from-cyan-500 to-blue-600"
+    }
+  ];
+
+  const earnedBadges = religiousAchievements.filter(achievement => achievement.earned);
+  const totalJannahPoints = earnedBadges.reduce((sum, badge) => sum + badge.jannahPoints, 0);
+
+  const getRarityBadge = (rarity) => {
+    const rarityStyles = {
+      common: { bg: "bg-gray-500", text: "Common" },
+      rare: { bg: "bg-blue-500", text: "Rare" },
+      epic: { bg: "bg-purple-500", text: "Epic" },
+      legendary: { bg: "bg-yellow-500", text: "Legendary" }
+    };
+    return rarityStyles[rarity] || rarityStyles.common;
   };
 
   const recentDonations = [
@@ -103,6 +213,116 @@ const Profile = () => {
               <Share2 className="h-4 w-4 mr-2" />
               Share Profile
             </Button>
+          </div>
+        </Card>
+
+        {/* Religious Achievements & Jannah Points Section */}
+        <Card className="p-8 mb-8 hover-lift">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <div className="relative">
+                <Sparkles className="h-8 w-8 text-yellow-500" />
+                <div className="absolute inset-0 animate-pulse">
+                  <Sparkles className="h-8 w-8 text-yellow-300" />
+                </div>
+              </div>
+              <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                Religious Achievements & Spiritual Badges
+              </span>
+              <Badge className="bg-gradient-to-r from-emerald-500 to-green-500 text-white text-lg px-4 py-2">
+                {earnedBadges.length} / {religiousAchievements.length} Earned
+              </Badge>
+            </h3>
+            
+            {/* Jannah Points Summary */}
+            <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl p-6 mb-6 border border-emerald-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-xl font-bold text-emerald-800 mb-2">Total Jannah Points from Religious Deeds</h4>
+                  <p className="text-emerald-600">Points earned through spiritual activities and good deeds</p>
+                </div>
+                <div className="text-right">
+                  <div className="text-4xl font-bold text-emerald-600 mb-1">{totalJannahPoints.toLocaleString()}</div>
+                  <div className="text-sm text-emerald-500">Spiritual Points</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Achievement Categories */}
+          <div className="space-y-6">
+            {['Prayer', 'Quran', 'Dhikr', 'Community', 'Seasonal', 'Learning'].map(category => {
+              const categoryAchievements = religiousAchievements.filter(achievement => achievement.category === category);
+              const categoryEarned = categoryAchievements.filter(achievement => achievement.earned).length;
+              
+              if (categoryAchievements.length === 0) return null;
+              
+              return (
+                <div key={category} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <h5 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                      {category === 'Prayer' && <span className="text-2xl">🕌</span>}
+                      {category === 'Quran' && <BookOpen className="h-5 w-5 text-blue-500" />}
+                      {category === 'Dhikr' && <Zap className="h-5 w-5 text-purple-500" />}
+                      {category === 'Community' && <Users className="h-5 w-5 text-orange-500" />}
+                      {category === 'Seasonal' && <Moon className="h-5 w-5 text-indigo-500" />}
+                      {category === 'Learning' && <span className="text-2xl">🎓</span>}
+                      {category} Achievements
+                    </h5>
+                    <Badge variant="outline" className="text-sm">
+                      {categoryEarned} / {categoryAchievements.length}
+                    </Badge>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {categoryAchievements.map((achievement) => (
+                      <div 
+                        key={achievement.id} 
+                        className={`relative p-4 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
+                          achievement.earned 
+                            ? `bg-gradient-to-br ${achievement.gradient} text-white shadow-lg border-transparent` 
+                            : 'bg-gray-50 text-gray-600 border-gray-200 opacity-60'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="text-3xl mb-2">{achievement.icon}</div>
+                          {achievement.earned && (
+                            <Badge className={`${getRarityBadge(achievement.rarity).bg} text-white text-xs`}>
+                              {getRarityBadge(achievement.rarity).text}
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        <h6 className="font-bold text-sm mb-2">{achievement.name}</h6>
+                        <p className={`text-xs mb-3 leading-relaxed ${achievement.earned ? 'text-white/90' : 'text-gray-500'}`}>
+                          {achievement.description}
+                        </p>
+                        
+                        <div className="flex items-center justify-between text-xs">
+                          <div className={`flex items-center gap-1 ${achievement.earned ? 'text-white/80' : 'text-gray-400'}`}>
+                            <Star className="h-3 w-3" />
+                            <span>{achievement.jannahPoints} points</span>
+                          </div>
+                          {achievement.earned && achievement.earnedDate && (
+                            <div className="text-white/70">
+                              {new Date(achievement.earnedDate).toLocaleDateString()}
+                            </div>
+                          )}
+                        </div>
+                        
+                        {achievement.earned && (
+                          <div className="absolute top-2 right-2">
+                            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                              <Award className="h-3 w-3 text-white" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </Card>
 
