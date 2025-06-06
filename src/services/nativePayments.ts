@@ -27,9 +27,9 @@ export class NativePaymentService {
   private async getPlatformSettings() {
     try {
       const { data: platformSettings } = await supabase
-        .from('site_config')
-        .select('config_key, config_value')
-        .in('config_key', [
+        .from('admin_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', [
           'sandbox_mode',
           'stripe_publishable_key'
         ]);
@@ -39,7 +39,7 @@ export class NativePaymentService {
       }
 
       const settings = platformSettings.reduce((acc, setting) => {
-        acc[setting.config_key] = JSON.parse(setting.config_value);
+        acc[setting.setting_key] = JSON.parse(setting.setting_value);
         return acc;
       }, {} as Record<string, any>);
 

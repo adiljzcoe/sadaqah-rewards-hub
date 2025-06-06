@@ -28,12 +28,12 @@ export function useDonations() {
     queryKey: ['platform-settings'],
     queryFn: async () => {
       const { data } = await supabase
-        .from('site_config')
-        .select('config_key, config_value')
-        .eq('config_key', 'sandbox_mode');
+        .from('admin_settings')
+        .select('setting_key, setting_value')
+        .eq('setting_key', 'sandbox_mode');
       
       if (data && data.length > 0) {
-        return JSON.parse(data[0].config_value);
+        return JSON.parse(data[0].setting_value);
       }
       return false; // Default to live mode if not configured
     },
