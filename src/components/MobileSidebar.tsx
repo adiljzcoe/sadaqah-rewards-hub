@@ -197,16 +197,16 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
         key={page.path}
         to={page.path}
         onClick={handleLinkClick}
-        className={`flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r ${page.gradient} hover:shadow-xl`}
+        className={`flex items-center p-4 rounded-2xl mb-3 text-white transition-all duration-300 hover:scale-105 hover:shadow-xl bg-gradient-to-r ${page.gradient} shadow-lg`}
       >
         {IconComponent ? (
-          <IconComponent className="h-5 w-5 mr-3" />
+          <IconComponent className="h-6 w-6 mr-4" />
         ) : (
-          <span className="text-lg mr-3">{page.icon}</span>
+          <span className="text-xl mr-4">{page.icon}</span>
         )}
         <div className="flex-1">
-          <div className="font-semibold text-white">{page.name}</div>
-          <p className="text-xs text-white/80 leading-tight">{page.description}</p>
+          <div className="font-semibold text-white text-base">{page.name}</div>
+          <p className="text-sm text-white/80 leading-tight">{page.description}</p>
         </div>
       </Link>
     );
@@ -231,118 +231,111 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
       </SheetTrigger>
       <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex flex-col h-full">
         
-        {/* Compact Header - Much smaller */}
-        <div className="flex-shrink-0 p-2 border-b border-white/10">
+        {/* Fully Scrollable Content Area */}
+        <div className="overflow-y-auto p-4 space-y-4 h-full">
+          
+          {/* User Profile Section */}
           <div className="text-center">
-            {/* Super Compact Golden Plaque */}
-            <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-xl px-2 py-1.5 shadow-xl border border-yellow-300/50 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto max-w-[200px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-xl"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-xl"></div>
+            <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-4 py-3 shadow-xl border border-yellow-300/50 hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl"></div>
               
               <div className="relative flex items-center justify-between">
-                {/* Smaller Avatar */}
                 <div className="relative">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-1 ring-white/20">
-                    <span className="text-sm">🛡️</span>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-md bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-2 ring-white/20">
+                    <span className="text-lg">🛡️</span>
                   </div>
                   {isMember && (
-                    <Badge className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] shadow-sm animate-bounce-in px-1 py-0">
-                      <Crown className="h-2 w-2 mr-0.5" />
+                    <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-sm animate-bounce-in px-2 py-1">
+                      <Crown className="h-3 w-3 mr-1" />
                       VIP
                     </Badge>
                   )}
                 </div>
                 
-                {/* Compact User Info */}
-                <div className="flex-1 ml-2 text-left">
-                  <h3 className="font-bold text-xs text-yellow-50 drop-shadow-md">
+                <div className="flex-1 ml-4 text-left">
+                  <h3 className="font-bold text-lg text-yellow-50 drop-shadow-md">
                     Ahmad M.
                   </h3>
-                  <span className="text-[10px] text-yellow-100/90 drop-shadow-sm">Guardian</span>
+                  <span className="text-sm text-yellow-100/90 drop-shadow-sm">Guardian</span>
                 </div>
                 
-                {/* Compact Level and Points */}
                 <div className="text-right">
-                  <div className="text-xs font-bold text-yellow-50 drop-shadow-md">Lv {userLevel}</div>
+                  <div className="text-lg font-bold text-yellow-50 drop-shadow-md">Lv {userLevel}</div>
                   <div className="flex items-center">
-                    <Star className="h-2.5 w-2.5 text-yellow-100 drop-shadow-md mr-1" />
-                    <span className="text-[10px] font-bold text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()}</span>
+                    <Star className="h-4 w-4 text-yellow-100 drop-shadow-md mr-1" />
+                    <span className="text-sm font-bold text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
               
-              {/* Tiny progress bar */}
-              <div className="mt-1">
-                <Progress value={progress} className="h-1" />
+              <div className="mt-3">
+                <Progress value={progress} className="h-2" />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Compact Checkout Section */}
-        <div className="flex-shrink-0 px-2 py-1.5 border-b border-white/10">
-          <Link 
-            to="/checkout" 
-            onClick={handleLinkClick}
-            className={`flex items-center justify-between p-2 rounded-lg text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md border backdrop-blur-sm overflow-hidden relative text-sm ${
-              cartAnimating 
-                ? 'bg-gradient-to-r from-green-500 via-emerald-600 to-green-500 border-green-400/50 animate-pulse' 
-                : 'bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 border-pink-400/30'
-            }`}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
-            
-            <div className="relative flex items-center">
-              <div className={`rounded-md p-1 mr-2 backdrop-blur-sm transition-all duration-300 ${
-                cartAnimating ? 'bg-white/30 scale-110' : 'bg-white/20'
-              }`}>
-                <ShoppingCart className={`h-3 w-3 drop-shadow-md transition-all duration-300 ${
-                  cartAnimating ? 'animate-bounce' : ''
-                }`} />
-              </div>
-              <div>
-                <span className="drop-shadow-md text-xs">
-                  {cartAnimating ? 'Added!' : t('checkout')}
-                </span>
-                <div className="text-[10px] text-white/80 drop-shadow-sm">
-                  {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Empty'}
+          {/* Checkout Section */}
+          <div>
+            <Link 
+              to="/checkout" 
+              onClick={handleLinkClick}
+              className={`flex items-center justify-between p-4 rounded-2xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg backdrop-blur-sm overflow-hidden relative ${
+                cartAnimating 
+                  ? 'bg-gradient-to-r from-green-500 via-emerald-600 to-green-500 animate-pulse' 
+                  : 'bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600'
+              }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
+              
+              <div className="relative flex items-center">
+                <div className={`rounded-xl p-2 mr-3 backdrop-blur-sm transition-all duration-300 ${
+                  cartAnimating ? 'bg-white/30 scale-110' : 'bg-white/20'
+                }`}>
+                  <ShoppingCart className={`h-5 w-5 drop-shadow-md transition-all duration-300 ${
+                    cartAnimating ? 'animate-bounce' : ''
+                  }`} />
+                </div>
+                <div>
+                  <span className="drop-shadow-md text-base">
+                    {cartAnimating ? 'Added!' : t('checkout')}
+                  </span>
+                  <div className="text-sm text-white/80 drop-shadow-sm">
+                    {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Empty'}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={`relative rounded-lg px-1.5 py-1 shadow-md border transition-all duration-300 ${
-              cartAnimating 
-                ? 'bg-gradient-to-r from-yellow-300 to-orange-400 border-yellow-200/60 scale-110' 
-                : 'bg-gradient-to-r from-yellow-400 to-orange-500 border-yellow-300/50'
-            }`}>
-              <span className="text-xs font-bold text-white drop-shadow-md">
-                £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
-              </span>
-            </div>
-          </Link>
-        </div>
-
-        {/* Compact Language Switcher */}
-        <div className="flex-shrink-0 px-2 py-1.5 border-b border-white/10">
-          <div className="flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-            <div className="flex items-center">
-              <Globe className="h-3 w-3 mr-2" />
-              <span className="font-semibold text-xs">{t('language')}</span>
-            </div>
-            <LanguageSwitcher />
+              <div className={`relative rounded-xl px-3 py-2 shadow-md transition-all duration-300 ${
+                cartAnimating 
+                  ? 'bg-gradient-to-r from-yellow-300 to-orange-400 scale-110' 
+                  : 'bg-gradient-to-r from-yellow-400 to-orange-500'
+              }`}>
+                <span className="text-sm font-bold text-white drop-shadow-md">
+                  £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
+                </span>
+              </div>
+            </Link>
           </div>
-        </div>
 
-        {/* Scrollable Content Area - Now much larger */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-2 min-h-0">
-          
+          {/* Language Switcher */}
+          <div>
+            <div className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg">
+              <div className="flex items-center">
+                <Globe className="h-5 w-5 mr-3" />
+                <span className="font-semibold">{t('language')}</span>
+              </div>
+              <LanguageSwitcher />
+            </div>
+          </div>
+
           {/* Home */}
           <Link 
             to="/" 
             onClick={handleLinkClick}
-            className="flex items-center p-2.5 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg text-sm"
+            className="flex items-center p-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
           >
-            <span className="text-base mr-2">🏠</span>
-            {t('home')}
+            <span className="text-xl mr-3">🏠</span>
+            <span className="text-base">{t('home')}</span>
           </Link>
 
           {/* User Login Section */}
@@ -350,56 +343,56 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             setUserLoginOpen(isOpen);
             if (isOpen) handleSectionToggle('userLogin');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <User className="h-3 w-3 mr-2" />
-                <span>{t('user_login')}</span>
+                <User className="h-5 w-5 mr-3" />
+                <span className="text-base">{t('user_login')}</span>
               </div>
-              {userLoginOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {userLoginOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {user ? (
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center p-2 rounded-lg mb-1.5 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-red-600 to-rose-600 hover:shadow-xl w-full text-xs"
+                  className="flex items-center p-3 rounded-2xl mb-3 text-white transition-all duration-300 hover:scale-105 hover:shadow-xl bg-gradient-to-r from-red-600 to-rose-600 shadow-lg w-full"
                 >
-                  <LogOut className="h-3 w-3 mr-2" />
+                  <LogOut className="h-5 w-5 mr-3" />
                   <div className="flex-1 text-left">
                     <div className="font-semibold text-white">{t('sign_out')}</div>
-                    <p className="text-[10px] text-white/80 leading-tight">Log out current user</p>
+                    <p className="text-sm text-white/80 leading-tight">Log out current user</p>
                   </div>
                 </button>
               ) : (
                 <>
                   <button
                     onClick={() => handleFakeLogin('user')}
-                    className="flex items-center p-2 rounded-lg mb-1.5 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-xl w-full text-xs"
+                    className="flex items-center p-3 rounded-2xl mb-3 text-white transition-all duration-300 hover:scale-105 hover:shadow-xl bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg w-full"
                   >
-                    <User className="h-3 w-3 mr-2" />
+                    <User className="h-5 w-5 mr-3" />
                     <div className="flex-1 text-left">
                       <div className="font-semibold text-white">{t('test_user_login')}</div>
-                      <p className="text-[10px] text-white/80 leading-tight">Login as a test user</p>
+                      <p className="text-sm text-white/80 leading-tight">Login as a test user</p>
                     </div>
                   </button>
                   <button
                     onClick={() => handleFakeLogin('admin')}
-                    className="flex items-center p-2 rounded-lg mb-1.5 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-orange-600 to-red-600 hover:shadow-xl w-full text-xs"
+                    className="flex items-center p-3 rounded-2xl mb-3 text-white transition-all duration-300 hover:scale-105 hover:shadow-xl bg-gradient-to-r from-orange-600 to-red-600 shadow-lg w-full"
                   >
-                    <Shield className="h-3 w-3 mr-2" />
+                    <Shield className="h-5 w-5 mr-3" />
                     <div className="flex-1 text-left">
                       <div className="font-semibold text-white">{t('test_admin_login')}</div>
-                      <p className="text-[10px] text-white/80 leading-tight">Login as a test admin</p>
+                      <p className="text-sm text-white/80 leading-tight">Login as a test admin</p>
                     </div>
                   </button>
                   <Link
                     to="/auth"
                     onClick={handleLinkClick}
-                    className="flex items-center p-2 rounded-lg mb-1.5 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl text-xs"
+                    className="flex items-center p-3 rounded-2xl mb-3 text-white transition-all duration-300 hover:scale-105 hover:shadow-xl bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg"
                   >
-                    <LogIn className="h-3 w-3 mr-2" />
+                    <LogIn className="h-5 w-5 mr-3" />
                     <div className="flex-1">
                       <div className="font-semibold text-white">{t('real_login')}</div>
-                      <p className="text-[10px] text-white/80 leading-tight">Go to authentication page</p>
+                      <p className="text-sm text-white/80 leading-tight">Go to authentication page</p>
                     </div>
                   </Link>
                 </>
@@ -407,20 +400,19 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             </CollapsibleContent>
           </Collapsible>
 
-          {/* All other sections - keeping existing structure but with smaller padding and text */}
           {/* Islamic Life Section */}
           <Collapsible open={islamicOpen} onOpenChange={(isOpen) => {
             setIslamicOpen(isOpen);
             if (isOpen) handleSectionToggle('islamic');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <span className="text-sm mr-2">🕌</span>
-                <span>{t('islamic_life')}</span>
+                <span className="text-xl mr-3">🕌</span>
+                <span className="text-base">{t('islamic_life')}</span>
               </div>
-              {islamicOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {islamicOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {islamicPages.map(renderPageItem)}
             </CollapsibleContent>
           </Collapsible>
@@ -430,14 +422,14 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             setToolsOpen(isOpen);
             if (isOpen) handleSectionToggle('tools');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <span className="text-sm mr-2">🛠️</span>
-                <span>{t('tools')}</span>
+                <span className="text-xl mr-3">🛠️</span>
+                <span className="text-base">{t('tools')}</span>
               </div>
-              {toolsOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {toolsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {toolsPages.map(renderPageItem)}
             </CollapsibleContent>
           </Collapsible>
@@ -447,14 +439,14 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             setDonateOpen(isOpen);
             if (isOpen) handleSectionToggle('donate');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <span className="text-sm mr-2">💝</span>
-                <span>{t('donate')}</span>
+                <span className="text-xl mr-3">💝</span>
+                <span className="text-base">{t('donate')}</span>
               </div>
-              {donateOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {donateOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {donatePages.map(renderPageItem)}
             </CollapsibleContent>
           </Collapsible>
@@ -464,14 +456,14 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             setCommunityOpen(isOpen);
             if (isOpen) handleSectionToggle('community');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <span className="text-sm mr-2">👥</span>
-                <span>{t('community')}</span>
+                <span className="text-xl mr-3">👥</span>
+                <span className="text-base">{t('community')}</span>
               </div>
-              {communityOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {communityOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {communityPages.map(renderPageItem)}
             </CollapsibleContent>
           </Collapsible>
@@ -481,14 +473,14 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             setRewardsOpen(isOpen);
             if (isOpen) handleSectionToggle('rewards');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <span className="text-sm mr-2">🏆</span>
-                <span>{t('rewards')}</span>
+                <span className="text-xl mr-3">🏆</span>
+                <span className="text-base">{t('rewards')}</span>
               </div>
-              {rewardsOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {rewardsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {rewardsPages.map(renderPageItem)}
             </CollapsibleContent>
           </Collapsible>
@@ -498,14 +490,14 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             setDeveloperOpen(isOpen);
             if (isOpen) handleSectionToggle('developer');
           }}>
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-2.5 rounded-lg bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105 text-sm">
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-2xl bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
               <div className="flex items-center">
-                <Code className="h-3 w-3 mr-2" />
-                <span>{t('developer')}</span>
+                <Code className="h-5 w-5 mr-3" />
+                <span className="text-base">{t('developer')}</span>
               </div>
-              {developerOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+              {developerOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1.5 mt-1.5 ml-3">
+            <CollapsibleContent className="space-y-3 mt-3 ml-4">
               {developerPages.map(renderPageItem)}
             </CollapsibleContent>
           </Collapsible>
@@ -515,10 +507,10 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
             <Link 
               to="/membership" 
               onClick={handleLinkClick}
-              className="flex items-center p-2.5 rounded-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-yellow-300/60 ring-2 ring-amber-400/30 text-sm"
+              className="flex items-center p-4 rounded-2xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border-2 border-yellow-300/60 ring-2 ring-amber-400/30"
             >
-              <Shield className="h-4 w-4 mr-2" />
-              <span>{t('become_member')}</span>
+              <Shield className="h-6 w-6 mr-3" />
+              <span className="text-base">{t('become_member')}</span>
             </Link>
           )}
         </div>
