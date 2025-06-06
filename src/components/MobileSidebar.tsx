@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -231,308 +230,307 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
           )}
         </div>
       </SheetTrigger>
-      <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+      <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex flex-col">
         
-        <div className="flex flex-col h-full">
-          {/* Enhanced Golden User Plaque */}
-          <div className="p-4">
-            <div className="text-center">
-              {/* Golden Plaque Container */}
-              <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-3xl px-4 py-3 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto max-w-[240px]">
-                {/* Inner glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-3xl"></div>
-                
-                {/* Top highlight */}
-                <div className="absolute top-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
-                
-                {/* Glossy animation effect that moves across */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-3xl"></div>
-                
-                <div className="relative">
-                  {/* Avatar Section */}
-                  <div className="relative inline-block mb-3">
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-4 ring-white/20">
-                      <span className="text-xl">🛡️</span>
-                    </div>
-                    {isMember && (
-                      <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
-                        <Crown className="h-3 w-3 mr-1" />
-                        VIP
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  {/* User Info */}
-                  <div className="text-center">
-                    <h3 className="font-bold text-lg text-yellow-50 drop-shadow-md mb-1">
-                      Ahmad M.
-                    </h3>
-                    <span className="text-sm text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
-                  </div>
-                  
-                  {/* Level and Progress */}
-                  <div className="mt-3 space-y-2">
-                    <div className="flex items-center justify-center space-x-2">
-                      <span className="text-sm font-bold text-yellow-50 drop-shadow-md">Level {userLevel}</span>
-                      <div className="flex-1 max-w-20">
-                        <Progress value={progress} className="h-2" />
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center space-x-1">
-                      <Star className="h-4 w-4 text-yellow-100 drop-shadow-md" />
-                      <span className="text-sm font-bold text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()} points</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Bottom highlight */}
-                <div className="absolute bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Checkout Section with Animation */}
-          <div className="px-4 pb-4">
-            <Link 
-              to="/checkout" 
-              onClick={handleLinkClick}
-              className={`flex items-center justify-between p-4 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border backdrop-blur-sm overflow-hidden relative ${
-                cartAnimating 
-                  ? 'bg-gradient-to-r from-green-500 via-emerald-600 to-green-500 border-green-400/50 animate-pulse' 
-                  : 'bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 border-pink-400/30'
-              }`}
-            >
-              {/* Glossy effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
+        {/* Fixed Header with Compact Golden User Plaque */}
+        <div className="flex-shrink-0 p-3 border-b border-white/10">
+          <div className="text-center">
+            {/* Compact Golden Plaque Container */}
+            <div className="relative bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-600 rounded-2xl px-3 py-2 shadow-2xl border-2 border-yellow-300/50 hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] overflow-hidden mx-auto max-w-[220px]">
+              {/* Inner glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-2xl"></div>
               
-              <div className="relative flex items-center">
-                <div className={`rounded-lg p-2 mr-3 backdrop-blur-sm transition-all duration-300 ${
-                  cartAnimating ? 'bg-white/30 scale-110' : 'bg-white/20'
-                }`}>
-                  <ShoppingCart className={`h-5 w-5 drop-shadow-md transition-all duration-300 ${
-                    cartAnimating ? 'animate-bounce' : ''
-                  }`} />
+              {/* Top highlight */}
+              <div className="absolute top-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-200/70 to-transparent rounded-full"></div>
+              
+              {/* Glossy animation effect that moves across */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-2xl"></div>
+              
+              <div className="relative">
+                {/* Avatar Section - Smaller */}
+                <div className="relative inline-block mb-2">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 ring-2 ring-white/20">
+                    <span className="text-lg">🛡️</span>
+                  </div>
+                  {isMember && (
+                    <Badge className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs shadow-md animate-bounce-in">
+                      <Crown className="h-2 w-2 mr-1" />
+                      VIP
+                    </Badge>
+                  )}
                 </div>
-                <div>
-                  <span className="drop-shadow-md">
-                    {cartAnimating ? 'Added to Cart!' : t('checkout')}
-                  </span>
-                  <div className="text-xs text-white/80 drop-shadow-sm">
-                    {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Cart is empty'}
+                
+                {/* User Info - Compact */}
+                <div className="text-center">
+                  <h3 className="font-bold text-sm text-yellow-50 drop-shadow-md mb-0.5">
+                    Ahmad M.
+                  </h3>
+                  <span className="text-xs text-yellow-100/90 drop-shadow-sm font-medium">Guardian</span>
+                </div>
+                
+                {/* Level and Progress - More compact */}
+                <div className="mt-2 space-y-1">
+                  <div className="flex items-center justify-center space-x-2">
+                    <span className="text-xs font-bold text-yellow-50 drop-shadow-md">Level {userLevel}</span>
+                    <div className="flex-1 max-w-16">
+                      <Progress value={progress} className="h-1.5" />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center space-x-1">
+                    <Star className="h-3 w-3 text-yellow-100 drop-shadow-md" />
+                    <span className="text-xs font-bold text-yellow-50 drop-shadow-md">{currentPoints.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
-              <div className={`relative rounded-xl px-3 py-2 shadow-lg border transition-all duration-300 ${
-                cartAnimating 
-                  ? 'bg-gradient-to-r from-yellow-300 to-orange-400 border-yellow-200/60 scale-110' 
-                  : 'bg-gradient-to-r from-yellow-400 to-orange-500 border-yellow-300/50'
-              }`}>
-                <span className="text-sm font-bold text-white drop-shadow-md">
-                  £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
-                </span>
-              </div>
-            </Link>
-          </div>
-
-          {/* Language Switcher */}
-          <div className="px-4 pb-4">
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-              <div className="flex items-center">
-                <Globe className="h-5 w-5 mr-3" />
-                <span className="font-semibold">{t('language')}</span>
-              </div>
-              <LanguageSwitcher />
+              
+              {/* Bottom highlight */}
+              <div className="absolute bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-yellow-300/50 to-transparent rounded-full"></div>
             </div>
           </div>
+        </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {/* Enhanced Checkout Section with Animation - Fixed */}
+        <div className="flex-shrink-0 px-3 py-2 border-b border-white/10">
+          <Link 
+            to="/checkout" 
+            onClick={handleLinkClick}
+            className={`flex items-center justify-between p-3 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg border backdrop-blur-sm overflow-hidden relative ${
+              cartAnimating 
+                ? 'bg-gradient-to-r from-green-500 via-emerald-600 to-green-500 border-green-400/50 animate-pulse' 
+                : 'bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 border-pink-400/30'
+            }`}
+          >
+            {/* Glossy effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite]"></div>
             
-            {/* Home */}
-            <Link 
-              to="/" 
-              onClick={handleLinkClick}
-              className="flex items-center p-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              <span className="text-lg mr-3">🏠</span>
-              {t('home')}
-            </Link>
-
-            {/* User Login Section */}
-            <Collapsible open={userLoginOpen} onOpenChange={(isOpen) => {
-              setUserLoginOpen(isOpen);
-              if (isOpen) handleSectionToggle('userLogin');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <User className="h-5 w-5 mr-3" />
-                  <span>{t('user_login')}</span>
+            <div className="relative flex items-center">
+              <div className={`rounded-lg p-1.5 mr-2 backdrop-blur-sm transition-all duration-300 ${
+                cartAnimating ? 'bg-white/30 scale-110' : 'bg-white/20'
+              }`}>
+                <ShoppingCart className={`h-4 w-4 drop-shadow-md transition-all duration-300 ${
+                  cartAnimating ? 'animate-bounce' : ''
+                }`} />
+              </div>
+              <div>
+                <span className="drop-shadow-md text-sm">
+                  {cartAnimating ? 'Added to Cart!' : t('checkout')}
+                </span>
+                <div className="text-xs text-white/80 drop-shadow-sm">
+                  {totalItems > 0 ? `${totalItems} item${totalItems !== 1 ? 's' : ''}` : 'Cart is empty'}
                 </div>
-                {userLoginOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {user ? (
+              </div>
+            </div>
+            <div className={`relative rounded-xl px-2 py-1.5 shadow-lg border transition-all duration-300 ${
+              cartAnimating 
+                ? 'bg-gradient-to-r from-yellow-300 to-orange-400 border-yellow-200/60 scale-110' 
+                : 'bg-gradient-to-r from-yellow-400 to-orange-500 border-yellow-300/50'
+            }`}>
+              <span className="text-xs font-bold text-white drop-shadow-md">
+                £{totalAmount > 0 ? totalAmount.toFixed(2) : '0.00'}
+              </span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Language Switcher - Fixed */}
+        <div className="flex-shrink-0 px-3 py-2 border-b border-white/10">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+            <div className="flex items-center">
+              <Globe className="h-4 w-4 mr-2" />
+              <span className="font-semibold text-sm">{t('language')}</span>
+            </div>
+            <LanguageSwitcher />
+          </div>
+        </div>
+
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-2">
+          
+          {/* Home */}
+          <Link 
+            to="/" 
+            onClick={handleLinkClick}
+            className="flex items-center p-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          >
+            <span className="text-lg mr-3">🏠</span>
+            {t('home')}
+          </Link>
+
+          {/* User Login Section */}
+          <Collapsible open={userLoginOpen} onOpenChange={(isOpen) => {
+            setUserLoginOpen(isOpen);
+            if (isOpen) handleSectionToggle('userLogin');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <User className="h-4 w-4 mr-2" />
+                <span className="text-sm">{t('user_login')}</span>
+              </div>
+              {userLoginOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {user ? (
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center p-2 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-red-600 to-rose-600 hover:shadow-xl w-full text-sm"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  <div className="flex-1 text-left">
+                    <div className="font-semibold text-white">{t('sign_out')}</div>
+                    <p className="text-xs text-white/80 leading-tight">Log out current user</p>
+                  </div>
+                </button>
+              ) : (
+                <>
                   <button
-                    onClick={handleSignOut}
-                    className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-red-600 to-rose-600 hover:shadow-xl w-full"
+                    onClick={() => handleFakeLogin('user')}
+                    className="flex items-center p-2 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-xl w-full text-sm"
                   >
-                    <LogOut className="h-5 w-5 mr-3" />
+                    <User className="h-4 w-4 mr-2" />
                     <div className="flex-1 text-left">
-                      <div className="font-semibold text-white">{t('sign_out')}</div>
-                      <p className="text-xs text-white/80 leading-tight">Log out current user</p>
+                      <div className="font-semibold text-white">{t('test_user_login')}</div>
+                      <p className="text-xs text-white/80 leading-tight">Login as a test user</p>
                     </div>
                   </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => handleFakeLogin('user')}
-                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-xl w-full"
-                    >
-                      <User className="h-5 w-5 mr-3" />
-                      <div className="flex-1 text-left">
-                        <div className="font-semibold text-white">{t('test_user_login')}</div>
-                        <p className="text-xs text-white/80 leading-tight">Login as a test user</p>
-                      </div>
-                    </button>
-                    <button
-                      onClick={() => handleFakeLogin('admin')}
-                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-orange-600 to-red-600 hover:shadow-xl w-full"
-                    >
-                      <Shield className="h-5 w-5 mr-3" />
-                      <div className="flex-1 text-left">
-                        <div className="font-semibold text-white">{t('test_admin_login')}</div>
-                        <p className="text-xs text-white/80 leading-tight">Login as a test admin</p>
-                      </div>
-                    </button>
-                    <Link
-                      to="/auth"
-                      onClick={handleLinkClick}
-                      className="flex items-center p-3 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl"
-                    >
-                      <LogIn className="h-5 w-5 mr-3" />
-                      <div className="flex-1">
-                        <div className="font-semibold text-white">{t('real_login')}</div>
-                        <p className="text-xs text-white/80 leading-tight">Go to authentication page</p>
-                      </div>
-                    </Link>
-                  </>
-                )}
-              </CollapsibleContent>
-            </Collapsible>
+                  <button
+                    onClick={() => handleFakeLogin('admin')}
+                    className="flex items-center p-2 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-orange-600 to-red-600 hover:shadow-xl w-full text-sm"
+                  >
+                    <Shield className="h-4 w-4 mr-2" />
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-white">{t('test_admin_login')}</div>
+                      <p className="text-xs text-white/80 leading-tight">Login as a test admin</p>
+                    </div>
+                  </button>
+                  <Link
+                    to="/auth"
+                    onClick={handleLinkClick}
+                    className="flex items-center p-2 rounded-xl mb-2 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl text-sm"
+                  >
+                    <LogIn className="h-4 w-4 mr-2" />
+                    <div className="flex-1">
+                      <div className="font-semibold text-white">{t('real_login')}</div>
+                      <p className="text-xs text-white/80 leading-tight">Go to authentication page</p>
+                    </div>
+                  </Link>
+                </>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Islamic Life Section */}
-            <Collapsible open={islamicOpen} onOpenChange={(isOpen) => {
-              setIslamicOpen(isOpen);
-              if (isOpen) handleSectionToggle('islamic');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">🕌</span>
-                  <span>{t('islamic_life')}</span>
-                </div>
-                {islamicOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {islamicPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
+          {/* Islamic Life Section */}
+          <Collapsible open={islamicOpen} onOpenChange={(isOpen) => {
+            setIslamicOpen(isOpen);
+            if (isOpen) handleSectionToggle('islamic');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <span className="text-base mr-2">🕌</span>
+                <span className="text-sm">{t('islamic_life')}</span>
+              </div>
+              {islamicOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {islamicPages.map(renderPageItem)}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Tools Section */}
-            <Collapsible open={toolsOpen} onOpenChange={(isOpen) => {
-              setToolsOpen(isOpen);
-              if (isOpen) handleSectionToggle('tools');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">🛠️</span>
-                  <span>{t('tools')}</span>
-                </div>
-                {toolsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {toolsPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
+          {/* Tools Section */}
+          <Collapsible open={toolsOpen} onOpenChange={(isOpen) => {
+            setToolsOpen(isOpen);
+            if (isOpen) handleSectionToggle('tools');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-indigo-700 to-blue-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <span className="text-base mr-2">🛠️</span>
+                <span className="text-sm">{t('tools')}</span>
+              </div>
+              {toolsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {toolsPages.map(renderPageItem)}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Donate Section */}
-            <Collapsible open={donateOpen} onOpenChange={(isOpen) => {
-              setDonateOpen(isOpen);
-              if (isOpen) handleSectionToggle('donate');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">💝</span>
-                  <span>{t('donate')}</span>
-                </div>
-                {donateOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {donatePages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
+          {/* Donate Section */}
+          <Collapsible open={donateOpen} onOpenChange={(isOpen) => {
+            setDonateOpen(isOpen);
+            if (isOpen) handleSectionToggle('donate');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-emerald-700 to-green-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <span className="text-base mr-2">💝</span>
+                <span className="text-sm">{t('donate')}</span>
+              </div>
+              {donateOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {donatePages.map(renderPageItem)}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Community Section */}
-            <Collapsible open={communityOpen} onOpenChange={(isOpen) => {
-              setCommunityOpen(isOpen);
-              if (isOpen) handleSectionToggle('community');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">👥</span>
-                  <span>{t('community')}</span>
-                </div>
-                {communityOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {communityPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
+          {/* Community Section */}
+          <Collapsible open={communityOpen} onOpenChange={(isOpen) => {
+            setCommunityOpen(isOpen);
+            if (isOpen) handleSectionToggle('community');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <span className="text-base mr-2">👥</span>
+                <span className="text-sm">{t('community')}</span>
+              </div>
+              {communityOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {communityPages.map(renderPageItem)}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Rewards Section */}
-            <Collapsible open={rewardsOpen} onOpenChange={(isOpen) => {
-              setRewardsOpen(isOpen);
-              if (isOpen) handleSectionToggle('rewards');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <span className="text-lg mr-3">🏆</span>
-                  <span>{t('rewards')}</span>
-                </div>
-                {rewardsOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {rewardsPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
+          {/* Rewards Section */}
+          <Collapsible open={rewardsOpen} onOpenChange={(isOpen) => {
+            setRewardsOpen(isOpen);
+            if (isOpen) handleSectionToggle('rewards');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-yellow-700 to-amber-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <span className="text-base mr-2">🏆</span>
+                <span className="text-sm">{t('rewards')}</span>
+              </div>
+              {rewardsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {rewardsPages.map(renderPageItem)}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Developer Section */}
-            <Collapsible open={developerOpen} onOpenChange={(isOpen) => {
-              setDeveloperOpen(isOpen);
-              if (isOpen) handleSectionToggle('developer');
-            }}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105">
-                <div className="flex items-center">
-                  <Code className="h-5 w-5 mr-3" />
-                  <span>{t('developer')}</span>
-                </div>
-                {developerOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-2 mt-2 ml-4">
-                {developerPages.map(renderPageItem)}
-              </CollapsibleContent>
-            </Collapsible>
+          {/* Developer Section */}
+          <Collapsible open={developerOpen} onOpenChange={(isOpen) => {
+            setDeveloperOpen(isOpen);
+            if (isOpen) handleSectionToggle('developer');
+          }}>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-xl bg-gradient-to-r from-slate-700 to-gray-700 text-white font-semibold transition-all duration-300 hover:scale-105">
+              <div className="flex items-center">
+                <Code className="h-4 w-4 mr-2" />
+                <span className="text-sm">{t('developer')}</span>
+              </div>
+              {developerOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 mt-2 ml-4">
+              {developerPages.map(renderPageItem)}
+            </CollapsibleContent>
+          </Collapsible>
 
-            {/* Become a Member - only show if not a member */}
-            {!isMember && (
-              <Link 
-                to="/membership" 
-                onClick={handleLinkClick}
-                className="flex items-center p-4 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-yellow-300/60 ring-2 ring-amber-400/30"
-              >
-                <Shield className="h-6 w-6 mr-3" />
-                <span>{t('become_member')}</span>
-              </Link>
-            )}
-          </div>
+          {/* Become a Member - only show if not a member */}
+          {!isMember && (
+            <Link 
+              to="/membership" 
+              onClick={handleLinkClick}
+              className="flex items-center p-3 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 border-yellow-300/60 ring-2 ring-amber-400/30"
+            >
+              <Shield className="h-5 w-5 mr-2" />
+              <span className="text-sm">{t('become_member')}</span>
+            </Link>
+          )}
         </div>
         
         {/* Add the shine animation keyframes */}
