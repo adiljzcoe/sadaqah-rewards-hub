@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift, Settings, Sparkles, Moon, BookOpen, Users, Zap } from 'lucide-react';
+import { Star, Heart, Award, Crown, Edit, Share2, Calendar, MapPin, Mail, Phone, Trophy, Target, Gift, Settings, Sparkles, Moon, BookOpen, Users, Zap, Lock, Eye } from 'lucide-react';
 import GoldCoin3D from '@/components/GoldCoin3D';
 import ProjectContributions from '@/components/ProjectContributions';
 import CommunicationPreferences from '@/components/CommunicationPreferences';
@@ -14,6 +13,7 @@ import Header from '@/components/Header';
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [epicDonationBadges, setEpicDonationBadges] = useState([]);
+  const [achievementsPublic, setAchievementsPublic] = useState(false); // New state for achievements visibility
   const isMember = true; // VIP status
 
   // Load epic donation badges from localStorage
@@ -158,6 +158,10 @@ const Profile = () => {
     { name: "Community Leader", icon: "👑", earned: false, description: "Reach top 10 in your city" },
   ];
 
+  const handleShareAchievements = () => {
+    setAchievementsPublic(!achievementsPublic);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <Header />
@@ -219,20 +223,61 @@ const Profile = () => {
         {/* Religious Achievements & Jannah Points Section */}
         <Card className="p-8 mb-8 hover-lift">
           <div className="mb-6">
-            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-              <div className="relative">
-                <Sparkles className="h-8 w-8 text-yellow-500" />
-                <div className="absolute inset-0 animate-pulse">
-                  <Sparkles className="h-8 w-8 text-yellow-300" />
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-bold flex items-center gap-3">
+                <div className="relative">
+                  <Sparkles className="h-8 w-8 text-yellow-500" />
+                  <div className="absolute inset-0 animate-pulse">
+                    <Sparkles className="h-8 w-8 text-yellow-300" />
+                  </div>
+                </div>
+                <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  Religious Achievements & Spiritual Badges
+                </span>
+                <Badge className="bg-gradient-to-r from-emerald-500 to-green-500 text-white text-lg px-4 py-2">
+                  {earnedBadges.length} / {religiousAchievements.length} Earned
+                </Badge>
+              </h3>
+              
+              <Button
+                onClick={handleShareAchievements}
+                variant={achievementsPublic ? "default" : "outline"}
+                className={`transition-all duration-300 ${
+                  achievementsPublic 
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600' 
+                    : 'border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {achievementsPublic ? (
+                  <>
+                    <Eye className="h-4 w-4 mr-2" />
+                    Public Achievements
+                  </>
+                ) : (
+                  <>
+                    <Lock className="h-4 w-4 mr-2" />
+                    Share My Achievements
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {/* Privacy Notice */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 mb-6 border border-blue-200">
+              <div className="flex items-start gap-3">
+                <Lock className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-blue-800 mb-1">Privacy & Sharing</h4>
+                  <p className="text-sm text-blue-700">
+                    Your religious achievements are private and only visible to you. 
+                    {achievementsPublic 
+                      ? " You've chosen to make your achievements public - other users can now see your spiritual progress."
+                      : " Click 'Share My Achievements' if you'd like to make them visible to other users in the community."
+                    }
+                  </p>
                 </div>
               </div>
-              <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                Religious Achievements & Spiritual Badges
-              </span>
-              <Badge className="bg-gradient-to-r from-emerald-500 to-green-500 text-white text-lg px-4 py-2">
-                {earnedBadges.length} / {religiousAchievements.length} Earned
-              </Badge>
-            </h3>
+            </div>
             
             {/* Jannah Points Summary */}
             <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl p-6 mb-6 border border-emerald-200">
