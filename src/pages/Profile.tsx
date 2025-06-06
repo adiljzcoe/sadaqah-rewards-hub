@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -71,8 +72,17 @@ const Profile = () => {
     // Reset form data here if needed
   };
 
-  const handlePreferenceChange = (key: string, value: boolean) => {
+  const handlePreferenceChange = (key: string, value: any) => {
     updatePreferences({ [key]: value });
+  };
+
+  const handleChannelChange = (channel: string, value: boolean) => {
+    updatePreferences({ 
+      channels: { 
+        ...preferences?.channels, 
+        [channel]: value 
+      } 
+    });
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -433,8 +443,8 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Receive updates via email</div>
                     </div>
                     <Switch
-                      checked={preferences?.email_notifications || false}
-                      onCheckedChange={(checked) => handlePreferenceChange('email_notifications', checked)}
+                      checked={preferences?.channels?.email || false}
+                      onCheckedChange={(checked) => handleChannelChange('email', checked)}
                     />
                   </div>
                   <Separator />
@@ -444,8 +454,8 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Get instant alerts on your device</div>
                     </div>
                     <Switch
-                      checked={preferences?.push_notifications || false}
-                      onCheckedChange={(checked) => handlePreferenceChange('push_notifications', checked)}
+                      checked={preferences?.channels?.push || false}
+                      onCheckedChange={(checked) => handleChannelChange('push', checked)}
                     />
                   </div>
                   <Separator />
@@ -455,19 +465,19 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Receive text message updates</div>
                     </div>
                     <Switch
-                      checked={preferences?.sms_notifications || false}
-                      onCheckedChange={(checked) => handlePreferenceChange('sms_notifications', checked)}
+                      checked={preferences?.channels?.sms || false}
+                      onCheckedChange={(checked) => handleChannelChange('sms', checked)}
                     />
                   </div>
                   <Separator />
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium">Weekly Digest</div>
-                      <div className="text-sm text-gray-600">Get a summary of your impact</div>
+                      <div className="font-medium">General Updates</div>
+                      <div className="text-sm text-gray-600">Get general platform updates</div>
                     </div>
                     <Switch
-                      checked={preferences?.weekly_digest || false}
-                      onCheckedChange={(checked) => handlePreferenceChange('weekly_digest', checked)}
+                      checked={preferences?.generalUpdates !== 'never'}
+                      onCheckedChange={(checked) => handlePreferenceChange('generalUpdates', checked ? 'weekly' : 'never')}
                     />
                   </div>
                 </CardContent>
