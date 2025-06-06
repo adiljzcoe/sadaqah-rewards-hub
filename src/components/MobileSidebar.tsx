@@ -227,7 +227,7 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
           )}
         </div>
       </SheetTrigger>
-      <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex flex-col h-full">
+      <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex flex-col h-full [&>button]:hidden">
         
         {/* Floating Close Button - Top Left */}
         <div className="absolute top-2 left-2 z-50">
