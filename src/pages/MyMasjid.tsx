@@ -28,7 +28,7 @@ import { useIslamicThemes } from '@/hooks/useIslamicThemes';
 const MyMasjid = () => {
   const { themes } = useIslamicThemes();
   
-  // Mock data for different masjids
+  // Mock data for different masjids with new Islamic geometric themes
   const masjidExamples = {
     'central-london': {
       id: '1',
@@ -101,6 +101,127 @@ const MyMasjid = () => {
       monthlyKhutbahs: 10,
       activeServices: 18,
       theme: 'makkah-black'
+    },
+    // NEW MASJIDS WITH GEOMETRIC THEMES
+    'al-andalus-mosque': {
+      id: '7',
+      name: 'Al-Andalus Cultural Center',
+      location: 'Granada, Spain',
+      verified: true,
+      description: 'Recreating the splendor of Islamic Spain with traditional Andalusian architecture and comprehensive cultural programs.',
+      memberCount: 234,
+      weeklyEvents: 15,
+      monthlyKhutbahs: 6,
+      activeServices: 10,
+      theme: 'andalusian-mosaic'
+    },
+    'mamluk-heritage': {
+      id: '8',
+      name: 'Mamluk Heritage Mosque',
+      location: 'Cairo, Egypt',
+      verified: true,
+      description: 'Preserving the geometric art traditions of the Mamluk era while serving the modern Muslim community.',
+      memberCount: 678,
+      weeklyEvents: 25,
+      monthlyKhutbahs: 8,
+      activeServices: 14,
+      theme: 'mamluk-geometry'
+    },
+    'fatimid-center': {
+      id: '9',
+      name: 'Fatimid Islamic Center',
+      location: 'Tunis, Tunisia',
+      verified: true,
+      description: 'Inspired by Fatimid architectural grandeur, offering spiritual guidance and community development programs.',
+      memberCount: 445,
+      weeklyEvents: 20,
+      monthlyKhutbahs: 7,
+      activeServices: 12,
+      theme: 'fatimid-splendor'
+    },
+    'cordoba-community': {
+      id: '10',
+      name: 'Córdoba Community Mosque',
+      location: 'Córdoba, Spain',
+      verified: true,
+      description: 'Celebrating the golden age of Islamic scholarship with traditional horseshoe arch design and educational excellence.',
+      memberCount: 356,
+      weeklyEvents: 18,
+      monthlyKhutbahs: 6,
+      activeServices: 11,
+      theme: 'cordoba-marvel'
+    },
+    'ottoman-cultural': {
+      id: '11',
+      name: 'Ottoman Cultural Center',
+      location: 'Istanbul, Turkey',
+      verified: true,
+      description: 'Embodying Ottoman palace aesthetics while providing modern Islamic education and community services.',
+      memberCount: 789,
+      weeklyEvents: 30,
+      monthlyKhutbahs: 10,
+      activeServices: 18,
+      theme: 'ottoman-palace'
+    },
+    'persian-garden-mosque': {
+      id: '12',
+      name: 'Persian Garden Mosque',
+      location: 'Isfahan, Iran',
+      verified: true,
+      description: 'Designed like a traditional Persian four-fold garden, promoting peace, reflection, and community unity.',
+      memberCount: 523,
+      weeklyEvents: 22,
+      monthlyKhutbahs: 8,
+      activeServices: 15,
+      theme: 'persian-garden'
+    },
+    'moorish-cultural': {
+      id: '13',
+      name: 'Moorish Cultural Institute',
+      location: 'Fez, Morocco',
+      verified: true,
+      description: 'Featuring intricate Moorish lattice work and geometric patterns, preserving North African Islamic heritage.',
+      memberCount: 412,
+      weeklyEvents: 19,
+      monthlyKhutbahs: 7,
+      activeServices: 13,
+      theme: 'moorish-lattice'
+    },
+    'abbasid-academy': {
+      id: '14',
+      name: 'Abbasid Academy',
+      location: 'Baghdad, Iraq',
+      verified: true,
+      description: 'Honoring the intellectual legacy of the Abbasid Caliphate with focus on Islamic scholarship and calligraphy.',
+      memberCount: 634,
+      weeklyEvents: 26,
+      monthlyKhutbahs: 9,
+      activeServices: 16,
+      theme: 'abbasid-calligraphy'
+    },
+    'nasrid-mosque': {
+      id: '15',
+      name: 'Nasrid Heritage Mosque',
+      location: 'Granada, Spain',
+      verified: true,
+      description: 'Inspired by the elegant patterns of the Nasrid dynasty, combining historical beauty with contemporary worship.',
+      memberCount: 387,
+      weeklyEvents: 17,
+      monthlyKhutbahs: 6,
+      activeServices: 12,
+      theme: 'nasrid-elegance'
+    },
+    'damascene-center': {
+      id: '16',
+      name: 'Damascene Arts Center',
+      location: 'Damascus, Syria',
+      verified: true,
+      description: 'Showcasing the metallic artistry of Damascus steel patterns while serving as a community spiritual center.',
+      memberCount: 298,
+      weeklyEvents: 14,
+      monthlyKhutbahs: 5,
+      activeServices: 9,
+      theme: 'damascene-steel'
     }
   };
 
@@ -174,17 +295,17 @@ const MyMasjid = () => {
         <div className="mb-6 p-4 bg-gray-900 rounded-lg">
           <div className="flex items-center gap-3 mb-3">
             <Code className="h-5 w-5 text-green-400" />
-            <h3 className="text-white font-semibold">Development Mode - Islamic Themes</h3>
+            <h3 className="text-white font-semibold">Development Mode - Islamic Geometric Themes</h3>
           </div>
           <div className="flex items-center gap-4">
             <label className="text-gray-300 text-sm">Select Masjid Theme:</label>
             <Select value={selectedMasjid} onValueChange={setSelectedMasjid}>
-              <SelectTrigger className="w-64 bg-gray-800 border-gray-700 text-white">
+              <SelectTrigger className="w-80 bg-gray-800 border-gray-700 text-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-gray-800 border-gray-700 text-white max-h-60 overflow-y-auto">
                 {Object.entries(masjidExamples).map(([key, masjid]) => (
-                  <SelectItem key={key} value={key}>
+                  <SelectItem key={key} value={key} className="text-white hover:bg-gray-700">
                     {masjid.name} ({themes[masjid.theme]?.name})
                   </SelectItem>
                 ))}
