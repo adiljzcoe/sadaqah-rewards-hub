@@ -168,21 +168,11 @@ const CoinMesh = () => {
 };
 
 const GoldCoin3D: React.FC<GoldCoin3DProps> = ({ 
-  size = 100, // Increased size further to prevent cutoff
+  size = 100,
   className = "",
   children 
 }) => {
   const [renderFallback, setRenderFallback] = useState(false);
-  const [canvasKey, setCanvasKey] = useState(0);
-
-  // Force re-render every few seconds to ensure updates are visible
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCanvasKey(prev => prev + 1);
-    }, 10000); // Re-render every 10 seconds
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Error boundary for 3D canvas
   const handleCanvasError = () => {
@@ -227,7 +217,6 @@ const GoldCoin3D: React.FC<GoldCoin3DProps> = ({
       }}
     >
       <Canvas
-        key={`canvas-${canvasKey}-${Date.now()}`}
         camera={{ position: [0, 0, 4], fov: 50 }}
         style={{ 
           width: '100%', 
