@@ -1895,6 +1895,477 @@ export type Database = {
         }
         Relationships: []
       }
+      masjid_announcements: {
+        Row: {
+          announcement_type: string | null
+          content: string
+          created_at: string | null
+          created_by: string | null
+          expire_date: string | null
+          id: string
+          is_published: boolean | null
+          masjid_id: string | null
+          priority: number | null
+          publish_date: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          announcement_type?: string | null
+          content: string
+          created_at?: string | null
+          created_by?: string | null
+          expire_date?: string | null
+          id?: string
+          is_published?: boolean | null
+          masjid_id?: string | null
+          priority?: number | null
+          publish_date?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          announcement_type?: string | null
+          content?: string
+          created_at?: string | null
+          created_by?: string | null
+          expire_date?: string | null
+          id?: string
+          is_published?: boolean | null
+          masjid_id?: string | null
+          priority?: number | null
+          publish_date?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_announcements_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_event_registrations: {
+        Row: {
+          attendee_email: string
+          attendee_name: string
+          attendee_phone: string | null
+          event_id: string | null
+          id: string
+          number_of_attendees: number | null
+          payment_status: string | null
+          registration_date: string | null
+          user_id: string | null
+        }
+        Insert: {
+          attendee_email: string
+          attendee_name: string
+          attendee_phone?: string | null
+          event_id?: string | null
+          id?: string
+          number_of_attendees?: number | null
+          payment_status?: string | null
+          registration_date?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          attendee_email?: string
+          attendee_name?: string
+          attendee_phone?: string | null
+          event_id?: string | null
+          id?: string
+          number_of_attendees?: number | null
+          payment_status?: string | null
+          registration_date?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "masjid_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_events: {
+        Row: {
+          capacity: number | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          end_date: string | null
+          event_type: string
+          id: string
+          image_url: string | null
+          is_published: boolean | null
+          is_recurring: boolean | null
+          location: string | null
+          masjid_id: string | null
+          organizer_contact: string | null
+          organizer_name: string | null
+          recurrence_pattern: string | null
+          registration_fee: number | null
+          registration_required: boolean | null
+          start_date: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          capacity?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          event_type: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          is_recurring?: boolean | null
+          location?: string | null
+          masjid_id?: string | null
+          organizer_contact?: string | null
+          organizer_name?: string | null
+          recurrence_pattern?: string | null
+          registration_fee?: number | null
+          registration_required?: boolean | null
+          start_date: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          capacity?: number | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          event_type?: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean | null
+          is_recurring?: boolean | null
+          location?: string | null
+          masjid_id?: string | null
+          organizer_contact?: string | null
+          organizer_name?: string | null
+          recurrence_pattern?: string | null
+          registration_fee?: number | null
+          registration_required?: boolean | null
+          start_date?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_events_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_jummah_schedule: {
+        Row: {
+          capacity: number | null
+          created_at: string | null
+          id: string
+          imam_name: string | null
+          is_active: boolean | null
+          jummah_time: string
+          khutbah_language: string | null
+          masjid_id: string | null
+        }
+        Insert: {
+          capacity?: number | null
+          created_at?: string | null
+          id?: string
+          imam_name?: string | null
+          is_active?: boolean | null
+          jummah_time: string
+          khutbah_language?: string | null
+          masjid_id?: string | null
+        }
+        Update: {
+          capacity?: number | null
+          created_at?: string | null
+          id?: string
+          imam_name?: string | null
+          is_active?: boolean | null
+          jummah_time?: string
+          khutbah_language?: string | null
+          masjid_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_jummah_schedule_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_khutbahs: {
+        Row: {
+          audio_url: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          imam_name: string
+          is_featured: boolean | null
+          khutbah_date: string
+          language: string | null
+          likes_count: number | null
+          masjid_id: string | null
+          tags: string[] | null
+          title: string
+          transcript: string | null
+          updated_at: string | null
+          video_url: string | null
+          views_count: number | null
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          imam_name: string
+          is_featured?: boolean | null
+          khutbah_date: string
+          language?: string | null
+          likes_count?: number | null
+          masjid_id?: string | null
+          tags?: string[] | null
+          title: string
+          transcript?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+          views_count?: number | null
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          imam_name?: string
+          is_featured?: boolean | null
+          khutbah_date?: string
+          language?: string | null
+          likes_count?: number | null
+          masjid_id?: string | null
+          tags?: string[] | null
+          title?: string
+          transcript?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+          views_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_khutbahs_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_prayer_times: {
+        Row: {
+          asr_time: string
+          created_at: string | null
+          dhuhr_time: string
+          fajr_time: string
+          id: string
+          isha_time: string
+          maghrib_time: string
+          masjid_id: string | null
+          prayer_date: string
+          sunrise_time: string | null
+        }
+        Insert: {
+          asr_time: string
+          created_at?: string | null
+          dhuhr_time: string
+          fajr_time: string
+          id?: string
+          isha_time: string
+          maghrib_time: string
+          masjid_id?: string | null
+          prayer_date: string
+          sunrise_time?: string | null
+        }
+        Update: {
+          asr_time?: string
+          created_at?: string | null
+          dhuhr_time?: string
+          fajr_time?: string
+          id?: string
+          isha_time?: string
+          maghrib_time?: string
+          masjid_id?: string | null
+          prayer_date?: string
+          sunrise_time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_prayer_times_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_services: {
+        Row: {
+          contact_email: string | null
+          contact_person: string | null
+          contact_phone: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          location: string | null
+          masjid_id: string | null
+          operating_hours: Json | null
+          service_name: string
+          service_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          location?: string | null
+          masjid_id?: string | null
+          operating_hours?: Json | null
+          service_name: string
+          service_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          location?: string | null
+          masjid_id?: string | null
+          operating_hours?: Json | null
+          service_name?: string
+          service_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_services_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_staff: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          masjid_id: string | null
+          permissions: Json | null
+          role: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          masjid_id?: string | null
+          permissions?: Json | null
+          role: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          masjid_id?: string | null
+          permissions?: Json | null
+          role?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_staff_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      masjid_websites: {
+        Row: {
+          created_at: string | null
+          custom_domain: string | null
+          domain_verified: boolean | null
+          id: string
+          is_active: boolean | null
+          masjid_id: string | null
+          subdomain_slug: string
+          theme_settings: Json | null
+          updated_at: string | null
+          website_settings: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          custom_domain?: string | null
+          domain_verified?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          masjid_id?: string | null
+          subdomain_slug: string
+          theme_settings?: Json | null
+          updated_at?: string | null
+          website_settings?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          custom_domain?: string | null
+          domain_verified?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          masjid_id?: string | null
+          subdomain_slug?: string
+          theme_settings?: Json | null
+          updated_at?: string | null
+          website_settings?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "masjid_websites_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       masjids: {
         Row: {
           address: string | null
