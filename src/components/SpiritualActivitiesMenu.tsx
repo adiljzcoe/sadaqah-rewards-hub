@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -34,14 +33,18 @@ const SpiritualActivitiesMenu = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <div className="fixed left-4 top-1/2 -translate-y-1/2 z-40">
+        <div className="fixed left-4 bottom-4 z-40">
           <Button
             variant="ghost"
-            className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-600 to-green-600 text-white shadow-xl border-2 border-white/20 hover:scale-110 transition-all duration-300 hover:shadow-2xl backdrop-blur-sm"
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-white shadow-2xl border-4 border-white/30 hover:scale-110 transition-all duration-500 hover:shadow-3xl backdrop-blur-sm relative overflow-hidden group"
           >
-            <div className="relative">
-              <Star className="h-6 w-6" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/40 via-transparent to-orange-200/20 rounded-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 w-1/3 animate-[shine_3s_ease-in-out_infinite] rounded-full"></div>
+            
+            <div className="relative flex flex-col items-center justify-center">
+              <Star className="h-5 w-5 mb-0.5 drop-shadow-lg" />
+              <span className="text-xs font-bold drop-shadow-md">JP's</span>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full animate-pulse shadow-lg"></div>
             </div>
           </Button>
         </div>
@@ -56,12 +59,12 @@ const SpiritualActivitiesMenu = () => {
             <div className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 rounded-2xl p-4 shadow-xl border border-yellow-300/50">
               <div className="flex items-center justify-center mb-2">
                 <Star className="h-8 w-8 text-white mr-2" />
-                <h2 className="text-xl font-bold text-white drop-shadow-md">Jannah Points</h2>
+                <h2 className="text-xl font-bold text-white drop-shadow-md">JP's (Jannah Points)</h2>
               </div>
-              <p className="text-sm text-yellow-100/90 drop-shadow-sm">Earn rewards through spiritual activities</p>
+              <p className="text-sm text-yellow-100/90 drop-shadow-sm">Earn heavenly rewards through spiritual activities</p>
               <div className="mt-3 text-center">
                 <span className="text-lg font-bold text-white drop-shadow-md">
-                  {totalParticipants.toLocaleString()} believers active
+                  {totalParticipants.toLocaleString()} believers earning JP's
                 </span>
               </div>
             </div>
@@ -69,7 +72,7 @@ const SpiritualActivitiesMenu = () => {
 
           {/* Quick Actions */}
           <div className="space-y-3">
-            <h3 className="text-white font-semibold text-lg mb-3 text-center">Quick Actions</h3>
+            <h3 className="text-white font-semibold text-lg mb-3 text-center">Quick JP's</h3>
             {quickActions.map((action, index) => (
               <div key={index} className="group">
                 <Link
@@ -82,7 +85,7 @@ const SpiritualActivitiesMenu = () => {
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold text-sm">{action.name}</div>
-                    <div className="text-xs text-white/80">+{action.points} points</div>
+                    <div className="text-xs text-white/80">+{action.points} JP's</div>
                   </div>
                   <Plus className="h-4 w-4 text-white/70 group-hover:text-white transition-colors" />
                 </Link>
@@ -139,10 +142,18 @@ const SpiritualActivitiesMenu = () => {
               className="flex items-center p-3 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg"
             >
               <Star className="h-5 w-5 mr-3" />
-              <span className="text-sm">Community Leaderboards</span>
+              <span className="text-sm">JP's Leaderboards</span>
             </Link>
           </div>
         </div>
+
+        {/* Keep existing keyframes styles */}
+        <style>{`
+          @keyframes shine {
+            0% { transform: translateX(-100%) skewX(-12deg); }
+            100% { transform: translateX(400%) skewX(-12deg); }
+          }
+        `}</style>
       </SheetContent>
     </Sheet>
   );
