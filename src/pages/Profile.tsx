@@ -433,8 +433,8 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Receive updates via email</div>
                     </div>
                     <Switch
-                      checked={preferences.emailNotifications}
-                      onCheckedChange={(checked) => handlePreferenceChange('emailNotifications', checked)}
+                      checked={preferences?.email_notifications || false}
+                      onCheckedChange={(checked) => handlePreferenceChange('email_notifications', checked)}
                     />
                   </div>
                   <Separator />
@@ -444,8 +444,8 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Get instant alerts on your device</div>
                     </div>
                     <Switch
-                      checked={preferences.pushNotifications}
-                      onCheckedChange={(checked) => handlePreferenceChange('pushNotifications', checked)}
+                      checked={preferences?.push_notifications || false}
+                      onCheckedChange={(checked) => handlePreferenceChange('push_notifications', checked)}
                     />
                   </div>
                   <Separator />
@@ -455,8 +455,8 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Receive text message updates</div>
                     </div>
                     <Switch
-                      checked={preferences.smsNotifications}
-                      onCheckedChange={(checked) => handlePreferenceChange('smsNotifications', checked)}
+                      checked={preferences?.sms_notifications || false}
+                      onCheckedChange={(checked) => handlePreferenceChange('sms_notifications', checked)}
                     />
                   </div>
                   <Separator />
@@ -466,8 +466,8 @@ const Profile = () => {
                       <div className="text-sm text-gray-600">Get a summary of your impact</div>
                     </div>
                     <Switch
-                      checked={preferences.weeklyDigest}
-                      onCheckedChange={(checked) => handlePreferenceChange('weeklyDigest', checked)}
+                      checked={preferences?.weekly_digest || false}
+                      onCheckedChange={(checked) => handlePreferenceChange('weekly_digest', checked)}
                     />
                   </div>
                 </CardContent>

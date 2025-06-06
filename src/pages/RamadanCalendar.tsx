@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar, Star, Gift, BookOpen } from 'lucide-react';
-import Header from '@/components/Header';
 import RamadanCalendarGrid from '@/components/ramadan/RamadanCalendarGrid';
 import RamadanStats from '@/components/ramadan/RamadanStats';
 import RamadanProgress from '@/components/ramadan/RamadanProgress';
@@ -16,7 +15,6 @@ const RamadanCalendar = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50/30 to-pink-50/20">
-      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
