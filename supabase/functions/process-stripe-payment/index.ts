@@ -20,18 +20,49 @@ serve(async (req) => {
 
     const { amount, currency, charity_id, product_id, user_id, payment_method_id } = await req.json()
 
-    // Get Stripe secret key from site config
-    const { data: stripeConfig } = await supabaseClient
+    // Get platform settings to determine which Stripe keys to use
+    const { data: platformSettings } = await supabaseClient
       .from('site_config')
-      .select('config_value')
-      .eq('config_key', 'stripe_secret_key')
-      .single()
+      .select('config_key, config_value')
+      .in('config_key', [
+        'sandbox_mode',
+        'stripe_publishable_key', 
+        'stripe_secret_key',
+        'stripe_webhook_secret'
+      ])
 
-    if (!stripeConfig?.config_value) {
-      throw new Error('Stripe secret key not configured')
+    if (!platformSettings || platformSettings.length === 0) {
+      throw new Error('Platform settings not found. Please configure Stripe keys in admin settings.')
     }
 
-    const stripeSecretKey = JSON.parse(stripeConfig.config_value)
+    // Parse platform settings
+    const settings = platformSettings.reduce((acc, setting) => {
+      acc[setting.config_key] = JSON.parse(setting.config_value)
+      return acc
+    }, {} as Record<string, any>)
+
+    const sandboxMode = settings.sandbox_mode || false
+    console.log('Sandbox mode:', sandboxMode)
+
+    // Determine which Stripe keys to use based on sandbox mode
+    let stripeSecretKey = settings.stripe_secret_key
+    
+    if (!stripeSecretKey) {
+      throw new Error('Stripe secret key not configured in platform settings')
+    }
+
+    // Validate key format based on sandbox mode
+    if (sandboxMode) {
+      if (!stripeSecretKey.startsWith('sk_test_')) {
+        throw new Error('Sandbox mode is enabled but test secret key (sk_test_) is not configured')
+      }
+      console.log('Using Stripe test mode keys')
+    } else {
+      if (!stripeSecretKey.startsWith('sk_live_')) {
+        throw new Error('Live mode is enabled but live secret key (sk_live_) is not configured')
+      }
+      console.log('Using Stripe live mode keys')
+    }
 
     // Create Stripe payment intent
     const stripe = await import('https://esm.sh/stripe@14.21.0')
@@ -49,6 +80,7 @@ serve(async (req) => {
         charity_id: charity_id || '',
         product_id: product_id || '',
         user_id: user_id || '',
+        sandbox_mode: sandboxMode.toString(),
       },
     })
 
@@ -66,7 +98,10 @@ serve(async (req) => {
         charity_id: charity_id,
         product_id: product_id,
         stripe_payment_intent_id: paymentIntent.id,
-        metadata: paymentIntent.metadata,
+        metadata: {
+          ...paymentIntent.metadata,
+          environment: sandboxMode ? 'test' : 'live'
+        },
         processed_at: paymentIntent.status === 'succeeded' ? new Date().toISOString() : null,
       })
       .select()
@@ -101,6 +136,7 @@ serve(async (req) => {
         success: true,
         payment_intent: paymentIntent,
         transaction_id: transaction.id,
+        environment: sandboxMode ? 'test' : 'live',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

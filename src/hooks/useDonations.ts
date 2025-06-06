@@ -24,6 +24,21 @@ export function useDonations() {
     enabled: !!user?.id,
   });
 
+  const { data: platformSettings } = useQuery({
+    queryKey: ['platform-settings'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('site_config')
+        .select('config_key, config_value')
+        .eq('config_key', 'sandbox_mode');
+      
+      if (data && data.length > 0) {
+        return JSON.parse(data[0].config_value);
+      }
+      return false; // Default to live mode if not configured
+    },
+  });
+
   const { data: donations, isLoading } = useQuery({
     queryKey: ['donations', user?.id],
     queryFn: async () => {
@@ -55,6 +70,9 @@ export function useDonations() {
     }) => {
       if (!user?.id) throw new Error('Must be logged in to donate');
       if (!profile) throw new Error('Profile not loaded');
+
+      const sandboxMode = platformSettings || false;
+      console.log(`Creating donation in ${sandboxMode ? 'test' : 'live'} mode`);
 
       // Calculate points and coins
       const jannahPoints = Math.floor(donationData.amount * 10); // 10 points per £1
@@ -91,9 +109,11 @@ export function useDonations() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['donations', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['profile', user?.id] });
+      
+      const sandboxMode = platformSettings || false;
       toast({
-        title: "Donation successful! 🎉",
-        description: "Thank you for your generosity. Your donation has been processed.",
+        title: `Donation successful! 🎉 ${sandboxMode ? '(Test Mode)' : ''}`,
+        description: `Thank you for your generosity. Your donation has been processed${sandboxMode ? ' in test mode' : ''}.`,
       });
     },
     onError: (error: any) => {
@@ -111,5 +131,6 @@ export function useDonations() {
     createDonation: createDonation.mutate,
     isCreatingDonation: createDonation.isPending,
     profile,
+    sandboxMode: platformSettings || false,
   };
 }
