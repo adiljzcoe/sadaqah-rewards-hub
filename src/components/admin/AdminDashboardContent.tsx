@@ -25,6 +25,7 @@ import AffiliateSystem from './AffiliateSystem';
 import DisbursementManagement from './DisbursementManagement';
 import CharityPartnerManagement from './CharityPartnerManagement';
 import YouTubeChannelManager from './YouTubeChannelManager';
+import PlatformSettings from './PlatformSettings';
 
 const AdminDashboardContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -140,6 +141,8 @@ const AdminDashboardContent = () => {
         );
       case 'youtube':
         return <YouTubeChannelManager />;
+      case 'platform-settings':
+        return <PlatformSettings />;
       default:
         return null;
     }
@@ -156,6 +159,7 @@ const AdminDashboardContent = () => {
     { id: 'products', label: 'Products', icon: Database },
     { id: 'monitoring', label: 'Monitoring', icon: Activity },
     { id: 'youtube', label: 'YouTube Scheduler', icon: Youtube },
+    { id: 'platform-settings', label: 'Platform Settings', icon: Settings },
   ];
 
   return (

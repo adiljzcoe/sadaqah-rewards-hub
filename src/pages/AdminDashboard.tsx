@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, DollarSign, TrendingUp, Settings, Bell, Globe, Database, Shield } from 'lucide-react';
 import FeatureConfigManager from '@/components/admin/FeatureConfigManager';
 import SystemSettings from '@/components/admin/SystemSettings';
+import PlatformSettings from '@/components/admin/PlatformSettings';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -22,7 +22,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
               Overview
@@ -34,6 +34,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="system" className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
               System
+            </TabsTrigger>
+            <TabsTrigger value="platform" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              Platform
             </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
@@ -145,6 +149,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="system">
             <SystemSettings />
+          </TabsContent>
+
+          <TabsContent value="platform">
+            <PlatformSettings />
           </TabsContent>
 
           <TabsContent value="users">
