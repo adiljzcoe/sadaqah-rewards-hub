@@ -70,7 +70,7 @@ function App() {
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/my-jannah" element={<ProtectedRoute><MyJannah /></ProtectedRoute>} />
                 <Route path="/my-ummah" element={<ProtectedRoute><MyUmmah /></ProtectedRoute>} />
-                <Route path="/my-masjid" element={<ProtectedRoute><MyMasjid /></ProtectedRoute>} />
+                <Route path="/my-masjid" element={<MyMasjid />} />
                 <Route path="/leaderboards" element={<Leaderboards />} />
                 <Route path="/quran-reader" element={<QuranReader />} />
                 <Route path="/namaz-times" element={<NamazTimes />} />
