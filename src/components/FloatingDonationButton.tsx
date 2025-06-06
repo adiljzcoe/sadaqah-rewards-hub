@@ -240,7 +240,26 @@ const FloatingDonationButton = () => {
           }
         }
 
-        /* Mobile-specific styles */
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .shimmer-bg {
+          background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0.1) 100%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 3s ease-in-out infinite;
+        }
+
         @media (max-width: 768px) {
           .mascot-mobile {
             animation: gentle-pulse-mobile 3s ease-in-out infinite !important;
@@ -317,88 +336,102 @@ const FloatingDonationButton = () => {
         )}
 
         {isExpanded && (
-          <div className={`bg-white/98 backdrop-blur-lg rounded-xl md:rounded-2xl p-2.5 md:p-3 w-48 md:w-56 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
+          <div className={`relative overflow-hidden rounded-xl md:rounded-2xl p-0 w-48 md:w-56 shadow-2xl border border-gray-100 animate-[message-appear_0.3s_ease-out] ${
             isStickyWidgetActive 
               ? 'mt-4 md:mt-6 md:mb-6 md:mt-0' 
               : 'mb-4 md:mb-6'
-          }`}>
+          }`}
+          style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+            backgroundSize: '300% 300%',
+            animation: 'shimmer 4s ease-in-out infinite'
+          }}>
+            
+            {/* Glassmorphism overlay */}
+            <div className="absolute inset-0 bg-white/20 backdrop-blur-lg"></div>
+            
+            {/* Content container */}
+            <div className="relative z-10 p-2.5 md:p-3">
 
-            {/* 7x Fundraising Donation Policy Plaque - more prominent */}
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-lg p-2 mb-3 shadow-sm">
-              <div className="text-center">
-                <p className="text-xs font-bold text-orange-800 mb-1">
-                  🎯 7x FUNDRAISING IMPACT
-                </p>
-                <p className="text-xs text-orange-700 leading-tight font-medium">
-                  Every £1 you give = £7 worth of fundraising power!
+              {/* 7x Fundraising Donation Policy Plaque - Enhanced */}
+              <div className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 border-2 border-orange-300 rounded-lg p-2 mb-3 shadow-lg">
+                {/* Subtle animated background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent shimmer-bg"></div>
+                <div className="relative z-10 text-center">
+                  <p className="text-xs font-bold text-orange-800 mb-1 drop-shadow-sm">
+                    🎯 7x FUNDRAISING IMPACT
+                  </p>
+                  <p className="text-xs text-orange-700 leading-tight font-medium drop-shadow-sm">
+                    Every £1 you give = £7 worth of fundraising power!
+                  </p>
+                </div>
+              </div>
+
+              {/* Compact donation amounts grid */}
+              <div className="grid grid-cols-2 gap-1 md:gap-1.5 mb-2">
+                <Button 
+                  variant="outline" 
+                  className="bg-white/90 hover:bg-white text-blue-700 border border-white/50 p-1.5 md:p-2 h-auto flex-col text-xs backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={() => handleFundraisingDonate(5)}
+                >
+                  <div className="flex items-center">
+                    <SimpleGoldCoin size={8} className="mr-1" />
+                    <span className="font-bold">£5</span>
+                  </div>
+                  <div className="text-xs text-green-600 font-semibold">£35 value</div>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="bg-white/90 hover:bg-white text-green-700 border border-white/50 p-1.5 md:p-2 h-auto flex-col text-xs backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={() => handleFundraisingDonate(10)}
+                >
+                  <div className="flex items-center">
+                    <SimpleGoldCoin size={8} className="mr-1" />
+                    <span className="font-bold">£10</span>
+                  </div>
+                  <div className="text-xs text-green-600 font-semibold">£70 value</div>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="bg-white/90 hover:bg-white text-purple-700 border border-white/50 p-1.5 md:p-2 h-auto flex-col text-xs backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={() => handleFundraisingDonate(25)}
+                >
+                  <div className="flex items-center">
+                    <SimpleGoldCoin size={8} className="mr-1" />
+                    <span className="font-bold">£25</span>
+                  </div>
+                  <div className="text-xs text-green-600 font-semibold">£175 value</div>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="bg-white/90 hover:bg-white text-amber-700 border border-white/50 p-1.5 md:p-2 h-auto flex-col text-xs backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
+                  onClick={() => handleFundraisingDonate(50)}
+                >
+                  <div className="flex items-center">
+                    <SimpleGoldCoin size={8} className="mr-1" />
+                    <span className="font-bold">£50</span>
+                  </div>
+                  <div className="text-xs text-green-600 font-semibold">£350 value</div>
+                </Button>
+              </div>
+
+              {/* Featured donation button - Enhanced */}
+              <Button className="w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white font-bold hover:from-orange-600 hover:via-red-600 hover:to-pink-600 py-1.5 text-xs shadow-xl hover:shadow-2xl transition-all duration-200 border border-white/20" onClick={() => handleFundraisingDonate(100)}>
+                <div className="flex items-center justify-center">
+                  <TrendingUp className="h-3 w-3 mr-1" />
+                  £100 = £700 Value! 🎯
+                </div>
+              </Button>
+
+              {/* Bottom info - Enhanced */}
+              <div className="text-center mt-2">
+                <p className="text-xs text-white font-medium drop-shadow-lg">
+                  7x impact fundraising boost!
                 </p>
               </div>
-            </div>
-
-            {/* Compact donation amounts grid - smaller buttons on mobile */}
-            <div className="grid grid-cols-2 gap-1 md:gap-1.5 mb-2">
-              <Button 
-                variant="outline" 
-                className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 p-1.5 md:p-2 h-auto flex-col text-xs"
-                onClick={() => handleFundraisingDonate(5)}
-              >
-                <div className="flex items-center">
-                  <SimpleGoldCoin size={8} className="mr-1" />
-                  <span className="font-bold">£5</span>
-                </div>
-                <div className="text-xs text-green-600 font-semibold">£35 value</div>
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                className="bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 p-1.5 md:p-2 h-auto flex-col text-xs"
-                onClick={() => handleFundraisingDonate(10)}
-              >
-                <div className="flex items-center">
-                  <SimpleGoldCoin size={8} className="mr-1" />
-                  <span className="font-bold">£10</span>
-                </div>
-                <div className="text-xs text-green-600 font-semibold">£70 value</div>
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                className="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 p-1.5 md:p-2 h-auto flex-col text-xs"
-                onClick={() => handleFundraisingDonate(25)}
-              >
-                <div className="flex items-center">
-                  <SimpleGoldCoin size={8} className="mr-1" />
-                  <span className="font-bold">£25</span>
-                </div>
-                <div className="text-xs text-green-600 font-semibold">£175 value</div>
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                className="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 p-1.5 md:p-2 h-auto flex-col text-xs"
-                onClick={() => handleFundraisingDonate(50)}
-              >
-                <div className="flex items-center">
-                  <SimpleGoldCoin size={8} className="mr-1" />
-                  <span className="font-bold">£50</span>
-                </div>
-                <div className="text-xs text-green-600 font-semibold">£350 value</div>
-              </Button>
-            </div>
-
-            {/* Featured donation button */}
-            <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold hover:from-orange-600 hover:to-red-600 py-1.5 text-xs shadow-lg" onClick={() => handleFundraisingDonate(100)}>
-              <div className="flex items-center justify-center">
-                <TrendingUp className="h-3 w-3 mr-1" />
-                £100 = £700 Value! 🎯
-              </div>
-            </Button>
-
-            {/* Bottom info */}
-            <div className="text-center mt-2">
-              <p className="text-xs text-gray-800 font-medium">
-                7x impact fundraising boost!
-              </p>
             </div>
           </div>
         )}
