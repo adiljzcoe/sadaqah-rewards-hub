@@ -23,8 +23,11 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import UserMasjidDashboard from '@/components/UserMasjidDashboard';
+import { useIslamicThemes } from '@/hooks/useIslamicThemes';
 
 const MyMasjid = () => {
+  const { themes } = useIslamicThemes();
+  
   // Mock data for different masjids
   const masjidExamples = {
     'central-london': {
@@ -103,6 +106,7 @@ const MyMasjid = () => {
 
   const [selectedMasjid, setSelectedMasjid] = useState('central-london');
   const userMasjid = masjidExamples[selectedMasjid];
+  const currentTheme = themes[userMasjid.theme];
 
   // Mock data for demonstration
   const upcomingEvents = [
@@ -162,7 +166,7 @@ const MyMasjid = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div className={`min-h-screen ${currentTheme.containerClasses}`}>
       <Header />
       
       <div className="container mx-auto px-4 py-8">
@@ -170,10 +174,10 @@ const MyMasjid = () => {
         <div className="mb-6 p-4 bg-gray-900 rounded-lg">
           <div className="flex items-center gap-3 mb-3">
             <Code className="h-5 w-5 text-green-400" />
-            <h3 className="text-white font-semibold">Development Mode</h3>
+            <h3 className="text-white font-semibold">Development Mode - Islamic Themes</h3>
           </div>
           <div className="flex items-center gap-4">
-            <label className="text-gray-300 text-sm">Select Masjid Example:</label>
+            <label className="text-gray-300 text-sm">Select Masjid Theme:</label>
             <Select value={selectedMasjid} onValueChange={setSelectedMasjid}>
               <SelectTrigger className="w-64 bg-gray-800 border-gray-700 text-white">
                 <SelectValue />
@@ -181,7 +185,7 @@ const MyMasjid = () => {
               <SelectContent>
                 {Object.entries(masjidExamples).map(([key, masjid]) => (
                   <SelectItem key={key} value={key}>
-                    {masjid.name} ({masjid.theme})
+                    {masjid.name} ({themes[masjid.theme]?.name})
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -193,36 +197,36 @@ const MyMasjid = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+              <div className={`w-20 h-20 bg-gradient-to-br ${currentTheme.gradientClasses} rounded-full flex items-center justify-center shadow-lg`}>
                 <Building className="h-10 w-10 text-white" />
               </div>
               
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h1 className="text-4xl font-bold text-gray-900">{userMasjid.name}</h1>
+                  <h1 className={`text-4xl font-bold ${currentTheme.textClasses}`}>{userMasjid.name}</h1>
                   {userMasjid.verified && (
-                    <Badge className="bg-green-500 hover:bg-green-600">
+                    <Badge className={`${currentTheme.accentClasses} hover:${currentTheme.accentClasses}`}>
                       <Star className="h-3 w-3 mr-1" />
                       Verified
                     </Badge>
                   )}
                 </div>
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className={`flex items-center gap-2 ${currentTheme.textClasses} opacity-80`}>
                   <MapPin className="h-4 w-4" />
                   <span>{userMasjid.location}</span>
                 </div>
-                <p className="text-gray-700 mt-2 max-w-2xl">
+                <p className={`${currentTheme.textClasses} opacity-90 mt-2 max-w-2xl`}>
                   {userMasjid.description}
                 </p>
               </div>
             </div>
             
             <div className="text-right">
-              <Button className="mb-2">
+              <Button className={`mb-2 bg-gradient-to-r ${currentTheme.gradientClasses} text-white hover:opacity-90`}>
                 <Share2 className="h-4 w-4 mr-2" />
                 Invite Friends
               </Button>
-              <div className="text-sm text-gray-600">
+              <div className={`text-sm ${currentTheme.textClasses} opacity-80`}>
                 {userMasjid.memberCount} community members
               </div>
             </div>
@@ -231,157 +235,159 @@ const MyMasjid = () => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="text-center p-4">
-            <div className="text-2xl font-bold text-blue-600">{userMasjid.memberCount}</div>
-            <p className="text-sm text-gray-600">Members</p>
-          </Card>
+          <div className={`${currentTheme.cardClasses} text-center p-4 rounded-lg`}>
+            <div className={`text-2xl font-bold ${currentTheme.textClasses}`}>{userMasjid.memberCount}</div>
+            <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>Members</p>
+          </div>
           
-          <Card className="text-center p-4">
-            <div className="text-2xl font-bold text-green-600">{userMasjid.weeklyEvents}</div>
-            <p className="text-sm text-gray-600">Weekly Events</p>
-          </Card>
+          <div className={`${currentTheme.cardClasses} text-center p-4 rounded-lg`}>
+            <div className={`text-2xl font-bold ${currentTheme.textClasses}`}>{userMasjid.weeklyEvents}</div>
+            <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>Weekly Events</p>
+          </div>
           
-          <Card className="text-center p-4">
-            <div className="text-2xl font-bold text-purple-600">{userMasjid.monthlyKhutbahs}</div>
-            <p className="text-sm text-gray-600">Monthly Khutbahs</p>
-          </Card>
+          <div className={`${currentTheme.cardClasses} text-center p-4 rounded-lg`}>
+            <div className={`text-2xl font-bold ${currentTheme.textClasses}`}>{userMasjid.monthlyKhutbahs}</div>
+            <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>Monthly Khutbahs</p>
+          </div>
           
-          <Card className="text-center p-4">
-            <div className="text-2xl font-bold text-orange-600">{userMasjid.activeServices}</div>
-            <p className="text-sm text-gray-600">Active Services</p>
-          </Card>
+          <div className={`${currentTheme.cardClasses} text-center p-4 rounded-lg`}>
+            <div className={`text-2xl font-bold ${currentTheme.textClasses}`}>{userMasjid.activeServices}</div>
+            <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>Active Services</p>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Prayer Times */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+            <div className={`${currentTheme.cardClasses} rounded-lg`}>
+              <div className="flex flex-col space-y-1.5 p-6">
+                <h3 className={`text-2xl font-semibold leading-none tracking-tight ${currentTheme.textClasses} flex items-center gap-2`}>
                   <Clock className="h-5 w-5" />
                   Today's Prayer Times
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+              </div>
+              <div className="p-6 pt-0">
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="font-semibold text-blue-800">Fajr</div>
+                  <div className={`text-center p-3 rounded-lg ${currentTheme.prayerTimeClasses.fajr}`}>
+                    <div className="font-semibold">Fajr</div>
                     <div className="text-lg font-bold">{prayerTimes.fajr}</div>
                   </div>
-                  <div className="text-center p-3 bg-yellow-50 rounded-lg">
-                    <div className="font-semibold text-yellow-800">Dhuhr</div>
+                  <div className={`text-center p-3 rounded-lg ${currentTheme.prayerTimeClasses.dhuhr}`}>
+                    <div className="font-semibold">Dhuhr</div>
                     <div className="text-lg font-bold">{prayerTimes.dhuhr}</div>
                   </div>
-                  <div className="text-center p-3 bg-orange-50 rounded-lg">
-                    <div className="font-semibold text-orange-800">Asr</div>
+                  <div className={`text-center p-3 rounded-lg ${currentTheme.prayerTimeClasses.asr}`}>
+                    <div className="font-semibold">Asr</div>
                     <div className="text-lg font-bold">{prayerTimes.asr}</div>
                   </div>
-                  <div className="text-center p-3 bg-red-50 rounded-lg">
-                    <div className="font-semibold text-red-800">Maghrib</div>
+                  <div className={`text-center p-3 rounded-lg ${currentTheme.prayerTimeClasses.maghrib}`}>
+                    <div className="font-semibold">Maghrib</div>
                     <div className="text-lg font-bold">{prayerTimes.maghrib}</div>
                   </div>
-                  <div className="text-center p-3 bg-indigo-50 rounded-lg">
-                    <div className="font-semibold text-indigo-800">Isha</div>
+                  <div className={`text-center p-3 rounded-lg ${currentTheme.prayerTimeClasses.isha}`}>
+                    <div className="font-semibold">Isha</div>
                     <div className="text-lg font-bold">{prayerTimes.isha}</div>
                   </div>
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <div className="font-semibold text-green-800">Sunrise</div>
+                  <div className={`text-center p-3 rounded-lg ${currentTheme.prayerTimeClasses.sunrise}`}>
+                    <div className="font-semibold">Sunrise</div>
                     <div className="text-lg font-bold">{prayerTimes.sunrise}</div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Upcoming Events */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+            <div className={`${currentTheme.cardClasses} rounded-lg`}>
+              <div className="flex flex-col space-y-1.5 p-6">
+                <h3 className={`text-2xl font-semibold leading-none tracking-tight ${currentTheme.textClasses} flex items-center gap-2`}>
                   <Calendar className="h-5 w-5" />
                   Upcoming Events
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+              </div>
+              <div className="p-6 pt-0">
                 <div className="space-y-3">
                   {upcomingEvents.map((event) => (
-                    <div key={event.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div key={event.id} className={`flex items-center justify-between p-3 ${currentTheme.accentClasses} rounded-lg hover:opacity-80 transition-opacity`}>
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <div className={`w-10 h-10 ${currentTheme.accentClasses} rounded-full flex items-center justify-center`}>
                           {getEventIcon(event.type)}
                         </div>
                         <div>
-                          <h4 className="font-medium">{event.title}</h4>
-                          <p className="text-sm text-gray-600">
+                          <h4 className={`font-medium ${currentTheme.textClasses}`}>{event.title}</h4>
+                          <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>
                             {event.date} at {event.time}
                             {event.location && ` • ${event.location}`}
                             {event.imam && ` • ${event.imam}`}
                           </p>
                         </div>
                       </div>
-                      <Badge variant="outline" className="capitalize">
+                      <Badge variant="outline" className={`capitalize ${currentTheme.textClasses}`}>
                         {event.type}
                       </Badge>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Community Services */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+            <div className={`${currentTheme.cardClasses} rounded-lg`}>
+              <div className="flex flex-col space-y-1.5 p-6">
+                <h3 className={`text-2xl font-semibold leading-none tracking-tight ${currentTheme.textClasses} flex items-center gap-2`}>
                   <Heart className="h-5 w-5" />
                   Community Services
-                </CardTitle>
-                <CardDescription>
+                </h3>
+                <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>
                   Services offered by our masjid community
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </p>
+              </div>
+              <div className="p-6 pt-0">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {services.map((service, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm font-medium">{service.name}</span>
+                    <div key={index} className={`flex items-center gap-2 p-2 ${currentTheme.accentClasses} rounded-lg`}>
+                      <div className={`w-2 h-2 bg-gradient-to-r ${currentTheme.gradientClasses} rounded-full`}></div>
+                      <span className={`text-sm font-medium ${currentTheme.textClasses}`}>{service.name}</span>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Management Access */}
-            <Card className="border-blue-200 bg-blue-50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-800">
+            <div className={`${currentTheme.cardClasses} rounded-lg`}>
+              <div className="flex flex-col space-y-1.5 p-6">
+                <h3 className={`text-2xl font-semibold leading-none tracking-tight ${currentTheme.textClasses} flex items-center gap-2`}>
                   <Building className="h-5 w-5" />
                   Masjid Management
-                </CardTitle>
-                <CardDescription>
+                </h3>
+                <p className={`text-sm ${currentTheme.textClasses} opacity-70`}>
                   Access comprehensive management tools for your masjid
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </p>
+              </div>
+              <div className="p-6 pt-0">
                 <div className="space-y-3">
-                  <p className="text-sm text-blue-700">
+                  <p className={`text-sm ${currentTheme.textClasses} opacity-80`}>
                     Our masjid management platform provides everything you need to run your community effectively.
                   </p>
                   <div className="flex gap-2">
                     <Link to="/masjid-management">
-                      <Button className="bg-blue-600 hover:bg-blue-700">
+                      <Button className={`bg-gradient-to-r ${currentTheme.gradientClasses} text-white hover:opacity-90`}>
                         Access Management Dashboard
                       </Button>
                     </Link>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
             {/* User's Masjid Dashboard */}
-            <UserMasjidDashboard masjidId={userMasjid.id} />
+            <div className={currentTheme.cardClasses}>
+              <UserMasjidDashboard masjidId={userMasjid.id} />
+            </div>
           </div>
         </div>
       </div>
