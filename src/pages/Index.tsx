@@ -1,4 +1,7 @@
+
 import React from 'react';
+import Header from '@/components/Header';
+import SpiritualActivitiesMenu from '@/components/SpiritualActivitiesMenu';
 import LiveVideo from '@/components/LiveVideo';
 import Leaderboard from '@/components/Leaderboard';
 import FloatingDonationButton from '@/components/FloatingDonationButton';
@@ -105,6 +108,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 overflow-x-hidden">
+      <Header />
+      <SpiritualActivitiesMenu />
       <StickyDonationWidget />
       
       {/* Main Content - Video Section */}
