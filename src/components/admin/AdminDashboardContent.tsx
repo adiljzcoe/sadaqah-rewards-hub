@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import DashboardCharts from './DashboardCharts';
 import AdvancedUserManagement from './AdvancedUserManagement';
 import FinancialManagement from './FinancialManagement';
@@ -29,6 +32,23 @@ import PlatformSettings from './PlatformSettings';
 
 const AdminDashboardContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Query to check sandbox mode status
+  const { data: sandboxMode } = useQuery({
+    queryKey: ['admin-sandbox-mode'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('admin_settings')
+        .select('setting_value')
+        .eq('setting_key', 'sandbox_mode')
+        .single();
+      
+      if (data) {
+        return JSON.parse(data.setting_value);
+      }
+      return false;
+    },
+  });
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -183,6 +203,16 @@ const AdminDashboardContent = () => {
       </div>
 
       <main className="flex-1 overflow-y-auto">
+        {/* Sandbox Mode Banner */}
+        {sandboxMode && (
+          <Alert className="m-6 mb-0 border-orange-500 bg-orange-50">
+            <AlertTriangle className="h-4 w-4 text-orange-600" />
+            <AlertDescription className="text-orange-800 font-medium">
+              <strong>SANDBOX MODE ACTIVE</strong> - All payments and transactions are in test mode. No real money will be processed.
+            </AlertDescription>
+          </Alert>
+        )}
+        
         <div className="p-6">
           {renderTabContent()}
         </div>
