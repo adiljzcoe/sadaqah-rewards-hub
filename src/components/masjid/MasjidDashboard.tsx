@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -211,7 +210,7 @@ const MasjidDashboard = () => {
         </TabsContent>
 
         <TabsContent value="events">
-          <EventsManager masjidId={userMasjidRole.masjid_id} />
+          <EventsManager />
         </TabsContent>
 
         <TabsContent value="khutbahs">
