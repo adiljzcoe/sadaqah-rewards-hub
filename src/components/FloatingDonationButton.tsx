@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, X } from 'lucide-react';
 import SimpleGoldCoin from './SimpleGoldCoin';
 import PixarHeartMascot from './PixarHeartMascot';
 import CoinAnimation from './CoinAnimation';
@@ -317,6 +317,19 @@ const FloatingDonationButton = () => {
             backgroundSize: '300% 300%',
             animation: 'shimmer 4s ease-in-out infinite'
           }}>
+            
+            {/* Close button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-1 right-1 z-20 w-7 h-7 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 transition-all duration-200"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsExpanded(false);
+              }}
+            >
+              <X className="h-3 w-3 text-white" />
+            </Button>
             
             {/* Glassmorphism overlay */}
             <div className="absolute inset-0 bg-white/20 backdrop-blur-lg"></div>
