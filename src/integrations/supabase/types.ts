@@ -2451,6 +2451,118 @@ export type Database = {
           },
         ]
       }
+      mosque_charity_standings: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_donation_date: string | null
+          masjid_id: string
+          monthly_raised: number | null
+          months_active: number | null
+          position: number | null
+          season: string
+          sports_bonus_multiplier: number | null
+          total_raised: number | null
+          trend: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_donation_date?: string | null
+          masjid_id: string
+          monthly_raised?: number | null
+          months_active?: number | null
+          position?: number | null
+          season?: string
+          sports_bonus_multiplier?: number | null
+          total_raised?: number | null
+          trend?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_donation_date?: string | null
+          masjid_id?: string
+          monthly_raised?: number | null
+          months_active?: number | null
+          position?: number | null
+          season?: string
+          sports_bonus_multiplier?: number | null
+          total_raised?: number | null
+          trend?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mosque_charity_standings_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mosque_teams: {
+        Row: {
+          contact_email: string | null
+          contact_person: string | null
+          contact_phone: string | null
+          created_at: string | null
+          established_year: number | null
+          home_ground: string | null
+          id: string
+          is_active: boolean | null
+          masjid_id: string | null
+          sport: Database["public"]["Enums"]["sport_type"]
+          team_logo_url: string | null
+          team_name: string
+          team_type: Database["public"]["Enums"]["team_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          established_year?: number | null
+          home_ground?: string | null
+          id?: string
+          is_active?: boolean | null
+          masjid_id?: string | null
+          sport: Database["public"]["Enums"]["sport_type"]
+          team_logo_url?: string | null
+          team_name: string
+          team_type: Database["public"]["Enums"]["team_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          established_year?: number | null
+          home_ground?: string | null
+          id?: string
+          is_active?: boolean | null
+          masjid_id?: string | null
+          sport?: Database["public"]["Enums"]["sport_type"]
+          team_logo_url?: string | null
+          team_name?: string
+          team_type?: Database["public"]["Enums"]["team_type"]
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mosque_teams_masjid_id_fkey"
+            columns: ["masjid_id"]
+            isOneToOne: false
+            referencedRelation: "masjids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_preferences: {
         Row: {
           achievement_notifications: boolean | null
@@ -3243,6 +3355,140 @@ export type Database = {
         }
         Relationships: []
       }
+      sports_league_standings: {
+        Row: {
+          division: string
+          draws: number | null
+          form: string | null
+          goal_difference: number | null
+          goals_against: number | null
+          goals_for: number | null
+          id: string
+          losses: number | null
+          matches_played: number | null
+          points: number | null
+          position: number | null
+          season: string
+          sport: Database["public"]["Enums"]["sport_type"]
+          team_id: string
+          updated_at: string | null
+          wins: number | null
+        }
+        Insert: {
+          division?: string
+          draws?: number | null
+          form?: string | null
+          goal_difference?: number | null
+          goals_against?: number | null
+          goals_for?: number | null
+          id?: string
+          losses?: number | null
+          matches_played?: number | null
+          points?: number | null
+          position?: number | null
+          season?: string
+          sport: Database["public"]["Enums"]["sport_type"]
+          team_id: string
+          updated_at?: string | null
+          wins?: number | null
+        }
+        Update: {
+          division?: string
+          draws?: number | null
+          form?: string | null
+          goal_difference?: number | null
+          goals_against?: number | null
+          goals_for?: number | null
+          id?: string
+          losses?: number | null
+          matches_played?: number | null
+          points?: number | null
+          position?: number | null
+          season?: string
+          sport?: Database["public"]["Enums"]["sport_type"]
+          team_id?: string
+          updated_at?: string | null
+          wins?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sports_league_standings_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "mosque_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sports_matches: {
+        Row: {
+          away_score: number | null
+          away_team_id: string
+          charity_raised: number | null
+          created_at: string | null
+          home_score: number | null
+          home_team_id: string
+          id: string
+          league_division: string | null
+          match_date: string
+          match_notes: string | null
+          match_status: string | null
+          season: string | null
+          sport: Database["public"]["Enums"]["sport_type"]
+          updated_at: string | null
+          venue: string | null
+        }
+        Insert: {
+          away_score?: number | null
+          away_team_id: string
+          charity_raised?: number | null
+          created_at?: string | null
+          home_score?: number | null
+          home_team_id: string
+          id?: string
+          league_division?: string | null
+          match_date: string
+          match_notes?: string | null
+          match_status?: string | null
+          season?: string | null
+          sport: Database["public"]["Enums"]["sport_type"]
+          updated_at?: string | null
+          venue?: string | null
+        }
+        Update: {
+          away_score?: number | null
+          away_team_id?: string
+          charity_raised?: number | null
+          created_at?: string | null
+          home_score?: number | null
+          home_team_id?: string
+          id?: string
+          league_division?: string | null
+          match_date?: string
+          match_notes?: string | null
+          match_status?: string | null
+          season?: string | null
+          sport?: Database["public"]["Enums"]["sport_type"]
+          updated_at?: string | null
+          venue?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sports_matches_away_team_id_fkey"
+            columns: ["away_team_id"]
+            isOneToOne: false
+            referencedRelation: "mosque_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sports_matches_home_team_id_fkey"
+            columns: ["home_team_id"]
+            isOneToOne: false
+            referencedRelation: "mosque_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stream_chat_messages: {
         Row: {
           created_at: string | null
@@ -3675,7 +3921,9 @@ export type Database = {
         | "slaughtered"
         | "distributed"
         | "completed"
+      sport_type: "football" | "cricket"
       team_role: "leader" | "member" | "admin"
+      team_type: "mosque" | "madrassah"
       user_role:
         | "user"
         | "admin"
@@ -3831,7 +4079,9 @@ export const Constants = {
         "distributed",
         "completed",
       ],
+      sport_type: ["football", "cricket"],
       team_role: ["leader", "member", "admin"],
+      team_type: ["mosque", "madrassah"],
       user_role: [
         "user",
         "admin",

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -52,6 +53,7 @@ import MasjidManagement from "./pages/MasjidManagement";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BusinessLeagues from "./pages/BusinessLeagues";
+import MosqueLeagues from "./pages/MosqueLeagues";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -111,6 +113,7 @@ function App() {
                 <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/masjid-management" element={<ProtectedRoute><MasjidManagement /></ProtectedRoute>} />
                 <Route path="/business-leagues" element={<BusinessLeagues />} />
+                <Route path="/mosque-leagues" element={<MosqueLeagues />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
