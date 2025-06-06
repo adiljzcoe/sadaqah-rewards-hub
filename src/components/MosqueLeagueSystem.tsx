@@ -15,8 +15,7 @@ import {
   ArrowDown,
   Heart,
   Medal,
-  Star,
-  Fixture
+  Star
 } from 'lucide-react';
 import { 
   getSportsStandingsBySport,
