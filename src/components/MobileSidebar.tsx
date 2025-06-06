@@ -231,8 +231,20 @@ const MobileSidebar = ({ userLevel, currentPoints, nextLevelPoints, isMember }: 
       </SheetTrigger>
       <SheetContent side="right" className="w-80 p-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex flex-col h-full">
         
+        {/* Enhanced Close Button */}
+        <div className="absolute top-4 right-4 z-50">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setOpen(false)}
+            className="w-10 h-10 rounded-full bg-gradient-to-r from-red-500/20 to-pink-500/20 hover:from-red-500/30 hover:to-pink-500/30 backdrop-blur-sm border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl"
+          >
+            <X className="h-5 w-5 text-white drop-shadow-md" />
+          </Button>
+        </div>
+        
         {/* Fully Scrollable Content Area */}
-        <div className="overflow-y-auto p-4 space-y-4 h-full">
+        <div className="overflow-y-auto p-4 space-y-4 h-full pt-16">
           
           {/* User Profile Section */}
           <div className="text-center">
