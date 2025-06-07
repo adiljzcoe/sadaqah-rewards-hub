@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,20 +9,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Users, UserPlus, TrendingDown, Crown, Search, Filter, Download, Mail, MessageSquare } from 'lucide-react';
+import { useAdvancedUserManagement } from '@/hooks/useAdvancedUserManagement';
 
 const AdvancedUserManagement = () => {
   const [selectedSegment, setSelectedSegment] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const { userSegments, vipDonors, donationSegments, isLoading, error } = useAdvancedUserManagement();
 
-  const userSegments = [
-    { id: 'all', name: 'All Users', count: 2450000, growth: '+8%' },
-    { id: 'active', name: 'Active Donors (30d)', count: 850000, growth: '+12%' },
-    { id: 'vip', name: 'VIP Donors (£1000+)', count: 12500, growth: '+25%' },
-    { id: 'dormant', name: 'Dormant (90d+)', count: 340000, growth: '-5%' },
-    { id: 'new', name: 'New Users (7d)', count: 28000, growth: '+18%' },
-    { id: 'churn_risk', name: 'Churn Risk', count: 65000, growth: '+3%' }
-  ];
-
+  // Keep existing static data for charts and other visualizations
   const donorJourneyData = [
     { stage: 'Awareness', users: 100, conversion: 35 },
     { stage: 'Interest', users: 35, conversion: 60 },
@@ -38,14 +32,6 @@ const AdvancedUserManagement = () => {
     { month: 'Month 3', cohort1: 72, cohort2: 76, cohort3: 84 },
     { month: 'Month 6', cohort1: 45, cohort2: 52, cohort3: 68 },
     { month: 'Month 12', cohort1: 28, cohort2: 35, cohort3: 48 }
-  ];
-
-  const vipDonors = [
-    { id: '1', name: 'Ahmed Hassan', totalDonated: 15420, lastDonation: '2 days ago', tier: 'Platinum', riskScore: 'Low' },
-    { id: '2', name: 'Sarah Johnson', totalDonated: 12850, lastDonation: '5 days ago', tier: 'Gold', riskScore: 'Low' },
-    { id: '3', name: 'Mohammed Ali', totalDonated: 8960, lastDonation: '1 week ago', tier: 'Gold', riskScore: 'Medium' },
-    { id: '4', name: 'Fatima Khan', totalDonated: 7340, lastDonation: '3 days ago', tier: 'Silver', riskScore: 'Low' },
-    { id: '5', name: 'David Smith', totalDonated: 6580, lastDonation: '2 weeks ago', tier: 'Silver', riskScore: 'High' }
   ];
 
   const getTierColor = (tier: string) => {
@@ -66,6 +52,47 @@ const AdvancedUserManagement = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold">Advanced User Management</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardContent className="p-4">
+                <div className="text-center space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+                  <div className="h-8 bg-gray-200 rounded w-1/2 mx-auto"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/3 mx-auto"></div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="text-center py-8">
+          <p className="text-gray-600">Loading user data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold">Advanced User Management</h2>
+        </div>
+        <Card>
+          <CardContent className="p-8 text-center">
+            <p className="text-red-600">Error loading user data. Please try again later.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -84,7 +111,7 @@ const AdvancedUserManagement = () => {
 
       {/* User Segments Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {userSegments.map((segment) => (
+        {userSegments?.map((segment) => (
           <Card key={segment.id} className={`cursor-pointer transition-colors ${selectedSegment === segment.id ? 'ring-2 ring-blue-500' : ''}`} onClick={() => setSelectedSegment(segment.id)}>
             <CardContent className="p-4">
               <div className="text-center">
@@ -143,13 +170,7 @@ const AdvancedUserManagement = () => {
                   <div>
                     <h4 className="font-medium mb-4">Donation Behavior Segments</h4>
                     <div className="space-y-3">
-                      {[
-                        { name: 'High-Value Donors', count: 12500, percentage: 0.5 },
-                        { name: 'Regular Monthly Donors', count: 125000, percentage: 5.1 },
-                        { name: 'Occasional Donors', count: 680000, percentage: 27.8 },
-                        { name: 'One-time Donors', count: 1250000, percentage: 51.0 },
-                        { name: 'Inactive Users', count: 382500, percentage: 15.6 }
-                      ].map((segment, index) => (
+                      {donationSegments?.map((segment, index) => (
                         <div key={index} className="flex items-center justify-between p-3 border rounded">
                           <div>
                             <p className="font-medium">{segment.name}</p>
@@ -235,17 +256,23 @@ const AdvancedUserManagement = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 bg-red-50 rounded-lg">
                     <h4 className="font-medium text-red-800">High Churn Risk</h4>
-                    <p className="text-2xl font-bold text-red-600">65,000</p>
+                    <p className="text-2xl font-bold text-red-600">
+                      {userSegments?.find(s => s.id === 'churn_risk')?.count?.toLocaleString() || '0'}
+                    </p>
                     <p className="text-sm text-red-600">Users at risk of churning</p>
                   </div>
                   <div className="p-4 bg-yellow-50 rounded-lg">
                     <h4 className="font-medium text-yellow-800">Declining Engagement</h4>
-                    <p className="text-2xl font-bold text-yellow-600">128,000</p>
+                    <p className="text-2xl font-bold text-yellow-600">
+                      {userSegments?.find(s => s.id === 'dormant')?.count?.toLocaleString() || '0'}
+                    </p>
                     <p className="text-sm text-yellow-600">Reduced activity detected</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg">
                     <h4 className="font-medium text-green-800">Loyal Supporters</h4>
-                    <p className="text-2xl font-bold text-green-600">485,000</p>
+                    <p className="text-2xl font-bold text-green-600">
+                      {userSegments?.find(s => s.id === 'active')?.count?.toLocaleString() || '0'}
+                    </p>
                     <p className="text-sm text-green-600">High retention rate</p>
                   </div>
                 </div>
@@ -275,7 +302,7 @@ const AdvancedUserManagement = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {vipDonors.map((donor) => (
+                  {vipDonors?.map((donor) => (
                     <TableRow key={donor.id}>
                       <TableCell className="font-medium">{donor.name}</TableCell>
                       <TableCell>£{donor.totalDonated.toLocaleString()}</TableCell>
