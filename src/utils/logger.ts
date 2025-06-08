@@ -1,4 +1,3 @@
-
 // Enterprise logging utility
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -13,8 +12,8 @@ interface LogEntry {
 }
 
 class Logger {
-  private isDevelopment = process.env.NODE_ENV === 'development';
-  private logLevel: LogLevel = (process.env.VITE_LOG_LEVEL as LogLevel) || 'info';
+  private isDevelopment = import.meta.env.MODE === 'development';
+  private logLevel: LogLevel = (import.meta.env.VITE_LOG_LEVEL as LogLevel) || 'info';
   
   private levels: Record<LogLevel, number> = {
     debug: 0,
