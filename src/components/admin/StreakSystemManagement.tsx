@@ -10,6 +10,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Edit, Flame, Shield, Calendar, Users, TrendingUp, Target } from 'lucide-react';
+import { 
+  useStreakConfig, 
+  useUserStreaks,
+  useUpdateStreakConfig,
+  useGrantStreakFreeze,
+  useResetUserStreak,
+  useCreateStreakConfig
+} from '@/hooks/useStreakSystem';
 
 const StreakSystemManagement = () => {
   const [showConfigForm, setShowConfigForm] = useState(false);
@@ -23,72 +31,25 @@ const StreakSystemManagement = () => {
     is_active: true
   });
 
-  const mockStreakConfig = [
-    {
-      id: '1',
-      name: 'Daily Streak Bonus',
-      reward_type: 'points',
-      reward_value: 50,
-      threshold: 1,
-      is_active: true,
-      description: 'Bonus points for maintaining daily streak'
-    },
-    {
-      id: '2',
-      name: 'Weekly Streak Milestone',
-      reward_type: 'multiplier',
-      reward_value: 1.5,
-      threshold: 7,
-      is_active: true,
-      description: '50% multiplier bonus for 7-day streak'
-    },
-    {
-      id: '3',
-      name: 'Monthly Champion',
-      reward_type: 'freeze',
-      reward_value: 2,
-      threshold: 30,
-      is_active: true,
-      description: '2 free streak freezes for 30-day streak'
-    }
-  ];
+  // Fetch data from database
+  const { data: streakConfig = [], isLoading: configLoading } = useStreakConfig();
+  const { data: userStreaks = [], isLoading: streaksLoading } = useUserStreaks();
 
-  const mockUserStreaks = [
-    {
-      id: '1',
-      user_name: 'Sarah Johnson',
-      user_email: 'sarah@example.com',
-      current_streak: 45,
-      longest_streak: 67,
-      freeze_count: 3,
-      last_donation: '2024-01-26',
-      status: 'active'
-    },
-    {
-      id: '2',
-      user_name: 'Ahmed Ali',
-      user_email: 'ahmed@example.com',
-      current_streak: 0,
-      longest_streak: 23,
-      freeze_count: 1,
-      last_donation: '2024-01-24',
-      status: 'broken'
-    },
-    {
-      id: '3',
-      user_name: 'Fatima Hassan',
-      user_email: 'fatima@example.com',
-      current_streak: 12,
-      longest_streak: 34,
-      freeze_count: 0,
-      last_donation: '2024-01-26',
-      status: 'active'
-    }
-  ];
+  // Mutations
+  const updateStreakConfig = useUpdateStreakConfig();
+  const grantFreeze = useGrantStreakFreeze();
+  const resetStreak = useResetUserStreak();
+  const createConfig = useCreateStreakConfig();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Creating/updating streak config:', formData);
+    createConfig.mutate({
+      name: formData.name,
+      reward_type: formData.reward_type,
+      reward_value: parseFloat(formData.reward_value),
+      threshold: parseInt(formData.threshold),
+      is_active: formData.is_active
+    });
     setShowConfigForm(false);
     resetForm();
   };
@@ -103,16 +64,16 @@ const StreakSystemManagement = () => {
     });
   };
 
-  const toggleConfig = (configId: string) => {
-    console.log('Toggling streak config:', configId);
+  const toggleConfig = (configId: string, currentState: boolean) => {
+    updateStreakConfig.mutate({ id: configId, is_active: !currentState });
   };
 
   const grantStreakFreeze = (userId: string) => {
-    console.log('Granting streak freeze to user:', userId);
+    grantFreeze.mutate(userId);
   };
 
   const resetUserStreak = (userId: string) => {
-    console.log('Resetting streak for user:', userId);
+    resetStreak.mutate(userId);
   };
 
   return (
@@ -144,57 +105,61 @@ const StreakSystemManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Rule Name</TableHead>
-                    <TableHead>Reward Type</TableHead>
-                    <TableHead>Reward Value</TableHead>
-                    <TableHead>Threshold</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockStreakConfig.map((config) => (
-                    <TableRow key={config.id}>
-                      <TableCell className="font-medium">{config.name}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{config.reward_type}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        {config.reward_type === 'multiplier' ? `${config.reward_value}x` : config.reward_value}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          {config.threshold} days
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
-                            {config.is_active ? 'Active' : 'Inactive'}
-                          </Badge>
-                          <Switch
-                            checked={config.is_active}
-                            onCheckedChange={() => toggleConfig(config.id)}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground max-w-xs">
-                        {config.description}
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="outline" onClick={() => setSelectedConfig(config.id)}>
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                      </TableCell>
+              {configLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Rule Name</TableHead>
+                      <TableHead>Reward Type</TableHead>
+                      <TableHead>Reward Value</TableHead>
+                      <TableHead>Threshold</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {streakConfig.map((config) => (
+                      <TableRow key={config.id}>
+                        <TableCell className="font-medium">{config.name}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{config.reward_type}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          {config.reward_type === 'multiplier' ? `${config.reward_value}x` : config.reward_value}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            {config.threshold} days
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
+                              {config.is_active ? 'Active' : 'Inactive'}
+                            </Badge>
+                            <Switch
+                              checked={config.is_active}
+                              onCheckedChange={() => toggleConfig(config.id, config.is_active)}
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground max-w-xs">
+                          {config.description}
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline" onClick={() => setSelectedConfig(config.id)}>
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -208,65 +173,71 @@ const StreakSystemManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Current Streak</TableHead>
-                    <TableHead>Longest Streak</TableHead>
-                    <TableHead>Freezes Left</TableHead>
-                    <TableHead>Last Donation</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockUserStreaks.map((streak) => (
-                    <TableRow key={streak.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{streak.user_name}</div>
-                          <div className="text-sm text-muted-foreground">{streak.user_email}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Flame className={`h-4 w-4 ${streak.current_streak > 0 ? 'text-orange-500' : 'text-gray-400'}`} />
-                          <span className="font-bold text-lg">{streak.current_streak}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Target className="h-4 w-4 text-purple-600" />
-                          {streak.longest_streak}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Shield className="h-4 w-4 text-blue-600" />
-                          {streak.freeze_count}
-                        </div>
-                      </TableCell>
-                      <TableCell>{new Date(streak.last_donation).toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <Badge className={streak.status === 'active' ? 'bg-green-500' : 'bg-red-500'}>
-                          {streak.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-1">
-                          <Button size="sm" variant="outline" onClick={() => grantStreakFreeze(streak.id)}>
-                            <Shield className="h-3 w-3" />
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => resetUserStreak(streak.id)}>
-                            <Edit className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </TableCell>
+              {streaksLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>User</TableHead>
+                      <TableHead>Current Streak</TableHead>
+                      <TableHead>Longest Streak</TableHead>
+                      <TableHead>Freezes Left</TableHead>
+                      <TableHead>Last Donation</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {userStreaks.map((streak) => (
+                      <TableRow key={streak.id}>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{streak.profiles?.full_name || 'Unknown User'}</div>
+                            <div className="text-sm text-muted-foreground">{streak.profiles?.email || 'No email'}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Flame className={`h-4 w-4 ${streak.current_streak > 0 ? 'text-orange-500' : 'text-gray-400'}`} />
+                            <span className="font-bold text-lg">{streak.current_streak}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Target className="h-4 w-4 text-purple-600" />
+                            {streak.longest_streak}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Shield className="h-4 w-4 text-blue-600" />
+                            {streak.freeze_count}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {streak.last_donation ? new Date(streak.last_donation).toLocaleDateString() : 'Never'}
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={streak.status === 'active' ? 'bg-green-500' : 'bg-red-500'}>
+                            {streak.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="outline" onClick={() => grantStreakFreeze(streak.user_id)}>
+                              <Shield className="h-3 w-3" />
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => resetUserStreak(streak.user_id)}>
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -278,7 +249,7 @@ const StreakSystemManagement = () => {
                 <CardTitle>Active Streaks</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">1,247</div>
+                <div className="text-3xl font-bold">{userStreaks.filter(s => s.status === 'active').length}</div>
                 <p className="text-sm text-muted-foreground">Users with active streaks</p>
               </CardContent>
             </Card>
@@ -287,7 +258,11 @@ const StreakSystemManagement = () => {
                 <CardTitle>Average Streak</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">8.5</div>
+                <div className="text-3xl font-bold">
+                  {userStreaks.length > 0 
+                    ? Math.round(userStreaks.reduce((acc, s) => acc + s.current_streak, 0) / userStreaks.length * 10) / 10
+                    : 0}
+                </div>
                 <p className="text-sm text-muted-foreground">Days per active streak</p>
               </CardContent>
             </Card>
@@ -296,17 +271,21 @@ const StreakSystemManagement = () => {
                 <CardTitle>Longest Current</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">127</div>
+                <div className="text-3xl font-bold">
+                  {userStreaks.length > 0 ? Math.max(...userStreaks.map(s => s.current_streak)) : 0}
+                </div>
                 <p className="text-sm text-muted-foreground">Days streak record</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Freezes Used</CardTitle>
+                <CardTitle>Total Freezes</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">456</div>
-                <p className="text-sm text-muted-foreground">This month</p>
+                <div className="text-3xl font-bold">
+                  {userStreaks.reduce((acc, s) => acc + s.freeze_count, 0)}
+                </div>
+                <p className="text-sm text-muted-foreground">Available freezes</p>
               </CardContent>
             </Card>
           </div>

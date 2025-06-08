@@ -10,6 +10,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Edit, Star, Coins, TrendingUp, Settings, Zap, Target } from 'lucide-react';
+import { 
+  usePointsConfig, 
+  useCoinsConfig, 
+  useMultiplierEvents,
+  useUpdatePointsConfig,
+  useUpdateCoinsConfig,
+  useUpdateMultiplierEvent
+} from '@/hooks/useRewardsSystem';
 
 const RewardsSystemManagement = () => {
   const [showConfigForm, setShowConfigForm] = useState(false);
@@ -22,72 +30,15 @@ const RewardsSystemManagement = () => {
     description: ''
   });
 
-  const mockPointsConfig = [
-    {
-      id: '1',
-      action: 'donation',
-      points_per_pound: 10,
-      multiplier: 1.0,
-      is_active: true,
-      description: 'Base points for donations'
-    },
-    {
-      id: '2',
-      action: 'daily_streak_bonus',
-      points_per_pound: 0,
-      multiplier: 1.5,
-      is_active: true,
-      description: '50% bonus for streak days'
-    },
-    {
-      id: '3',
-      action: 'weekend_multiplier',
-      points_per_pound: 0,
-      multiplier: 2.0,
-      is_active: true,
-      description: 'Weekend double points'
-    }
-  ];
+  // Fetch data from database
+  const { data: pointsConfig = [], isLoading: pointsLoading } = usePointsConfig();
+  const { data: coinsConfig = [], isLoading: coinsLoading } = useCoinsConfig();
+  const { data: multiplierEvents = [], isLoading: multipliersLoading } = useMultiplierEvents();
 
-  const mockCoinsConfig = [
-    {
-      id: '1',
-      action: 'donation',
-      coins_per_pound: 5,
-      conversion_rate: 0.1,
-      is_active: true,
-      description: 'Base coins for donations'
-    },
-    {
-      id: '2',
-      action: 'jannah_points_conversion',
-      coins_per_pound: 0,
-      conversion_rate: 0.01,
-      is_active: true,
-      description: '1 coin per 100 Jannah points'
-    }
-  ];
-
-  const mockMultipliers = [
-    {
-      id: '1',
-      name: 'Ramadan Boost',
-      multiplier: 3.0,
-      start_date: '2024-03-10',
-      end_date: '2024-04-09',
-      is_active: true,
-      applies_to: 'all'
-    },
-    {
-      id: '2',
-      name: 'Friday Khutbah',
-      multiplier: 1.5,
-      start_date: '2024-01-01',
-      end_date: '2024-12-31',
-      is_active: true,
-      applies_to: 'friday'
-    }
-  ];
+  // Mutations
+  const updatePointsConfig = useUpdatePointsConfig();
+  const updateCoinsConfig = useUpdateCoinsConfig();
+  const updateMultiplierEvent = useUpdateMultiplierEvent();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,8 +56,16 @@ const RewardsSystemManagement = () => {
     });
   };
 
-  const toggleConfig = (configId: string, type: string) => {
-    console.log('Toggling config:', configId, type);
+  const togglePointsConfig = (configId: string, currentState: boolean) => {
+    updatePointsConfig.mutate({ id: configId, is_active: !currentState });
+  };
+
+  const toggleCoinsConfig = (configId: string, currentState: boolean) => {
+    updateCoinsConfig.mutate({ id: configId, is_active: !currentState });
+  };
+
+  const toggleMultiplierEvent = (eventId: string, currentState: boolean) => {
+    updateMultiplierEvent.mutate({ id: eventId, is_active: !currentState });
   };
 
   return (
@@ -139,50 +98,54 @@ const RewardsSystemManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Points per £</TableHead>
-                    <TableHead>Multiplier</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockPointsConfig.map((config) => (
-                    <TableRow key={config.id}>
-                      <TableCell className="font-medium">{config.action}</TableCell>
-                      <TableCell>{config.points_per_pound}</TableCell>
-                      <TableCell>
-                        <Badge variant={config.multiplier > 1 ? 'default' : 'secondary'}>
-                          {config.multiplier}x
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
-                            {config.is_active ? 'Active' : 'Inactive'}
-                          </Badge>
-                          <Switch
-                            checked={config.is_active}
-                            onCheckedChange={() => toggleConfig(config.id, 'points')}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {config.description}
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="outline">
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                      </TableCell>
+              {pointsLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Action</TableHead>
+                      <TableHead>Points per £</TableHead>
+                      <TableHead>Multiplier</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {pointsConfig.map((config) => (
+                      <TableRow key={config.id}>
+                        <TableCell className="font-medium">{config.action}</TableCell>
+                        <TableCell>{config.points_per_pound}</TableCell>
+                        <TableCell>
+                          <Badge variant={config.multiplier > 1 ? 'default' : 'secondary'}>
+                            {config.multiplier}x
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
+                              {config.is_active ? 'Active' : 'Inactive'}
+                            </Badge>
+                            <Switch
+                              checked={config.is_active}
+                              onCheckedChange={() => togglePointsConfig(config.id, config.is_active)}
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {config.description}
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline">
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -196,46 +159,50 @@ const RewardsSystemManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Coins per £</TableHead>
-                    <TableHead>Conversion Rate</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockCoinsConfig.map((config) => (
-                    <TableRow key={config.id}>
-                      <TableCell className="font-medium">{config.action}</TableCell>
-                      <TableCell>{config.coins_per_pound}</TableCell>
-                      <TableCell>{config.conversion_rate}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
-                            {config.is_active ? 'Active' : 'Inactive'}
-                          </Badge>
-                          <Switch
-                            checked={config.is_active}
-                            onCheckedChange={() => toggleConfig(config.id, 'coins')}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {config.description}
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="outline">
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                      </TableCell>
+              {coinsLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Action</TableHead>
+                      <TableHead>Coins per £</TableHead>
+                      <TableHead>Conversion Rate</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {coinsConfig.map((config) => (
+                      <TableRow key={config.id}>
+                        <TableCell className="font-medium">{config.action}</TableCell>
+                        <TableCell>{config.coins_per_pound}</TableCell>
+                        <TableCell>{config.conversion_rate}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
+                              {config.is_active ? 'Active' : 'Inactive'}
+                            </Badge>
+                            <Switch
+                              checked={config.is_active}
+                              onCheckedChange={() => toggleCoinsConfig(config.id, config.is_active)}
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {config.description}
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline">
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -249,55 +216,59 @@ const RewardsSystemManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Event Name</TableHead>
-                    <TableHead>Multiplier</TableHead>
-                    <TableHead>Date Range</TableHead>
-                    <TableHead>Applies To</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockMultipliers.map((multiplier) => (
-                    <TableRow key={multiplier.id}>
-                      <TableCell className="font-medium">{multiplier.name}</TableCell>
-                      <TableCell>
-                        <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                          {multiplier.multiplier}x
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <div>{new Date(multiplier.start_date).toLocaleDateString()}</div>
-                          <div className="text-muted-foreground">to {new Date(multiplier.end_date).toLocaleDateString()}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{multiplier.applies_to}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Badge className={multiplier.is_active ? 'bg-green-500' : 'bg-gray-500'}>
-                            {multiplier.is_active ? 'Active' : 'Inactive'}
-                          </Badge>
-                          <Switch
-                            checked={multiplier.is_active}
-                            onCheckedChange={() => toggleConfig(multiplier.id, 'multiplier')}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="outline">
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                      </TableCell>
+              {multipliersLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Event Name</TableHead>
+                      <TableHead>Multiplier</TableHead>
+                      <TableHead>Date Range</TableHead>
+                      <TableHead>Applies To</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {multiplierEvents.map((multiplier) => (
+                      <TableRow key={multiplier.id}>
+                        <TableCell className="font-medium">{multiplier.name}</TableCell>
+                        <TableCell>
+                          <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                            {multiplier.multiplier}x
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="text-sm">
+                            <div>{new Date(multiplier.start_date).toLocaleDateString()}</div>
+                            <div className="text-muted-foreground">to {new Date(multiplier.end_date).toLocaleDateString()}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{multiplier.applies_to}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Badge className={multiplier.is_active ? 'bg-green-500' : 'bg-gray-500'}>
+                              {multiplier.is_active ? 'Active' : 'Inactive'}
+                            </Badge>
+                            <Switch
+                              checked={multiplier.is_active}
+                              onCheckedChange={() => toggleMultiplierEvent(multiplier.id, multiplier.is_active)}
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline">
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

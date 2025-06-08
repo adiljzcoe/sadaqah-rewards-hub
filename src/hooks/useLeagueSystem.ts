@@ -3,14 +3,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-export const useSpiritualActivitiesData = () => {
+export const useLeagues = () => {
   return useQuery({
-    queryKey: ['spiritual-activities'],
+    queryKey: ['leagues'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('spiritual_activities')
+        .from('leagues')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('min_points', { ascending: true });
       
       if (error) throw error;
       return data;
@@ -18,24 +18,25 @@ export const useSpiritualActivitiesData = () => {
   });
 };
 
-export const useUserSpiritualActivities = () => {
+export const useUserLeagues = () => {
   return useQuery({
-    queryKey: ['user-spiritual-activities'],
+    queryKey: ['user-leagues'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('user_spiritual_activities')
+        .from('user_leagues')
         .select(`
           *,
           profiles:user_id (
             full_name,
             email
           ),
-          spiritual_activities:activity_id (
+          leagues:league_id (
             name,
-            emoji
+            icon,
+            color
           )
         `)
-        .order('completed_at', { ascending: false })
+        .order('current_points', { ascending: false })
         .limit(50);
       
       if (error) throw error;
@@ -44,26 +45,26 @@ export const useUserSpiritualActivities = () => {
   });
 };
 
-export const useUpdateSpiritualActivity = () => {
+export const useUpdateLeague = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
       const { error } = await supabase
-        .from('spiritual_activities')
+        .from('leagues')
         .update({ is_active })
         .eq('id', id);
       
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['spiritual-activities'] });
-      toast({ title: 'Activity updated successfully' });
+      queryClient.invalidateQueries({ queryKey: ['leagues'] });
+      toast({ title: 'League updated successfully' });
     },
     onError: (error) => {
       toast({ 
-        title: 'Error updating activity', 
+        title: 'Error updating league', 
         description: error.message,
         variant: 'destructive'
       });
@@ -71,32 +72,33 @@ export const useUpdateSpiritualActivity = () => {
   });
 };
 
-export const useCreateSpiritualActivity = () => {
+export const useCreateLeague = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (activityData: {
+    mutationFn: async (leagueData: {
       name: string;
-      type: string;
-      points_reward: number;
-      emoji: string;
-      description: string;
+      min_points: number;
+      max_points: number;
+      icon: string;
+      color: string;
+      reward_multiplier: number;
       is_active: boolean;
     }) => {
       const { error } = await supabase
-        .from('spiritual_activities')
-        .insert([activityData]);
+        .from('leagues')
+        .insert([leagueData]);
       
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['spiritual-activities'] });
-      toast({ title: 'Spiritual activity created successfully' });
+      queryClient.invalidateQueries({ queryKey: ['leagues'] });
+      toast({ title: 'League created successfully' });
     },
     onError: (error) => {
       toast({ 
-        title: 'Error creating activity', 
+        title: 'Error creating league', 
         description: error.message,
         variant: 'destructive'
       });

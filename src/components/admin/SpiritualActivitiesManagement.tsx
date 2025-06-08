@@ -10,6 +10,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Edit, Heart, Users, TrendingUp, BookOpen, Calendar, Target } from 'lucide-react';
+import { 
+  useSpiritualActivitiesData, 
+  useUserSpiritualActivities,
+  useUpdateSpiritualActivity,
+  useCreateSpiritualActivity
+} from '@/hooks/useSpiritualActivities';
 
 const SpiritualActivitiesManagement = () => {
   const [showActivityForm, setShowActivityForm] = useState(false);
@@ -24,75 +30,24 @@ const SpiritualActivitiesManagement = () => {
     is_active: true
   });
 
-  const mockActivities = [
-    {
-      id: '1',
-      name: 'Fajr Prayer',
-      type: 'prayer',
-      points_reward: 50,
-      emoji: '🌅',
-      daily_participants: 1250,
-      weekly_participants: 6847,
-      is_active: true,
-      trending: true
-    },
-    {
-      id: '2',
-      name: 'Quran Recitation',
-      type: 'quran',
-      points_reward: 30,
-      emoji: '📖',
-      daily_participants: 890,
-      weekly_participants: 4523,
-      is_active: true,
-      trending: false
-    },
-    {
-      id: '3',
-      name: 'Dhikr Session',
-      type: 'dhikr',
-      points_reward: 25,
-      emoji: '🌙',
-      daily_participants: 456,
-      weekly_participants: 2890,
-      is_active: true,
-      trending: true
-    },
-    {
-      id: '4',
-      name: 'Charity Donation',
-      type: 'charity',
-      points_reward: 75,
-      emoji: '💰',
-      daily_participants: 234,
-      weekly_participants: 1567,
-      is_active: true,
-      trending: false
-    }
-  ];
+  // Fetch data from database
+  const { data: activities = [], isLoading: activitiesLoading } = useSpiritualActivitiesData();
+  const { data: userActivities = [], isLoading: userActivitiesLoading } = useUserSpiritualActivities();
 
-  const mockUserActivities = [
-    {
-      id: '1',
-      user_name: 'Sarah Johnson',
-      activity_name: 'Fajr Prayer',
-      completed_at: '2024-01-26 05:30:00',
-      points_earned: 50,
-      streak_count: 15
-    },
-    {
-      id: '2',
-      user_name: 'Ahmed Ali',
-      activity_name: 'Quran Recitation',
-      completed_at: '2024-01-26 20:15:00',
-      points_earned: 30,
-      streak_count: 8
-    }
-  ];
+  // Mutations
+  const updateActivity = useUpdateSpiritualActivity();
+  const createActivity = useCreateSpiritualActivity();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Creating/updating spiritual activity:', formData);
+    createActivity.mutate({
+      name: formData.name,
+      type: formData.type,
+      points_reward: parseInt(formData.points_reward),
+      emoji: formData.emoji,
+      description: formData.description,
+      is_active: formData.is_active
+    });
     setShowActivityForm(false);
     resetForm();
   };
@@ -108,8 +63,8 @@ const SpiritualActivitiesManagement = () => {
     });
   };
 
-  const toggleActivity = (activityId: string) => {
-    console.log('Toggling activity:', activityId);
+  const toggleActivity = (activityId: string, currentState: boolean) => {
+    updateActivity.mutate({ id: activityId, is_active: !currentState });
   };
 
   const getTypeColor = (type: string) => {
@@ -154,78 +109,63 @@ const SpiritualActivitiesManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Activity</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Points Reward</TableHead>
-                    <TableHead>Daily Participants</TableHead>
-                    <TableHead>Weekly Participants</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockActivities.map((activity) => (
-                    <TableRow key={activity.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <div className="text-2xl">{activity.emoji}</div>
-                          <div>
-                            <div className="font-medium">{activity.name}</div>
-                            {activity.trending && (
-                              <Badge className="bg-gradient-to-r from-pink-500 to-violet-500 text-white text-xs">
-                                <TrendingUp className="h-3 w-3 mr-1" />
-                                Trending
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getTypeColor(activity.type)}>
-                          {activity.type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Target className="h-4 w-4 text-purple-600" />
-                          {activity.points_reward}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4 text-blue-600" />
-                          {activity.daily_participants}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4 text-green-600" />
-                          {activity.weekly_participants}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Badge className={activity.is_active ? 'bg-green-500' : 'bg-gray-500'}>
-                            {activity.is_active ? 'Active' : 'Inactive'}
-                          </Badge>
-                          <Switch
-                            checked={activity.is_active}
-                            onCheckedChange={() => toggleActivity(activity.id)}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Button size="sm" variant="outline" onClick={() => setSelectedActivity(activity.id)}>
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                      </TableCell>
+              {activitiesLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Activity</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Points Reward</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {activities.map((activity) => (
+                      <TableRow key={activity.id}>
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <div className="text-2xl">{activity.emoji}</div>
+                            <div>
+                              <div className="font-medium">{activity.name}</div>
+                              <div className="text-sm text-muted-foreground">{activity.description}</div>
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={getTypeColor(activity.type)}>
+                            {activity.type}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Target className="h-4 w-4 text-purple-600" />
+                            {activity.points_reward}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Badge className={activity.is_active ? 'bg-green-500' : 'bg-gray-500'}>
+                              {activity.is_active ? 'Active' : 'Inactive'}
+                            </Badge>
+                            <Switch
+                              checked={activity.is_active}
+                              onCheckedChange={() => toggleActivity(activity.id, activity.is_active)}
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="outline" onClick={() => setSelectedActivity(activity.id)}>
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -239,35 +179,46 @@ const SpiritualActivitiesManagement = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Activity</TableHead>
-                    <TableHead>Completed At</TableHead>
-                    <TableHead>Points Earned</TableHead>
-                    <TableHead>Streak Count</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {mockUserActivities.map((userActivity) => (
-                    <TableRow key={userActivity.id}>
-                      <TableCell className="font-medium">{userActivity.user_name}</TableCell>
-                      <TableCell>{userActivity.activity_name}</TableCell>
-                      <TableCell>{new Date(userActivity.completed_at).toLocaleString()}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Target className="h-4 w-4 text-purple-600" />
-                          {userActivity.points_earned}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{userActivity.streak_count} days</Badge>
-                      </TableCell>
+              {userActivitiesLoading ? (
+                <div className="text-center py-4">Loading...</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>User</TableHead>
+                      <TableHead>Activity</TableHead>
+                      <TableHead>Completed At</TableHead>
+                      <TableHead>Points Earned</TableHead>
+                      <TableHead>Streak Count</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {userActivities.map((userActivity) => (
+                      <TableRow key={userActivity.id}>
+                        <TableCell className="font-medium">
+                          {userActivity.profiles?.full_name || 'Unknown User'}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{userActivity.spiritual_activities?.emoji}</span>
+                            {userActivity.spiritual_activities?.name}
+                          </div>
+                        </TableCell>
+                        <TableCell>{new Date(userActivity.completed_at).toLocaleString()}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Target className="h-4 w-4 text-purple-600" />
+                            {userActivity.points_earned}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{userActivity.streak_count} days</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -279,17 +230,17 @@ const SpiritualActivitiesManagement = () => {
                 <CardTitle>Total Activities</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">47</div>
+                <div className="text-3xl font-bold">{activities.length}</div>
                 <p className="text-sm text-muted-foreground">Available activities</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Daily Participation</CardTitle>
+                <CardTitle>Total Participations</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">2,830</div>
-                <p className="text-sm text-muted-foreground">Activities completed today</p>
+                <div className="text-3xl font-bold">{userActivities.length}</div>
+                <p className="text-sm text-muted-foreground">Activities completed</p>
               </CardContent>
             </Card>
             <Card>
@@ -297,7 +248,9 @@ const SpiritualActivitiesManagement = () => {
                 <CardTitle>Points Distributed</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">142,500</div>
+                <div className="text-3xl font-bold">
+                  {userActivities.reduce((acc, ua) => acc + ua.points_earned, 0)}
+                </div>
                 <p className="text-sm text-muted-foreground">Through activities</p>
               </CardContent>
             </Card>
@@ -306,8 +259,12 @@ const SpiritualActivitiesManagement = () => {
                 <CardTitle>Most Popular</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">🌅</div>
-                <p className="text-sm text-muted-foreground">Fajr Prayer</p>
+                <div className="text-3xl font-bold">
+                  {activities.length > 0 ? activities[0].emoji : '🤲'}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {activities.length > 0 ? activities[0].name : 'No activities'}
+                </p>
               </CardContent>
             </Card>
           </div>
