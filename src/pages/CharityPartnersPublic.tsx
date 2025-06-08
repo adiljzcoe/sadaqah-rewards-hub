@@ -2,7 +2,6 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import CharityPartners from '@/components/CharityPartners';
 import CampaignsCarousel from '@/components/CampaignsCarousel';
@@ -133,11 +132,11 @@ const CharityPartnersPublic = () => {
           <Card className="text-center">
             <CardContent className="p-6">
               <div className="flex justify-center mb-4">
-                <div className="bg-islamic-green-100 rounded-full p-4">
-                  <Shield className="h-8 w-8 text-islamic-green-600" />
+                <div className="bg-emerald-100 rounded-full p-4">
+                  <Shield className="h-8 w-8 text-emerald-600" />
                 </div>
               </div>
-              <div className="text-2xl font-bold text-islamic-green-600 mb-2">100%</div>
+              <div className="text-2xl font-bold text-emerald-600 mb-2">100%</div>
               <div className="text-gray-600">Verified Partners</div>
             </CardContent>
           </Card>
@@ -157,17 +156,17 @@ const CharityPartnersPublic = () => {
         <CharityPartners />
 
         {/* Call to Action */}
-        <div className="mt-16 bg-islamic-green-600 text-white rounded-xl p-8 text-center">
+        <div className="mt-16 bg-emerald-600 text-white rounded-xl p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Make a Difference?</h2>
           <p className="text-xl mb-6 opacity-90">
             Join thousands of donors supporting verified charities worldwide
           </p>
           <div className="flex justify-center space-x-4">
-            <Button className="bg-white text-islamic-green-600 hover:bg-gray-100">
+            <Button className="bg-white text-emerald-600 hover:bg-gray-100">
               <Heart className="h-5 w-5 mr-2" />
               Start Donating
             </Button>
-            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-islamic-green-600">
+            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-emerald-600">
               Learn More
             </Button>
           </div>

@@ -5,10 +5,32 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Heart, Users, Clock } from 'lucide-react';
 
-export const CampaignsCarousel = () => {
-  const campaigns = [
+interface Campaign {
+  id: string;
+  title: string;
+  description: string;
+  raised: number;
+  target: number;
+  donors: number;
+  timeLeft?: string;
+  daysLeft?: number;
+  image?: string;
+  charity?: string;
+  category?: string;
+}
+
+interface CampaignsCarouselProps {
+  campaigns?: Campaign[];
+  title?: string;
+}
+
+export const CampaignsCarousel: React.FC<CampaignsCarouselProps> = ({ 
+  campaigns: propCampaigns, 
+  title = "Featured Campaigns" 
+}) => {
+  const defaultCampaigns = [
     {
-      id: 1,
+      id: '1',
       title: 'Emergency Relief for Gaza',
       description: 'Providing essential aid to families in need',
       raised: 85000,
@@ -18,7 +40,7 @@ export const CampaignsCarousel = () => {
       image: '/placeholder.svg'
     },
     {
-      id: 2,
+      id: '2',
       title: 'Clean Water for Communities',
       description: 'Building wells in rural villages',
       raised: 45000,
@@ -28,7 +50,7 @@ export const CampaignsCarousel = () => {
       image: '/placeholder.svg'
     },
     {
-      id: 3,
+      id: '3',
       title: 'Education for All',
       description: 'Supporting schools and students',
       raised: 32000,
@@ -39,44 +61,49 @@ export const CampaignsCarousel = () => {
     }
   ];
 
+  const campaigns = propCampaigns || defaultCampaigns;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {campaigns.map((campaign) => (
-        <Card key={campaign.id} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-          <div className="h-48 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-t-lg"></div>
-          <CardHeader>
-            <CardTitle className="text-lg">{campaign.title}</CardTitle>
-            <p className="text-gray-600 text-sm">{campaign.description}</p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span>£{campaign.raised.toLocaleString()} raised</span>
-                  <span>£{campaign.target.toLocaleString()} goal</span>
+    <div className="space-y-6">
+      {title && <h2 className="text-2xl font-bold text-center">{title}</h2>}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {campaigns.map((campaign) => (
+          <Card key={campaign.id} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="h-48 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-t-lg"></div>
+            <CardHeader>
+              <CardTitle className="text-lg">{campaign.title}</CardTitle>
+              <p className="text-gray-600 text-sm">{campaign.description}</p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span>£{campaign.raised.toLocaleString()} raised</span>
+                    <span>£{campaign.target.toLocaleString()} goal</span>
+                  </div>
+                  <Progress value={(campaign.raised / campaign.target) * 100} className="h-2" />
                 </div>
-                <Progress value={(campaign.raised / campaign.target) * 100} className="h-2" />
+                
+                <div className="flex items-center justify-between text-sm text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <Users className="h-4 w-4" />
+                    {campaign.donors} donors
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    {campaign.timeLeft} left
+                  </div>
+                </div>
+                
+                <Button className="w-full bg-gradient-to-r from-emerald-600 to-green-600">
+                  <Heart className="mr-2 h-4 w-4" />
+                  Donate Now
+                </Button>
               </div>
-              
-              <div className="flex items-center justify-between text-sm text-gray-600">
-                <div className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  {campaign.donors} donors
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {campaign.timeLeft} left
-                </div>
-              </div>
-              
-              <Button className="w-full bg-gradient-to-r from-emerald-600 to-green-600">
-                <Heart className="mr-2 h-4 w-4" />
-                Donate Now
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
