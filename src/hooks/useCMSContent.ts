@@ -12,23 +12,35 @@ interface CMSContent {
   updated_at: string;
 }
 
+// Since cms_content table doesn't exist yet, using admin_settings as a temporary solution
 export const useCMSContent = (contentKey?: string) => {
   return useQuery({
     queryKey: ['cms-content', contentKey],
     queryFn: async () => {
       let query = supabase
-        .from('cms_content')
+        .from('admin_settings')
         .select('*')
-        .eq('is_active', true);
+        .like('setting_key', 'cms_%');
       
       if (contentKey) {
-        query = query.eq('content_key', contentKey);
+        query = query.eq('setting_key', `cms_${contentKey}`);
       }
       
       const { data, error } = await query;
       if (error) throw error;
       
-      return contentKey ? data?.[0] : data;
+      // Transform admin_settings data to CMS format
+      const transformedData = data?.map(item => ({
+        id: item.id,
+        content_key: item.setting_key.replace('cms_', ''),
+        content_type: 'text' as const,
+        content_value: item.setting_value,
+        is_active: true,
+        created_at: item.created_at,
+        updated_at: item.updated_at
+      }));
+      
+      return contentKey ? transformedData?.[0] : transformedData;
     },
   });
 };
@@ -39,8 +51,8 @@ export const useUpdateCMSContent = () => {
   return useMutation({
     mutationFn: async ({ id, content_value }: { id: string; content_value: string }) => {
       const { data, error } = await supabase
-        .from('cms_content')
-        .update({ content_value, updated_at: new Date().toISOString() })
+        .from('admin_settings')
+        .update({ setting_value: content_value, updated_at: new Date().toISOString() })
         .eq('id', id)
         .select()
         .single();

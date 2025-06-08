@@ -27,17 +27,19 @@ const CMSContentEditor: React.FC<CMSContentEditorProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState('');
 
+  const contentData = content as any;
+
   const handleEdit = () => {
-    setEditValue(content?.content_value || '');
+    setEditValue(contentData?.content_value || '');
     setIsEditing(true);
   };
 
   const handleSave = async () => {
-    if (!content?.id) return;
+    if (!contentData?.id) return;
     
     try {
       await updateContent.mutateAsync({
-        id: content.id,
+        id: contentData.id,
         content_value: editValue
       });
       setIsEditing(false);
@@ -142,11 +144,11 @@ const CMSContentEditor: React.FC<CMSContentEditorProps> = ({
             </div>
           ) : (
             <div className="p-3 bg-muted rounded-md min-h-[60px]">
-              {content?.content_value ? (
+              {contentData?.content_value ? (
                 contentType === 'html' ? (
-                  <div dangerouslySetInnerHTML={{ __html: content.content_value }} />
+                  <div dangerouslySetInnerHTML={{ __html: contentData.content_value }} />
                 ) : (
-                  <p className="whitespace-pre-wrap">{content.content_value}</p>
+                  <p className="whitespace-pre-wrap">{contentData.content_value}</p>
                 )
               ) : (
                 <p className="text-muted-foreground italic">No content set</p>
@@ -157,8 +159,8 @@ const CMSContentEditor: React.FC<CMSContentEditorProps> = ({
 
         <div className="text-xs text-muted-foreground">
           <p>Content Key: {contentKey}</p>
-          {content?.updated_at && (
-            <p>Last updated: {new Date(content.updated_at).toLocaleString()}</p>
+          {contentData?.updated_at && (
+            <p>Last updated: {new Date(contentData.updated_at).toLocaleString()}</p>
           )}
         </div>
       </CardContent>

@@ -21,7 +21,7 @@ const DynamicContent: React.FC<DynamicContentProps> = ({
     return <div className={`animate-pulse bg-gray-200 h-4 rounded ${className}`} />;
   }
 
-  const contentValue = content?.content_value || fallback;
+  const contentValue = (content as any)?.content_value || fallback;
 
   if (!contentValue) {
     return null;
