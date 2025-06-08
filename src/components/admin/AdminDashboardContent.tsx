@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle, BarChart3, Zap, Globe, Heart, UserCheck, FileText, Headphones, Building } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle, BarChart3, Zap, Globe, Heart, UserCheck, FileText, Headphones, Building, Play, Book, Mic, Users2, CreditCard } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -31,6 +30,13 @@ import CharityPartnerManagement from './CharityPartnerManagement';
 import YouTubeChannelManager from './YouTubeChannelManager';
 import PlatformSettings from './PlatformSettings';
 import CMSContentEditor from '../cms/CMSContentEditor';
+import CMSManagement from './CMSManagement';
+import LiveStreamManagement from './LiveStreamManagement';
+import MasjidManagement from './MasjidManagement';
+import QuranManagement from './QuranManagement';
+import DuaManagement from './DuaManagement';
+import DhikrManagement from './DhikrManagement';
+import FamilyAccountManagement from './FamilyAccountManagement';
 
 const AdminDashboardContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -79,6 +85,42 @@ const AdminDashboardContent = () => {
       permission: 'admin.full_access' as const
     },
     { 
+      id: 'masjids', 
+      label: 'Masjids', 
+      icon: Building,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'quran', 
+      label: 'Quran', 
+      icon: Book,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'duas', 
+      label: 'Duas', 
+      icon: Heart,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'dhikr', 
+      label: 'Dhikr', 
+      icon: Mic,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'families', 
+      label: 'Families', 
+      icon: Users2,
+      permission: 'admin.user_management' as const
+    },
+    { 
+      id: 'live-streams', 
+      label: 'Live TV', 
+      icon: Play,
+      permission: 'admin.content_management' as const
+    },
+    { 
       id: 'data', 
       label: 'Data', 
       icon: Database,
@@ -122,7 +164,7 @@ const AdminDashboardContent = () => {
     },
     { 
       id: 'cms', 
-      label: 'Content', 
+      label: 'CMS', 
       icon: FileText,
       permission: 'admin.content_management' as const
     },
@@ -197,6 +239,18 @@ const AdminDashboardContent = () => {
             <CharityVerification />
           </>
         ) : <AccessDenied />;
+      case 'masjids':
+        return hasPermission('admin.content_management') ? <MasjidManagement /> : <AccessDenied />;
+      case 'quran':
+        return hasPermission('admin.content_management') ? <QuranManagement /> : <AccessDenied />;
+      case 'duas':
+        return hasPermission('admin.content_management') ? <DuaManagement /> : <AccessDenied />;
+      case 'dhikr':
+        return hasPermission('admin.content_management') ? <DhikrManagement /> : <AccessDenied />;
+      case 'families':
+        return hasPermission('admin.user_management') ? <FamilyAccountManagement /> : <AccessDenied />;
+      case 'live-streams':
+        return hasPermission('admin.content_management') ? <LiveStreamManagement /> : <AccessDenied />;
       case 'data':
         return hasPermission('admin.full_access') ? (
           <>
@@ -247,26 +301,7 @@ const AdminDashboardContent = () => {
       case 'platform-settings':
         return hasPermission('admin.full_access') ? <PlatformSettings /> : <AccessDenied />;
       case 'cms':
-        return hasPermission('admin.content_management') ? (
-          <div className="grid gap-6">
-            <CMSContentEditor 
-              contentKey="hero_title" 
-              title="Hero Section Title"
-              description="Main heading displayed on the homepage"
-            />
-            <CMSContentEditor 
-              contentKey="hero_subtitle" 
-              title="Hero Section Subtitle"
-              description="Subtitle text displayed below the main heading"
-            />
-            <CMSContentEditor 
-              contentKey="footer_text" 
-              title="Footer Text"
-              description="Text displayed in the website footer"
-              contentType="html"
-            />
-          </div>
-        ) : <AccessDenied />;
+        return hasPermission('admin.content_management') ? <CMSManagement /> : <AccessDenied />;
       default:
         return null;
     }
