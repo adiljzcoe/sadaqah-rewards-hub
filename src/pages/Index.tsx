@@ -20,9 +20,12 @@ import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { useContent } from '@/hooks/useAppConfig';
+import { getContent } from '@/utils/configHelpers';
 
 const Index = () => {
   const { t, language } = useTranslation();
+  const { data: content = [] } = useContent();
 
   console.log('Index page rendered with language:', language);
   console.log('Translation test for "why_choose_title":', t('why_choose_title'));
@@ -175,12 +178,18 @@ const Index = () => {
 
       {/* Campaigns Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
-        <CampaignsCarousel campaigns={campaigns} title={t('active_campaigns')} />
+        <CampaignsCarousel 
+          campaigns={campaigns} 
+          title={getContent(content, 'active_campaigns', t('active_campaigns'))} 
+        />
       </section>
 
       {/* Fundraisers Section */}
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
-        <FundraisersCarousel fundraisers={fundraisers} title={t('long_term_fundraisers')} />
+        <FundraisersCarousel 
+          fundraisers={fundraisers} 
+          title={getContent(content, 'long_term_fundraisers', t('long_term_fundraisers'))} 
+        />
       </section>
 
       {/* Charity Partners Section */}
@@ -190,14 +199,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section - Updated to use translations */}
+      {/* Features Section - Updated to use dynamic content */}
       <section className="container mx-auto px-4 py-16 max-w-full overflow-x-hidden">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
-            {t('why_choose_title')}
+            {getContent(content, 'why_choose_title', t('why_choose_title'))}
           </h3>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            {t('why_choose_subtitle')}
+            {getContent(content, 'why_choose_subtitle', t('why_choose_subtitle'))}
           </p>
         </div>
         
@@ -206,46 +215,68 @@ const Index = () => {
             <div className="vibrant-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
               🎯
             </div>
-            <h4 className="font-semibold text-xl mb-4 text-gray-900">{t('gamified_giving')}</h4>
-            <p className="text-gray-600">{t('gamified_giving_desc')}</p>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">
+              {getContent(content, 'gamified_giving', t('gamified_giving'))}
+            </h4>
+            <p className="text-gray-600">
+              {getContent(content, 'gamified_giving_desc', t('gamified_giving_desc'))}
+            </p>
           </div>
           
           <div className="text-center p-8 professional-card rounded-xl hover-lift">
             <div className="accent-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
               🏆
             </div>
-            <h4 className="font-semibold text-xl mb-4 text-gray-900">{t('league_tables')}</h4>
-            <p className="text-gray-600">{t('league_tables_desc')}</p>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">
+              {getContent(content, 'league_tables', t('league_tables'))}
+            </h4>
+            <p className="text-gray-600">
+              {getContent(content, 'league_tables_desc', t('league_tables_desc'))}
+            </p>
           </div>
           
           <div className="text-center p-8 professional-card rounded-xl hover-lift">
             <div className="purple-gradient w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg">
               📺
             </div>
-            <h4 className="font-semibold text-xl mb-4 text-gray-900">{t('live_impact')}</h4>
-            <p className="text-gray-600">{t('live_impact_desc')}</p>
+            <h4 className="font-semibold text-xl mb-4 text-gray-900">
+              {getContent(content, 'live_impact', t('live_impact'))}
+            </h4>
+            <p className="text-gray-600">
+              {getContent(content, 'live_impact_desc', t('live_impact_desc'))}
+            </p>
           </div>
         </div>
 
-        {/* Stats section - Updated to use translations */}
+        {/* Stats section - Updated to use dynamic content */}
         <div className="mt-16 vibrant-gradient rounded-xl p-8 text-center shadow-xl">
-          <h4 className="text-2xl font-bold text-white mb-6">{t('community_impact')}</h4>
+          <h4 className="text-2xl font-bold text-white mb-6">
+            {getContent(content, 'community_impact', t('community_impact'))}
+          </h4>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">1,247</div>
-              <div className="text-white/90 font-medium">{t('active_donors')}</div>
+              <div className="text-white/90 font-medium">
+                {getContent(content, 'active_donors', t('active_donors'))}
+              </div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">£50K</div>
-              <div className="text-white/90 font-medium">{t('raised_today')}</div>
+              <div className="text-white/90 font-medium">
+                {getContent(content, 'raised_today', t('raised_today'))}
+              </div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">28</div>
-              <div className="text-white/90 font-medium">{t('cities_competing')}</div>
+              <div className="text-white/90 font-medium">
+                {getContent(content, 'cities_competing', t('cities_competing'))}
+              </div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">95%</div>
-              <div className="text-white/90 font-medium">{t('satisfaction_rate')}</div>
+              <div className="text-white/90 font-medium">
+                {getContent(content, 'satisfaction_rate', t('satisfaction_rate'))}
+              </div>
             </div>
           </div>
         </div>

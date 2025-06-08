@@ -6,18 +6,25 @@ import { Users, DollarSign, TrendingUp, Settings, Bell, Globe, Database, Shield 
 import FeatureConfigManager from '@/components/admin/FeatureConfigManager';
 import SystemSettings from '@/components/admin/SystemSettings';
 import PlatformSettings from '@/components/admin/PlatformSettings';
+import { useAppSettings, useContent } from '@/hooks/useAppConfig';
+import { getSettingValue, getContent } from '@/utils/configHelpers';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const { data: settings = [] } = useAppSettings();
+  const { data: content = [] } = useContent();
+
+  const appName = getSettingValue(settings, 'app_name', 'Your Jannah');
+  const dashboardTitle = getContent(content, 'admin_dashboard_title', 'Admin Dashboard');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">{dashboardTitle}</h1>
           <p className="text-lg text-gray-600">
-            Manage your platform settings, monitor performance, and configure features.
+            Manage your {appName} platform settings, monitor performance, and configure features.
           </p>
         </div>
 
@@ -64,7 +71,9 @@ const AdminDashboard = () => {
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">£2.1M</div>
+                  <div className="text-2xl font-bold">
+                    {getSettingValue(settings, 'currency_symbol', '£')}2.1M
+                  </div>
                   <p className="text-xs text-muted-foreground">+15% from last month</p>
                 </CardContent>
               </Card>
@@ -100,7 +109,7 @@ const AdminDashboard = () => {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <span className="text-sm">New donation: £250 to Gaza Relief</span>
+                      <span className="text-sm">New donation: {getSettingValue(settings, 'currency_symbol', '£')}250 to Gaza Relief</span>
                       <span className="text-xs text-gray-500">2 min ago</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
