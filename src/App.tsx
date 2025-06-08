@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { TranslationProvider } from "@/contexts/TranslationContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { CartProvider } from "@/hooks/useCart";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
 import LoadingBoundary from "@/components/common/LoadingBoundary";
 import MaintenanceMode from "@/components/ui/maintenance-mode";
@@ -65,25 +66,27 @@ function App() {
           <AuthProvider>
             <TranslationProvider>
               <CurrencyProvider>
-                <BrowserRouter>
-                  <MaintenanceMode />
-                  <Suspense fallback={<LoadingBoundary skeleton="dashboard"><div /></LoadingBoundary>}>
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route 
-                        path="/admin/*" 
-                        element={
-                          <ProtectedRoute requiredPermissions={['admin.full_access']}>
-                            <AdminDashboard />
-                          </ProtectedRoute>
-                        } 
-                      />
-                      <Route path="*" element={<Navigate to="/" replace />} />
-                    </Routes>
-                  </Suspense>
-                  <Toaster />
-                  <Sonner />
-                </BrowserRouter>
+                <CartProvider>
+                  <BrowserRouter>
+                    <MaintenanceMode />
+                    <Suspense fallback={<LoadingBoundary skeleton="dashboard"><div /></LoadingBoundary>}>
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route 
+                          path="/admin/*" 
+                          element={
+                            <ProtectedRoute requiredPermissions={['admin.full_access']}>
+                              <AdminDashboard />
+                            </ProtectedRoute>
+                          } 
+                        />
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                      </Routes>
+                    </Suspense>
+                    <Toaster />
+                    <Sonner />
+                  </BrowserRouter>
+                </CartProvider>
               </CurrencyProvider>
             </TranslationProvider>
           </AuthProvider>
