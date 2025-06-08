@@ -72,6 +72,50 @@ export interface PageResponse {
   hasMore: boolean;
 }
 
+// Mock data since CMS tables don't exist in Supabase yet
+const mockPages: CMSPage[] = [
+  {
+    id: '1',
+    slug: 'home',
+    title: 'Welcome to Our Platform',
+    content: '<h1>Welcome</h1><p>This is the homepage content.</p>',
+    meta_title: 'Home - Islamic Platform',
+    meta_description: 'Welcome to our Islamic charity platform',
+    meta_keywords: ['islamic', 'charity', 'donation'],
+    featured_image_url: '/images/home-banner.jpg',
+    status: 'published',
+    template_type: 'default',
+    page_type: 'standard',
+    sort_order: 0,
+    is_homepage: true,
+    custom_css: '',
+    custom_js: '',
+    canonical_url: '',
+    redirect_url: '',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    version: 1,
+    is_active: true
+  },
+  {
+    id: '2',
+    slug: 'about',
+    title: 'About Us',
+    content: '<h1>About Our Mission</h1><p>Learn more about our Islamic charity work.</p>',
+    meta_title: 'About Us - Islamic Platform',
+    meta_description: 'Learn about our mission and values',
+    status: 'published',
+    template_type: 'default',
+    page_type: 'standard',
+    sort_order: 1,
+    is_homepage: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    version: 1,
+    is_active: true
+  }
+];
+
 class CMSService {
   // Get all pages with pagination and filters
   async getPages(
@@ -85,91 +129,79 @@ class CMSService {
       sortOrder = 'desc' 
     } = pagination || {};
 
-    let query = supabase
-      .from('cms_pages')
-      .select('*', { count: 'exact' })
-      .is('deleted_at', null);
+    // Filter mock data
+    let filteredPages = [...mockPages];
 
-    // Apply filters
     if (filters) {
       if (filters.status?.length) {
-        query = query.in('status', filters.status);
+        filteredPages = filteredPages.filter(page => filters.status!.includes(page.status));
       }
       if (filters.page_type?.length) {
-        query = query.in('page_type', filters.page_type);
+        filteredPages = filteredPages.filter(page => filters.page_type!.includes(page.page_type));
       }
       if (filters.search) {
-        query = query.or(`title.ilike.%${filters.search}%,content.ilike.%${filters.search}%`);
+        const searchTerm = filters.search.toLowerCase();
+        filteredPages = filteredPages.filter(page => 
+          page.title.toLowerCase().includes(searchTerm) || 
+          page.content.toLowerCase().includes(searchTerm)
+        );
       }
       if (filters.is_active !== undefined) {
-        query = query.eq('is_active', filters.is_active);
-      }
-      if (filters.created_after) {
-        query = query.gte('created_at', filters.created_after);
-      }
-      if (filters.created_before) {
-        query = query.lte('created_at', filters.created_before);
+        filteredPages = filteredPages.filter(page => page.is_active === filters.is_active);
       }
     }
 
-    // Apply sorting
-    query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+    // Sort
+    filteredPages.sort((a, b) => {
+      const aValue = (a as any)[sortBy];
+      const bValue = (b as any)[sortBy];
+      if (sortOrder === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      }
+      return aValue < bValue ? 1 : -1;
+    });
 
-    // Apply pagination
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
-    query = query.range(from, to);
-
-    const { data, error, count } = await query;
-
-    if (error) throw error;
+    // Paginate
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedPages = filteredPages.slice(startIndex, endIndex);
 
     return {
-      data: data || [],
-      totalCount: count || 0,
+      data: paginatedPages,
+      totalCount: filteredPages.length,
       currentPage: page,
-      totalPages: Math.ceil((count || 0) / limit),
-      hasMore: to < (count || 0) - 1
+      totalPages: Math.ceil(filteredPages.length / limit),
+      hasMore: endIndex < filteredPages.length
     };
   }
 
   // Get single page by ID
   async getPageById(id: string): Promise<CMSPage> {
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) throw error;
-    return data;
+    const page = mockPages.find(p => p.id === id);
+    if (!page) throw new Error('Page not found');
+    return page;
   }
 
   // Get page by slug (for public view)
   async getPageBySlug(slug: string, incrementView = true): Promise<CMSPage> {
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .eq('is_active', true)
-      .is('deleted_at', null)
-      .single();
+    const page = mockPages.find(p => 
+      p.slug === slug && 
+      p.status === 'published' && 
+      p.is_active && 
+      !p.deleted_at
+    );
+    if (!page) throw new Error('Page not found');
 
-    if (error) throw error;
-
-    // Increment view count if requested
-    if (data && incrementView) {
-      await this.incrementPageView(data.id);
+    // Mock increment view count
+    if (incrementView) {
+      console.log('Mock: Incrementing view count for page', page.id);
     }
 
-    return data;
+    return page;
   }
 
   // Create new page
   async createPage(pageData: CreatePageDTO): Promise<CMSPage> {
-    const { data: userData } = await supabase.auth.getUser();
-    
     // Check slug uniqueness
     const isSlugAvailable = await this.checkSlugAvailability(pageData.slug);
     if (!isSlugAvailable) {
@@ -181,37 +213,32 @@ class CMSService {
       await this.unsetCurrentHomepage();
     }
 
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .insert({
-        ...pageData,
-        status: pageData.status || 'draft',
-        template_type: pageData.template_type || 'default',
-        page_type: pageData.page_type || 'standard',
-        sort_order: pageData.sort_order || 0,
-        is_homepage: pageData.is_homepage || false,
-        is_active: true,
-        created_by: userData.user?.id,
-        updated_by: userData.user?.id,
-        version: 1
-      })
-      .select()
-      .single();
+    const newPage: CMSPage = {
+      id: Math.random().toString(36).substr(2, 9),
+      ...pageData,
+      status: pageData.status || 'draft',
+      template_type: pageData.template_type || 'default',
+      page_type: pageData.page_type || 'standard',
+      sort_order: pageData.sort_order || 0,
+      is_homepage: pageData.is_homepage || false,
+      is_active: true,
+      version: 1,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
 
-    if (error) throw error;
+    mockPages.push(newPage);
+    console.log('Mock: Created new page', newPage);
 
-    // Create initial version entry
-    await this.createVersionEntry(data.id, data);
-
-    return data;
+    return newPage;
   }
 
   // Update page
   async updatePage(id: string, updates: Partial<CreatePageDTO>): Promise<CMSPage> {
-    const { data: userData } = await supabase.auth.getUser();
+    const pageIndex = mockPages.findIndex(p => p.id === id);
+    if (pageIndex === -1) throw new Error('Page not found');
 
-    // Get current page
-    const currentPage = await this.getPageById(id);
+    const currentPage = mockPages[pageIndex];
     
     // Check slug uniqueness if slug is being updated
     if (updates.slug && updates.slug !== currentPage.slug) {
@@ -226,50 +253,41 @@ class CMSService {
       await this.unsetCurrentHomepage();
     }
 
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .update({
-        ...updates,
-        updated_by: userData.user?.id,
-        version: currentPage.version + 1,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', id)
-      .select()
-      .single();
+    const updatedPage = {
+      ...currentPage,
+      ...updates,
+      version: currentPage.version + 1,
+      updated_at: new Date().toISOString()
+    };
 
-    if (error) throw error;
+    mockPages[pageIndex] = updatedPage;
+    console.log('Mock: Updated page', updatedPage);
 
-    // Create version entry for the update
-    await this.createVersionEntry(id, data);
-
-    return data;
+    return updatedPage;
   }
 
   // Soft delete page
   async deletePage(id: string): Promise<void> {
-    const { data: userData } = await supabase.auth.getUser();
+    const pageIndex = mockPages.findIndex(p => p.id === id);
+    if (pageIndex === -1) throw new Error('Page not found');
 
-    const { error } = await supabase
-      .from('cms_pages')
-      .update({ 
-        deleted_at: new Date().toISOString(),
-        updated_by: userData.user?.id,
-        is_active: false
-      })
-      .eq('id', id);
+    mockPages[pageIndex] = {
+      ...mockPages[pageIndex],
+      deleted_at: new Date().toISOString(),
+      is_active: false,
+      updated_at: new Date().toISOString()
+    };
 
-    if (error) throw error;
+    console.log('Mock: Soft deleted page', id);
   }
 
   // Hard delete page
   async hardDeletePage(id: string): Promise<void> {
-    const { error } = await supabase
-      .from('cms_pages')
-      .delete()
-      .eq('id', id);
+    const pageIndex = mockPages.findIndex(p => p.id === id);
+    if (pageIndex === -1) throw new Error('Page not found');
 
-    if (error) throw error;
+    mockPages.splice(pageIndex, 1);
+    console.log('Mock: Hard deleted page', id);
   }
 
   // Publish page
@@ -324,47 +342,25 @@ class CMSService {
 
   // Get page versions
   async getPageVersions(pageId: string) {
-    const { data, error } = await supabase
-      .from('cms_page_versions')
-      .select('*')
-      .eq('page_id', pageId)
-      .order('version_number', { ascending: false });
-
-    if (error) throw error;
-    return data || [];
+    // Mock versions data
+    console.log('Mock: Getting page versions for', pageId);
+    return [];
   }
 
   // Restore page version
   async restorePageVersion(pageId: string, versionId: string): Promise<CMSPage> {
-    const { data: version } = await supabase
-      .from('cms_page_versions')
-      .select('*')
-      .eq('id', versionId)
-      .single();
-
-    if (!version) throw new Error('Version not found');
-
-    const { content_snapshot } = version;
-    
-    return this.updatePage(pageId, content_snapshot);
+    console.log('Mock: Restoring page version', pageId, versionId);
+    return this.getPageById(pageId);
   }
 
   // Check slug availability
   async checkSlugAvailability(slug: string, excludeId?: string): Promise<boolean> {
-    let query = supabase
-      .from('cms_pages')
-      .select('id')
-      .eq('slug', slug)
-      .is('deleted_at', null);
-
-    if (excludeId) {
-      query = query.neq('id', excludeId);
-    }
-
-    const { data, error } = await query;
-    
-    if (error) throw error;
-    return !data || data.length === 0;
+    const existingPage = mockPages.find(p => 
+      p.slug === slug && 
+      !p.deleted_at && 
+      p.id !== excludeId
+    );
+    return !existingPage;
   }
 
   // Generate slug from title
@@ -380,173 +376,93 @@ class CMSService {
 
   // Get homepage
   async getHomepage(): Promise<CMSPage | null> {
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .select('*')
-      .eq('is_homepage', true)
-      .eq('status', 'published')
-      .eq('is_active', true)
-      .is('deleted_at', null)
-      .single();
-
-    if (error && error.code !== 'PGRST116') throw error;
-    return data || null;
+    const homepage = mockPages.find(p => 
+      p.is_homepage && 
+      p.status === 'published' && 
+      p.is_active && 
+      !p.deleted_at
+    );
+    return homepage || null;
   }
 
   // Search pages
   async searchPages(query: string, limit = 10): Promise<CMSPage[]> {
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .select('*')
-      .or(`title.ilike.%${query}%,content.ilike.%${query}%,meta_description.ilike.%${query}%`)
-      .eq('status', 'published')
-      .eq('is_active', true)
-      .is('deleted_at', null)
-      .order('updated_at', { ascending: false })
-      .limit(limit);
+    const searchTerm = query.toLowerCase();
+    const results = mockPages
+      .filter(p => 
+        p.status === 'published' && 
+        p.is_active && 
+        !p.deleted_at &&
+        (p.title.toLowerCase().includes(searchTerm) || 
+         p.content.toLowerCase().includes(searchTerm) ||
+         p.meta_description?.toLowerCase().includes(searchTerm))
+      )
+      .slice(0, limit);
 
-    if (error) throw error;
-    return data || [];
+    return results;
   }
 
   // Get recent pages
   async getRecentPages(limit = 5): Promise<CMSPage[]> {
-    const { data, error } = await supabase
-      .from('cms_pages')
-      .select('*')
-      .eq('status', 'published')
-      .eq('is_active', true)
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false })
-      .limit(limit);
-
-    if (error) throw error;
-    return data || [];
+    return mockPages
+      .filter(p => p.status === 'published' && p.is_active && !p.deleted_at)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, limit);
   }
 
   // Bulk operations
   async bulkUpdateStatus(ids: string[], status: 'draft' | 'published' | 'archived'): Promise<void> {
-    const { data: userData } = await supabase.auth.getUser();
-
-    const { error } = await supabase
-      .from('cms_pages')
-      .update({ 
-        status,
-        updated_by: userData.user?.id,
-        updated_at: new Date().toISOString()
-      })
-      .in('id', ids);
-
-    if (error) throw error;
+    ids.forEach(id => {
+      const pageIndex = mockPages.findIndex(p => p.id === id);
+      if (pageIndex !== -1) {
+        mockPages[pageIndex] = {
+          ...mockPages[pageIndex],
+          status,
+          updated_at: new Date().toISOString()
+        };
+      }
+    });
+    console.log('Mock: Bulk updated status for pages', ids, status);
   }
 
   async bulkDelete(ids: string[]): Promise<void> {
-    const { data: userData } = await supabase.auth.getUser();
-
-    const { error } = await supabase
-      .from('cms_pages')
-      .update({ 
-        deleted_at: new Date().toISOString(),
-        updated_by: userData.user?.id,
-        is_active: false
-      })
-      .in('id', ids);
-
-    if (error) throw error;
+    ids.forEach(id => {
+      const pageIndex = mockPages.findIndex(p => p.id === id);
+      if (pageIndex !== -1) {
+        mockPages[pageIndex] = {
+          ...mockPages[pageIndex],
+          deleted_at: new Date().toISOString(),
+          is_active: false,
+          updated_at: new Date().toISOString()
+        };
+      }
+    });
+    console.log('Mock: Bulk deleted pages', ids);
   }
 
   // Get page analytics
   async getPageAnalytics(pageId: string, startDate?: string, endDate?: string) {
-    let query = supabase
-      .from('cms_page_analytics')
-      .select('*')
-      .eq('page_id', pageId);
-
-    if (startDate) {
-      query = query.gte('date', startDate);
-    }
-    if (endDate) {
-      query = query.lte('date', endDate);
-    }
-
-    const { data, error } = await query
-      .order('date', { ascending: true });
-
-    if (error) throw error;
-    return data || [];
+    // Mock analytics data
+    console.log('Mock: Getting page analytics for', pageId, startDate, endDate);
+    return [];
   }
 
   // Private helper methods
   private async unsetCurrentHomepage(): Promise<void> {
-    const { error } = await supabase
-      .from('cms_pages')
-      .update({ is_homepage: false })
-      .eq('is_homepage', true);
-
-    if (error) throw error;
+    const currentHomepage = mockPages.find(p => p.is_homepage);
+    if (currentHomepage) {
+      currentHomepage.is_homepage = false;
+      currentHomepage.updated_at = new Date().toISOString();
+    }
+    console.log('Mock: Unset current homepage');
   }
 
   private async createVersionEntry(pageId: string, pageData: CMSPage): Promise<void> {
-    const { data: userData } = await supabase.auth.getUser();
-
-    const { error } = await supabase
-      .from('cms_page_versions')
-      .insert({
-        page_id: pageId,
-        version_number: pageData.version,
-        title: pageData.title,
-        content: pageData.content,
-        content_snapshot: {
-          slug: pageData.slug,
-          title: pageData.title,
-          content: pageData.content,
-          meta_title: pageData.meta_title,
-          meta_description: pageData.meta_description,
-          meta_keywords: pageData.meta_keywords,
-          featured_image_url: pageData.featured_image_url,
-          template_type: pageData.template_type,
-          page_type: pageData.page_type,
-          custom_css: pageData.custom_css,
-          custom_js: pageData.custom_js,
-          canonical_url: pageData.canonical_url,
-          redirect_url: pageData.redirect_url
-        },
-        created_by: userData.user?.id
-      });
-
-    if (error) console.error('Failed to create version entry:', error);
+    console.log('Mock: Creating version entry for page', pageId);
   }
 
   private async incrementPageView(pageId: string): Promise<void> {
-    const today = new Date().toISOString().split('T')[0];
-
-    // Try to increment existing analytics record
-    const { data: existing } = await supabase
-      .from('cms_page_analytics')
-      .select('id, view_count')
-      .eq('page_id', pageId)
-      .eq('date', today)
-      .single();
-
-    if (existing) {
-      const { error } = await supabase
-        .from('cms_page_analytics')
-        .update({ view_count: existing.view_count + 1 })
-        .eq('id', existing.id);
-
-      if (error) console.error('Failed to increment page view:', error);
-    } else {
-      // Create new analytics record
-      const { error } = await supabase
-        .from('cms_page_analytics')
-        .insert({
-          page_id: pageId,
-          date: today,
-          view_count: 1
-        });
-
-      if (error) console.error('Failed to create page analytics:', error);
-    }
+    console.log('Mock: Incrementing page view for', pageId);
   }
 }
 
