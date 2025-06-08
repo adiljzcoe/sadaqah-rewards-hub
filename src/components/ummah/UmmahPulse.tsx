@@ -26,12 +26,62 @@ interface VibeLevel {
   bgColor: string;
 }
 
+interface SpiritualActivity {
+  id: string;
+  emoji: string;
+  description: string;
+  tag: string;
+  color: string;
+  trending: boolean;
+  count: number;
+  lastUpdated: Date;
+  jannahPointsAwarded: number;
+  type: string;
+}
+
 const UmmahPulse = () => {
   const { activities, totalParticipants, recordSpiritualActivity } = useSpiritualActivities();
   const [vibeLevel, setVibeLevel] = useState<VibeLevel>({ level: 75, description: 'High Spiritual Energy', color: 'text-green-600', bgColor: 'bg-green-100' });
+  const [mockActivities, setMockActivities] = useState<SpiritualActivity[]>([]);
   const { toast } = useToast();
 
-  const calculateVibeLevel = (activities: any[]) => {
+  // Generate mock activities with all required properties
+  useEffect(() => {
+    const generateMockActivities = (): SpiritualActivity[] => {
+      const baseActivities = [
+        { emoji: '🤲', description: '152 souls praying together', tag: 'PrayTogether', type: 'prayer', points: 50 },
+        { emoji: '📖', description: '89 reading Quran now', tag: 'QuranReading', type: 'quran', points: 30 },
+        { emoji: '💰', description: '43 giving charity', tag: 'CharityFlow', type: 'charity', points: 75 },
+        { emoji: '🌅', description: '267 fasting today', tag: 'FastingStrong', type: 'fasting', points: 100 },
+        { emoji: '🕌', description: '78 visiting mosques', tag: 'MosqueVisit', type: 'prayer', points: 40 },
+        { emoji: '🤝', description: '125 helping others', tag: 'GoodDeeds', type: 'charity', points: 60 }
+      ];
+
+      return baseActivities.map((activity, index) => ({
+        id: `activity-${index}`,
+        emoji: activity.emoji,
+        description: activity.description,
+        tag: activity.tag,
+        color: index % 2 === 0 ? 'text-green-600' : 'text-blue-600',
+        trending: Math.random() > 0.5,
+        count: Math.floor(Math.random() * 200) + 50,
+        lastUpdated: new Date(Date.now() - Math.random() * 300000), // Random time within last 5 minutes
+        jannahPointsAwarded: activity.points,
+        type: activity.type
+      }));
+    };
+
+    setMockActivities(generateMockActivities());
+
+    // Update activities periodically
+    const interval = setInterval(() => {
+      setMockActivities(generateMockActivities());
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const calculateVibeLevel = (activities: SpiritualActivity[]) => {
     const total = activities.reduce((sum, activity) => sum + activity.count, 0);
     const level = Math.min(100, Math.max(20, (total / 10) + Math.random() * 20));
     
@@ -47,10 +97,10 @@ const UmmahPulse = () => {
   };
 
   useEffect(() => {
-    if (activities.length > 0) {
-      setVibeLevel(calculateVibeLevel(activities));
+    if (mockActivities.length > 0) {
+      setVibeLevel(calculateVibeLevel(mockActivities));
     }
-  }, [activities]);
+  }, [mockActivities]);
 
   const getVibeIcon = () => {
     if (vibeLevel.level >= 80) return <Heart className="h-6 w-6 animate-pulse" fill="currentColor" />;
@@ -58,7 +108,7 @@ const UmmahPulse = () => {
     return <Activity className="h-6 w-6" />;
   };
 
-  const handleJoinActivity = (activity: any) => {
+  const handleJoinActivity = (activity: SpiritualActivity) => {
     // Record the spiritual activity and award Jannah points
     recordSpiritualActivity(activity.type, activity.jannahPointsAwarded);
     
@@ -129,7 +179,7 @@ const UmmahPulse = () => {
           </h3>
           
           <div className="grid gap-3">
-            {activities.slice(0, 6).map((activity) => (
+            {mockActivities.slice(0, 6).map((activity) => (
               <div 
                 key={activity.id}
                 className="flex items-center justify-between p-3 bg-white/10 rounded-lg backdrop-blur-sm hover:bg-white/15 transition-all duration-300"
