@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle, BarChart3, Zap, Globe, Heart, UserCheck, FileText, Headphones, Building, Play, Book, Mic, Users2, CreditCard } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle, BarChart3, Zap, Globe, Heart, UserCheck, FileText, Headphones, Building, Play, Book, Mic, Users2, CreditCard, Trophy, Flame, Target, Star, Coins } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -37,6 +37,11 @@ import QuranManagement from './QuranManagement';
 import DuaManagement from './DuaManagement';
 import DhikrManagement from './DhikrManagement';
 import FamilyAccountManagement from './FamilyAccountManagement';
+import RewardsSystemManagement from './RewardsSystemManagement';
+import AchievementsManagement from './AchievementsManagement';
+import StreakSystemManagement from './StreakSystemManagement';
+import LeagueSystemManagement from './LeagueSystemManagement';
+import SpiritualActivitiesManagement from './SpiritualActivitiesManagement';
 
 const AdminDashboardContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -118,6 +123,36 @@ const AdminDashboardContent = () => {
       id: 'live-streams', 
       label: 'Live TV', 
       icon: Play,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'rewards', 
+      label: 'Rewards', 
+      icon: Star,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'achievements', 
+      label: 'Achievements', 
+      icon: Trophy,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'streaks', 
+      label: 'Streaks', 
+      icon: Flame,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'leagues', 
+      label: 'Leagues', 
+      icon: Target,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'spiritual', 
+      label: 'Spiritual', 
+      icon: Heart,
       permission: 'admin.content_management' as const
     },
     { 
@@ -251,6 +286,16 @@ const AdminDashboardContent = () => {
         return hasPermission('admin.user_management') ? <FamilyAccountManagement /> : <AccessDenied />;
       case 'live-streams':
         return hasPermission('admin.content_management') ? <LiveStreamManagement /> : <AccessDenied />;
+      case 'rewards':
+        return hasPermission('admin.content_management') ? <RewardsSystemManagement /> : <AccessDenied />;
+      case 'achievements':
+        return hasPermission('admin.content_management') ? <AchievementsManagement /> : <AccessDenied />;
+      case 'streaks':
+        return hasPermission('admin.content_management') ? <StreakSystemManagement /> : <AccessDenied />;
+      case 'leagues':
+        return hasPermission('admin.content_management') ? <LeagueSystemManagement /> : <AccessDenied />;
+      case 'spiritual':
+        return hasPermission('admin.content_management') ? <SpiritualActivitiesManagement /> : <AccessDenied />;
       case 'data':
         return hasPermission('admin.full_access') ? (
           <>

@@ -1,0 +1,391 @@
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus, Edit, Flame, Shield, Calendar, Users, TrendingUp, Target } from 'lucide-react';
+
+const StreakSystemManagement = () => {
+  const [showConfigForm, setShowConfigForm] = useState(false);
+  const [selectedConfig, setSelectedConfig] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    reward_type: 'points',
+    reward_value: '',
+    threshold: '',
+    is_active: true
+  });
+
+  const mockStreakConfig = [
+    {
+      id: '1',
+      name: 'Daily Streak Bonus',
+      reward_type: 'points',
+      reward_value: 50,
+      threshold: 1,
+      is_active: true,
+      description: 'Bonus points for maintaining daily streak'
+    },
+    {
+      id: '2',
+      name: 'Weekly Streak Milestone',
+      reward_type: 'multiplier',
+      reward_value: 1.5,
+      threshold: 7,
+      is_active: true,
+      description: '50% multiplier bonus for 7-day streak'
+    },
+    {
+      id: '3',
+      name: 'Monthly Champion',
+      reward_type: 'freeze',
+      reward_value: 2,
+      threshold: 30,
+      is_active: true,
+      description: '2 free streak freezes for 30-day streak'
+    }
+  ];
+
+  const mockUserStreaks = [
+    {
+      id: '1',
+      user_name: 'Sarah Johnson',
+      user_email: 'sarah@example.com',
+      current_streak: 45,
+      longest_streak: 67,
+      freeze_count: 3,
+      last_donation: '2024-01-26',
+      status: 'active'
+    },
+    {
+      id: '2',
+      user_name: 'Ahmed Ali',
+      user_email: 'ahmed@example.com',
+      current_streak: 0,
+      longest_streak: 23,
+      freeze_count: 1,
+      last_donation: '2024-01-24',
+      status: 'broken'
+    },
+    {
+      id: '3',
+      user_name: 'Fatima Hassan',
+      user_email: 'fatima@example.com',
+      current_streak: 12,
+      longest_streak: 34,
+      freeze_count: 0,
+      last_donation: '2024-01-26',
+      status: 'active'
+    }
+  ];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Creating/updating streak config:', formData);
+    setShowConfigForm(false);
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      reward_type: 'points',
+      reward_value: '',
+      threshold: '',
+      is_active: true
+    });
+  };
+
+  const toggleConfig = (configId: string) => {
+    console.log('Toggling streak config:', configId);
+  };
+
+  const grantStreakFreeze = (userId: string) => {
+    console.log('Granting streak freeze to user:', userId);
+  };
+
+  const resetUserStreak = (userId: string) => {
+    console.log('Resetting streak for user:', userId);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold">Streak System Management</h2>
+          <p className="text-muted-foreground">Configure streak rewards, freezes, and user streak management</p>
+        </div>
+        <Button onClick={() => setShowConfigForm(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Streak Rule
+        </Button>
+      </div>
+
+      <Tabs defaultValue="configuration" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="configuration">Configuration</TabsTrigger>
+          <TabsTrigger value="user-streaks">User Streaks</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="configuration">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Flame className="h-5 w-5 mr-2 text-orange-600" />
+                Streak Reward Configuration
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Rule Name</TableHead>
+                    <TableHead>Reward Type</TableHead>
+                    <TableHead>Reward Value</TableHead>
+                    <TableHead>Threshold</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {mockStreakConfig.map((config) => (
+                    <TableRow key={config.id}>
+                      <TableCell className="font-medium">{config.name}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{config.reward_type}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        {config.reward_type === 'multiplier' ? `${config.reward_value}x` : config.reward_value}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          {config.threshold} days
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Badge className={config.is_active ? 'bg-green-500' : 'bg-gray-500'}>
+                            {config.is_active ? 'Active' : 'Inactive'}
+                          </Badge>
+                          <Switch
+                            checked={config.is_active}
+                            onCheckedChange={() => toggleConfig(config.id)}
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground max-w-xs">
+                        {config.description}
+                      </TableCell>
+                      <TableCell>
+                        <Button size="sm" variant="outline" onClick={() => setSelectedConfig(config.id)}>
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="user-streaks">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Users className="h-5 w-5 mr-2 text-blue-600" />
+                User Streak Management
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead>Current Streak</TableHead>
+                    <TableHead>Longest Streak</TableHead>
+                    <TableHead>Freezes Left</TableHead>
+                    <TableHead>Last Donation</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {mockUserStreaks.map((streak) => (
+                    <TableRow key={streak.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{streak.user_name}</div>
+                          <div className="text-sm text-muted-foreground">{streak.user_email}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Flame className={`h-4 w-4 ${streak.current_streak > 0 ? 'text-orange-500' : 'text-gray-400'}`} />
+                          <span className="font-bold text-lg">{streak.current_streak}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Target className="h-4 w-4 text-purple-600" />
+                          {streak.longest_streak}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Shield className="h-4 w-4 text-blue-600" />
+                          {streak.freeze_count}
+                        </div>
+                      </TableCell>
+                      <TableCell>{new Date(streak.last_donation).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        <Badge className={streak.status === 'active' ? 'bg-green-500' : 'bg-red-500'}>
+                          {streak.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-1">
+                          <Button size="sm" variant="outline" onClick={() => grantStreakFreeze(streak.id)}>
+                            <Shield className="h-3 w-3" />
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => resetUserStreak(streak.id)}>
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <div className="grid gap-6 md:grid-cols-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Active Streaks</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">1,247</div>
+                <p className="text-sm text-muted-foreground">Users with active streaks</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Average Streak</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">8.5</div>
+                <p className="text-sm text-muted-foreground">Days per active streak</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Longest Current</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">127</div>
+                <p className="text-sm text-muted-foreground">Days streak record</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Freezes Used</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">456</div>
+                <p className="text-sm text-muted-foreground">This month</p>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {showConfigForm && (
+        <Dialog open={showConfigForm} onOpenChange={setShowConfigForm}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Streak Rule</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="name">Rule Name</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="reward_type">Reward Type</Label>
+                  <select
+                    id="reward_type"
+                    value={formData.reward_type}
+                    onChange={(e) => setFormData({ ...formData, reward_type: e.target.value })}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="points">Points</option>
+                    <option value="multiplier">Multiplier</option>
+                    <option value="freeze">Streak Freeze</option>
+                    <option value="coins">Sadaqah Coins</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="reward_value">Reward Value</Label>
+                  <Input
+                    id="reward_value"
+                    type="number"
+                    step="0.1"
+                    value={formData.reward_value}
+                    onChange={(e) => setFormData({ ...formData, reward_value: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="threshold">Streak Threshold (Days)</Label>
+                <Input
+                  id="threshold"
+                  type="number"
+                  value={formData.threshold}
+                  onChange={(e) => setFormData({ ...formData, threshold: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="is_active"
+                  checked={formData.is_active}
+                  onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                />
+                <Label htmlFor="is_active">Active Rule</Label>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" onClick={() => setShowConfigForm(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">Save Rule</Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
+export default StreakSystemManagement;
