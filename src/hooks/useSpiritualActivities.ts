@@ -103,3 +103,70 @@ export const useCreateSpiritualActivity = () => {
     }
   });
 };
+
+// Original hook for the SpiritualActivitiesMenu component
+export const useSpiritualActivities = () => {
+  const activities = [
+    {
+      id: '1',
+      emoji: '🕌',
+      description: 'Ahmed just completed Fajr prayer',
+      tag: 'prayer',
+      color: 'text-green-400',
+      trending: true
+    },
+    {
+      id: '2',
+      emoji: '📖',
+      description: 'Fatima read 5 verses of Quran',
+      tag: 'quran',
+      color: 'text-purple-400',
+      trending: false
+    },
+    {
+      id: '3',
+      emoji: '🤲',
+      description: 'Ali completed 100 dhikr',
+      tag: 'dhikr',
+      color: 'text-blue-400',
+      trending: true
+    },
+    {
+      id: '4',
+      emoji: '💰',
+      description: 'Sara made a charity donation',
+      tag: 'charity',
+      color: 'text-orange-400',
+      trending: false
+    },
+    {
+      id: '5',
+      emoji: '🌙',
+      description: 'Omar completed evening prayers',
+      tag: 'prayer',
+      color: 'text-indigo-400',
+      trending: true
+    },
+    {
+      id: '6',
+      emoji: '❤️',
+      description: 'Aisha made a heartfelt dua',
+      tag: 'dua',
+      color: 'text-pink-400',
+      trending: false
+    }
+  ];
+
+  const totalParticipants = 12847;
+
+  const recordSpiritualActivity = (activityType: string, points: number) => {
+    console.log(`Recording ${activityType} activity for ${points} points`);
+    // This could later be connected to the database
+  };
+
+  return {
+    activities,
+    totalParticipants,
+    recordSpiritualActivity
+  };
+};
