@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +19,7 @@ import { lazy, Suspense } from "react";
 
 const Index = lazy(() => import("./pages/Index"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const BusinessLeagues = lazy(() => import("./pages/BusinessLeagues"));
 
 // Configure React Query with enterprise settings
 const queryClient = new QueryClient({
@@ -72,6 +72,7 @@ function App() {
                     <Suspense fallback={<LoadingBoundary skeleton="dashboard"><div /></LoadingBoundary>}>
                       <Routes>
                         <Route path="/" element={<Index />} />
+                        <Route path="/business-leagues" element={<BusinessLeagues />} />
                         <Route 
                           path="/admin/*" 
                           element={
