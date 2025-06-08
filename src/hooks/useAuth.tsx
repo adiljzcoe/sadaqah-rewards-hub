@@ -1,128 +1,231 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
-interface User {
-  id: string;
-  email: string;
-  full_name?: string;
-  user_metadata?: {
-    role?: string;
-    [key: string]: any;
-  };
-}
+import { createContext, useContext, useEffect, useState } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  session: Session | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName?: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
-  signInWithGitHub: () => Promise<void>;
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signOut: () => Promise<void>;
+  signInWithGoogle: () => Promise<{ error: any }>;
+  signInWithGitHub: () => Promise<{ error: any }>;
   fakeAdminLogin: () => void;
   fakeUserLogin: () => void;
-  signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Check for existing session
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
-  }, []);
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
 
-  const login = async (email: string, password: string) => {
-    // Mock login for now
-    const mockUser = { id: '1', email, full_name: 'Test User' };
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
+        if (event === 'SIGNED_IN') {
+          toast({
+            title: "Welcome back!",
+            description: "You have successfully signed in.",
+          });
+        }
+      }
+    );
+
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session:', session?.user?.id);
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [toast]);
+
+  // Create a fake session for development/testing
+  const createFakeSession = (type: 'admin' | 'user') => {
+    const fakeUser = {
+      id: type === 'admin' ? '00000000-0000-0000-0000-000000000001' : '00000000-0000-0000-0000-000000000002',
+      email: type === 'admin' ? 'admin@test.com' : 'testuser@example.com',
+      user_metadata: { full_name: type === 'admin' ? 'Test Admin' : 'Test User' },
+      app_metadata: {},
+      aud: 'authenticated',
+      created_at: new Date().toISOString(),
+      phone: '',
+      phone_confirmed_at: null,
+      email_confirmed_at: new Date().toISOString(),
+      confirmed_at: new Date().toISOString(),
+      last_sign_in_at: new Date().toISOString(),
+      role: 'authenticated',
+      updated_at: new Date().toISOString(),
+    } as User;
+
+    const fakeSession = {
+      access_token: type === 'admin' ? 'fake-admin-token' : 'fake-user-token',
+      refresh_token: type === 'admin' ? 'fake-admin-refresh' : 'fake-user-refresh',
+      expires_in: 3600,
+      expires_at: Math.floor(Date.now() / 1000) + 3600,
+      token_type: 'bearer',
+      user: fakeUser,
+    } as Session;
+
+    setUser(fakeUser);
+    setSession(fakeSession);
+    
+    toast({
+      title: `Fake ${type.charAt(0).toUpperCase() + type.slice(1)} Session Created`,
+      description: `You are now using a fake ${type} session for testing.`,
+    });
   };
 
-  const signIn = async (email: string, password: string) => {
-    await login(email, password);
+  // Fake admin login - creates a fake session without Supabase auth
+  const fakeAdminLogin = () => {
+    console.log('🔐 Creating fake admin session...');
+    createFakeSession('admin');
+  };
+
+  // Fake user login - creates a fake session without Supabase auth
+  const fakeUserLogin = () => {
+    console.log('🔐 Creating fake user session...');
+    createFakeSession('user');
   };
 
   const signUp = async (email: string, password: string, fullName?: string) => {
-    const mockUser = { id: '1', email, full_name: fullName || 'New User' };
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          full_name: fullName
+        }
+      }
+    });
+
+    if (error) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Check your email",
+        description: "We've sent you a confirmation link to complete your registration.",
+      });
+    }
+
+    return { error };
+  };
+
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+
+    return { error };
+  };
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Sign out failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      // Clear fake session data if present
+      setUser(null);
+      setSession(null);
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
+    }
   };
 
   const signInWithGoogle = async () => {
-    const mockUser = { id: '1', email: 'google@example.com', full_name: 'Google User' };
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    });
+
+    if (error) {
+      toast({
+        title: "Google sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+
+    return { error };
   };
 
   const signInWithGitHub = async () => {
-    const mockUser = { id: '1', email: 'github@example.com', full_name: 'GitHub User' };
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    });
+
+    if (error) {
+      toast({
+        title: "GitHub sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+
+    return { error };
   };
 
-  const fakeAdminLogin = () => {
-    const mockUser = { 
-      id: '1', 
-      email: 'admin@example.com', 
-      full_name: 'Admin User',
-      user_metadata: { role: 'admin' }
-    };
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
+  const value = {
+    user,
+    session,
+    loading,
+    signUp,
+    signIn,
+    signOut,
+    signInWithGoogle,
+    signInWithGitHub,
+    fakeAdminLogin,
+    fakeUserLogin,
   };
 
-  const fakeUserLogin = () => {
-    const mockUser = { 
-      id: '2', 
-      email: 'user@example.com', 
-      full_name: 'Test User',
-      user_metadata: { role: 'user' }
-    };
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
-  };
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
 
-  const logout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-  };
-
-  const signOut = () => {
-    logout();
-  };
-
-  return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      logout, 
-      loading, 
-      signIn, 
-      signUp, 
-      signInWithGoogle, 
-      signInWithGitHub, 
-      fakeAdminLogin, 
-      fakeUserLogin, 
-      signOut 
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}

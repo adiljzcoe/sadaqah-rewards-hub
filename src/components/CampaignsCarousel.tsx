@@ -1,109 +1,82 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Heart, Users, Clock } from 'lucide-react';
+import { Heart, Calendar, Users, Target } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 interface Campaign {
   id: string;
   title: string;
+  charity: string;
   description: string;
   raised: number;
   target: number;
   donors: number;
-  timeLeft?: string;
-  daysLeft?: number;
-  image?: string;
-  charity?: string;
-  category?: string;
+  daysLeft: number;
+  image: string;
+  category: string;
 }
 
 interface CampaignsCarouselProps {
-  campaigns?: Campaign[];
-  title?: string;
+  campaigns: Campaign[];
+  title: string;
 }
 
-export const CampaignsCarousel: React.FC<CampaignsCarouselProps> = ({ 
-  campaigns: propCampaigns, 
-  title = "Featured Campaigns" 
-}) => {
-  const defaultCampaigns = [
-    {
-      id: '1',
-      title: 'Emergency Relief for Gaza',
-      description: 'Providing essential aid to families in need',
-      raised: 85000,
-      target: 100000,
-      donors: 1247,
-      timeLeft: '3 days',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '2',
-      title: 'Clean Water for Communities',
-      description: 'Building wells in rural villages',
-      raised: 45000,
-      target: 75000,
-      donors: 892,
-      timeLeft: '12 days',
-      image: '/placeholder.svg'
-    },
-    {
-      id: '3',
-      title: 'Education for All',
-      description: 'Supporting schools and students',
-      raised: 32000,
-      target: 50000,
-      donors: 567,
-      timeLeft: '8 days',
-      image: '/placeholder.svg'
-    }
-  ];
-
-  const campaigns = propCampaigns || defaultCampaigns;
-
+const CampaignsCarousel = ({ campaigns, title }: CampaignsCarouselProps) => {
   return (
-    <div className="space-y-6">
-      {title && <h2 className="text-2xl font-bold text-center">{title}</h2>}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {campaigns.map((campaign) => (
-          <Card key={campaign.id} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300">
-            <div className="h-48 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-t-lg"></div>
-            <CardHeader>
-              <CardTitle className="text-lg">{campaign.title}</CardTitle>
-              <p className="text-gray-600 text-sm">{campaign.description}</p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>£{campaign.raised.toLocaleString()} raised</span>
-                    <span>£{campaign.target.toLocaleString()} goal</span>
-                  </div>
-                  <Progress value={(campaign.raised / campaign.target) * 100} className="h-2" />
-                </div>
-                
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    {campaign.donors} donors
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    {campaign.timeLeft} left
+    <div className="space-y-4">
+      <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+      <Carousel className="w-full">
+        <CarouselContent className="-ml-4">
+          {campaigns.map((campaign) => (
+            <CarouselItem key={campaign.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+              <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="h-48 bg-gradient-to-br from-islamic-green-400 to-islamic-green-600 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <Heart className="h-12 w-12 mx-auto mb-2" />
+                    <p className="font-medium">{campaign.image}</p>
                   </div>
                 </div>
                 
-                <Button className="w-full bg-gradient-to-r from-emerald-600 to-green-600">
-                  <Heart className="mr-2 h-4 w-4" />
-                  Donate Now
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <Badge variant="outline" className="text-xs">{campaign.category}</Badge>
+                    <Badge variant="outline" className="text-xs">{campaign.daysLeft} days left</Badge>
+                  </div>
+                  
+                  <h4 className="font-semibold text-lg mb-1 line-clamp-2">{campaign.title}</h4>
+                  <p className="text-sm text-gray-600 mb-3">by {campaign.charity}</p>
+                  
+                  <div className="mb-3">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>£{campaign.raised.toLocaleString()}</span>
+                      <span>£{campaign.target.toLocaleString()}</span>
+                    </div>
+                    <Progress value={(campaign.raised / campaign.target) * 100} className="h-2" />
+                    <div className="flex justify-between text-xs text-gray-600 mt-1">
+                      <span className="flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        {campaign.donors}
+                      </span>
+                      <span>{Math.round((campaign.raised / campaign.target) * 100)}%</span>
+                    </div>
+                  </div>
+                  
+                  <Button className="w-full bg-islamic-green-600 hover:bg-islamic-green-700">
+                    <Heart className="h-4 w-4 mr-2" />
+                    Donate
+                  </Button>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 };
