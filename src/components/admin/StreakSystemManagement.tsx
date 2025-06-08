@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Edit, Flame, Shield, Calendar, Users, TrendingUp, Target } from 'lucide-react';
+import { Plus, Edit, Flame, Shield, Calendar, Users, TrendingUp, Target, Settings } from 'lucide-react';
 import { 
   useStreakConfig, 
   useUserStreaks,
@@ -107,6 +107,12 @@ const StreakSystemManagement = () => {
             <CardContent>
               {configLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : streakConfig.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No streak configuration found</h3>
+                  <p className="text-gray-500 mb-4">The streak configuration tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -121,7 +127,7 @@ const StreakSystemManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {streakConfig.map((config) => (
+                    {streakConfig.map((config: any) => (
                       <TableRow key={config.id}>
                         <TableCell className="font-medium">{config.name}</TableCell>
                         <TableCell>
@@ -175,6 +181,12 @@ const StreakSystemManagement = () => {
             <CardContent>
               {streaksLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : userStreaks.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No user streaks found</h3>
+                  <p className="text-gray-500 mb-4">The user streaks tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -189,7 +201,7 @@ const StreakSystemManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {userStreaks.map((streak) => (
+                    {userStreaks.map((streak: any) => (
                       <TableRow key={streak.id}>
                         <TableCell>
                           <div>
@@ -249,7 +261,7 @@ const StreakSystemManagement = () => {
                 <CardTitle>Active Streaks</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{userStreaks.filter(s => s.status === 'active').length}</div>
+                <div className="text-3xl font-bold">{userStreaks.filter((s: any) => s.status === 'active').length}</div>
                 <p className="text-sm text-muted-foreground">Users with active streaks</p>
               </CardContent>
             </Card>
@@ -260,7 +272,7 @@ const StreakSystemManagement = () => {
               <CardContent>
                 <div className="text-3xl font-bold">
                   {userStreaks.length > 0 
-                    ? Math.round(userStreaks.reduce((acc, s) => acc + s.current_streak, 0) / userStreaks.length * 10) / 10
+                    ? Math.round(userStreaks.reduce((acc: number, s: any) => acc + (s.current_streak || 0), 0) / userStreaks.length * 10) / 10
                     : 0}
                 </div>
                 <p className="text-sm text-muted-foreground">Days per active streak</p>
@@ -272,7 +284,7 @@ const StreakSystemManagement = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
-                  {userStreaks.length > 0 ? Math.max(...userStreaks.map(s => s.current_streak)) : 0}
+                  {userStreaks.length > 0 ? Math.max(...userStreaks.map((s: any) => s.current_streak || 0)) : 0}
                 </div>
                 <p className="text-sm text-muted-foreground">Days streak record</p>
               </CardContent>
@@ -283,7 +295,7 @@ const StreakSystemManagement = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
-                  {userStreaks.reduce((acc, s) => acc + s.freeze_count, 0)}
+                  {userStreaks.reduce((acc: number, s: any) => acc + (s.freeze_count || 0), 0)}
                 </div>
                 <p className="text-sm text-muted-foreground">Available freezes</p>
               </CardContent>

@@ -100,6 +100,12 @@ const RewardsSystemManagement = () => {
             <CardContent>
               {pointsLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : pointsConfig.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No points configuration found</h3>
+                  <p className="text-gray-500 mb-4">The points configuration tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -113,7 +119,7 @@ const RewardsSystemManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pointsConfig.map((config) => (
+                    {pointsConfig.map((config: any) => (
                       <TableRow key={config.id}>
                         <TableCell className="font-medium">{config.action}</TableCell>
                         <TableCell>{config.points_per_pound}</TableCell>
@@ -161,6 +167,12 @@ const RewardsSystemManagement = () => {
             <CardContent>
               {coinsLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : coinsConfig.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No coins configuration found</h3>
+                  <p className="text-gray-500 mb-4">The coins configuration tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -174,7 +186,7 @@ const RewardsSystemManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {coinsConfig.map((config) => (
+                    {coinsConfig.map((config: any) => (
                       <TableRow key={config.id}>
                         <TableCell className="font-medium">{config.action}</TableCell>
                         <TableCell>{config.coins_per_pound}</TableCell>
@@ -218,6 +230,12 @@ const RewardsSystemManagement = () => {
             <CardContent>
               {multipliersLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : multiplierEvents.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No multiplier events found</h3>
+                  <p className="text-gray-500 mb-4">The multiplier events tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -231,7 +249,7 @@ const RewardsSystemManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {multiplierEvents.map((multiplier) => (
+                    {multiplierEvents.map((multiplier: any) => (
                       <TableRow key={multiplier.id}>
                         <TableCell className="font-medium">{multiplier.name}</TableCell>
                         <TableCell>

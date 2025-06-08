@@ -30,9 +30,9 @@ const CMSManagement: React.FC = () => {
     meta_description: '',
     meta_keywords: '',
     featured_image_url: '',
-    status: 'draft' as const,
+    status: 'draft' as 'draft' | 'published' | 'archived',
     template_type: 'default',
-    page_type: 'standard' as const,
+    page_type: 'standard' as 'standard' | 'charity' | 'campaign' | 'landing',
     sort_order: '0',
     is_homepage: false,
     custom_css: '',
@@ -244,7 +244,7 @@ const CMSManagement: React.FC = () => {
                   <Label>Status</Label>
                   <Select 
                     value={formData.status} 
-                    onValueChange={(value: 'draft' | 'published' | 'archived') => setFormData({ ...formData, status: value })}
+                    onValueChange={(value) => setFormData({ ...formData, status: value as 'draft' | 'published' | 'archived' })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -260,7 +260,7 @@ const CMSManagement: React.FC = () => {
                   <Label>Page Type</Label>
                   <Select 
                     value={formData.page_type} 
-                    onValueChange={(value: 'standard' | 'charity' | 'campaign' | 'landing') => setFormData({ ...formData, page_type: value })}
+                    onValueChange={(value) => setFormData({ ...formData, page_type: value as 'standard' | 'charity' | 'campaign' | 'landing' })}
                   >
                     <SelectTrigger>
                       <SelectValue />

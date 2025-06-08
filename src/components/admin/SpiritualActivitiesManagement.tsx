@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Edit, Heart, Users, TrendingUp, BookOpen, Calendar, Target } from 'lucide-react';
+import { Plus, Edit, Heart, Users, TrendingUp, BookOpen, Calendar, Target, Settings } from 'lucide-react';
 import { 
   useSpiritualActivitiesData, 
   useUserSpiritualActivities,
@@ -111,6 +111,12 @@ const SpiritualActivitiesManagement = () => {
             <CardContent>
               {activitiesLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : activities.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No spiritual activities found</h3>
+                  <p className="text-gray-500 mb-4">The spiritual activities tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -123,7 +129,7 @@ const SpiritualActivitiesManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {activities.map((activity) => (
+                    {activities.map((activity: any) => (
                       <TableRow key={activity.id}>
                         <TableCell>
                           <div className="flex items-center gap-3">
@@ -181,6 +187,12 @@ const SpiritualActivitiesManagement = () => {
             <CardContent>
               {userActivitiesLoading ? (
                 <div className="text-center py-4">Loading...</div>
+              ) : userActivities.length === 0 ? (
+                <div className="text-center py-8">
+                  <Settings className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No user activities found</h3>
+                  <p className="text-gray-500 mb-4">The user spiritual activities tables haven't been created yet.</p>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -193,7 +205,7 @@ const SpiritualActivitiesManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {userActivities.map((userActivity) => (
+                    {userActivities.map((userActivity: any) => (
                       <TableRow key={userActivity.id}>
                         <TableCell className="font-medium">
                           {userActivity.profiles?.full_name || 'Unknown User'}
@@ -249,7 +261,7 @@ const SpiritualActivitiesManagement = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">
-                  {userActivities.reduce((acc, ua) => acc + ua.points_earned, 0)}
+                  {userActivities.reduce((acc: number, ua: any) => acc + (ua.points_earned || 0), 0)}
                 </div>
                 <p className="text-sm text-muted-foreground">Through activities</p>
               </CardContent>
