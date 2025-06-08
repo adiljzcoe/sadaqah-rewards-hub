@@ -20,7 +20,7 @@ import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
 import { useTranslation } from '@/contexts/TranslationContext';
-import { useContent } from '@/hooks/useAppConfig';
+import { useContent, ContentItem } from '@/hooks/useAppConfig';
 import { getContent } from '@/utils/configHelpers';
 
 const Index = () => {
@@ -180,7 +180,7 @@ const Index = () => {
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         <CampaignsCarousel 
           campaigns={campaigns} 
-          title={getContent(content, 'active_campaigns', t('active_campaigns'))} 
+          title={getContent(content as ContentItem[], 'active_campaigns', t('active_campaigns'))} 
         />
       </section>
 
@@ -188,7 +188,7 @@ const Index = () => {
       <section className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         <FundraisersCarousel 
           fundraisers={fundraisers} 
-          title={getContent(content, 'long_term_fundraisers', t('long_term_fundraisers'))} 
+          title={getContent(content as ContentItem[], 'long_term_fundraisers', t('long_term_fundraisers'))} 
         />
       </section>
 
@@ -203,10 +203,10 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 max-w-full overflow-x-hidden">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent mb-4">
-            {getContent(content, 'why_choose_title', t('why_choose_title'))}
+            {getContent(content as ContentItem[], 'why_choose_title', t('why_choose_title'))}
           </h3>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            {getContent(content, 'why_choose_subtitle', t('why_choose_subtitle'))}
+            {getContent(content as ContentItem[], 'why_choose_subtitle', t('why_choose_subtitle'))}
           </p>
         </div>
         
@@ -216,10 +216,10 @@ const Index = () => {
               🎯
             </div>
             <h4 className="font-semibold text-xl mb-4 text-gray-900">
-              {getContent(content, 'gamified_giving', t('gamified_giving'))}
+              {getContent(content as ContentItem[], 'gamified_giving', t('gamified_giving'))}
             </h4>
             <p className="text-gray-600">
-              {getContent(content, 'gamified_giving_desc', t('gamified_giving_desc'))}
+              {getContent(content as ContentItem[], 'gamified_giving_desc', t('gamified_giving_desc'))}
             </p>
           </div>
           
@@ -228,10 +228,10 @@ const Index = () => {
               🏆
             </div>
             <h4 className="font-semibold text-xl mb-4 text-gray-900">
-              {getContent(content, 'league_tables', t('league_tables'))}
+              {getContent(content as ContentItem[], 'league_tables', t('league_tables'))}
             </h4>
             <p className="text-gray-600">
-              {getContent(content, 'league_tables_desc', t('league_tables_desc'))}
+              {getContent(content as ContentItem[], 'league_tables_desc', t('league_tables_desc'))}
             </p>
           </div>
           
@@ -240,10 +240,10 @@ const Index = () => {
               📺
             </div>
             <h4 className="font-semibold text-xl mb-4 text-gray-900">
-              {getContent(content, 'live_impact', t('live_impact'))}
+              {getContent(content as ContentItem[], 'live_impact', t('live_impact'))}
             </h4>
             <p className="text-gray-600">
-              {getContent(content, 'live_impact_desc', t('live_impact_desc'))}
+              {getContent(content as ContentItem[], 'live_impact_desc', t('live_impact_desc'))}
             </p>
           </div>
         </div>
@@ -251,31 +251,31 @@ const Index = () => {
         {/* Stats section - Updated to use dynamic content */}
         <div className="mt-16 vibrant-gradient rounded-xl p-8 text-center shadow-xl">
           <h4 className="text-2xl font-bold text-white mb-6">
-            {getContent(content, 'community_impact', t('community_impact'))}
+            {getContent(content as ContentItem[], 'community_impact', t('community_impact'))}
           </h4>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">1,247</div>
               <div className="text-white/90 font-medium">
-                {getContent(content, 'active_donors', t('active_donors'))}
+                {getContent(content as ContentItem[], 'active_donors', t('active_donors'))}
               </div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">£50K</div>
               <div className="text-white/90 font-medium">
-                {getContent(content, 'raised_today', t('raised_today'))}
+                {getContent(content as ContentItem[], 'raised_today', t('raised_today'))}
               </div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">28</div>
               <div className="text-white/90 font-medium">
-                {getContent(content, 'cities_competing', t('cities_competing'))}
+                {getContent(content as ContentItem[], 'cities_competing', t('cities_competing'))}
               </div>
             </div>
             <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border border-white/10">
               <div className="text-2xl font-bold text-white">95%</div>
               <div className="text-white/90 font-medium">
-                {getContent(content, 'satisfaction_rate', t('satisfaction_rate'))}
+                {getContent(content as ContentItem[], 'satisfaction_rate', t('satisfaction_rate'))}
               </div>
             </div>
           </div>

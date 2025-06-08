@@ -1,6 +1,7 @@
+
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useBusinessRules } from '@/hooks/useAppConfig';
+import { useBusinessRules, BusinessRule } from '@/hooks/useAppConfig';
 import { getUserSegmentThresholds } from '@/utils/configHelpers';
 
 export function useAdvancedUserManagement() {
@@ -11,7 +12,7 @@ export function useAdvancedUserManagement() {
     queryKey: ['user-segments', businessRules],
     queryFn: async () => {
       const now = new Date();
-      const thresholds = getUserSegmentThresholds(businessRules);
+      const thresholds = getUserSegmentThresholds(businessRules as BusinessRule[]);
       
       const thirtyDaysAgo = new Date(now.getTime() - thresholds.activeDays * 24 * 60 * 60 * 1000);
       const ninetyDaysAgo = new Date(now.getTime() - thresholds.dormantDays * 24 * 60 * 60 * 1000);
@@ -100,7 +101,7 @@ export function useAdvancedUserManagement() {
   const { data: vipDonors, isLoading: vipLoading } = useQuery({
     queryKey: ['vip-donors', businessRules],
     queryFn: async () => {
-      const thresholds = getUserSegmentThresholds(businessRules);
+      const thresholds = getUserSegmentThresholds(businessRules as BusinessRule[]);
       
       const { data: profiles, error } = await supabase
         .from('profiles')
@@ -164,7 +165,7 @@ export function useAdvancedUserManagement() {
   const { data: donationSegments, isLoading: segmentsDataLoading } = useQuery({
     queryKey: ['donation-segments', businessRules],
     queryFn: async () => {
-      const thresholds = getUserSegmentThresholds(businessRules);
+      const thresholds = getUserSegmentThresholds(businessRules as BusinessRule[]);
       
       const { count: totalUsers } = await supabase
         .from('profiles')

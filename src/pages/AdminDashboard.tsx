@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +7,7 @@ import { Users, DollarSign, TrendingUp, Settings, Bell, Globe, Database, Shield 
 import FeatureConfigManager from '@/components/admin/FeatureConfigManager';
 import SystemSettings from '@/components/admin/SystemSettings';
 import PlatformSettings from '@/components/admin/PlatformSettings';
-import { useAppSettings, useContent } from '@/hooks/useAppConfig';
+import { useAppSettings, useContent, AppSetting, ContentItem } from '@/hooks/useAppConfig';
 import { getSettingValue, getContent } from '@/utils/configHelpers';
 
 const AdminDashboard = () => {
@@ -14,8 +15,8 @@ const AdminDashboard = () => {
   const { data: settings = [] } = useAppSettings();
   const { data: content = [] } = useContent();
 
-  const appName = getSettingValue(settings, 'app_name', 'Your Jannah');
-  const dashboardTitle = getContent(content, 'admin_dashboard_title', 'Admin Dashboard');
+  const appName = getSettingValue(settings as AppSetting[], 'app_name', 'Your Jannah');
+  const dashboardTitle = getContent(content as ContentItem[], 'admin_dashboard_title', 'Admin Dashboard');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
@@ -72,7 +73,7 @@ const AdminDashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {getSettingValue(settings, 'currency_symbol', '£')}2.1M
+                    {getSettingValue(settings as AppSetting[], 'currency_symbol', '£')}2.1M
                   </div>
                   <p className="text-xs text-muted-foreground">+15% from last month</p>
                 </CardContent>
@@ -109,7 +110,7 @@ const AdminDashboard = () => {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <span className="text-sm">New donation: {getSettingValue(settings, 'currency_symbol', '£')}250 to Gaza Relief</span>
+                      <span className="text-sm">New donation: {getSettingValue(settings as AppSetting[], 'currency_symbol', '£')}250 to Gaza Relief</span>
                       <span className="text-xs text-gray-500">2 min ago</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
