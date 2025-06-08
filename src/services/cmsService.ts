@@ -424,6 +424,58 @@ class CMSService {
     return data || [];
   }
 
+  // Bulk operations
+  async bulkUpdateStatus(ids: string[], status: 'draft' | 'published' | 'archived'): Promise<void> {
+    const { data: userData } = await supabase.auth.getUser();
+
+    const { error } = await supabase
+      .from('cms_pages')
+      .update({ 
+        status,
+        updated_by: userData.user?.id,
+        updated_at: new Date().toISOString()
+      })
+      .in('id', ids);
+
+    if (error) throw error;
+  }
+
+  async bulkDelete(ids: string[]): Promise<void> {
+    const { data: userData } = await supabase.auth.getUser();
+
+    const { error } = await supabase
+      .from('cms_pages')
+      .update({ 
+        deleted_at: new Date().toISOString(),
+        updated_by: userData.user?.id,
+        is_active: false
+      })
+      .in('id', ids);
+
+    if (error) throw error;
+  }
+
+  // Get page analytics
+  async getPageAnalytics(pageId: string, startDate?: string, endDate?: string) {
+    let query = supabase
+      .from('cms_page_analytics')
+      .select('*')
+      .eq('page_id', pageId);
+
+    if (startDate) {
+      query = query.gte('date', startDate);
+    }
+    if (endDate) {
+      query = query.lte('date', endDate);
+    }
+
+    const { data, error } = await query
+      .order('date', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  }
+
   // Private helper methods
   private async unsetCurrentHomepage(): Promise<void> {
     const { error } = await supabase
