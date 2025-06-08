@@ -8,13 +8,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Plus, Edit, Trash2, Globe, Eye, FileText } from 'lucide-react';
-import { useCMSPages } from '@/hooks/useCMSPages';
+import { Plus, Edit, Trash2, Globe, Eye, FileText, Loader2 } from 'lucide-react';
+import { useCMSPages, useCreateCMSPage, useUpdateCMSPage, useDeleteCMSPage } from '@/hooks/useCMSPages';
 import { useToast } from '@/hooks/use-toast';
 
 const CMSManagement: React.FC = () => {
-  const { data: pages, refetch } = useCMSPages();
+  const { data: pages, isLoading, refetch } = useCMSPages();
+  const createPage = useCreateCMSPage();
+  const updatePage = useUpdateCMSPage();
+  const deletePage = useDeleteCMSPage();
   const { toast } = useToast();
+  
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingPage, setEditingPage] = useState<string | null>(null);
 
@@ -26,9 +30,9 @@ const CMSManagement: React.FC = () => {
     meta_description: '',
     meta_keywords: '',
     featured_image_url: '',
-    status: 'draft',
+    status: 'draft' as const,
     template_type: 'default',
-    page_type: 'standard',
+    page_type: 'standard' as const,
     sort_order: '0',
     is_homepage: false,
     custom_css: '',
@@ -64,21 +68,37 @@ const CMSManagement: React.FC = () => {
     e.preventDefault();
 
     try {
-      // Since this is mock data, we'll just show success
-      toast({
-        title: "Success",
-        description: editingPage ? "Page updated successfully (mock)" : "Page created successfully (mock)",
-      });
+      const pageData = {
+        slug: formData.slug,
+        title: formData.title,
+        content: formData.content,
+        meta_title: formData.meta_title || null,
+        meta_description: formData.meta_description || null,
+        meta_keywords: formData.meta_keywords ? formData.meta_keywords.split(',').map(k => k.trim()) : null,
+        featured_image_url: formData.featured_image_url || null,
+        status: formData.status,
+        template_type: formData.template_type,
+        page_type: formData.page_type,
+        sort_order: parseInt(formData.sort_order),
+        is_homepage: formData.is_homepage,
+        custom_css: formData.custom_css || null,
+        custom_js: formData.custom_js || null,
+        canonical_url: formData.canonical_url || null,
+        redirect_url: formData.redirect_url || null,
+        is_active: true,
+        created_by: null,
+        updated_by: null
+      };
+
+      if (editingPage) {
+        await updatePage.mutateAsync({ id: editingPage, ...pageData });
+      } else {
+        await createPage.mutateAsync(pageData);
+      }
 
       resetForm();
-      refetch();
     } catch (error) {
       console.error('Error saving page:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save page. Please try again.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -86,7 +106,7 @@ const CMSManagement: React.FC = () => {
     setFormData({
       slug: page.slug,
       title: page.title,
-      content: page.content?.body || '',
+      content: page.content || '',
       meta_title: page.meta_title || '',
       meta_description: page.meta_description || '',
       meta_keywords: page.meta_keywords?.join(', ') || '',
@@ -109,19 +129,9 @@ const CMSManagement: React.FC = () => {
     if (!confirm('Are you sure you want to delete this page?')) return;
 
     try {
-      toast({
-        title: "Success",
-        description: "Page deleted successfully (mock)",
-      });
-
-      refetch();
+      await deletePage.mutateAsync(pageId);
     } catch (error) {
       console.error('Error deleting page:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete page. Please try again.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -133,6 +143,15 @@ const CMSManagement: React.FC = () => {
       default: return 'bg-gray-500';
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="ml-2">Loading CMS pages...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -225,7 +244,7 @@ const CMSManagement: React.FC = () => {
                   <Label>Status</Label>
                   <Select 
                     value={formData.status} 
-                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                    onValueChange={(value: 'draft' | 'published' | 'archived') => setFormData({ ...formData, status: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -241,7 +260,7 @@ const CMSManagement: React.FC = () => {
                   <Label>Page Type</Label>
                   <Select 
                     value={formData.page_type} 
-                    onValueChange={(value) => setFormData({ ...formData, page_type: value })}
+                    onValueChange={(value: 'standard' | 'charity' | 'campaign' | 'landing') => setFormData({ ...formData, page_type: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -275,8 +294,19 @@ const CMSManagement: React.FC = () => {
               </div>
 
               <div className="flex space-x-2">
-                <Button type="submit" className="bg-islamic-green-600 hover:bg-islamic-green-700">
-                  {editingPage ? 'Update Page' : 'Create Page'}
+                <Button 
+                  type="submit" 
+                  className="bg-islamic-green-600 hover:bg-islamic-green-700"
+                  disabled={createPage.isPending || updatePage.isPending}
+                >
+                  {(createPage.isPending || updatePage.isPending) ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      {editingPage ? 'Updating...' : 'Creating...'}
+                    </>
+                  ) : (
+                    editingPage ? 'Update Page' : 'Create Page'
+                  )}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   Cancel
@@ -301,11 +331,15 @@ const CMSManagement: React.FC = () => {
                     {page.is_homepage && (
                       <Badge variant="outline">Homepage</Badge>
                     )}
+                    <Badge variant="secondary">{page.page_type}</Badge>
                   </div>
                   <p className="text-sm text-gray-600 mb-2">/{page.slug}</p>
                   {page.meta_description && (
                     <p className="text-sm text-gray-500">{page.meta_description}</p>
                   )}
+                  <div className="text-xs text-gray-400 mt-2">
+                    Version {page.version} • Created {new Date(page.created_at).toLocaleDateString()}
+                  </div>
                 </div>
                 <div className="flex space-x-2">
                   {page.status === 'published' && (
@@ -328,14 +362,33 @@ const CMSManagement: React.FC = () => {
                     variant="outline" 
                     size="sm"
                     onClick={() => handleDelete(page.id)}
+                    disabled={deletePage.isPending}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    {deletePage.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
                   </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
         ))}
+        
+        {pages?.length === 0 && (
+          <Card>
+            <CardContent className="p-8 text-center">
+              <FileText className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No pages found</h3>
+              <p className="text-gray-500 mb-4">Get started by creating your first CMS page.</p>
+              <Button onClick={() => setShowAddForm(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Create First Page
+              </Button>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
