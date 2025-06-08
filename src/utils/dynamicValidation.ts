@@ -27,21 +27,29 @@ export const createDynamicSchema = (validationRules: ValidationRule[]) => {
 
   // Create schema for each field
   Object.entries(rulesByField).forEach(([fieldName, rules]) => {
-    let fieldSchema: z.ZodTypeAny = z.string();
+    let fieldSchema: z.ZodString | z.ZodNumber = z.string();
 
     rules.forEach(rule => {
       switch (rule.rule_type) {
         case 'required':
-          fieldSchema = fieldSchema.min(1, rule.error_message);
+          if (fieldSchema instanceof z.ZodString) {
+            fieldSchema = fieldSchema.min(1, rule.error_message);
+          }
           break;
         case 'min_length':
-          fieldSchema = fieldSchema.min(rule.rule_value.length, rule.error_message);
+          if (fieldSchema instanceof z.ZodString) {
+            fieldSchema = fieldSchema.min(rule.rule_value.length || 1, rule.error_message);
+          }
           break;
         case 'max_length':
-          fieldSchema = fieldSchema.max(rule.rule_value.length, rule.error_message);
+          if (fieldSchema instanceof z.ZodString) {
+            fieldSchema = fieldSchema.max(rule.rule_value.length || 100, rule.error_message);
+          }
           break;
         case 'pattern':
-          fieldSchema = fieldSchema.regex(new RegExp(rule.rule_value.regex), rule.error_message);
+          if (fieldSchema instanceof z.ZodString) {
+            fieldSchema = fieldSchema.regex(new RegExp(rule.rule_value.regex), rule.error_message);
+          }
           break;
         case 'range':
           // For numeric fields, convert to number first
