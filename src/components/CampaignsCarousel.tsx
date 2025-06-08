@@ -80,3 +80,5 @@ export const CampaignsCarousel = () => {
     </div>
   );
 };
+
+export default CampaignsCarousel;

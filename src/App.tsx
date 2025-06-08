@@ -1,9 +1,10 @@
+
 import React from 'react';
 import './App.css';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
-import { AuthContextProvider } from '@/context/AuthContext';
+import { AuthProvider } from '@/hooks/useAuth';
 import { AppSettingsProvider } from '@/context/AppSettingsContext';
 import { SiteWrapper } from '@/components/SiteWrapper';
 import { queryClient } from '@/utils/queryClient';
@@ -17,12 +18,12 @@ function App() {
         enableSystem
         disableTransitionOnChange
       >
-        <AuthContextProvider>
+        <AuthProvider>
           <AppSettingsProvider>
             <SiteWrapper />
             <Toaster />
           </AppSettingsProvider>
-        </AuthContextProvider>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

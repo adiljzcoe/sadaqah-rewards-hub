@@ -79,3 +79,5 @@ export const FundraisersCarousel = () => {
     </div>
   );
 };
+
+export default FundraisersCarousel;
