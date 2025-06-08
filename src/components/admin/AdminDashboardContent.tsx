@@ -1,9 +1,8 @@
 
 import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle, BarChart3, Zap, Globe, Heart, UserCheck, FileText, Headphones, Building } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -58,7 +57,7 @@ const AdminDashboardContent = () => {
     { 
       id: 'overview', 
       label: 'Overview', 
-      icon: Users,
+      icon: BarChart3,
       permission: 'admin.full_access' as const
     },
     { 
@@ -76,7 +75,7 @@ const AdminDashboardContent = () => {
     { 
       id: 'charity-partners', 
       label: 'Partners', 
-      icon: Settings,
+      icon: Building,
       permission: 'admin.full_access' as const
     },
     { 
@@ -100,7 +99,7 @@ const AdminDashboardContent = () => {
     { 
       id: 'products', 
       label: 'Products', 
-      icon: Database,
+      icon: Heart,
       permission: 'admin.content_management' as const
     },
     { 
@@ -124,7 +123,7 @@ const AdminDashboardContent = () => {
     { 
       id: 'cms', 
       label: 'Content', 
-      icon: Settings,
+      icon: FileText,
       permission: 'admin.content_management' as const
     },
   ];
@@ -286,41 +285,55 @@ const AdminDashboardContent = () => {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <div className="w-64 bg-gray-800">
-        <div className="flex flex-col h-full">
-          <div className="flex flex-col p-4 space-y-2">
-            <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-            <p className="text-gray-400 mt-2">Role: {userRole}</p>
-            <p className="text-gray-400 text-sm">Manage your platform with role-based access</p>
-          </div>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
-              {allowedNavItems.map((item) => (
-                <TabsTrigger key={item.id} value={item.id}>
-                  {item.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20">
+      {/* Sandbox Mode Banner */}
+      {sandboxMode && (
+        <Alert className="m-6 mb-0 border-orange-500 bg-orange-50">
+          <AlertTriangle className="h-4 w-4 text-orange-600" />
+          <AlertDescription className="text-orange-800 font-medium">
+            <strong>SANDBOX MODE ACTIVE</strong> - All payments and transactions are in test mode. No real money will be processed.
+          </AlertDescription>
+        </Alert>
+      )}
 
-      <main className="flex-1 overflow-y-auto">
-        {/* Sandbox Mode Banner */}
-        {sandboxMode && (
-          <Alert className="m-6 mb-0 border-orange-500 bg-orange-50">
-            <AlertTriangle className="h-4 w-4 text-orange-600" />
-            <AlertDescription className="text-orange-800 font-medium">
-              <strong>SANDBOX MODE ACTIVE</strong> - All payments and transactions are in test mode. No real money will be processed.
-            </AlertDescription>
-          </Alert>
-        )}
-        
-        <div className="p-6">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Enterprise Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <p className="text-lg text-gray-600">
+              Comprehensive platform management with enterprise-grade features and analytics.
+            </p>
+            <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+              Role: {userRole}
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {allowedNavItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === item.id
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                }`}
+              >
+                <item.icon className="h-4 w-4" />
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="space-y-6">
           {renderTabContent()}
         </div>
-      </main>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -162,7 +161,7 @@ function App() {
                         <Route path="/why-donate" element={<WhyDonate />} />
                         <Route path="/zakat-calculator" element={<ZakatCalculator />} />
                         <Route 
-                          path="/admin/*" 
+                          path="/admin" 
                           element={
                             <ProtectedRoute requiredPermissions={['admin.full_access']}>
                               <AdminDashboard />
