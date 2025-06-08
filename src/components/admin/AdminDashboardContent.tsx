@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,6 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Users, DollarSign, TrendingUp, Activity, Settings, Database, Shield, Bell, Youtube, AlertTriangle } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { usePermissions } from '@/hooks/usePermissions';
 import DashboardCharts from './DashboardCharts';
 import AdvancedUserManagement from './AdvancedUserManagement';
 import FinancialManagement from './FinancialManagement';
@@ -29,9 +31,11 @@ import DisbursementManagement from './DisbursementManagement';
 import CharityPartnerManagement from './CharityPartnerManagement';
 import YouTubeChannelManager from './YouTubeChannelManager';
 import PlatformSettings from './PlatformSettings';
+import CMSContentEditor from '../cms/CMSContentEditor';
 
 const AdminDashboardContent = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const { hasPermission, userRole } = usePermissions();
 
   // Query to check sandbox mode status
   const { data: sandboxMode } = useQuery({
@@ -49,6 +53,86 @@ const AdminDashboardContent = () => {
       return false;
     },
   });
+
+  const navigationItems = [
+    { 
+      id: 'overview', 
+      label: 'Overview', 
+      icon: Users,
+      permission: 'admin.full_access' as const
+    },
+    { 
+      id: 'users', 
+      label: 'Users', 
+      icon: Users,
+      permission: 'admin.user_management' as const
+    },
+    { 
+      id: 'financial', 
+      label: 'Financial', 
+      icon: DollarSign,
+      permission: 'admin.financial_management' as const
+    },
+    { 
+      id: 'charity-partners', 
+      label: 'Partners', 
+      icon: Settings,
+      permission: 'admin.full_access' as const
+    },
+    { 
+      id: 'data', 
+      label: 'Data', 
+      icon: Database,
+      permission: 'admin.full_access' as const
+    },
+    { 
+      id: 'security', 
+      label: 'Security', 
+      icon: Shield,
+      permission: 'admin.full_access' as const
+    },
+    { 
+      id: 'marketing', 
+      label: 'Marketing', 
+      icon: Bell,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'products', 
+      label: 'Products', 
+      icon: Database,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'monitoring', 
+      label: 'Monitoring', 
+      icon: Activity,
+      permission: 'admin.full_access' as const
+    },
+    { 
+      id: 'youtube', 
+      label: 'YouTube', 
+      icon: Youtube,
+      permission: 'admin.content_management' as const
+    },
+    { 
+      id: 'platform-settings', 
+      label: 'Settings', 
+      icon: Settings,
+      permission: 'admin.full_access' as const
+    },
+    { 
+      id: 'cms', 
+      label: 'Content', 
+      icon: Settings,
+      permission: 'admin.content_management' as const
+    },
+  ];
+
+  // Filter navigation items based on permissions
+  const allowedNavItems = navigationItems.filter(item => 
+    hasPermission(item.permission)
+  );
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -101,11 +185,11 @@ const AdminDashboardContent = () => {
           </>
         );
       case 'charity-partners':
-        return <CharityPartnerManagement />;
+        return hasPermission('admin.full_access') ? <CharityPartnerManagement /> : <AccessDenied />;
       case 'users':
-        return <AdvancedUserManagement />;
+        return hasPermission('admin.user_management') ? <AdvancedUserManagement /> : <AccessDenied />;
       case 'financial':
-        return (
+        return hasPermission('admin.financial_management') ? (
           <>
             <div className="grid gap-6 md:grid-cols-2">
               <FinancialManagement />
@@ -113,9 +197,9 @@ const AdminDashboardContent = () => {
             </div>
             <CharityVerification />
           </>
-        );
+        ) : <AccessDenied />;
       case 'data':
-        return (
+        return hasPermission('admin.full_access') ? (
           <>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               <SimpleDataSeeder />
@@ -124,11 +208,11 @@ const AdminDashboardContent = () => {
             </div>
             <DataSeeder />
           </>
-        );
+        ) : <AccessDenied />;
       case 'security':
-        return <ComplianceAndSecurity />;
+        return hasPermission('admin.full_access') ? <ComplianceAndSecurity /> : <AccessDenied />;
       case 'marketing':
-        return (
+        return hasPermission('admin.content_management') ? (
           <>
             <div className="grid gap-6">
               <div className="grid gap-6 md:grid-cols-3">
@@ -141,9 +225,9 @@ const AdminDashboardContent = () => {
               <GrowthOpportunities />
             </div>
           </>
-        );
+        ) : <AccessDenied />;
       case 'products':
-        return (
+        return hasPermission('admin.content_management') ? (
           <>
             <div className="grid gap-6 md:grid-cols-2">
               <ProductManagement />
@@ -151,36 +235,55 @@ const AdminDashboardContent = () => {
             </div>
             <AffiliateSystem />
           </>
-        );
+        ) : <AccessDenied />;
       case 'monitoring':
-        return (
+        return hasPermission('admin.full_access') ? (
           <div className="grid gap-6 md:grid-cols-2">
             <ScalabilityMonitoring />
             <RealTimeMonitoring />
           </div>
-        );
+        ) : <AccessDenied />;
       case 'youtube':
-        return <YouTubeChannelManager />;
+        return hasPermission('admin.content_management') ? <YouTubeChannelManager /> : <AccessDenied />;
       case 'platform-settings':
-        return <PlatformSettings />;
+        return hasPermission('admin.full_access') ? <PlatformSettings /> : <AccessDenied />;
+      case 'cms':
+        return hasPermission('admin.content_management') ? (
+          <div className="grid gap-6">
+            <CMSContentEditor 
+              contentKey="hero_title" 
+              title="Hero Section Title"
+              description="Main heading displayed on the homepage"
+            />
+            <CMSContentEditor 
+              contentKey="hero_subtitle" 
+              title="Hero Section Subtitle"
+              description="Subtitle text displayed below the main heading"
+            />
+            <CMSContentEditor 
+              contentKey="footer_text" 
+              title="Footer Text"
+              description="Text displayed in the website footer"
+              contentType="html"
+            />
+          </div>
+        ) : <AccessDenied />;
       default:
         return null;
     }
   };
 
-  const navigationItems = [
-    { id: 'overview', label: 'Overview', icon: Users },
-    { id: 'users', label: 'Users', icon: Users },
-    { id: 'financial', label: 'Financial', icon: DollarSign },
-    { id: 'charity-partners', label: 'Partners', icon: Settings },
-    { id: 'data', label: 'Data', icon: Database },
-    { id: 'security', label: 'Security', icon: Shield },
-    { id: 'marketing', label: 'Marketing', icon: Bell },
-    { id: 'products', label: 'Products', icon: Database },
-    { id: 'monitoring', label: 'Monitoring', icon: Activity },
-    { id: 'youtube', label: 'YouTube Scheduler', icon: Youtube },
-    { id: 'platform-settings', label: 'Platform Settings', icon: Settings },
-  ];
+  const AccessDenied = () => (
+    <Card>
+      <CardContent className="p-8 text-center">
+        <Shield className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+        <h3 className="text-xl font-semibold mb-2">Access Denied</h3>
+        <p className="text-gray-600">
+          You don't have permission to access this section. Current role: {userRole}
+        </p>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -188,11 +291,12 @@ const AdminDashboardContent = () => {
         <div className="flex flex-col h-full">
           <div className="flex flex-col p-4 space-y-2">
             <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-            <p className="text-gray-400 mt-2">Manage your platform with comprehensive administrative tools</p>
+            <p className="text-gray-400 mt-2">Role: {userRole}</p>
+            <p className="text-gray-400 text-sm">Manage your platform with role-based access</p>
           </div>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-4 lg:grid-cols-9">
-              {navigationItems.map((item) => (
+              {allowedNavItems.map((item) => (
                 <TabsTrigger key={item.id} value={item.id}>
                   {item.label}
                 </TabsTrigger>
