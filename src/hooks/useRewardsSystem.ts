@@ -4,15 +4,15 @@ import { useToast } from '@/hooks/use-toast';
 
 // Mock data since the reward system tables don't exist in Supabase yet
 const mockPointsConfig = [
-  { id: '1', action_type: 'donation', points_per_pound: 10, is_active: true },
-  { id: '2', action_type: 'prayer_checkin', base_points: 25, is_active: true },
-  { id: '3', action_type: 'quran_reading', base_points: 30, is_active: true }
+  { id: '1', action_type: 'donation', points_per_pound: 10, is_active: true, action: 'Donation', multiplier: 1.0, description: 'Points earned per pound donated' },
+  { id: '2', action_type: 'prayer_checkin', base_points: 25, is_active: true, action: 'Prayer Check-in', multiplier: 1.0, description: 'Points for mosque check-ins' },
+  { id: '3', action_type: 'quran_reading', base_points: 30, is_active: true, action: 'Quran Reading', multiplier: 1.0, description: 'Points for reading Quran' }
 ];
 
 const mockCoinsConfig = [
-  { id: '1', action_type: 'donation', coins_per_pound: 5, is_active: true },
-  { id: '2', action_type: 'daily_login', base_coins: 10, is_active: true },
-  { id: '3', action_type: 'charity_share', base_coins: 15, is_active: true }
+  { id: '1', action_type: 'donation', coins_per_pound: 5, is_active: true, action: 'Donation', conversion_rate: 0.1, description: 'Coins earned per pound donated' },
+  { id: '2', action_type: 'daily_login', base_coins: 10, is_active: true, action: 'Daily Login', conversion_rate: 0.05, description: 'Daily login bonus coins' },
+  { id: '3', action_type: 'charity_share', base_coins: 15, is_active: true, action: 'Charity Share', conversion_rate: 0.08, description: 'Coins for sharing charity content' }
 ];
 
 const mockMultiplierEvents = [
@@ -23,6 +23,7 @@ const mockMultiplierEvents = [
     start_date: '2024-03-10',
     end_date: '2024-04-09',
     is_active: true,
+    applies_to: 'all',
     description: 'Double points during Ramadan'
   },
   {
@@ -32,6 +33,7 @@ const mockMultiplierEvents = [
     start_date: '2024-01-01',
     end_date: '2024-12-31',
     is_active: true,
+    applies_to: 'prayer',
     description: '50% bonus on Fridays'
   }
 ];
@@ -107,6 +109,30 @@ export const useUpdateCoinsConfig = () => {
     onError: (error: any) => {
       toast({
         title: 'Error updating coins configuration',
+        description: error.message,
+        variant: 'destructive'
+      });
+    }
+  });
+};
+
+export const useUpdateMultiplierEvent = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: any }) => {
+      // Mock implementation since the table doesn't exist
+      console.log('Mock: Updating multiplier event', id, data);
+      return Promise.resolve();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['multiplier-events'] });
+      toast({ title: 'Multiplier event updated successfully' });
+    },
+    onError: (error: any) => {
+      toast({
+        title: 'Error updating multiplier event',
         description: error.message,
         variant: 'destructive'
       });

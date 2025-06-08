@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -57,15 +56,15 @@ const RewardsSystemManagement = () => {
   };
 
   const togglePointsConfig = (configId: string, currentState: boolean) => {
-    updatePointsConfig.mutate({ id: configId, is_active: !currentState });
+    updatePointsConfig.mutate({ id: configId, data: { is_active: !currentState } });
   };
 
   const toggleCoinsConfig = (configId: string, currentState: boolean) => {
-    updateCoinsConfig.mutate({ id: configId, is_active: !currentState });
+    updateCoinsConfig.mutate({ id: configId, data: { is_active: !currentState } });
   };
 
   const toggleMultiplierEvent = (eventId: string, currentState: boolean) => {
-    updateMultiplierEvent.mutate({ id: eventId, is_active: !currentState });
+    updateMultiplierEvent.mutate({ id: eventId, data: { is_active: !currentState } });
   };
 
   return (
