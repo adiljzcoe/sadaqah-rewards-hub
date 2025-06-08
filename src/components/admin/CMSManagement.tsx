@@ -9,14 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Plus, Edit, Trash2, Globe, Eye, FileText, Loader2 } from 'lucide-react';
-import { useCMSPages, useCreateCMSPage, useUpdateCMSPage, useDeleteCMSPage } from '@/hooks/useCMSPages';
+import { useCMSPages, useCMSPageMutations } from '@/hooks/useCMSPages';
 import { useToast } from '@/hooks/use-toast';
 
 const CMSManagement: React.FC = () => {
-  const { data: pages, isLoading, refetch } = useCMSPages();
-  const createPage = useCreateCMSPage();
-  const updatePage = useUpdateCMSPage();
-  const deletePage = useDeleteCMSPage();
+  const { data: pagesResponse, isLoading, refetch } = useCMSPages();
+  const { createPage, updatePage, deletePage } = useCMSPageMutations();
   const { toast } = useToast();
   
   const [showAddForm, setShowAddForm] = useState(false);
@@ -72,26 +70,23 @@ const CMSManagement: React.FC = () => {
         slug: formData.slug,
         title: formData.title,
         content: formData.content,
-        meta_title: formData.meta_title || null,
-        meta_description: formData.meta_description || null,
-        meta_keywords: formData.meta_keywords ? formData.meta_keywords.split(',').map(k => k.trim()) : null,
-        featured_image_url: formData.featured_image_url || null,
+        meta_title: formData.meta_title || undefined,
+        meta_description: formData.meta_description || undefined,
+        meta_keywords: formData.meta_keywords ? formData.meta_keywords.split(',').map(k => k.trim()) : undefined,
+        featured_image_url: formData.featured_image_url || undefined,
         status: formData.status,
         template_type: formData.template_type,
         page_type: formData.page_type,
         sort_order: parseInt(formData.sort_order),
         is_homepage: formData.is_homepage,
-        custom_css: formData.custom_css || null,
-        custom_js: formData.custom_js || null,
-        canonical_url: formData.canonical_url || null,
-        redirect_url: formData.redirect_url || null,
-        is_active: true,
-        created_by: null,
-        updated_by: null
+        custom_css: formData.custom_css || undefined,
+        custom_js: formData.custom_js || undefined,
+        canonical_url: formData.canonical_url || undefined,
+        redirect_url: formData.redirect_url || undefined,
       };
 
       if (editingPage) {
-        await updatePage.mutateAsync({ id: editingPage, ...pageData });
+        await updatePage.mutateAsync({ id: editingPage, data: pageData });
       } else {
         await createPage.mutateAsync(pageData);
       }
@@ -143,6 +138,9 @@ const CMSManagement: React.FC = () => {
       default: return 'bg-gray-500';
     }
   };
+
+  // Extract pages data from response
+  const pages = pagesResponse?.data || [];
 
   if (isLoading) {
     return (
