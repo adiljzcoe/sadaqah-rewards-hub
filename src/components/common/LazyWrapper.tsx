@@ -31,18 +31,18 @@ const LazyWrapper: React.FC<LazyWrapperProps> = ({
   );
 };
 
-// Higher-order component for lazy loading
-export const withLazyLoading = <P extends object>(
+// Higher-order component for lazy loading with proper TypeScript
+export const withLazyLoading = <P extends Record<string, any>>(
   Component: React.ComponentType<P>,
   fallback?: React.ReactNode
 ) => {
   const LazyComponent = lazy(() => Promise.resolve({ default: Component }));
   
-  return (props: P) => (
+  return React.forwardRef<any, P>((props, ref) => (
     <LazyWrapper fallback={fallback}>
-      <LazyComponent {...props} />
+      <LazyComponent {...props} ref={ref} />
     </LazyWrapper>
-  );
+  ));
 };
 
 export default LazyWrapper;

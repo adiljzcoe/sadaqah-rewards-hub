@@ -1,5 +1,5 @@
 
-import { useMemo, useCallback, useRef, useEffect } from 'react';
+import { useMemo, useCallback, useRef, useEffect, useState } from 'react';
 import { cache } from '@/utils/cache';
 
 export const useDebounce = <T>(value: T, delay: number): T => {
@@ -80,5 +80,12 @@ export const useCachedData = <T>(
   return { data, loading, error };
 };
 
-// Import useState at the top
-import { useState } from 'react';
+// Export the performance optimization functions as a combined hook
+export const usePerformanceOptimization = () => {
+  return {
+    useDebounce,
+    useThrottle,
+    useMemoizedCallback,
+    useCachedData,
+  };
+};

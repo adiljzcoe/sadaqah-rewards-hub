@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Building2, Users, Award, TrendingUp, MapPin, Sparkles } from 'lucide-react';
 import { usePerformanceMonitoring } from '@/hooks/usePerformanceMonitoring';
-import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
+import { useThrottle } from '@/hooks/usePerformanceOptimization';
 import OptimizedImage from '@/components/common/OptimizedImage';
 
 interface DonationActivity {
@@ -108,7 +108,7 @@ DonationItem.displayName = 'DonationItem';
 
 const OptimizedLiveDonationFeed: React.FC = () => {
   const { trackMetrics, measureRenderTime } = usePerformanceMonitoring('LiveDonationFeed');
-  const { useThrottle } = usePerformanceOptimization();
+  const throttledTrack = useThrottle((metrics: any) => trackMetrics(metrics), 1000);
 
   // Memoized helper functions
   const getTimeAgo = useMemo(() => (timestamp: string) => {
@@ -202,9 +202,9 @@ const OptimizedLiveDonationFeed: React.FC = () => {
   // Track performance on mount
   React.useEffect(() => {
     const endMeasure = measureRenderTime();
-    trackMetrics({ componentCount: activities.length });
+    throttledTrack({ componentCount: activities.length });
     return endMeasure;
-  }, [activities.length, measureRenderTime, trackMetrics]);
+  }, [activities.length, measureRenderTime, throttledTrack]);
 
   return (
     <div className="mb-12">
