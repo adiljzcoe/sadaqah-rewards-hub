@@ -19,6 +19,7 @@ import BusinessAdvert from '@/components/BusinessAdvert';
 import DonationProducts from '@/components/DonationProducts';
 import BusinessLeaderboard from '@/components/BusinessLeaderboard';
 import MasjidLeaderboard from '@/components/MasjidLeaderboard';
+import FloatingTabWidget from '@/components/FloatingTabWidget';
 import { useTranslation } from '@/contexts/TranslationContext';
 import { useContent, ContentItem } from '@/hooks/useAppConfig';
 import { getContent } from '@/utils/configHelpers';
@@ -283,6 +284,7 @@ const Index = () => {
       </section>
 
       <FloatingDonationButton />
+      <FloatingTabWidget />
     </div>
   );
 };
